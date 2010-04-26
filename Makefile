@@ -6,12 +6,12 @@ CCDEBUGFLAGS = -lGL -lGLU -lglut -g -lm -DGL_GLEXT_PROTOTYPES
 SRC_DIR = .
 FILES = ./*.cpp
 
-build: global.o GlobalGameState.o graphics.o renderer.o Vector.o src/system/main.cpp
-	${CLINK} ${CCFLAGS} src/system/main.cpp GlobalGameState.o renderer.o Vector.o graphics.o global.o
+build: global.o StateManager.o graphics.o renderer.o Vector.o src/system/main.cpp
+	${CLINK} ${CCFLAGS} src/system/main.cpp StateManager.o renderer.o Vector.o graphics.o global.o
 	rm *.o
 
-GlobalGameState.o: src/state/GlobalGameState.cpp
-	${C} ${CCFLAGS} src/state/GlobalGameState.cpp
+StateManager.o: src/state/StateManager.cpp
+	${C} ${CCFLAGS} src/state/StateManager.cpp
 	
 renderer.o: src/graphics/renderer.cpp
 	${C} ${CCFLAGS} src/graphics/renderer.cpp

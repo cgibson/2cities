@@ -1,0 +1,20 @@
+#include "../state/GlobalGameState.h"
+#include "global.h"
+
+/*
+ * All values within global namespace will be available for everyone
+ */
+ 
+namespace global
+{
+
+  GlobalGameState stateManager; // global state manager
+  
+  int width;  // window width
+  int height; // wondow height
+  
+  char* app_title;
+  
+  bool fullscreen;  // whether or not the window is fullscreen
+
+}

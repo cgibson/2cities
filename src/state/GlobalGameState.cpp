@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "include/GlobalGameState.h"
-#include "include/E_State.h"
-#include "include/Preferences.h"
-#include "include/CarnageState.h"
-#include "include/PhysObj.h"
+#include "GlobalGameState.h"
+#include "E_State.h"
+#include "Preferences.h"
+#include "CarnageState.h"
+#include "PhysObj.h"
 
 /**
  * Represents the global game state.

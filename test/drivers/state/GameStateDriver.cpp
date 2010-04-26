@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "include/InGameState.h"
+#include "InGameState.h"
 
 using namespace std;
 

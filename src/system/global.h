@@ -1,4 +1,4 @@
-#include "../state/GlobalGameState.h"
+#include "../state/StateManager.h"
 #include "../helper/camera.h"
 
 #ifndef _GLOBAL_H_
@@ -10,7 +10,7 @@
 namespace global
 {
 
-  extern GlobalGameState stateManager; // global state manager
+  extern StateManager stateManager; // global state manager
   
   extern int width;  // window width
   extern int height; // wondow height

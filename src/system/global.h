@@ -1,4 +1,5 @@
 #include "../state/GlobalGameState.h"
+#include "../helper/camera.h"
 
 #ifndef _GLOBAL_H_
 #define _GLOBAL_H_
@@ -17,6 +18,8 @@ namespace global
   extern char* app_title;
   
   extern bool fullscreen;  // whether or not the window is fullscreen
+  
+  extern Camera camera;
 
 }
 

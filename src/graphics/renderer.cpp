@@ -9,14 +9,18 @@
 
 Renderer::Renderer()
 {
-  eye = Vector(0,0,5);
-  lookAt = Vector(0,0,0);
+  global::camera.eye = Vector(0,0,5);
+  global::camera.lookAt = Vector(0,0,0);
+  global::camera.fov = 45.0f;
+  global::camera.near = 0.1f;
+  global::camera.far = 100.0f;
+  
 }
 
 void Renderer::updateLookat()
 {
-  gluLookAt(eye.x(), eye.y(), eye.z(), 
-            lookAt.x(), lookAt.y(), lookAt.z(), 
+  gluLookAt(global::camera.eye.x(), global::camera.eye.y(), global::camera.eye.z(), 
+            global::camera.lookAt.x(), global::camera.lookAt.y(), global::camera.lookAt.z(), 
             0, 1, 0);
 }
 
@@ -56,10 +60,10 @@ void Renderer::reshape(int w, int h) {
   
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective( 45.0f,
+  gluPerspective( global::camera.fov,
       w/(float)h,
-      0.1f,
-      500.0f);
+      global::camera.near,
+      global::camera.far);
   glMatrixMode(GL_MODELVIEW);
   glViewport(0, 0, w, h);
 

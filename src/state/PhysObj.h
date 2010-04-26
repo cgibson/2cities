@@ -3,6 +3,17 @@
 
 #include "Vector.h"
 
+/**
+ * Contains PhysObj, AmmoUnit, DummyAmmoUnit, BuildingUnit,
+ * DummyBuildingUnit classes.
+ *
+ * @author Kennedy Owen
+ * @version 25 April 2010
+ */
+
+/**
+ * PhysObj class
+ */
 class PhysObj
 {
     protected:
@@ -25,5 +36,47 @@ class PhysObj
         //just to force abstraction for now. Delete this later.
         virtual void doSomething();
 };
+
+
+/**
+ * AmmoUnit class
+ */
+class AmmoUnit: public PhysObj
+{
+    //add any additional fields/functions here
+};
+
+
+/**
+ * DummyAmmoUnit class
+ */
+class DummyAmmoUnit: public AmmoUnit
+{
+    //add any extra fields or functions here
+    public:
+        DummyAmmoUnit();
+        void doSomething();
+};
+
+
+/**
+ * BuildingUnit class
+ */
+class BuildingUnit: public PhysObj
+{
+    //add any extra fields or functions here
+};
+
+
+/**
+ * DummyBuildingUnit class
+ */
+class DummyBuildingUnit: public BuildingUnit
+{
+    public:
+        DummyBuildingUnit();
+        void doSomething();
+};
+
 
 #endif

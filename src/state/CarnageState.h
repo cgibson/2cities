@@ -5,8 +5,10 @@
 #ifndef _CARNAGE_STATE_H_
 #define _CARNAGE_STATE_H_
 
-#include "BuildingUnit.h"
-#include "AmmoUnit.h"
+#include "PhysObj.h"
+#include <vector>
+
+using namespace std;
 
 /**
  * These definitions are here for this milestone. Change
@@ -19,8 +21,8 @@
 class CarnageState: public InGameState
 {
     public:
-        BuildingUnit bunits[NUM_BUNITS];
-        AmmoUnit aunits[NUM_AMMO];
+        vector<BuildingUnit> bunits;
+        vector<AmmoUnit> aunits;
         void keyCallback();
         void mouseCallback();
 };

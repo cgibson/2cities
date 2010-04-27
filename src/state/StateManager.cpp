@@ -33,7 +33,7 @@ void StateManager::changeCurrentState(e_state newState)
     switch(newState)
     {
     case CARNAGE_S:
-        //currentState = new CarnageState();
+        currentState = new CarnageState();
         break;
 
     default:

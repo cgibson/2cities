@@ -22,7 +22,7 @@ void timer( int step )
     
   // update all modules
   gfx::update(elapsed);
-  
+
   glutTimerFunc(1, timer, 0);
 }
 

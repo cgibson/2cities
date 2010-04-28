@@ -20,6 +20,8 @@ namespace global
   extern bool fullscreen;  // whether or not the window is fullscreen
   
   extern Camera camera;
+
+  extern int fps; // frames per second (not necessarily *live*)
 }
 
 #endif

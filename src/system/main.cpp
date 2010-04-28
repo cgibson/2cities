@@ -9,12 +9,15 @@ bool running;
 
 void updateLoop()
 {
+    static int msFps = 0;
+    static int frameCount = 0;
+
     // calculate milliseconds since last update
     int msNow = glutGet(GLUT_ELAPSED_TIME);
     if (msLast == 0)
     {
         // bootstrap the first call
-        msLast = msNow;
+        msLast = msFps = msNow;
         return;
     }
     int elapsed = msNow - msLast;
@@ -22,6 +25,18 @@ void updateLoop()
     // update all modules
     gfx::update(elapsed);
     global::stateManager.currentState->update(elapsed);
+
+    // update the fps counter (every quarter second)
+    frameCount++;
+    if (msNow - msFps > 250)
+    {
+        global::fps = frameCount * 4;
+        frameCount = 0;
+        msFps = msNow;
+    }
+
+    // update the last ms counter
+    msLast = msNow;
 }
 
 void initState()

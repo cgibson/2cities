@@ -19,4 +19,6 @@ namespace global
   bool fullscreen;  // whether or not the window is fullscreen
   
   Camera camera;
+
+  int fps;
 }

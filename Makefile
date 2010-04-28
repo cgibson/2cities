@@ -3,12 +3,17 @@ C = g++ -c
 CCFLAGS = -lGL -lGLU -lglut -lm -DGL_GLEXT_PROTOTYPES
 CCDEBUGFLAGS = -lGL -lGLU -lglut -g -lm -DGL_GLEXT_PROTOTYPES
 
+ALL = global.o PhysObj.o CarnageState.o InGameState.o StateManager.o graphics.o renderer.o Vector.o src/system/main.cpp
+
 SRC_DIR = .
 FILES = ./*.cpp
 
-build: global.o CarnageState.o InGameState.o StateManager.o graphics.o renderer.o Vector.o src/system/main.cpp
-	${CLINK} ${CCFLAGS} src/system/main.cpp CarnageState.o InGameState.o StateManager.o renderer.o Vector.o graphics.o global.o
+build: ${ALL}
+	${CLINK} ${CCFLAGS} ${ALL}
 	rm *.o
+
+PhysObj.o: src/state/PhysObj.cpp
+	${C} ${CCFLAGS} src/state/PhysObj.cpp
 
 InGameState.o: src/state/InGameState.cpp
 	${C} ${CCFLAGS} src/state/InGameState.cpp

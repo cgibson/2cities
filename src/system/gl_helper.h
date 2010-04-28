@@ -15,6 +15,13 @@ namespace gl{
     glClearColor(global::fill_color[0], global::fill_color[1], global::fill_color[2], global::fill_color[3]);
 
     glEnable(GL_NORMALIZE);
+
+    // turn on alpha blending
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    // set pixel packing alignment as OGLFT expects
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
   }
 }
 

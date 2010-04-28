@@ -29,11 +29,17 @@ void Renderer::updateLookat()
 void Renderer::draw()
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  
-  glMatrixMode(GL_MODELVIEW);
-  
-  glLoadIdentity();
-  
+
+    // project the camera (need to do this every frame since the 2D overlay wipes it)
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(global::camera.fov,
+        global::width / (float)global::height,
+        global::camera.near,
+        global::camera.far);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
   glPushMatrix();
   
   // update camera
@@ -63,13 +69,5 @@ void Renderer::reshape(int w, int h) {
   global::width = w;
   global::height = h;
   
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  gluPerspective( global::camera.fov,
-      w/(float)h,
-      global::camera.near,
-      global::camera.far);
-  glMatrixMode(GL_MODELVIEW);
   glViewport(0, 0, w, h);
-
 }

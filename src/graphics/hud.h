@@ -3,17 +3,24 @@
 
 #include <GL/glut.h>
 #include "../system/global.h"
+#include "console.h"
 
 class Hud {
 public:
+    Console console;
+
     Hud();
 
-    // this function should be called last in the rendering pipeline because
-    // it OBLITERATES the 3D camera projection
+    void init();
+    void update(int ms);
     void draw();
 
-private:
+    // shows or hides the console
+    bool showConsole() const { return _showConsole; }
+    void showConsole(bool show) { _showConsole = show; }
 
+private:
+    bool _showConsole;
 };
 
 #endif

@@ -1,29 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/timeb.h>
 #include "global.h"
 #include "gl_helper.h"
 #include "../graphics/graphics.h"
 
-long lastmsec = 0;
+int msLast = 0;
 bool running;
 
-void timer( int step )
+void updateLoop()
 {
-  struct timeb tp;
-  ftime(&tp);
+    // calculate milliseconds since last update
+    int msNow = glutGet(GLUT_ELAPSED_TIME);
+    if (msLast == 0)
+    {
+        // bootstrap the first call
+        msLast = msNow;
+        return;
+    }
+    int elapsed = msNow - msLast;
 
-  long currmsec = tp.time * 1000 + tp.millitm;
-  //printf("LAST: %d\n", curr
-  if(lastmsec == 0)
-    lastmsec = currmsec;
-    
-  long elapsed = currmsec - lastmsec;
-    
-  // update all modules
-  gfx::update(elapsed);
-
-  glutTimerFunc(1, timer, 0);
+    // update all modules
+    gfx::update(elapsed);
 }
 
 bool initialize()
@@ -40,7 +37,7 @@ bool initialize()
   // initialization of all other modules
   gfx::init();
 
-  glutTimerFunc(1, timer, 0);
+  glutIdleFunc(updateLoop);
   
   glutMainLoop();
 }

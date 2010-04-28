@@ -1,6 +1,8 @@
 #ifndef _INGAMESTATE_H_
 #define _INGAMESTATE_H_
 
+#include <stdlib.h>
+
 class InGameState
 {
     public:

@@ -25,11 +25,14 @@ namespace gfx{
   {
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
+
+    hud.init();
   }
   
   
-  void update(long elapsed)
+  void update(int elapsed)
   {
+    hud.update(elapsed);
 
     display();
   }

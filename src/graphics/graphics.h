@@ -15,7 +15,7 @@ namespace gfx{
   void display();
   void reshape(int w, int h);
   void init();
-  void update(long elapsed);
+  void update(int elapsed);
 
 }
 

@@ -7,12 +7,12 @@ Hud::Hud()
 
 void Hud::init()
 {
-
+    console.init();
 }
 
 void Hud::update(int ms)
 {
-
+    console.update(ms);
 }
 
 void Hud::draw()
@@ -28,15 +28,8 @@ void Hud::draw()
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
 
-    // for now just draw a red rectangle in the middle of the screen
-    /*glBegin(GL_TRIANGLES);
-        glColor3f(1.0, 0.0, 0.0);
-        glVertex3f(50.0, 50.0, 0.0);
-        glVertex3f(global::width - 50.0, 50.0, 0.0);
-        glVertex3f(50.0, global::height - 50.0, 0.0);
-    glEnd();*/
-
-    console.draw();
+    // draw the debugging console if enabled
+    if (_showConsole) console.draw();
 
     // reenable lighting and depth testing
     glEnable(GL_LIGHTING);

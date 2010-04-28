@@ -1,8 +1,9 @@
 #ifndef _CONSOLE_H_
 #define _CONSOLE_H_
 
-#include <list>
+#include <stdio.h>
 #include <GL/glut.h>
+#include <list>
 #include "../system/global.h"
 #include "OGLFT.h"
 
@@ -20,7 +21,8 @@ public:
     void update(int ms);
 
 private:
-    
+    OGLFT::Translucent *titleFont;
+    OGLFT::Translucent *consoleFont;
 };
 
 #endif

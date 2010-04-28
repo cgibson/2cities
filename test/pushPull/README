@@ -1,0 +1,10 @@
+Pushpull Instructions:
+1. Draw a rectangle on the "city circle" using the RIGHT MOUSE BUTTON
+
+2. Pull/push a surface of a rectangle using the LEFT MOUSE BUTTON
+
+3. SAVE a city to a text file by pressing the 'v' key
+      a. The program will prompt for the filename: 
+         "SAVED RECTANGLES TO FILE: "
+      b. Provide a filename and press enter
+

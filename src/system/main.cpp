@@ -3,6 +3,7 @@
 #include "global.h"
 #include "gl_helper.h"
 #include "../graphics/graphics.h"
+#include "../state/CarnageState.h"
 
 int msLast = 0;
 bool running;
@@ -42,6 +43,8 @@ void updateLoop()
 void initState()
 {
   global::stateManager.changeCurrentState(CARNAGE_S);
+  CarnageState *state = (CarnageState*)global::stateManager.currentState;
+  state->physics.addBuildingBlock(DummyBuildingUnit(Vector(0, 0, 0),Vector(0,0,0), 0.0f, 1.0f, 1.0f));
 }
 
 bool initialize()

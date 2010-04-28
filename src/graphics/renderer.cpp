@@ -3,8 +3,10 @@
 #include "renderer.h"
 #include "../helper/Vector.h"
 #include "../system/global.h"
+#include "../state/CarnageState.h"
 
 #include <stdio.h>
+#include <vector>
 //#include "../system/global.h"
 
 Renderer::Renderer()
@@ -57,10 +59,28 @@ void Renderer::draw()
     glVertex3f(0, 1, 2);
   glEnd();
   */
+  
+  CarnageState *state = (CarnageState*)global::stateManager.currentState;
+  
+  vector<BuildingUnit> scene = state->physics.getBuildingBlocks();
+  
+  glDisable(GL_LIGHTING);
+  
   DEBUG_THETA+= 0.1f;
-  glRotatef(DEBUG_THETA, 0, 1, 0);
-  glColor3f(1,0,0);
-  glutSolidCube(20);
+  
+  Vector pos;
+  
+  for(int i = 0; i < scene.size(); i++)
+  {
+    BuildingUnit unit = scene[i];
+    pos = unit.getPosition();
+    glPushMatrix();
+    glTranslatef(pos.x(), pos.y(), pos.z());
+    glRotatef(DEBUG_THETA, 0, 1, 0);
+    glColor3f(1,0,0);
+    glutSolidCube(20);
+    glPopMatrix();
+  }
   
   glPopMatrix();
 }

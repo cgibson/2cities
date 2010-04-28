@@ -11,6 +11,7 @@
 #include "InGameState.h"
 #include "E_State.h"
 #include "PhysObj.h"
+#include "../physics/Physics.h"
 
 using namespace std;
 
@@ -24,9 +25,8 @@ using namespace std;
 class CarnageState: public InGameState
 {
     public:
-        vector<BuildingUnit> bunits;
-        vector<AmmoUnit> aunits;
-
+        Physics physics;
+        
         CarnageState();
         virtual ~CarnageState();
 

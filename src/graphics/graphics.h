@@ -11,6 +11,8 @@ namespace gfx{
 
   extern Renderer renderer;
   extern Hud hud;
+  
+  extern bool draw_wireframe;
 
   void display();
   void reshape(int w, int h);

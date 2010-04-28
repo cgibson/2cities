@@ -24,7 +24,7 @@ CCFLAGS = -g ${INCLUDE_DIRS} ${DEFINES}
 LDFLAGS = -lGL -lGLU -lglut -lm -lfreetype
 
 # list of all object files
-OBJS = global.o io.o PhysObj.o CarnageState.o InGameState.o StateManager.o graphics.o renderer.o hud.o console.o Vector.o main.o
+OBJS = global.o io.o PhysObj.o CarnageState.o InGameState.o StateManager.o graphics.o renderer.o hud.o console.o Vector.o main.o Physics.o
 
 # main build rule (also deletes object files... we prolly shouldn't do that...)
 build: svnrev ${OBJS}
@@ -40,6 +40,9 @@ svnrev:
 
 main.o: src/system/main.cpp
 	${CC} -c ${CCFLAGS} src/system/main.cpp
+
+Physics.o: src/physics/Physics.cpp
+	${CC} -c ${CCFLAGS} src/physics/Physics.cpp
 
 PhysObj.o: src/state/PhysObj.cpp
 	${CC} -c ${CCFLAGS} src/state/PhysObj.cpp

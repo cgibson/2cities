@@ -1,7 +1,7 @@
 #include "Physics.h"
 #include <stdio.h>
 using namespace std;
-
+/*
 void Physics::emptyWorld()
 {
   vector<btRigidBody *>::iterator it;
@@ -19,11 +19,11 @@ void Physics::emptyWorld()
     delete *it;
     ammoBodies.erase(it);
   }
-}
+}*/
 
 void Physics::exitPhysics()
 {
-  Physics::emptyWorld();
+//  Physics::emptyWorld();
   delete groundBody;
   // remove the collision shapes
   for (int j = 0; j < collisionShapes.size(); j++)
@@ -56,14 +56,10 @@ void Physics::initPhysics()
 
   btTransform groundTrans;
   groundTrans.setIdentity();
-  groundTrans.setOrigin(btVector3(0,-56,0));
-  // groundShape->calculateLocalInertia(btScalar mass, btVector3 localInertia): would set ground into motion
-  
+  groundTrans.setOrigin(btVector3(0,-BLDG_BLOCK_SIDE_LENGTH,0));
   btRigidBody::btRigidBodyConstructionInfo grbInfo(btScalar(0.), new btDefaultMotionState(groundTrans), ground, btVector3(0,0,0));
   // Put the ground into the world
   groundBody = new btRigidBody(grbInfo);
-//    new btRigidBody::btRigidBodyConstructionInfo(btScalar(0.),
-//      new btDefaultMotionState(groundTrans), ground, btVector3(0,0,0)));
   world->addRigidBody(groundBody);
   bldgShape = new btBoxShape(btVector3(BLDG_BLOCK_SIDE_LENGTH,
                                        BLDG_BLOCK_SIDE_LENGTH,
@@ -77,7 +73,7 @@ void Physics::update(int timeChange)
 {
   if (timeChange)
     world->stepSimulation(btScalar(timeChange / 1000.0), 10);
-  int i;
+/*  int i;
   btTransform trans;
   vector<Vector> tempAmmo;
   for (i = 0; i < ammoBodies.size(); i++)
@@ -92,9 +88,9 @@ void Physics::update(int timeChange)
     tempBldg.push_back(VectorFrombtVector3(trans.getOrigin()));
   }
   oldAmmoPositions = tempAmmo;
-  oldBldgPositions = tempBldg;
+  oldBldgPositions = tempBldg;*/
 }
-
+/*
 btVector3 Physics::VectorTObtVector3(Vector in)
 {
   return btVector3(btScalar(in.x()), btScalar(in.y()), btScalar(in.z()));
@@ -132,7 +128,35 @@ void Physics::placeBlock(Vector location)
 void Physics::placeAmmo(Vector location, Vector velocity)
 {
   Physics::placePhysicsObject(ammoShape, location, velocity, AMMO_MASS);
+}*/
+
+void Physics::addAmmo(AmmoUnit ammo)
+{
+  world->addRigidBody(ammo.getRigidBody());
+  ammunition.push_back(ammo);
 }
+
+void Physics::addBuildingBlock(BuildingUnit bldg)
+{
+  world->addRigidBody(bldg.getRigidBody());
+  buildingBlocks.push_back(bldg);
+}
+
+vector<AmmoUnit> Physics::getAmmo()
+{
+  vector<AmmoUnit> result;
+  result = ammunition;
+  return result;
+}
+
+vector<BuildingUnit> Physics::getBuildingBlocks()
+{
+  vector<BuildingUnit> result;
+  result = buildingBlocks;
+  return result;
+}
+
+
 
 vector<Vector> Physics::fileToBlockLocations(char * fileName)
 {
@@ -161,9 +185,10 @@ vector<Vector> Physics::fileToBlockLocations(char * fileName)
   return result;
 }
 
+// The current implementation only adds blocks to the world, no reinitilization.
 int Physics::loadFromFile(char * fileName)
 {
-  Physics::emptyWorld();
+  //Physics::emptyWorld();
   /////////////////////////////////////////////////////////////////////////////
   vector<Vector> toPlace = Physics::fileToBlockLocations(fileName);
   // This call will need to change with any movement to the placement of
@@ -172,11 +197,12 @@ int Physics::loadFromFile(char * fileName)
   for (vector<Vector>::iterator it = toPlace.begin(); it < toPlace.end();
       it++)
   {
-    placeBlock(*it);
+    Vector position = *it;
+    addBuildingBlock(*(new DummyBuildingUnit(*it, Vector(0,0,0), Vector(0,0,0), 0)));
   }
   return 1;
 }
-
+/*
 vector<AmmoUnit> Physics::getAmmo()
 {
   vector<AmmoUnit> result;
@@ -223,4 +249,4 @@ vector<BuildingUnit> Physics::getBuildingBlocks()
     result.push_back(current);
   }
   return result;
-}
+}*/

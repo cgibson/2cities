@@ -1,15 +1,18 @@
 #include <GL/gl.h>
 #include <GL/glut.h>
 
-#include "renderer.h"
+#include "graphics.h"
 
 namespace gfx{
 
   Renderer renderer;
-  
+  Hud hud;
+
   void display()
   {
     renderer.draw();
+    hud.draw();
+    glutSwapBuffers();
   }
   
   void reshape(int w, int h)

@@ -50,8 +50,6 @@ void Renderer::draw()
   glEnd();
   
   glPopMatrix();
-
-  glutSwapBuffers();
 }
 
 void Renderer::reshape(int w, int h) {

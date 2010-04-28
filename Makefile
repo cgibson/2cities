@@ -3,7 +3,7 @@ C = g++ -c
 CCFLAGS = -lGL -lGLU -lglut -lm -DGL_GLEXT_PROTOTYPES
 CCDEBUGFLAGS = -lGL -lGLU -lglut -g -lm -DGL_GLEXT_PROTOTYPES
 
-ALL = global.o io.o PhysObj.o CarnageState.o InGameState.o StateManager.o graphics.o renderer.o Vector.o src/system/main.cpp
+ALL = global.o io.o PhysObj.o CarnageState.o InGameState.o StateManager.o graphics.o renderer.o hud.o Vector.o src/system/main.cpp
 
 SRC_DIR = .
 FILES = ./*.cpp
@@ -38,6 +38,9 @@ global.o: src/system/global.cpp
 	
 io.o: src/system/io.cpp
 	${C} ${CCFLAGS} src/system/io.cpp
+
+hud.o: src/graphics/hud.cpp
+	${C} ${CCFLAGS} src/graphics/hud.cpp
 
 clean:
 	rm *.o release

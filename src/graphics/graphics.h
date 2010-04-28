@@ -2,6 +2,7 @@
 #include <GL/glut.h>
 
 #include "renderer.h"
+#include "hud.h"
 
 #ifndef _GRAPHICS_H_
 #define _GRAPHICS_H_
@@ -9,6 +10,7 @@
 namespace gfx{
 
   extern Renderer renderer;
+  extern Hud hud;
 
   void display();
   void reshape(int w, int h);

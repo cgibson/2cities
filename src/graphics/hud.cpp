@@ -19,11 +19,14 @@ void Hud::draw()
     glDisable(GL_DEPTH_TEST);
 
     // for now just draw a red rectangle in the middle of the screen
-    glBegin(GL_QUADS);
+    glBegin(GL_TRIANGLES);
         glColor3f(1.0, 0.0, 0.0);
-        glVertex2f(global::width / 4.0, global::height / 4.0);
-        glVertex2f(global::width / 4.0, global::height * 3.0 / 4.0);
-        glVertex2f(global::width * 3.0 / 4.0, global::height * 3.0 / 4.0);
-        glVertex2f(global::width * 3.0 / 4.0, global::height);
+        glVertex3f(50.0, 50.0, 0.0);
+        glVertex3f(global::width - 50.0, 50.0, 0.0);
+        glVertex3f(50.0, global::height - 50.0, 0.0);
     glEnd();
+
+    // reenable lighting and depth testing
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
 }

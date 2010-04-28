@@ -22,4 +22,11 @@ namespace io {
     special_keys[key] = false;
   }
   
+  void mouse_click(int button, int state, int x, int y) {
+    
+  }
+
+  void mouse_motion(int x, int y) {
+
+  }
 }

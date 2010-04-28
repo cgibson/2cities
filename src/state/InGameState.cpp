@@ -37,16 +37,16 @@ void InGameState::update(long milli_time) {
 void InGameState::updateInput(long milli_time) {
    // General Keyboard Layout
    if(keys['w'])
-      global::camera.eye += Vector( 1, 0, 0);
+      global::camera.eye = global::camera.eye + Vector( 1, 0, 0);
 
    if(keys['s'])
-      global::camera.eye += Vector(-1, 0, 0);
+      global::camera.eye = global::camera.eye + Vector(-1, 0, 0);
 
    if(keys['d'])
-      global::camera.eye += Vector( 0, 0, 1);
+      global::camera.eye = global::camera.eye + Vector( 0, 0, 1);
 
    if(keys['a'])
-      global::camera.eye += Vector( 0, 0,-1);
+      global::camera.eye = global::camera.eye + Vector( 0, 0,-1);
 
    if(keys[27])
       exit(0);

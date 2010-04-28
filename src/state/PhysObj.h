@@ -23,6 +23,9 @@ class PhysObj
         float mass;
 
     public:
+        PhysObj();
+        PhysObj(Vector newPos, Vector newVel, Vector newDir, float newMass);
+
         Vector getPosition(){return position;}
         Vector getVelocity(){return velocity;}
         Vector getDirection(){return direction;}
@@ -34,7 +37,7 @@ class PhysObj
         void setMass(float newMass){mass = newMass;}
 
         //just to force abstraction for now. Delete this later.
-        virtual void doSomething();
+        virtual void doSomething(){};
 };
 
 
@@ -65,6 +68,12 @@ class DummyAmmoUnit: public AmmoUnit
 class BuildingUnit: public PhysObj
 {
     //add any extra fields or functions here
+    protected:
+        float size;
+
+    public:
+        BuildingUnit(){ size = 1; };
+        virtual void doSomething(){};
 };
 
 
@@ -75,7 +84,8 @@ class DummyBuildingUnit: public BuildingUnit
 {
     public:
         DummyBuildingUnit();
-        void doSomething();
+        DummyBuildingUnit(Vector newPos, Vector newDir, float newMass, float newSize);
+        void doSomething(){};
 };
 
 

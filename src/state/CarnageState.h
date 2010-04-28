@@ -28,7 +28,7 @@ class CarnageState: public InGameState
         virtual ~CarnageState();
 
         virtual void initialize();
-        //virtual void update();
+//        virtual void update(int val);
 
     protected:
         virtual void mouse_click(int button, int state, int x, int y);

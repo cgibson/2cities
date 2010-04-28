@@ -32,29 +32,16 @@ void CarnageState::initialize() {
 */
 
    // Temp DEV hard coded world
-   //BuildingUnit *dummyBlock = new BuildingUnit();
-   //bunits.push_back (*dummyBlock);
+   DummyBuildingUnit *dummyBlock;
+   // 25 blocks in square layout hovering 1 unit above ground place. (mass = 1, size = 1)
+   for(int i = 0; i < 100; i+=2) {
+      dummyBlock = new DummyBuildingUnit(Vector(i/10,1,i%10),Vector(0,0,0), 1.0f, 1.0f);
+      bunits.push_back (*dummyBlock);
+   }
 }
 
 // Temp inherit from InGameState's generic controls
-/*
-void CarnageState::update() {
-   if(keys['w'])
-      global::camera.eye = Vector(global::camera.eye.x()+1,global::camera.eye.y(),global::camera.eye.z());
-
-   if(keys['s'])
-      global::camera.eye = Vector(global::camera.eye.x()-1,global::camera.eye.y(),global::camera.eye.z());
-
-   if(keys['d'])
-      global::camera.eye = Vector(global::camera.eye.x(),global::camera.eye.y(),global::camera.eye.z()+1);
-
-   if(keys['a'])
-      global::camera.eye = Vector(global::camera.eye.x(),global::camera.eye.y(),global::camera.eye.z()-1);
-
-   if(keys[27])
-      exit(0);
-}
-*/
+// void CarnageState::update(int val) {}
 
 void CarnageState::mouse_click(int button, int state, int x, int y) {
 

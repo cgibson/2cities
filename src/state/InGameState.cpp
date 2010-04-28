@@ -31,7 +31,7 @@ void InGameState::initialize() {
 */
 }
 
-void InGameState::update() {
+void InGameState::update(int val) {
    if(keys['w'])
       global::camera.eye = Vector(global::camera.eye.x()+1,global::camera.eye.y(),global::camera.eye.z());
 

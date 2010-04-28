@@ -1,17 +1,51 @@
 #include "hud.h"
+#include "graphics.h"
 
 Hud::Hud()
 {
-    _showConsole = true; // default on
+    _showConsole = false; // default on
 }
 
 void Hud::init()
 {
     console.init();
+
+    // example of registering a function with a console command
+    console.registerCmd("hello", Hud::hello);
+}
+
+void Hud::hello(int argc, char *argv[])
+{
+    if (argc != 2)
+    {
+        gfx::hud.console.error("Usage: %s <your name>", argv[0]);
+        return;
+    }
+
+    gfx::hud.console.info("Hello, %s!", argv[1]);
 }
 
 void Hud::update(int ms)
 {
+    static bool latch = false;
+
+    if (io::keys['`'] && !latch)
+    {
+        if (_showConsole)
+        {
+            console.capture();
+        }
+        else
+        {
+            _showConsole = true;
+        }
+        latch = true;
+    }
+    else if (!io::keys['`'] && latch)
+    {
+        latch = false;
+    }
+
     console.update(ms);
 }
 

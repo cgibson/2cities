@@ -1,8 +1,9 @@
 #ifndef _HUD_H_
-#define _HUH_H_
+#define _HUD_H_
 
 #include <GL/glut.h>
 #include "../system/global.h"
+#include "../system/io.h"
 #include "console.h"
 
 class Hud {
@@ -18,6 +19,9 @@ public:
     // shows or hides the console
     bool showConsole() const { return _showConsole; }
     void showConsole(bool show) { _showConsole = show; }
+
+    // example console command
+    static void hello(int argc, char *argv[]);
 
 private:
     bool _showConsole;

@@ -18,7 +18,7 @@ LIB_DIR = lib/linux
 LIB_OBJS = ${LIB_DIR}/libBulletDynamics.a ${LIB_DIR}/libBulletCollision.a ${LIB_DIR}/libLinearMath.a ${LIB_DIR}/libfreetype.a ${LIB_DIR}/libOGLFT.a
 
 # compiler (NOT LINKER!) flags, such as the optimizer, include paths, defines, etc.
-CCFLAGS = -O2 ${INCLUDE_DIRS} ${DEFINES}
+CCFLAGS = -g ${INCLUDE_DIRS} ${DEFINES}
 
 # linker (NOT COMPILER!) flags, such as which libraries to link with
 LDFLAGS = -lGL -lglut -lm -lfreetype
@@ -27,9 +27,16 @@ LDFLAGS = -lGL -lglut -lm -lfreetype
 OBJS = global.o io.o PhysObj.o CarnageState.o InGameState.o StateManager.o graphics.o renderer.o hud.o console.o Vector.o main.o
 
 # main build rule (also deletes object files... we prolly shouldn't do that...)
-build: ${OBJS}
+build: svnrev ${OBJS}
 	${CC} ${LDFLAGS} ${OBJS} ${LIB_OBJS} -o ${OUT}
 	rm *.o
+
+# fancy build rule to generate a .h file with the current svn rev number in it
+svnrev:
+	echo "#ifndef _SVNREV_H_" > svnrev.h
+	echo "#define _SVNREV_H_" >> svnrev.h
+	echo "#define SVN_REV \"`svnversion`\"" >> svnrev.h
+	echo "#endif" >> svnrev.h
 
 main.o: src/system/main.cpp
 	${CC} -c ${CCFLAGS} src/system/main.cpp
@@ -68,4 +75,4 @@ console.o: src/graphics/console.cpp
 	${CC} -c ${CCFLAGS} src/graphics/console.cpp
 
 clean:
-	rm *.o ${OUT}
+	rm *.o svnrev.h ${OUT}

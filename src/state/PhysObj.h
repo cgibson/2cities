@@ -27,17 +27,19 @@ class PhysObj
         PhysObj();
         PhysObj(Vector newPos, Vector newVel, Vector newRot, double newRotMag, float newMass);
 
-        Vector getPosition()    {return position;}
-        Vector getVelocity()    {return velocity;}
-        Vector getRotation()    {return rotation;}
-        double getRotationMag() {return rotationMag;}
-        float getMass()         {return mass;}
+	// Get Methods
+        Vector getPosition()    { return position; }
+        Vector getVelocity()    { return velocity; }
+        Vector getRotation()    { return rotation; }
+        double getRotationMag() { return rotationMag; }
+        float  getMass()        { return mass; }
 
-        void setPosition(Vector newPos){position = newPos;}
-        void setVelocity(Vector newVel){velocity = newVel;}
-        void setRotation(Vector newRot){rotation = newRot;}
-        void setRotationMag(double newRotMag){rotationMag = newRotMag;}
-        void setMass(float newMass){mass = newMass;}
+        // Set Methods
+        void setPosition(Vector newPos)      { position = newPos; }
+        void setVelocity(Vector newVel)      { velocity = newVel; }
+        void setRotation(Vector newRot)      { rotation = newRot; }
+        void setRotationMag(double newRotMag){ rotationMag = newRotMag; }
+        void setMass(float newMass)          { mass = newMass; }
 
         //just to force abstraction for now. Delete this later.
         virtual void doSomething(){};
@@ -49,36 +51,48 @@ class PhysObj
  */
 class AmmoUnit: public PhysObj
 {
-    //add any additional fields/functions here
-};
+    protected:
+        float size;
 
+    public:
+        // Constructs off of PhysObj
+        AmmoUnit();
+
+        float getSize() { return size; }
+        void  setSize(float newSize) { size = newSize; }
+
+        virtual void doSomething() {};
+};
 
 /**
  * DummyAmmoUnit class
  */
 class DummyAmmoUnit: public AmmoUnit
 {
-    //add any extra fields or functions here
     public:
-        DummyAmmoUnit();
-        void doSomething();
-};
+        DummyAmmoUnit() : AmmoUnit() {};
 
+        void doSomething() {};
+};
 
 /**
  * BuildingUnit class
  */
 class BuildingUnit: public PhysObj
 {
-    //add any extra fields or functions here
     protected:
         float size;
 
     public:
-        BuildingUnit(){ size = 1; };
-        virtual void doSomething(){};
-};
+        // Constructs off of PhysObj
+        BuildingUnit();
+        BuildingUnit(Vector newPos, Vector newRot, double newRotMag, float newMass, float newSize);
 
+        float getSize() { return size; }
+        void  setSize(float newSize) { size = newSize; }
+
+        virtual void doSomething() {};
+};
 
 /**
  * DummyBuildingUnit class
@@ -86,9 +100,11 @@ class BuildingUnit: public PhysObj
 class DummyBuildingUnit: public BuildingUnit
 {
     public:
-        DummyBuildingUnit();
-        DummyBuildingUnit(Vector newPos, Vector newRot, double newRotMag, float newMass, float newSize);
-        void doSomething(){};
+        DummyBuildingUnit() : BuildingUnit() {};
+        DummyBuildingUnit(Vector newPos, Vector newRot, double newRotMag, float newMass, float newSize) 
+           : BuildingUnit(newPos, newRot, newRotMag, newMass, newSize) {};
+
+        void doSomething() {};
 };
 
 

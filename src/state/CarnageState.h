@@ -5,9 +5,12 @@
 #ifndef _CARNAGE_STATE_H_
 #define _CARNAGE_STATE_H_
 
-#include "InGameState.h"
-#include "PhysObj.h"
+#include <stdlib.h>
 #include <vector>
+
+#include "InGameState.h"
+#include "E_State.h"
+#include "PhysObj.h"
 
 using namespace std;
 
@@ -27,12 +30,14 @@ class CarnageState: public InGameState
         CarnageState();
         virtual ~CarnageState();
 
-        virtual void initialize();
-//        virtual void update(int val);
+        void initialize();
+//      void update(long milli_time);
+//      void updateInput(long milli_time);
+
+        virtual enum e_state stateType() { return CARNAGE_S; }
 
     protected:
-        virtual void mouse_click(int button, int state, int x, int y);
-        virtual void mouse_motion(int x, int y);
+
 };
 
 #endif

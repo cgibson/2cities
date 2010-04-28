@@ -3,6 +3,8 @@
 
 #include <stdlib.h>
 
+#include "E_State.h"
+
 class InGameState
 {
     public:
@@ -13,9 +15,9 @@ class InGameState
        virtual void update(long milli_time);
        virtual void updateInput(long milli_time);
 
+       virtual enum e_state stateType() { return GLOBAL_S; }
+
     protected:
-       virtual void mouse_click(int button, int state, int x, int y);
-       virtual void mouse_motion(int x, int y);
 
 };
 

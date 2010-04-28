@@ -17,20 +17,16 @@ PhysObj::PhysObj(Vector newPos, Vector newVel, Vector newRot, double newRotMag, 
    setMass(newMass);
 }
 
-DummyBuildingUnit::DummyBuildingUnit() {
-   setPosition(Vector(0,0,0));
-   setVelocity(Vector(0,0,0));
-   setRotation(Vector(0,0,0));
-   setRotationMag(0);
-   setMass(0);
+AmmoUnit::AmmoUnit() : PhysObj() {
    size = 1.0f;
 }
 
-DummyBuildingUnit::DummyBuildingUnit(Vector newPos, Vector newRot, double newRotMag, float newMass, float newSize) {
-   setPosition(newPos);
-   setVelocity(Vector(0,0,0));
-   setRotation(newRot);
-   setRotationMag(newRotMag);
-   setMass(newMass);
+BuildingUnit::BuildingUnit() : PhysObj() {
+   size = 1.0f;
+}
+
+BuildingUnit::BuildingUnit(Vector newPos, Vector newRot, double newRotMag, float newMass, float newSize)
+ : PhysObj(newPos, Vector(0,0,0), newRot, newRotMag, newMass) {
+
    size = newSize;
 }

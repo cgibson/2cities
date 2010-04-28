@@ -24,12 +24,10 @@ void InGameState::initialize() {
    glutSpecialUpFunc(&io::special_key_up);
 
    // Mouse Callbacks
-/*
-   glutMouseFunc(&InGameState::mouse_click);
-   glutMotionFunc(&InGameState::mouse_motion);
-   glutPassiveMotionFunc(&InGameState::mouse_motion);
-   glutSetCursor(GLUT_CURSOR_NONE);
-*/
+   glutMouseFunc(&io::mouse_click);
+   glutMotionFunc(&io::mouse_motion);
+   glutPassiveMotionFunc(&io::mouse_motion);
+   //glutSetCursor(GLUT_CURSOR_NONE);
 }
 
 void InGameState::update(long milli_time) {
@@ -37,27 +35,24 @@ void InGameState::update(long milli_time) {
 }
 
 void InGameState::updateInput(long milli_time) {
+   // General Keyboard Layout
    if(keys['w'])
-      global::camera.eye = Vector(global::camera.eye.x()+1,global::camera.eye.y(),global::camera.eye.z());
+      global::camera.eye += Vector( 1, 0, 0);
 
    if(keys['s'])
-      global::camera.eye = Vector(global::camera.eye.x()-1,global::camera.eye.y(),global::camera.eye.z());
+      global::camera.eye += Vector(-1, 0, 0);
 
    if(keys['d'])
-      global::camera.eye = Vector(global::camera.eye.x(),global::camera.eye.y(),global::camera.eye.z()+1);
+      global::camera.eye += Vector( 0, 0, 1);
 
    if(keys['a'])
-      global::camera.eye = Vector(global::camera.eye.x(),global::camera.eye.y(),global::camera.eye.z()-1);
+      global::camera.eye += Vector( 0, 0,-1);
 
    if(keys[27])
       exit(0);
-}
 
-void InGameState::mouse_click(int button, int state, int x, int y) {
+   // TODO Mouse Control Items
 
-}
-
-void InGameState::mouse_motion(int x, int y) {
 
 }
 

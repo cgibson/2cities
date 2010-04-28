@@ -21,7 +21,7 @@ LIB_OBJS = ${LIB_DIR}/libBulletDynamics.a ${LIB_DIR}/libBulletCollision.a ${LIB_
 CCFLAGS = -g ${INCLUDE_DIRS} ${DEFINES}
 
 # linker (NOT COMPILER!) flags, such as which libraries to link with
-LDFLAGS = -lGL -lglut -lm -lfreetype
+LDFLAGS = -lGL -lGLU -lglut -lm -lfreetype
 
 # list of all object files
 OBJS = global.o io.o PhysObj.o CarnageState.o InGameState.o StateManager.o graphics.o renderer.o hud.o console.o Vector.o main.o

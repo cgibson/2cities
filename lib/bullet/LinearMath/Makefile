@@ -35,22 +35,19 @@ CMAKE_COMMAND = /usr/bin/cmake
 # The command to remove a file.
 RM = /usr/bin/cmake -E remove -f
 
-# The program to use to edit the cache.
-CMAKE_EDIT_COMMAND = /usr/bin/cmake-gui
-
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/cgibson/Downloads/bullet-2.76
+CMAKE_SOURCE_DIR = /home/cgibson/Projects/2cities/lib/bullet
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/cgibson/Downloads/bullet-2.76
+CMAKE_BINARY_DIR = /home/cgibson/Projects/2cities/lib/bullet
 
 #=============================================================================
 # Targets provided globally by CMake.
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/usr/bin/cmake-gui -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running interactive CMake command-line interface..."
+	/usr/bin/cmake -i .
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -69,14 +66,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/cgibson/Downloads/bullet-2.76 && $(CMAKE_COMMAND) -E cmake_progress_start /home/cgibson/Downloads/bullet-2.76/CMakeFiles /home/cgibson/Downloads/bullet-2.76/src/LinearMath/CMakeFiles/progress.make
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f CMakeFiles/Makefile2 src/LinearMath/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/cgibson/Downloads/bullet-2.76/CMakeFiles 0
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(CMAKE_COMMAND) -E cmake_progress_start /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles /home/cgibson/Projects/2cities/lib/bullet/LinearMath/CMakeFiles/progress.make
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f CMakeFiles/Makefile2 LinearMath/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f CMakeFiles/Makefile2 src/LinearMath/clean
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f CMakeFiles/Makefile2 LinearMath/clean
 .PHONY : clean
 
 # The main clean target
@@ -85,106 +82,106 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f CMakeFiles/Makefile2 src/LinearMath/preinstall
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f CMakeFiles/Makefile2 LinearMath/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f CMakeFiles/Makefile2 src/LinearMath/preinstall
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f CMakeFiles/Makefile2 LinearMath/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
-src/LinearMath/CMakeFiles/LinearMath.dir/rule:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f CMakeFiles/Makefile2 src/LinearMath/CMakeFiles/LinearMath.dir/rule
-.PHONY : src/LinearMath/CMakeFiles/LinearMath.dir/rule
+LinearMath/CMakeFiles/LinearMath.dir/rule:
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f CMakeFiles/Makefile2 LinearMath/CMakeFiles/LinearMath.dir/rule
+.PHONY : LinearMath/CMakeFiles/LinearMath.dir/rule
 
 # Convenience name for target.
-LinearMath: src/LinearMath/CMakeFiles/LinearMath.dir/rule
+LinearMath: LinearMath/CMakeFiles/LinearMath.dir/rule
 .PHONY : LinearMath
 
 # fast build rule for target.
 LinearMath/fast:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/LinearMath/CMakeFiles/LinearMath.dir/build.make src/LinearMath/CMakeFiles/LinearMath.dir/build
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/build
 .PHONY : LinearMath/fast
 
 # target to build an object file
 btAlignedAllocator.o:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/LinearMath/CMakeFiles/LinearMath.dir/build.make src/LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o
 .PHONY : btAlignedAllocator.o
 
 # target to preprocess a source file
 btAlignedAllocator.i:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/LinearMath/CMakeFiles/LinearMath.dir/build.make src/LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.i
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.i
 .PHONY : btAlignedAllocator.i
 
 # target to generate assembly for a file
 btAlignedAllocator.s:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/LinearMath/CMakeFiles/LinearMath.dir/build.make src/LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.s
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.s
 .PHONY : btAlignedAllocator.s
 
 # target to build an object file
 btConvexHull.o:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/LinearMath/CMakeFiles/LinearMath.dir/build.make src/LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o
 .PHONY : btConvexHull.o
 
 # target to preprocess a source file
 btConvexHull.i:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/LinearMath/CMakeFiles/LinearMath.dir/build.make src/LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.i
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.i
 .PHONY : btConvexHull.i
 
 # target to generate assembly for a file
 btConvexHull.s:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/LinearMath/CMakeFiles/LinearMath.dir/build.make src/LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.s
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.s
 .PHONY : btConvexHull.s
 
 # target to build an object file
 btGeometryUtil.o:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/LinearMath/CMakeFiles/LinearMath.dir/build.make src/LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o
 .PHONY : btGeometryUtil.o
 
 # target to preprocess a source file
 btGeometryUtil.i:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/LinearMath/CMakeFiles/LinearMath.dir/build.make src/LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.i
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.i
 .PHONY : btGeometryUtil.i
 
 # target to generate assembly for a file
 btGeometryUtil.s:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/LinearMath/CMakeFiles/LinearMath.dir/build.make src/LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.s
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.s
 .PHONY : btGeometryUtil.s
 
 # target to build an object file
 btQuickprof.o:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/LinearMath/CMakeFiles/LinearMath.dir/build.make src/LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o
 .PHONY : btQuickprof.o
 
 # target to preprocess a source file
 btQuickprof.i:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/LinearMath/CMakeFiles/LinearMath.dir/build.make src/LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.i
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.i
 .PHONY : btQuickprof.i
 
 # target to generate assembly for a file
 btQuickprof.s:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/LinearMath/CMakeFiles/LinearMath.dir/build.make src/LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.s
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.s
 .PHONY : btQuickprof.s
 
 # target to build an object file
 btSerializer.o:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/LinearMath/CMakeFiles/LinearMath.dir/build.make src/LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o
 .PHONY : btSerializer.o
 
 # target to preprocess a source file
 btSerializer.i:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/LinearMath/CMakeFiles/LinearMath.dir/build.make src/LinearMath/CMakeFiles/LinearMath.dir/btSerializer.i
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/btSerializer.i
 .PHONY : btSerializer.i
 
 # target to generate assembly for a file
 btSerializer.s:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/LinearMath/CMakeFiles/LinearMath.dir/build.make src/LinearMath/CMakeFiles/LinearMath.dir/btSerializer.s
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/btSerializer.s
 .PHONY : btSerializer.s
 
 # Help Target
@@ -222,6 +219,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

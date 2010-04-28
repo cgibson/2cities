@@ -31,191 +31,188 @@ CMAKE_COMMAND = /usr/bin/cmake
 # The command to remove a file.
 RM = /usr/bin/cmake -E remove -f
 
-# The program to use to edit the cache.
-CMAKE_EDIT_COMMAND = /usr/bin/cmake-gui
-
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/cgibson/Downloads/bullet-2.76
+CMAKE_SOURCE_DIR = /home/cgibson/Projects/2cities/lib/bullet
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/cgibson/Downloads/bullet-2.76
+CMAKE_BINARY_DIR = /home/cgibson/Projects/2cities/lib/bullet
 
 # Include any dependencies generated for this target.
-include src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/depend.make
+include BulletSoftBody/CMakeFiles/BulletSoftBody.dir/depend.make
 
 # Include the progress variables for this target.
-include src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/progress.make
+include BulletSoftBody/CMakeFiles/BulletSoftBody.dir/progress.make
 
 # Include the compile flags for this target's objects.
-include src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/flags.make
+include BulletSoftBody/CMakeFiles/BulletSoftBody.dir/flags.make
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/flags.make
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o: src/BulletSoftBody/btSoftBody.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_1)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletSoftBody.dir/btSoftBody.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/btSoftBody.cpp
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/flags.make
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o: BulletSoftBody/btSoftBody.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_1)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletSoftBody.dir/btSoftBody.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/btSoftBody.cpp
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.i: cmake_force
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletSoftBody.dir/btSoftBody.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/btSoftBody.cpp > CMakeFiles/BulletSoftBody.dir/btSoftBody.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/btSoftBody.cpp > CMakeFiles/BulletSoftBody.dir/btSoftBody.i
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.s: cmake_force
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletSoftBody.dir/btSoftBody.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/btSoftBody.cpp -o CMakeFiles/BulletSoftBody.dir/btSoftBody.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/btSoftBody.cpp -o CMakeFiles/BulletSoftBody.dir/btSoftBody.s
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o.requires:
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o.requires
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o.requires:
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o.requires
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o.provides: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o.requires
-	$(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o.provides.build
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o.provides
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o.provides: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o.requires
+	$(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o.provides.build
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o.provides
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o.provides.build: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o.provides.build
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o.provides.build: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o.provides.build
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/flags.make
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o: src/BulletSoftBody/btSoftBodyConcaveCollisionAlgorithm.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_2)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/btSoftBodyConcaveCollisionAlgorithm.cpp
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/flags.make
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o: BulletSoftBody/btSoftBodyConcaveCollisionAlgorithm.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_2)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/btSoftBodyConcaveCollisionAlgorithm.cpp
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.i: cmake_force
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/btSoftBodyConcaveCollisionAlgorithm.cpp > CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/btSoftBodyConcaveCollisionAlgorithm.cpp > CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.i
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.s: cmake_force
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/btSoftBodyConcaveCollisionAlgorithm.cpp -o CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/btSoftBodyConcaveCollisionAlgorithm.cpp -o CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.s
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o.requires:
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o.requires
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o.requires:
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o.requires
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o.provides: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o.requires
-	$(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o.provides.build
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o.provides
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o.provides: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o.requires
+	$(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o.provides.build
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o.provides
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o.provides.build: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o.provides.build
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o.provides.build: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o.provides.build
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/flags.make
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o: src/BulletSoftBody/btSoftBodyHelpers.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_3)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/btSoftBodyHelpers.cpp
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/flags.make
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o: BulletSoftBody/btSoftBodyHelpers.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_3)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/btSoftBodyHelpers.cpp
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.i: cmake_force
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/btSoftBodyHelpers.cpp > CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/btSoftBodyHelpers.cpp > CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.i
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.s: cmake_force
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/btSoftBodyHelpers.cpp -o CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/btSoftBodyHelpers.cpp -o CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.s
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o.requires:
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o.requires
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o.requires:
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o.requires
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o.provides: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o.requires
-	$(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o.provides.build
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o.provides
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o.provides: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o.requires
+	$(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o.provides.build
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o.provides
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o.provides.build: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o.provides.build
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o.provides.build: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o.provides.build
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/flags.make
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o: src/BulletSoftBody/btSoftBodyRigidBodyCollisionConfiguration.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_4)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/btSoftBodyRigidBodyCollisionConfiguration.cpp
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/flags.make
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o: BulletSoftBody/btSoftBodyRigidBodyCollisionConfiguration.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_4)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/btSoftBodyRigidBodyCollisionConfiguration.cpp
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.i: cmake_force
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/btSoftBodyRigidBodyCollisionConfiguration.cpp > CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/btSoftBodyRigidBodyCollisionConfiguration.cpp > CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.i
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.s: cmake_force
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/btSoftBodyRigidBodyCollisionConfiguration.cpp -o CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/btSoftBodyRigidBodyCollisionConfiguration.cpp -o CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.s
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o.requires:
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o.requires
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o.requires:
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o.requires
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o.provides: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o.requires
-	$(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o.provides.build
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o.provides
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o.provides: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o.requires
+	$(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o.provides.build
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o.provides
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o.provides.build: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o.provides.build
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o.provides.build: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o.provides.build
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/flags.make
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o: src/BulletSoftBody/btSoftRigidCollisionAlgorithm.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_5)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/btSoftRigidCollisionAlgorithm.cpp
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/flags.make
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o: BulletSoftBody/btSoftRigidCollisionAlgorithm.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_5)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/btSoftRigidCollisionAlgorithm.cpp
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.i: cmake_force
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/btSoftRigidCollisionAlgorithm.cpp > CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/btSoftRigidCollisionAlgorithm.cpp > CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.i
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.s: cmake_force
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/btSoftRigidCollisionAlgorithm.cpp -o CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/btSoftRigidCollisionAlgorithm.cpp -o CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.s
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o.requires:
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o.requires
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o.requires:
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o.requires
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o.provides: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o.requires
-	$(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o.provides.build
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o.provides
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o.provides: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o.requires
+	$(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o.provides.build
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o.provides
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o.provides.build: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o.provides.build
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o.provides.build: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o.provides.build
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/flags.make
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o: src/BulletSoftBody/btSoftRigidDynamicsWorld.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_6)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/btSoftRigidDynamicsWorld.cpp
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/flags.make
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o: BulletSoftBody/btSoftRigidDynamicsWorld.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_6)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/btSoftRigidDynamicsWorld.cpp
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.i: cmake_force
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/btSoftRigidDynamicsWorld.cpp > CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/btSoftRigidDynamicsWorld.cpp > CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.i
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.s: cmake_force
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/btSoftRigidDynamicsWorld.cpp -o CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/btSoftRigidDynamicsWorld.cpp -o CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.s
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o.requires:
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o.requires
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o.requires:
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o.requires
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o.provides: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o.requires
-	$(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o.provides.build
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o.provides
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o.provides: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o.requires
+	$(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o.provides.build
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o.provides
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o.provides.build: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o.provides.build
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o.provides.build: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o.provides.build
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/flags.make
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o: src/BulletSoftBody/btSoftSoftCollisionAlgorithm.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_7)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/btSoftSoftCollisionAlgorithm.cpp
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/flags.make
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o: BulletSoftBody/btSoftSoftCollisionAlgorithm.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_7)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/btSoftSoftCollisionAlgorithm.cpp
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.i: cmake_force
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/btSoftSoftCollisionAlgorithm.cpp > CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/btSoftSoftCollisionAlgorithm.cpp > CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.i
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.s: cmake_force
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/btSoftSoftCollisionAlgorithm.cpp -o CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/btSoftSoftCollisionAlgorithm.cpp -o CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.s
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o.requires:
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o.requires
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o.requires:
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o.requires
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o.provides: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o.requires
-	$(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o.provides.build
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o.provides
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o.provides: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o.requires
+	$(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o.provides.build
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o.provides
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o.provides.build: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o.provides.build
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o.provides.build: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o.provides.build
 
 # Object files for target BulletSoftBody
 BulletSoftBody_OBJECTS = \
@@ -230,37 +227,37 @@ BulletSoftBody_OBJECTS = \
 # External object files for target BulletSoftBody
 BulletSoftBody_EXTERNAL_OBJECTS =
 
-src/BulletSoftBody/libBulletSoftBody.a: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o
-src/BulletSoftBody/libBulletSoftBody.a: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o
-src/BulletSoftBody/libBulletSoftBody.a: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o
-src/BulletSoftBody/libBulletSoftBody.a: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o
-src/BulletSoftBody/libBulletSoftBody.a: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o
-src/BulletSoftBody/libBulletSoftBody.a: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o
-src/BulletSoftBody/libBulletSoftBody.a: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o
-src/BulletSoftBody/libBulletSoftBody.a: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make
-src/BulletSoftBody/libBulletSoftBody.a: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/link.txt
+BulletSoftBody/libBulletSoftBody.a: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o
+BulletSoftBody/libBulletSoftBody.a: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o
+BulletSoftBody/libBulletSoftBody.a: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o
+BulletSoftBody/libBulletSoftBody.a: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o
+BulletSoftBody/libBulletSoftBody.a: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o
+BulletSoftBody/libBulletSoftBody.a: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o
+BulletSoftBody/libBulletSoftBody.a: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o
+BulletSoftBody/libBulletSoftBody.a: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make
+BulletSoftBody/libBulletSoftBody.a: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX static library libBulletSoftBody.a"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && $(CMAKE_COMMAND) -P CMakeFiles/BulletSoftBody.dir/cmake_clean_target.cmake
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/BulletSoftBody.dir/link.txt --verbose=$(VERBOSE)
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && $(CMAKE_COMMAND) -P CMakeFiles/BulletSoftBody.dir/cmake_clean_target.cmake
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/BulletSoftBody.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build: src/BulletSoftBody/libBulletSoftBody.a
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build: BulletSoftBody/libBulletSoftBody.a
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/requires: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o.requires
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/requires: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o.requires
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/requires: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o.requires
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/requires: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o.requires
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/requires: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o.requires
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/requires: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o.requires
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/requires: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o.requires
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/requires
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/requires: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o.requires
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/requires: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o.requires
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/requires: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o.requires
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/requires: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o.requires
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/requires: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o.requires
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/requires: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o.requires
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/requires: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o.requires
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/requires
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/clean:
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody && $(CMAKE_COMMAND) -P CMakeFiles/BulletSoftBody.dir/cmake_clean.cmake
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/clean
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/clean:
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody && $(CMAKE_COMMAND) -P CMakeFiles/BulletSoftBody.dir/cmake_clean.cmake
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/clean
 
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/depend:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/cgibson/Downloads/bullet-2.76 /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody /home/cgibson/Downloads/bullet-2.76 /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/DependInfo.cmake --color=$(COLOR)
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/depend
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/depend:
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/cgibson/Projects/2cities/lib/bullet /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody /home/cgibson/Projects/2cities/lib/bullet /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/DependInfo.cmake --color=$(COLOR)
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/depend
 

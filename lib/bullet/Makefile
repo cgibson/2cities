@@ -35,22 +35,19 @@ CMAKE_COMMAND = /usr/bin/cmake
 # The command to remove a file.
 RM = /usr/bin/cmake -E remove -f
 
-# The program to use to edit the cache.
-CMAKE_EDIT_COMMAND = /usr/bin/cmake-gui
-
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/cgibson/Downloads/bullet-2.76
+CMAKE_SOURCE_DIR = /home/cgibson/Projects/2cities/lib/bullet
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/cgibson/Downloads/bullet-2.76
+CMAKE_BINARY_DIR = /home/cgibson/Projects/2cities/lib/bullet
 
 #=============================================================================
 # Targets provided globally by CMake.
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/usr/bin/cmake-gui -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running interactive CMake command-line interface..."
+	/usr/bin/cmake -i .
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -69,14 +66,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/cgibson/Downloads/bullet-2.76 && $(CMAKE_COMMAND) -E cmake_progress_start /home/cgibson/Downloads/bullet-2.76/CMakeFiles /home/cgibson/Downloads/bullet-2.76/src/CMakeFiles/progress.make
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f CMakeFiles/Makefile2 src/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/cgibson/Downloads/bullet-2.76/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles/progress.make
+	$(MAKE) -f CMakeFiles/Makefile2 all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f CMakeFiles/Makefile2 src/clean
+	$(MAKE) -f CMakeFiles/Makefile2 clean
 .PHONY : clean
 
 # The main clean target
@@ -85,18 +82,83 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
+	$(MAKE) -f CMakeFiles/Makefile2 preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
+	$(MAKE) -f CMakeFiles/Makefile2 preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	$(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
+
+#=============================================================================
+# Target rules for targets named BulletMultiThreaded
+
+# Build rule for target.
+BulletMultiThreaded: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 BulletMultiThreaded
+.PHONY : BulletMultiThreaded
+
+# fast build rule for target.
+BulletMultiThreaded/fast:
+	$(MAKE) -f BulletMultiThreaded/CMakeFiles/BulletMultiThreaded.dir/build.make BulletMultiThreaded/CMakeFiles/BulletMultiThreaded.dir/build
+.PHONY : BulletMultiThreaded/fast
+
+#=============================================================================
+# Target rules for targets named BulletSoftBody
+
+# Build rule for target.
+BulletSoftBody: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 BulletSoftBody
+.PHONY : BulletSoftBody
+
+# fast build rule for target.
+BulletSoftBody/fast:
+	$(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build
+.PHONY : BulletSoftBody/fast
+
+#=============================================================================
+# Target rules for targets named BulletCollision
+
+# Build rule for target.
+BulletCollision: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 BulletCollision
+.PHONY : BulletCollision
+
+# fast build rule for target.
+BulletCollision/fast:
+	$(MAKE) -f BulletCollision/CMakeFiles/BulletCollision.dir/build.make BulletCollision/CMakeFiles/BulletCollision.dir/build
+.PHONY : BulletCollision/fast
+
+#=============================================================================
+# Target rules for targets named BulletDynamics
+
+# Build rule for target.
+BulletDynamics: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 BulletDynamics
+.PHONY : BulletDynamics
+
+# fast build rule for target.
+BulletDynamics/fast:
+	$(MAKE) -f BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make BulletDynamics/CMakeFiles/BulletDynamics.dir/build
+.PHONY : BulletDynamics/fast
+
+#=============================================================================
+# Target rules for targets named LinearMath
+
+# Build rule for target.
+LinearMath: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 LinearMath
+.PHONY : LinearMath
+
+# fast build rule for target.
+LinearMath/fast:
+	$(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/build
+.PHONY : LinearMath/fast
 
 # Help Target
 help:
@@ -106,6 +168,11 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... BulletMultiThreaded"
+	@echo "... BulletSoftBody"
+	@echo "... BulletCollision"
+	@echo "... BulletDynamics"
+	@echo "... LinearMath"
 .PHONY : help
 
 
@@ -117,6 +184,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	$(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

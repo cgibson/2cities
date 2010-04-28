@@ -8,7 +8,7 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o"
   "libBulletSoftBody.pdb"
   "libBulletSoftBody.a"
-  "libBulletSoftBody.so.2.76"
+  "libBulletSoftBody.so."
   "libBulletSoftBody.so"
 )
 

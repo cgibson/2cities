@@ -21,6 +21,12 @@ void updateLoop()
 
     // update all modules
     gfx::update(elapsed);
+    global::stateManager.currentState->update(elapsed);
+}
+
+void initState()
+{
+  global::stateManager.changeCurrentState(CARNAGE_S);
 }
 
 bool initialize()
@@ -36,6 +42,8 @@ bool initialize()
   
   // initialization of all other modules
   gfx::init();
+  
+  initState();
 
   glutIdleFunc(updateLoop);
   

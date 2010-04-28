@@ -21,7 +21,7 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o"
   "libBulletDynamics.pdb"
   "libBulletDynamics.a"
-  "libBulletDynamics.so.2.76"
+  "libBulletDynamics.so."
   "libBulletDynamics.so"
 )
 

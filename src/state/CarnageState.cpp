@@ -3,12 +3,13 @@
 
 #include "CarnageState.h"
 #include "PhysObj.h"
+#include "../system/io.h"
 
 #include "../system/global.h"
 #include "../helper/camera.h"
 #include "../helper/Vector.h"
 
-using namespace global;
+using namespace io;
 
 CarnageState::CarnageState() {
    initialize();
@@ -18,10 +19,10 @@ CarnageState::~CarnageState() {}
 
 void CarnageState::initialize() {
    // Keyboard Callbacks
-   glutKeyboardFunc(&global::key_down);
-   glutKeyboardUpFunc(&global::key_up);
-   glutSpecialFunc(&global::special_key_down);
-   glutSpecialUpFunc(&global::special_key_up);
+   glutKeyboardFunc(&io::key_down);
+   glutKeyboardUpFunc(&io::key_up);
+   glutSpecialFunc(&io::special_key_down);
+   glutSpecialUpFunc(&io::special_key_up);
 
    // Mouse Callbacks
 /*

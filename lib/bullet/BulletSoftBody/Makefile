@@ -35,22 +35,19 @@ CMAKE_COMMAND = /usr/bin/cmake
 # The command to remove a file.
 RM = /usr/bin/cmake -E remove -f
 
-# The program to use to edit the cache.
-CMAKE_EDIT_COMMAND = /usr/bin/cmake-gui
-
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/cgibson/Downloads/bullet-2.76
+CMAKE_SOURCE_DIR = /home/cgibson/Projects/2cities/lib/bullet
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/cgibson/Downloads/bullet-2.76
+CMAKE_BINARY_DIR = /home/cgibson/Projects/2cities/lib/bullet
 
 #=============================================================================
 # Targets provided globally by CMake.
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/usr/bin/cmake-gui -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running interactive CMake command-line interface..."
+	/usr/bin/cmake -i .
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -69,14 +66,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/cgibson/Downloads/bullet-2.76 && $(CMAKE_COMMAND) -E cmake_progress_start /home/cgibson/Downloads/bullet-2.76/CMakeFiles /home/cgibson/Downloads/bullet-2.76/src/BulletSoftBody/CMakeFiles/progress.make
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f CMakeFiles/Makefile2 src/BulletSoftBody/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/cgibson/Downloads/bullet-2.76/CMakeFiles 0
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(CMAKE_COMMAND) -E cmake_progress_start /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles /home/cgibson/Projects/2cities/lib/bullet/BulletSoftBody/CMakeFiles/progress.make
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f CMakeFiles/Makefile2 BulletSoftBody/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f CMakeFiles/Makefile2 src/BulletSoftBody/clean
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f CMakeFiles/Makefile2 BulletSoftBody/clean
 .PHONY : clean
 
 # The main clean target
@@ -85,136 +82,136 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f CMakeFiles/Makefile2 src/BulletSoftBody/preinstall
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f CMakeFiles/Makefile2 BulletSoftBody/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f CMakeFiles/Makefile2 src/BulletSoftBody/preinstall
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f CMakeFiles/Makefile2 BulletSoftBody/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
-src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/rule:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f CMakeFiles/Makefile2 src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/rule
-.PHONY : src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/rule
+BulletSoftBody/CMakeFiles/BulletSoftBody.dir/rule:
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f CMakeFiles/Makefile2 BulletSoftBody/CMakeFiles/BulletSoftBody.dir/rule
+.PHONY : BulletSoftBody/CMakeFiles/BulletSoftBody.dir/rule
 
 # Convenience name for target.
-BulletSoftBody: src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/rule
+BulletSoftBody: BulletSoftBody/CMakeFiles/BulletSoftBody.dir/rule
 .PHONY : BulletSoftBody
 
 # fast build rule for target.
 BulletSoftBody/fast:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build
 .PHONY : BulletSoftBody/fast
 
 # target to build an object file
 btSoftBody.o:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.o
 .PHONY : btSoftBody.o
 
 # target to preprocess a source file
 btSoftBody.i:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.i
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.i
 .PHONY : btSoftBody.i
 
 # target to generate assembly for a file
 btSoftBody.s:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.s
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBody.s
 .PHONY : btSoftBody.s
 
 # target to build an object file
 btSoftBodyConcaveCollisionAlgorithm.o:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.o
 .PHONY : btSoftBodyConcaveCollisionAlgorithm.o
 
 # target to preprocess a source file
 btSoftBodyConcaveCollisionAlgorithm.i:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.i
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.i
 .PHONY : btSoftBodyConcaveCollisionAlgorithm.i
 
 # target to generate assembly for a file
 btSoftBodyConcaveCollisionAlgorithm.s:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.s
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyConcaveCollisionAlgorithm.s
 .PHONY : btSoftBodyConcaveCollisionAlgorithm.s
 
 # target to build an object file
 btSoftBodyHelpers.o:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.o
 .PHONY : btSoftBodyHelpers.o
 
 # target to preprocess a source file
 btSoftBodyHelpers.i:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.i
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.i
 .PHONY : btSoftBodyHelpers.i
 
 # target to generate assembly for a file
 btSoftBodyHelpers.s:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.s
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyHelpers.s
 .PHONY : btSoftBodyHelpers.s
 
 # target to build an object file
 btSoftBodyRigidBodyCollisionConfiguration.o:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.o
 .PHONY : btSoftBodyRigidBodyCollisionConfiguration.o
 
 # target to preprocess a source file
 btSoftBodyRigidBodyCollisionConfiguration.i:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.i
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.i
 .PHONY : btSoftBodyRigidBodyCollisionConfiguration.i
 
 # target to generate assembly for a file
 btSoftBodyRigidBodyCollisionConfiguration.s:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.s
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftBodyRigidBodyCollisionConfiguration.s
 .PHONY : btSoftBodyRigidBodyCollisionConfiguration.s
 
 # target to build an object file
 btSoftRigidCollisionAlgorithm.o:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.o
 .PHONY : btSoftRigidCollisionAlgorithm.o
 
 # target to preprocess a source file
 btSoftRigidCollisionAlgorithm.i:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.i
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.i
 .PHONY : btSoftRigidCollisionAlgorithm.i
 
 # target to generate assembly for a file
 btSoftRigidCollisionAlgorithm.s:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.s
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidCollisionAlgorithm.s
 .PHONY : btSoftRigidCollisionAlgorithm.s
 
 # target to build an object file
 btSoftRigidDynamicsWorld.o:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.o
 .PHONY : btSoftRigidDynamicsWorld.o
 
 # target to preprocess a source file
 btSoftRigidDynamicsWorld.i:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.i
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.i
 .PHONY : btSoftRigidDynamicsWorld.i
 
 # target to generate assembly for a file
 btSoftRigidDynamicsWorld.s:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.s
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftRigidDynamicsWorld.s
 .PHONY : btSoftRigidDynamicsWorld.s
 
 # target to build an object file
 btSoftSoftCollisionAlgorithm.o:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.o
 .PHONY : btSoftSoftCollisionAlgorithm.o
 
 # target to preprocess a source file
 btSoftSoftCollisionAlgorithm.i:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.i
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.i
 .PHONY : btSoftSoftCollisionAlgorithm.i
 
 # target to generate assembly for a file
 btSoftSoftCollisionAlgorithm.s:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(MAKE) -f src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make src/BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.s
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(MAKE) -f BulletSoftBody/CMakeFiles/BulletSoftBody.dir/build.make BulletSoftBody/CMakeFiles/BulletSoftBody.dir/btSoftSoftCollisionAlgorithm.s
 .PHONY : btSoftSoftCollisionAlgorithm.s
 
 # Help Target
@@ -258,6 +255,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

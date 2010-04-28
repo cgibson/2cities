@@ -6,7 +6,7 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/LinearMath.dir/btSerializer.o"
   "libLinearMath.pdb"
   "libLinearMath.a"
-  "libLinearMath.so.2.76"
+  "libLinearMath.so."
   "libLinearMath.so"
 )
 

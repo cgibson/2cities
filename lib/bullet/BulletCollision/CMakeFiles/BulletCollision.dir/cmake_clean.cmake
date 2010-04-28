@@ -91,7 +91,7 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/BulletCollision.dir/NarrowPhaseCollision/btVoronoiSimplexSolver.o"
   "libBulletCollision.pdb"
   "libBulletCollision.a"
-  "libBulletCollision.so.2.76"
+  "libBulletCollision.so."
   "libBulletCollision.so"
 )
 

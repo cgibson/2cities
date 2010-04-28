@@ -31,143 +31,140 @@ CMAKE_COMMAND = /usr/bin/cmake
 # The command to remove a file.
 RM = /usr/bin/cmake -E remove -f
 
-# The program to use to edit the cache.
-CMAKE_EDIT_COMMAND = /usr/bin/cmake-gui
-
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/cgibson/Downloads/bullet-2.76
+CMAKE_SOURCE_DIR = /home/cgibson/Projects/2cities/lib/bullet
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/cgibson/Downloads/bullet-2.76
+CMAKE_BINARY_DIR = /home/cgibson/Projects/2cities/lib/bullet
 
 # Include any dependencies generated for this target.
-include src/LinearMath/CMakeFiles/LinearMath.dir/depend.make
+include LinearMath/CMakeFiles/LinearMath.dir/depend.make
 
 # Include the progress variables for this target.
-include src/LinearMath/CMakeFiles/LinearMath.dir/progress.make
+include LinearMath/CMakeFiles/LinearMath.dir/progress.make
 
 # Include the compile flags for this target's objects.
-include src/LinearMath/CMakeFiles/LinearMath.dir/flags.make
+include LinearMath/CMakeFiles/LinearMath.dir/flags.make
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o: src/LinearMath/CMakeFiles/LinearMath.dir/flags.make
-src/LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o: src/LinearMath/btAlignedAllocator.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_1)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/LinearMath && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/LinearMath.dir/btAlignedAllocator.o -c /home/cgibson/Downloads/bullet-2.76/src/LinearMath/btAlignedAllocator.cpp
+LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o: LinearMath/CMakeFiles/LinearMath.dir/flags.make
+LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o: LinearMath/btAlignedAllocator.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_1)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/LinearMath && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/LinearMath.dir/btAlignedAllocator.o -c /home/cgibson/Projects/2cities/lib/bullet/LinearMath/btAlignedAllocator.cpp
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.i: cmake_force
+LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/LinearMath.dir/btAlignedAllocator.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/LinearMath && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/LinearMath/btAlignedAllocator.cpp > CMakeFiles/LinearMath.dir/btAlignedAllocator.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/LinearMath && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/LinearMath/btAlignedAllocator.cpp > CMakeFiles/LinearMath.dir/btAlignedAllocator.i
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.s: cmake_force
+LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/LinearMath.dir/btAlignedAllocator.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/LinearMath && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/LinearMath/btAlignedAllocator.cpp -o CMakeFiles/LinearMath.dir/btAlignedAllocator.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/LinearMath && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/LinearMath/btAlignedAllocator.cpp -o CMakeFiles/LinearMath.dir/btAlignedAllocator.s
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o.requires:
-.PHONY : src/LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o.requires
+LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o.requires:
+.PHONY : LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o.requires
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o.provides: src/LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o.requires
-	$(MAKE) -f src/LinearMath/CMakeFiles/LinearMath.dir/build.make src/LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o.provides.build
-.PHONY : src/LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o.provides
+LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o.provides: LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o.requires
+	$(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o.provides.build
+.PHONY : LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o.provides
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o.provides.build: src/LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o
-.PHONY : src/LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o.provides.build
+LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o.provides.build: LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o
+.PHONY : LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o.provides.build
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o: src/LinearMath/CMakeFiles/LinearMath.dir/flags.make
-src/LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o: src/LinearMath/btConvexHull.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_2)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/LinearMath && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/LinearMath.dir/btConvexHull.o -c /home/cgibson/Downloads/bullet-2.76/src/LinearMath/btConvexHull.cpp
+LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o: LinearMath/CMakeFiles/LinearMath.dir/flags.make
+LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o: LinearMath/btConvexHull.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_2)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/LinearMath && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/LinearMath.dir/btConvexHull.o -c /home/cgibson/Projects/2cities/lib/bullet/LinearMath/btConvexHull.cpp
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.i: cmake_force
+LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/LinearMath.dir/btConvexHull.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/LinearMath && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/LinearMath/btConvexHull.cpp > CMakeFiles/LinearMath.dir/btConvexHull.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/LinearMath && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/LinearMath/btConvexHull.cpp > CMakeFiles/LinearMath.dir/btConvexHull.i
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.s: cmake_force
+LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/LinearMath.dir/btConvexHull.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/LinearMath && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/LinearMath/btConvexHull.cpp -o CMakeFiles/LinearMath.dir/btConvexHull.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/LinearMath && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/LinearMath/btConvexHull.cpp -o CMakeFiles/LinearMath.dir/btConvexHull.s
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o.requires:
-.PHONY : src/LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o.requires
+LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o.requires:
+.PHONY : LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o.requires
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o.provides: src/LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o.requires
-	$(MAKE) -f src/LinearMath/CMakeFiles/LinearMath.dir/build.make src/LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o.provides.build
-.PHONY : src/LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o.provides
+LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o.provides: LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o.requires
+	$(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o.provides.build
+.PHONY : LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o.provides
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o.provides.build: src/LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o
-.PHONY : src/LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o.provides.build
+LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o.provides.build: LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o
+.PHONY : LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o.provides.build
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o: src/LinearMath/CMakeFiles/LinearMath.dir/flags.make
-src/LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o: src/LinearMath/btGeometryUtil.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_3)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/LinearMath && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/LinearMath.dir/btGeometryUtil.o -c /home/cgibson/Downloads/bullet-2.76/src/LinearMath/btGeometryUtil.cpp
+LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o: LinearMath/CMakeFiles/LinearMath.dir/flags.make
+LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o: LinearMath/btGeometryUtil.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_3)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/LinearMath && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/LinearMath.dir/btGeometryUtil.o -c /home/cgibson/Projects/2cities/lib/bullet/LinearMath/btGeometryUtil.cpp
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.i: cmake_force
+LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/LinearMath.dir/btGeometryUtil.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/LinearMath && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/LinearMath/btGeometryUtil.cpp > CMakeFiles/LinearMath.dir/btGeometryUtil.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/LinearMath && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/LinearMath/btGeometryUtil.cpp > CMakeFiles/LinearMath.dir/btGeometryUtil.i
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.s: cmake_force
+LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/LinearMath.dir/btGeometryUtil.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/LinearMath && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/LinearMath/btGeometryUtil.cpp -o CMakeFiles/LinearMath.dir/btGeometryUtil.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/LinearMath && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/LinearMath/btGeometryUtil.cpp -o CMakeFiles/LinearMath.dir/btGeometryUtil.s
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o.requires:
-.PHONY : src/LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o.requires
+LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o.requires:
+.PHONY : LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o.requires
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o.provides: src/LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o.requires
-	$(MAKE) -f src/LinearMath/CMakeFiles/LinearMath.dir/build.make src/LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o.provides.build
-.PHONY : src/LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o.provides
+LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o.provides: LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o.requires
+	$(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o.provides.build
+.PHONY : LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o.provides
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o.provides.build: src/LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o
-.PHONY : src/LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o.provides.build
+LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o.provides.build: LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o
+.PHONY : LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o.provides.build
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o: src/LinearMath/CMakeFiles/LinearMath.dir/flags.make
-src/LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o: src/LinearMath/btQuickprof.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_4)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/LinearMath && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/LinearMath.dir/btQuickprof.o -c /home/cgibson/Downloads/bullet-2.76/src/LinearMath/btQuickprof.cpp
+LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o: LinearMath/CMakeFiles/LinearMath.dir/flags.make
+LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o: LinearMath/btQuickprof.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_4)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/LinearMath && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/LinearMath.dir/btQuickprof.o -c /home/cgibson/Projects/2cities/lib/bullet/LinearMath/btQuickprof.cpp
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.i: cmake_force
+LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/LinearMath.dir/btQuickprof.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/LinearMath && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/LinearMath/btQuickprof.cpp > CMakeFiles/LinearMath.dir/btQuickprof.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/LinearMath && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/LinearMath/btQuickprof.cpp > CMakeFiles/LinearMath.dir/btQuickprof.i
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.s: cmake_force
+LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/LinearMath.dir/btQuickprof.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/LinearMath && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/LinearMath/btQuickprof.cpp -o CMakeFiles/LinearMath.dir/btQuickprof.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/LinearMath && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/LinearMath/btQuickprof.cpp -o CMakeFiles/LinearMath.dir/btQuickprof.s
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o.requires:
-.PHONY : src/LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o.requires
+LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o.requires:
+.PHONY : LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o.requires
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o.provides: src/LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o.requires
-	$(MAKE) -f src/LinearMath/CMakeFiles/LinearMath.dir/build.make src/LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o.provides.build
-.PHONY : src/LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o.provides
+LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o.provides: LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o.requires
+	$(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o.provides.build
+.PHONY : LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o.provides
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o.provides.build: src/LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o
-.PHONY : src/LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o.provides.build
+LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o.provides.build: LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o
+.PHONY : LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o.provides.build
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o: src/LinearMath/CMakeFiles/LinearMath.dir/flags.make
-src/LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o: src/LinearMath/btSerializer.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_5)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/LinearMath && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/LinearMath.dir/btSerializer.o -c /home/cgibson/Downloads/bullet-2.76/src/LinearMath/btSerializer.cpp
+LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o: LinearMath/CMakeFiles/LinearMath.dir/flags.make
+LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o: LinearMath/btSerializer.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_5)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/LinearMath && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/LinearMath.dir/btSerializer.o -c /home/cgibson/Projects/2cities/lib/bullet/LinearMath/btSerializer.cpp
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btSerializer.i: cmake_force
+LinearMath/CMakeFiles/LinearMath.dir/btSerializer.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/LinearMath.dir/btSerializer.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/LinearMath && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/LinearMath/btSerializer.cpp > CMakeFiles/LinearMath.dir/btSerializer.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/LinearMath && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/LinearMath/btSerializer.cpp > CMakeFiles/LinearMath.dir/btSerializer.i
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btSerializer.s: cmake_force
+LinearMath/CMakeFiles/LinearMath.dir/btSerializer.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/LinearMath.dir/btSerializer.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/LinearMath && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/LinearMath/btSerializer.cpp -o CMakeFiles/LinearMath.dir/btSerializer.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/LinearMath && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/LinearMath/btSerializer.cpp -o CMakeFiles/LinearMath.dir/btSerializer.s
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o.requires:
-.PHONY : src/LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o.requires
+LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o.requires:
+.PHONY : LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o.requires
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o.provides: src/LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o.requires
-	$(MAKE) -f src/LinearMath/CMakeFiles/LinearMath.dir/build.make src/LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o.provides.build
-.PHONY : src/LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o.provides
+LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o.provides: LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o.requires
+	$(MAKE) -f LinearMath/CMakeFiles/LinearMath.dir/build.make LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o.provides.build
+.PHONY : LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o.provides
 
-src/LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o.provides.build: src/LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o
-.PHONY : src/LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o.provides.build
+LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o.provides.build: LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o
+.PHONY : LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o.provides.build
 
 # Object files for target LinearMath
 LinearMath_OBJECTS = \
@@ -180,33 +177,33 @@ LinearMath_OBJECTS = \
 # External object files for target LinearMath
 LinearMath_EXTERNAL_OBJECTS =
 
-src/LinearMath/libLinearMath.a: src/LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o
-src/LinearMath/libLinearMath.a: src/LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o
-src/LinearMath/libLinearMath.a: src/LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o
-src/LinearMath/libLinearMath.a: src/LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o
-src/LinearMath/libLinearMath.a: src/LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o
-src/LinearMath/libLinearMath.a: src/LinearMath/CMakeFiles/LinearMath.dir/build.make
-src/LinearMath/libLinearMath.a: src/LinearMath/CMakeFiles/LinearMath.dir/link.txt
+LinearMath/libLinearMath.a: LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o
+LinearMath/libLinearMath.a: LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o
+LinearMath/libLinearMath.a: LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o
+LinearMath/libLinearMath.a: LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o
+LinearMath/libLinearMath.a: LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o
+LinearMath/libLinearMath.a: LinearMath/CMakeFiles/LinearMath.dir/build.make
+LinearMath/libLinearMath.a: LinearMath/CMakeFiles/LinearMath.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX static library libLinearMath.a"
-	cd /home/cgibson/Downloads/bullet-2.76/src/LinearMath && $(CMAKE_COMMAND) -P CMakeFiles/LinearMath.dir/cmake_clean_target.cmake
-	cd /home/cgibson/Downloads/bullet-2.76/src/LinearMath && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/LinearMath.dir/link.txt --verbose=$(VERBOSE)
+	cd /home/cgibson/Projects/2cities/lib/bullet/LinearMath && $(CMAKE_COMMAND) -P CMakeFiles/LinearMath.dir/cmake_clean_target.cmake
+	cd /home/cgibson/Projects/2cities/lib/bullet/LinearMath && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/LinearMath.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-src/LinearMath/CMakeFiles/LinearMath.dir/build: src/LinearMath/libLinearMath.a
-.PHONY : src/LinearMath/CMakeFiles/LinearMath.dir/build
+LinearMath/CMakeFiles/LinearMath.dir/build: LinearMath/libLinearMath.a
+.PHONY : LinearMath/CMakeFiles/LinearMath.dir/build
 
-src/LinearMath/CMakeFiles/LinearMath.dir/requires: src/LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o.requires
-src/LinearMath/CMakeFiles/LinearMath.dir/requires: src/LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o.requires
-src/LinearMath/CMakeFiles/LinearMath.dir/requires: src/LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o.requires
-src/LinearMath/CMakeFiles/LinearMath.dir/requires: src/LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o.requires
-src/LinearMath/CMakeFiles/LinearMath.dir/requires: src/LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o.requires
-.PHONY : src/LinearMath/CMakeFiles/LinearMath.dir/requires
+LinearMath/CMakeFiles/LinearMath.dir/requires: LinearMath/CMakeFiles/LinearMath.dir/btAlignedAllocator.o.requires
+LinearMath/CMakeFiles/LinearMath.dir/requires: LinearMath/CMakeFiles/LinearMath.dir/btConvexHull.o.requires
+LinearMath/CMakeFiles/LinearMath.dir/requires: LinearMath/CMakeFiles/LinearMath.dir/btGeometryUtil.o.requires
+LinearMath/CMakeFiles/LinearMath.dir/requires: LinearMath/CMakeFiles/LinearMath.dir/btQuickprof.o.requires
+LinearMath/CMakeFiles/LinearMath.dir/requires: LinearMath/CMakeFiles/LinearMath.dir/btSerializer.o.requires
+.PHONY : LinearMath/CMakeFiles/LinearMath.dir/requires
 
-src/LinearMath/CMakeFiles/LinearMath.dir/clean:
-	cd /home/cgibson/Downloads/bullet-2.76/src/LinearMath && $(CMAKE_COMMAND) -P CMakeFiles/LinearMath.dir/cmake_clean.cmake
-.PHONY : src/LinearMath/CMakeFiles/LinearMath.dir/clean
+LinearMath/CMakeFiles/LinearMath.dir/clean:
+	cd /home/cgibson/Projects/2cities/lib/bullet/LinearMath && $(CMAKE_COMMAND) -P CMakeFiles/LinearMath.dir/cmake_clean.cmake
+.PHONY : LinearMath/CMakeFiles/LinearMath.dir/clean
 
-src/LinearMath/CMakeFiles/LinearMath.dir/depend:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/cgibson/Downloads/bullet-2.76 /home/cgibson/Downloads/bullet-2.76/src/LinearMath /home/cgibson/Downloads/bullet-2.76 /home/cgibson/Downloads/bullet-2.76/src/LinearMath /home/cgibson/Downloads/bullet-2.76/src/LinearMath/CMakeFiles/LinearMath.dir/DependInfo.cmake --color=$(COLOR)
-.PHONY : src/LinearMath/CMakeFiles/LinearMath.dir/depend
+LinearMath/CMakeFiles/LinearMath.dir/depend:
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/cgibson/Projects/2cities/lib/bullet /home/cgibson/Projects/2cities/lib/bullet/LinearMath /home/cgibson/Projects/2cities/lib/bullet /home/cgibson/Projects/2cities/lib/bullet/LinearMath /home/cgibson/Projects/2cities/lib/bullet/LinearMath/CMakeFiles/LinearMath.dir/DependInfo.cmake --color=$(COLOR)
+.PHONY : LinearMath/CMakeFiles/LinearMath.dir/depend
 

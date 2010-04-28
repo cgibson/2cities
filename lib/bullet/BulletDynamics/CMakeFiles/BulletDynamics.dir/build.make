@@ -31,503 +31,500 @@ CMAKE_COMMAND = /usr/bin/cmake
 # The command to remove a file.
 RM = /usr/bin/cmake -E remove -f
 
-# The program to use to edit the cache.
-CMAKE_EDIT_COMMAND = /usr/bin/cmake-gui
-
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/cgibson/Downloads/bullet-2.76
+CMAKE_SOURCE_DIR = /home/cgibson/Projects/2cities/lib/bullet
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/cgibson/Downloads/bullet-2.76
+CMAKE_BINARY_DIR = /home/cgibson/Projects/2cities/lib/bullet
 
 # Include any dependencies generated for this target.
-include src/BulletDynamics/CMakeFiles/BulletDynamics.dir/depend.make
+include BulletDynamics/CMakeFiles/BulletDynamics.dir/depend.make
 
 # Include the progress variables for this target.
-include src/BulletDynamics/CMakeFiles/BulletDynamics.dir/progress.make
+include BulletDynamics/CMakeFiles/BulletDynamics.dir/progress.make
 
 # Include the compile flags for this target's objects.
-include src/BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
+include BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o: src/BulletDynamics/Character/btKinematicCharacterController.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_1)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Character/btKinematicCharacterController.cpp
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o: BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o: BulletDynamics/Character/btKinematicCharacterController.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_1)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Character/btKinematicCharacterController.cpp
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.i: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Character/btKinematicCharacterController.cpp > CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Character/btKinematicCharacterController.cpp > CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.i
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.s: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Character/btKinematicCharacterController.cpp -o CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Character/btKinematicCharacterController.cpp -o CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.s
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o.requires:
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o.requires:
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o.requires
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o.provides: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o.requires
-	$(MAKE) -f src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o.provides.build
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o.provides
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o.provides: BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o.requires
+	$(MAKE) -f BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o.provides.build
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o.provides
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o.provides.build: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o.provides.build
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o.provides.build: BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o.provides.build
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o: src/BulletDynamics/ConstraintSolver/btConeTwistConstraint.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_2)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btConeTwistConstraint.cpp
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o: BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o: BulletDynamics/ConstraintSolver/btConeTwistConstraint.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_2)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btConeTwistConstraint.cpp
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.i: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btConeTwistConstraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btConeTwistConstraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.i
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.s: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btConeTwistConstraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btConeTwistConstraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.s
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o.requires:
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o.requires:
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o.requires
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o.provides: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o.requires
-	$(MAKE) -f src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o.provides.build
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o.provides
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o.provides: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o.requires
+	$(MAKE) -f BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o.provides.build
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o.provides
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o.provides.build: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o.provides.build
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o.provides.build: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o.provides.build
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o: src/BulletDynamics/ConstraintSolver/btContactConstraint.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_3)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btContactConstraint.cpp
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o: BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o: BulletDynamics/ConstraintSolver/btContactConstraint.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_3)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btContactConstraint.cpp
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.i: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btContactConstraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btContactConstraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.i
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.s: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btContactConstraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btContactConstraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.s
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o.requires:
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o.requires:
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o.requires
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o.provides: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o.requires
-	$(MAKE) -f src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o.provides.build
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o.provides
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o.provides: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o.requires
+	$(MAKE) -f BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o.provides.build
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o.provides
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o.provides.build: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o.provides.build
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o.provides.build: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o.provides.build
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o: src/BulletDynamics/ConstraintSolver/btGeneric6DofConstraint.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_4)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btGeneric6DofConstraint.cpp
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o: BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o: BulletDynamics/ConstraintSolver/btGeneric6DofConstraint.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_4)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btGeneric6DofConstraint.cpp
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.i: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btGeneric6DofConstraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btGeneric6DofConstraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.i
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.s: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btGeneric6DofConstraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btGeneric6DofConstraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.s
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o.requires:
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o.requires:
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o.requires
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o.provides: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o.requires
-	$(MAKE) -f src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o.provides.build
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o.provides
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o.provides: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o.requires
+	$(MAKE) -f BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o.provides.build
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o.provides
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o.provides.build: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o.provides.build
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o.provides.build: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o.provides.build
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o: src/BulletDynamics/ConstraintSolver/btGeneric6DofSpringConstraint.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_5)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btGeneric6DofSpringConstraint.cpp
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o: BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o: BulletDynamics/ConstraintSolver/btGeneric6DofSpringConstraint.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_5)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btGeneric6DofSpringConstraint.cpp
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.i: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btGeneric6DofSpringConstraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btGeneric6DofSpringConstraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.i
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.s: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btGeneric6DofSpringConstraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btGeneric6DofSpringConstraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.s
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o.requires:
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o.requires:
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o.requires
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o.provides: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o.requires
-	$(MAKE) -f src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o.provides.build
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o.provides
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o.provides: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o.requires
+	$(MAKE) -f BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o.provides.build
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o.provides
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o.provides.build: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o.provides.build
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o.provides.build: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o.provides.build
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o: src/BulletDynamics/ConstraintSolver/btHinge2Constraint.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_6)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btHinge2Constraint.cpp
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o: BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o: BulletDynamics/ConstraintSolver/btHinge2Constraint.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_6)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btHinge2Constraint.cpp
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.i: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btHinge2Constraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btHinge2Constraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.i
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.s: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btHinge2Constraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btHinge2Constraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.s
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o.requires:
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o.requires:
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o.requires
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o.provides: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o.requires
-	$(MAKE) -f src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o.provides.build
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o.provides
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o.provides: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o.requires
+	$(MAKE) -f BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o.provides.build
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o.provides
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o.provides.build: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o.provides.build
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o.provides.build: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o.provides.build
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o: src/BulletDynamics/ConstraintSolver/btHingeConstraint.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_7)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btHingeConstraint.cpp
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o: BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o: BulletDynamics/ConstraintSolver/btHingeConstraint.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_7)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btHingeConstraint.cpp
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.i: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btHingeConstraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btHingeConstraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.i
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.s: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btHingeConstraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btHingeConstraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.s
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o.requires:
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o.requires:
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o.requires
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o.provides: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o.requires
-	$(MAKE) -f src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o.provides.build
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o.provides
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o.provides: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o.requires
+	$(MAKE) -f BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o.provides.build
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o.provides
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o.provides.build: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o.provides.build
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o.provides.build: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o.provides.build
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o: src/BulletDynamics/ConstraintSolver/btPoint2PointConstraint.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_8)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btPoint2PointConstraint.cpp
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o: BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o: BulletDynamics/ConstraintSolver/btPoint2PointConstraint.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_8)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btPoint2PointConstraint.cpp
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.i: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btPoint2PointConstraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btPoint2PointConstraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.i
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.s: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btPoint2PointConstraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btPoint2PointConstraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.s
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o.requires:
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o.requires:
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o.requires
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o.provides: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o.requires
-	$(MAKE) -f src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o.provides.build
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o.provides
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o.provides: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o.requires
+	$(MAKE) -f BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o.provides.build
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o.provides
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o.provides.build: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o.provides.build
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o.provides.build: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o.provides.build
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o: src/BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_9)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.cpp
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o: BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o: BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_9)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.cpp
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.i: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.i
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.s: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.s
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o.requires:
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o.requires:
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o.requires
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o.provides: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o.requires
-	$(MAKE) -f src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o.provides.build
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o.provides
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o.provides: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o.requires
+	$(MAKE) -f BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o.provides.build
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o.provides
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o.provides.build: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o.provides.build
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o.provides.build: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o.provides.build
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o: src/BulletDynamics/ConstraintSolver/btSliderConstraint.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_10)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btSliderConstraint.cpp
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o: BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o: BulletDynamics/ConstraintSolver/btSliderConstraint.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_10)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btSliderConstraint.cpp
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.i: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btSliderConstraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btSliderConstraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.i
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.s: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btSliderConstraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btSliderConstraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.s
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o.requires:
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o.requires:
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o.requires
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o.provides: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o.requires
-	$(MAKE) -f src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o.provides.build
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o.provides
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o.provides: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o.requires
+	$(MAKE) -f BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o.provides.build
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o.provides
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o.provides.build: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o.provides.build
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o.provides.build: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o.provides.build
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o: src/BulletDynamics/ConstraintSolver/btSolve2LinearConstraint.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_11)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btSolve2LinearConstraint.cpp
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o: BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o: BulletDynamics/ConstraintSolver/btSolve2LinearConstraint.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_11)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btSolve2LinearConstraint.cpp
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.i: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btSolve2LinearConstraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btSolve2LinearConstraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.i
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.s: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btSolve2LinearConstraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btSolve2LinearConstraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.s
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o.requires:
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o.requires:
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o.requires
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o.provides: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o.requires
-	$(MAKE) -f src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o.provides.build
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o.provides
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o.provides: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o.requires
+	$(MAKE) -f BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o.provides.build
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o.provides
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o.provides.build: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o.provides.build
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o.provides.build: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o.provides.build
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o: src/BulletDynamics/ConstraintSolver/btTypedConstraint.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_12)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btTypedConstraint.cpp
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o: BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o: BulletDynamics/ConstraintSolver/btTypedConstraint.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_12)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btTypedConstraint.cpp
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.i: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btTypedConstraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btTypedConstraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.i
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.s: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btTypedConstraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btTypedConstraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.s
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o.requires:
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o.requires:
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o.requires
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o.provides: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o.requires
-	$(MAKE) -f src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o.provides.build
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o.provides
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o.provides: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o.requires
+	$(MAKE) -f BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o.provides.build
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o.provides
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o.provides.build: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o.provides.build
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o.provides.build: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o.provides.build
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o: src/BulletDynamics/ConstraintSolver/btUniversalConstraint.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_13)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btUniversalConstraint.cpp
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o: BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o: BulletDynamics/ConstraintSolver/btUniversalConstraint.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_13)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btUniversalConstraint.cpp
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.i: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btUniversalConstraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btUniversalConstraint.cpp > CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.i
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.s: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/ConstraintSolver/btUniversalConstraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/ConstraintSolver/btUniversalConstraint.cpp -o CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.s
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o.requires:
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o.requires:
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o.requires
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o.provides: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o.requires
-	$(MAKE) -f src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o.provides.build
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o.provides
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o.provides: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o.requires
+	$(MAKE) -f BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o.provides.build
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o.provides
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o.provides.build: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o.provides.build
+BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o.provides.build: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o.provides.build
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o: src/BulletDynamics/Dynamics/btContinuousDynamicsWorld.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_14)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Dynamics/btContinuousDynamicsWorld.cpp
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o: BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o: BulletDynamics/Dynamics/btContinuousDynamicsWorld.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_14)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Dynamics/btContinuousDynamicsWorld.cpp
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.i: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Dynamics/btContinuousDynamicsWorld.cpp > CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Dynamics/btContinuousDynamicsWorld.cpp > CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.i
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.s: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Dynamics/btContinuousDynamicsWorld.cpp -o CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Dynamics/btContinuousDynamicsWorld.cpp -o CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.s
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o.requires:
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o.requires:
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o.requires
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o.provides: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o.requires
-	$(MAKE) -f src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o.provides.build
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o.provides
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o.provides: BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o.requires
+	$(MAKE) -f BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o.provides.build
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o.provides
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o.provides.build: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o.provides.build
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o.provides.build: BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o.provides.build
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o: src/BulletDynamics/Dynamics/btDiscreteDynamicsWorld.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_15)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Dynamics/btDiscreteDynamicsWorld.cpp
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o: BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o: BulletDynamics/Dynamics/btDiscreteDynamicsWorld.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_15)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Dynamics/btDiscreteDynamicsWorld.cpp
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.i: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Dynamics/btDiscreteDynamicsWorld.cpp > CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Dynamics/btDiscreteDynamicsWorld.cpp > CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.i
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.s: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Dynamics/btDiscreteDynamicsWorld.cpp -o CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Dynamics/btDiscreteDynamicsWorld.cpp -o CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.s
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o.requires:
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o.requires:
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o.requires
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o.provides: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o.requires
-	$(MAKE) -f src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o.provides.build
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o.provides
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o.provides: BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o.requires
+	$(MAKE) -f BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o.provides.build
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o.provides
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o.provides.build: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o.provides.build
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o.provides.build: BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o.provides.build
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o: src/BulletDynamics/Dynamics/btRigidBody.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_16)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Dynamics/btRigidBody.cpp
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o: BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o: BulletDynamics/Dynamics/btRigidBody.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_16)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Dynamics/btRigidBody.cpp
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.i: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Dynamics/btRigidBody.cpp > CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Dynamics/btRigidBody.cpp > CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.i
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.s: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Dynamics/btRigidBody.cpp -o CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Dynamics/btRigidBody.cpp -o CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.s
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o.requires:
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o.requires:
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o.requires
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o.provides: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o.requires
-	$(MAKE) -f src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o.provides.build
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o.provides
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o.provides: BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o.requires
+	$(MAKE) -f BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o.provides.build
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o.provides
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o.provides.build: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o.provides.build
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o.provides.build: BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o.provides.build
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o: src/BulletDynamics/Dynamics/btSimpleDynamicsWorld.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_17)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Dynamics/btSimpleDynamicsWorld.cpp
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o: BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o: BulletDynamics/Dynamics/btSimpleDynamicsWorld.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_17)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Dynamics/btSimpleDynamicsWorld.cpp
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.i: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Dynamics/btSimpleDynamicsWorld.cpp > CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Dynamics/btSimpleDynamicsWorld.cpp > CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.i
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.s: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Dynamics/btSimpleDynamicsWorld.cpp -o CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Dynamics/btSimpleDynamicsWorld.cpp -o CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.s
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o.requires:
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o.requires:
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o.requires
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o.provides: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o.requires
-	$(MAKE) -f src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o.provides.build
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o.provides
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o.provides: BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o.requires
+	$(MAKE) -f BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o.provides.build
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o.provides
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o.provides.build: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o.provides.build
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o.provides.build: BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o.provides.build
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o: src/BulletDynamics/Dynamics/Bullet-C-API.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_18)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Dynamics/Bullet-C-API.cpp
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o: BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o: BulletDynamics/Dynamics/Bullet-C-API.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_18)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.i: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Dynamics/Bullet-C-API.cpp > CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp > CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.i
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.s: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Dynamics/Bullet-C-API.cpp -o CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Dynamics/Bullet-C-API.cpp -o CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.s
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o.requires:
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o.requires:
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o.requires
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o.provides: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o.requires
-	$(MAKE) -f src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o.provides.build
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o.provides
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o.provides: BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o.requires
+	$(MAKE) -f BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o.provides.build
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o.provides
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o.provides.build: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o.provides.build
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o.provides.build: BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o.provides.build
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o: src/BulletDynamics/Vehicle/btRaycastVehicle.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_19)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Vehicle/btRaycastVehicle.cpp
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o: BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o: BulletDynamics/Vehicle/btRaycastVehicle.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_19)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Vehicle/btRaycastVehicle.cpp
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.i: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Vehicle/btRaycastVehicle.cpp > CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Vehicle/btRaycastVehicle.cpp > CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.i
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.s: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Vehicle/btRaycastVehicle.cpp -o CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Vehicle/btRaycastVehicle.cpp -o CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.s
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o.requires:
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o.requires:
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o.requires
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o.provides: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o.requires
-	$(MAKE) -f src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o.provides.build
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o.provides
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o.provides: BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o.requires
+	$(MAKE) -f BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o.provides.build
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o.provides
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o.provides.build: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o.provides.build
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o.provides.build: BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o.provides.build
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o: src/BulletDynamics/Vehicle/btWheelInfo.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Downloads/bullet-2.76/CMakeFiles $(CMAKE_PROGRESS_20)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o -c /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Vehicle/btWheelInfo.cpp
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o: BulletDynamics/CMakeFiles/BulletDynamics.dir/flags.make
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o: BulletDynamics/Vehicle/btWheelInfo.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/cgibson/Projects/2cities/lib/bullet/CMakeFiles $(CMAKE_PROGRESS_20)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o"
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o -c /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Vehicle/btWheelInfo.cpp
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.i: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.i"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Vehicle/btWheelInfo.cpp > CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.i
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Vehicle/btWheelInfo.cpp > CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.i
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.s: cmake_force
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.s"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/Vehicle/btWheelInfo.cpp -o CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.s
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/Vehicle/btWheelInfo.cpp -o CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.s
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o.requires:
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o.requires:
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o.requires
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o.provides: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o.requires
-	$(MAKE) -f src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o.provides.build
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o.provides
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o.provides: BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o.requires
+	$(MAKE) -f BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o.provides.build
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o.provides
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o.provides.build: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o.provides.build
+BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o.provides.build: BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o.provides.build
 
 # Object files for target BulletDynamics
 BulletDynamics_OBJECTS = \
@@ -555,63 +552,63 @@ BulletDynamics_OBJECTS = \
 # External object files for target BulletDynamics
 BulletDynamics_EXTERNAL_OBJECTS =
 
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make
-src/BulletDynamics/libBulletDynamics.a: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/link.txt
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/build.make
+BulletDynamics/libBulletDynamics.a: BulletDynamics/CMakeFiles/BulletDynamics.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX static library libBulletDynamics.a"
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && $(CMAKE_COMMAND) -P CMakeFiles/BulletDynamics.dir/cmake_clean_target.cmake
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/BulletDynamics.dir/link.txt --verbose=$(VERBOSE)
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && $(CMAKE_COMMAND) -P CMakeFiles/BulletDynamics.dir/cmake_clean_target.cmake
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/BulletDynamics.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build: src/BulletDynamics/libBulletDynamics.a
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/build
+BulletDynamics/CMakeFiles/BulletDynamics.dir/build: BulletDynamics/libBulletDynamics.a
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/build
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o.requires
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o.requires
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o.requires
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o.requires
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o.requires
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o.requires
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o.requires
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o.requires
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o.requires
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o.requires
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o.requires
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o.requires
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o.requires
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o.requires
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o.requires
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o.requires
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o.requires
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o.requires
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o.requires
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: src/BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o.requires
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: BulletDynamics/CMakeFiles/BulletDynamics.dir/Character/btKinematicCharacterController.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btConeTwistConstraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btContactConstraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofConstraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btGeneric6DofSpringConstraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHinge2Constraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btHingeConstraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btPoint2PointConstraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSequentialImpulseConstraintSolver.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSliderConstraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btSolve2LinearConstraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btTypedConstraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: BulletDynamics/CMakeFiles/BulletDynamics.dir/ConstraintSolver/btUniversalConstraint.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btContinuousDynamicsWorld.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btDiscreteDynamicsWorld.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btRigidBody.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/btSimpleDynamicsWorld.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: BulletDynamics/CMakeFiles/BulletDynamics.dir/Dynamics/Bullet-C-API.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btRaycastVehicle.o.requires
+BulletDynamics/CMakeFiles/BulletDynamics.dir/requires: BulletDynamics/CMakeFiles/BulletDynamics.dir/Vehicle/btWheelInfo.o.requires
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/requires
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/clean:
-	cd /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics && $(CMAKE_COMMAND) -P CMakeFiles/BulletDynamics.dir/cmake_clean.cmake
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/clean
+BulletDynamics/CMakeFiles/BulletDynamics.dir/clean:
+	cd /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics && $(CMAKE_COMMAND) -P CMakeFiles/BulletDynamics.dir/cmake_clean.cmake
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/clean
 
-src/BulletDynamics/CMakeFiles/BulletDynamics.dir/depend:
-	cd /home/cgibson/Downloads/bullet-2.76 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/cgibson/Downloads/bullet-2.76 /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics /home/cgibson/Downloads/bullet-2.76 /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics /home/cgibson/Downloads/bullet-2.76/src/BulletDynamics/CMakeFiles/BulletDynamics.dir/DependInfo.cmake --color=$(COLOR)
-.PHONY : src/BulletDynamics/CMakeFiles/BulletDynamics.dir/depend
+BulletDynamics/CMakeFiles/BulletDynamics.dir/depend:
+	cd /home/cgibson/Projects/2cities/lib/bullet && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/cgibson/Projects/2cities/lib/bullet /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics /home/cgibson/Projects/2cities/lib/bullet /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics /home/cgibson/Projects/2cities/lib/bullet/BulletDynamics/CMakeFiles/BulletDynamics.dir/DependInfo.cmake --color=$(COLOR)
+.PHONY : BulletDynamics/CMakeFiles/BulletDynamics.dir/depend
 

@@ -1,6 +1,7 @@
 #ifndef _HUD_H_
 #define _HUD_H_
 
+#include <stdlib.h>
 #include <GL/glut.h>
 #include "../system/global.h"
 #include "../system/io.h"
@@ -22,6 +23,9 @@ public:
 
     // example console command
     static void hello(int argc, char *argv[]);
+
+    // exit console command
+    static void exitApp(int argc, char *argv[]);
 
 private:
     bool _showConsole;

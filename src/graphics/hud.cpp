@@ -10,8 +10,9 @@ void Hud::init()
 {
     console.init();
 
-    // example of registering a function with a console command
+    // register commands with the console
     console.registerCmd("hello", Hud::hello);
+    console.registerCmd("exit", Hud::exitApp);
 }
 
 void Hud::hello(int argc, char *argv[])
@@ -23,6 +24,11 @@ void Hud::hello(int argc, char *argv[])
     }
 
     gfx::hud.console.info("Hello, %s!", argv[1]);
+}
+
+void Hud::exitApp(int argc, char *argv[])
+{
+    exit(EXIT_SUCCESS);
 }
 
 void Hud::update(int ms)

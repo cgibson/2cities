@@ -11,7 +11,7 @@ namespace gfx{
   void display()
   {
     renderer.draw();
-    hud.draw();
+    //hud.draw();
     glutSwapBuffers();
   }
   

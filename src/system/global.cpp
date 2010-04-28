@@ -19,6 +19,8 @@ namespace global
   bool fullscreen;  // whether or not the window is fullscreen
   
   Camera camera;
+  
+  float fill_color[4] = {1.0f, 1.0f, 1.0f, 1.0f};
 
   int fps;
 }

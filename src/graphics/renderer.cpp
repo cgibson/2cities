@@ -9,11 +9,13 @@
 
 Renderer::Renderer()
 {
-  global::camera.eye = Vector(0,0,5);
+  global::camera.eye = Vector(0,0,30);
   global::camera.lookAt = Vector(0,0,0);
   global::camera.fov = 45.0f;
-  global::camera.near = 0.1f;
-  global::camera.far = 100.0f;
+  global::camera.near = 1.0f;
+  global::camera.far = 500.0f;
+  
+  DEBUG_THETA = 0.0f;
   
 }
 
@@ -40,7 +42,7 @@ void Renderer::draw()
   // update lights
   
   // render scene
-  glBegin(GL_TRIANGLES);
+  /*glBegin(GL_TRIANGLES);
     glColor3f(1,0,0);
     glVertex3f(1, -1, 2);
     glColor3f(0,1,0);
@@ -48,6 +50,11 @@ void Renderer::draw()
     glColor3f(0,0,1);
     glVertex3f(0, 1, 2);
   glEnd();
+  */
+  DEBUG_THETA+= 0.1f;
+  glRotatef(DEBUG_THETA, 0, 1, 0);
+  glColor3f(1,0,0);
+  glutSolidCube(20);
   
   glPopMatrix();
 }

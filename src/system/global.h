@@ -20,6 +20,8 @@ namespace global
   extern bool fullscreen;  // whether or not the window is fullscreen
   
   extern Camera camera;
+  
+  extern float fill_color[4];
 
   extern int fps; // frames per second (not necessarily *live*)
 }

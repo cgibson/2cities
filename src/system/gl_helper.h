@@ -12,7 +12,7 @@ namespace gl{
     glutInitDisplayMode( GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
     glutCreateWindow(global::app_title);
     glEnable(GL_DEPTH_TEST);
-    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClearColor(global::fill_color[0], global::fill_color[1], global::fill_color[2], global::fill_color[3]);
 
     glEnable(GL_NORMALIZE);
   }

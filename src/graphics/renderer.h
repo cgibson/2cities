@@ -12,6 +12,8 @@ private:
   void updateLookat();
   
   Vector eye, lookAt;
+  
+  float DEBUG_THETA;
 };
 
 #endif

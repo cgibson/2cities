@@ -191,17 +191,10 @@ vector<AmmoUnit> Physics::getAmmo()
     if (i < oldAmmoPositions.size())
       vel = VectorFrombtVector3(trans.getOrigin()) - oldAmmoPositions[i];
     current.setVelocity(vel);
-    //current.setDirection(VectorFrombtVector3(trans.getRotation()));
-    //The rotation is supplied in the form of a quaternion, the project
-    //currently lacks a 4 dimensional Vector class so for the moment the
-    //default value of (0,1,0) is being supplied. This must be replaced
-    //with some system for communicating the rotation properly.
-    //I'm suggesting a rotation vector and distance, due to the simplicity
-    //of putting it into OpenGL, as well as removing it from the quaternion
-    //supplied here.
-    current.setDirection(Vector(0,1,0));// TODO replace this, may require a
-                                        //      refactorization of the
-                                        //      PhysObj class.
+
+    btQuaternion rot = trans.getRotation();
+    current.setRotation(VectorFrombtVector3(rot.getAxis()));
+    current.setRotationMag(rot.getAngle());
     current.setMass(AMMO_MASS);
     result.push_back(current);
   }
@@ -223,17 +216,9 @@ vector<BuildingUnit> Physics::getBuildingBlocks()
     if (i < oldBldgPositions.size())
       vel = VectorFrombtVector3(trans.getOrigin()) - oldAmmoPositions[i];
     current.setVelocity(vel);
-    //current.setDirection(VectorFrombtVector3(trans.getRotation()));
-    //The rotation is supplied in the form of a quaternion, the project
-    //currently lacks a 4 dimensional Vector class so for the moment the
-    //default value of (0,1,0) is being supplied. This must be replaced
-    //with some system for communicating the rotation properly.
-    //I'm suggesting a rotation vector and distance, due to the simplicity
-    //of putting it into OpenGL, as well as removing it from the quaternion
-    //supplied here.
-    current.setDirection(Vector(0,1,0));// TODO replace this, may require a
-                                        //      refactorization of the
-                                        //      PhysObj class.
+    btQuaternion rot = trans.getRotation();
+    current.setRotation(VectorFrombtVector3(rot.getAxis()));
+    current.setRotationMag(rot.getAngle());
     current.setMass(BLDG_BLOCK_MASS);
     result.push_back(current);
   }

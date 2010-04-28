@@ -31,7 +31,11 @@ void InGameState::initialize() {
 */
 }
 
-void InGameState::update(int val) {
+void InGameState::update(long milli_time) {
+   updateInput(milli_time);
+}
+
+void InGameState::updateInput(long milli_time) {
    if(keys['w'])
       global::camera.eye = Vector(global::camera.eye.x()+1,global::camera.eye.y(),global::camera.eye.z());
 

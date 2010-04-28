@@ -10,7 +10,8 @@ class InGameState
        virtual ~InGameState();
 
        virtual void initialize();
-       virtual void update(int val);
+       virtual void update(long milli_time);
+       virtual void updateInput(long milli_time);
 
     protected:
        virtual void mouse_click(int button, int state, int x, int y);

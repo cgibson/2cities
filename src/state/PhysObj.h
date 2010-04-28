@@ -19,21 +19,24 @@ class PhysObj
     protected:
         Vector position;
         Vector velocity;
-        Vector direction;
+        Vector rotation;
+        double rotationMag;
         float mass;
 
     public:
         PhysObj();
-        PhysObj(Vector newPos, Vector newVel, Vector newDir, float newMass);
+        PhysObj(Vector newPos, Vector newVel, Vector newRot, double newRotMag, float newMass);
 
-        Vector getPosition(){return position;}
-        Vector getVelocity(){return velocity;}
-        Vector getDirection(){return direction;}
-        float getMass(){return mass;}
+        Vector getPosition()    {return position;}
+        Vector getVelocity()    {return velocity;}
+        Vector getRotation()    {return rotation;}
+        double getRotationMag() {return rotationMag;}
+        float getMass()         {return mass;}
 
         void setPosition(Vector newPos){position = newPos;}
         void setVelocity(Vector newVel){velocity = newVel;}
-        void setDirection(Vector newDir){direction = newDir;}
+        void setRotation(Vector newRot){rotation = newRot;}
+        void setRotationMag(double newRotMag){rotationMag = newRotMag;}
         void setMass(float newMass){mass = newMass;}
 
         //just to force abstraction for now. Delete this later.
@@ -84,7 +87,7 @@ class DummyBuildingUnit: public BuildingUnit
 {
     public:
         DummyBuildingUnit();
-        DummyBuildingUnit(Vector newPos, Vector newDir, float newMass, float newSize);
+        DummyBuildingUnit(Vector newPos, Vector newRot, double newRotMag, float newMass, float newSize);
         void doSomething(){};
 };
 

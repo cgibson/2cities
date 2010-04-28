@@ -35,7 +35,7 @@ void CarnageState::initialize() {
    DummyBuildingUnit *dummyBlock;
    // 25 blocks in square layout hovering 1 unit above ground place. (mass = 1, size = 1)
    for(int i = 0; i < 100; i+=2) {
-      dummyBlock = new DummyBuildingUnit(Vector(i/10,1,i%10),Vector(0,0,0), 1.0f, 1.0f);
+      dummyBlock = new DummyBuildingUnit(Vector(i/10,1,i%10),Vector(0,0,0), 0.0f, 1.0f, 1.0f);
       bunits.push_back (*dummyBlock);
    }
 }

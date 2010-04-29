@@ -11,9 +11,9 @@ void Hud::init()
     console.init();
 
     // register commands with the console
-    //console.registerCmd("hello", Hud::hello);
-    //console.registerCmd("exit", Hud::exitApp);
-    //console.registerCmd("clear", Hud::clearConsole);
+    console.registerCmd("hello", Hud::hello);
+    console.registerCmd("exit", Hud::exitApp);
+    console.registerCmd("clear", Hud::clearConsole);
 }
 
 void Hud::hello(int argc, char *argv[])

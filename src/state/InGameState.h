@@ -21,6 +21,7 @@ class InGameState
     protected:
        double theta;
        double phi;
+       double distance;
 
 };
 

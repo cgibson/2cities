@@ -9,9 +9,10 @@
 #include "../helper/camera.h"
 #include "../helper/Vector.h"
 
-#define ANGLE_SPEED 1
+#define ANGLE_SPEED 2
+#define DIST_SPEED 10
 #define PI 3.1415
-#define DIST 10
+#define DIST 20
 
 const float BUTTON_ROTATE = 0.1f;
 
@@ -20,6 +21,7 @@ using namespace global;
 
 InGameState::InGameState() {
    theta = 0;
+   distance = DIST;
    phi = PI / 4.0f;
    initialize();
    updateCamera();
@@ -49,9 +51,9 @@ void InGameState::updateCamera()
 {
   camera.lookAt = Vector(0,0,0);
   camera.eye = Vector(
-                   sin(theta) * DIST * cos(phi),
-                   DIST * sin(phi),
-                   cos(theta) * DIST * cos(phi)
+                   sin(theta) * distance * cos(phi),
+                   distance * sin(phi),
+                   cos(theta) * distance * cos(phi)
                );
 }
 
@@ -67,11 +69,19 @@ void InGameState::updateInput(long milli_time) {
    }
 
    if(keys['a']) {
-      theta += ANGLE_SPEED * (milli_time / 1000.0f);
+      theta -= ANGLE_SPEED * (milli_time / 1000.0f);
    }
 
    if(keys['d']) {
-      theta -= ANGLE_SPEED * (milli_time / 1000.0f);
+      theta += ANGLE_SPEED * (milli_time / 1000.0f);
+   }
+   
+   if(keys['f']) {
+     distance += DIST_SPEED * (milli_time / 1000.0f);
+   }
+   
+   if(keys['r']) {
+     distance -= DIST_SPEED * (milli_time / 1000.0f);
    }
    
    updateCamera();

@@ -25,7 +25,7 @@ void Renderer::init()
 {
   init_lights();
   
-  //init_materials();
+  init_materials();
 }
 
 void Renderer::updateLookat()
@@ -107,7 +107,7 @@ void Renderer::draw()
   Vector axis;
   float angle;
   
-  //blockMat.applyMaterial();
+  blockMat.applyMaterial();
   for(int i = 0; i < scene.size(); i++)
   {
     BuildingUnit unit = scene[i];
@@ -124,7 +124,7 @@ void Renderer::draw()
     glPopMatrix();
   }
   
-  //groundMat.applyMaterial();
+  groundMat.applyMaterial();
   
   glBegin(GL_QUADS);
     glNormal3f(0,1,0);

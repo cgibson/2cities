@@ -98,7 +98,7 @@ vector<Vector> Physics::fileToBlockLocations(char * fileName)
   vector<Vector> result;
   FILE * inFile = fopen(fileName, "r");
   int blockSize, numRead, x1, y1, z1, x2, y2, z2, xi, yi, zi;
-  if ((numRead = fscanf(inFile, "Block Size: %d\n", &blockSize)) == 1)
+  if ((numRead = fscanf(inFile, "blocksize: %d\n", &blockSize)) == 1)
   {
     while ((numRead = fscanf(inFile, "%d %d %d %d %d %d\n",&x1, &y1, &z1,
             &x2, &y2, &z2)) == 6)
@@ -111,7 +111,7 @@ vector<Vector> Physics::fileToBlockLocations(char * fileName)
                                     (float)zi / blockSize * BLDG_BLOCK_SIDE_LENGTH));
     if (numRead != 0)
     {
-      printf("Unexpected data at end of file: ignored\n");
+//      printf("Unexpected data at end of file: ignored\n");
     }
   }
   else

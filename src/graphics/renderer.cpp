@@ -125,7 +125,7 @@ void Renderer::draw()
     //std::cout << "Angle: " << angle << std::endl;
     glPushMatrix();
     glTranslatef(pos.x(), pos.y(), pos.z());
-    glRotatef(angle, axis.x(), axis.y(), axis.z());
+    glRotatef(360 * angle / (2.0 * 3.1415f), axis.x(), axis.y(), axis.z());
     glColor3f(1,0,0);
     glutSolidCube(1);
     glPopMatrix();

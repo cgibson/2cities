@@ -95,7 +95,7 @@ void InGameState::updateInput(long milli_time) {
                            distance * sin(phi),
                            cos(theta) * distance * cos(phi)
                           );
-      Vector dir = camera_pos * -1;
+      Vector dir = camera_pos * -1 + Vector(0,4,0);
       dir.norm();
       DummyAmmoUnit ammo = DummyAmmoUnit();
       ammo.setPosition(camera_pos);

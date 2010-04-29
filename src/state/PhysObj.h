@@ -107,8 +107,8 @@ class PhysObj
         {
           if (newRot.x() == 0 && newRot.y() == 0 && newRot.z() == 0)
           {
-            setRotationMag(0.);
-            setRotation(Vector(0, 1, 0);
+            setRotationMag(0.0);
+            setRotation(Vector(0, 1, 0));
           }
           else
           {

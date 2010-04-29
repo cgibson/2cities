@@ -10,6 +10,7 @@ class InGameState
     public:
        InGameState();
        virtual ~InGameState();
+       void updateCamera();
 
        virtual void initialize();
        virtual void update(long milli_time);
@@ -18,6 +19,8 @@ class InGameState
        virtual enum e_state stateType() { return GLOBAL_S; }
 
     protected:
+       double theta;
+       double phi;
 
 };
 

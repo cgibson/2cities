@@ -26,6 +26,8 @@ void updateLoop()
     // update all modules
     gfx::update(elapsed);
     global::stateManager.currentState->update(elapsed);
+    
+    ((CarnageState*)global::stateManager.currentState)->physics.update(elapsed);
 
     // update the fps counter (every quarter second)
     frameCount++;

@@ -33,13 +33,19 @@ void CarnageState::initialize() {
    physics.initPhysics();
 
    // TODO // Temp DEV hard coded world
-   DummyBuildingUnit *dummyBlock;
+   DummyBuildingUnit dummyBlock;
    // 25 blocks in square layout hovering 1 unit above ground place. (mass = 1, size = 1)
-   for(int i = 0; i < 100; i+=2) {
+   /*for(int i = 0; i < 100; i+=2) {
       //dummyBlock = new DummyBuildingUnit(Vector(i/10,1,i%10),Vector(0,0,0), 0.0f, 1.0f, 1.0f);
-      dummyBlock = new DummyBuildingUnit();
-      dummyBlock->setPosition(Vector(i/10,1,i%10));
-      physics.addBuildingBlock(*dummyBlock);
+      dummyBlock = DummyBuildingUnit();
+      dummyBlock.setPosition(Vector(i/10,1,i%10));
+      physics.addBuildingBlock(dummyBlock);
+   }*/
+   for(int i = -10; i <= 10; i++)
+   {
+      dummyBlock = DummyBuildingUnit();
+      dummyBlock.setPosition(Vector(0,i + 10,(float)i / 2.0));
+      physics.addBuildingBlock(dummyBlock);
    }
    // TODO END // TEMP DEV CODE
 }

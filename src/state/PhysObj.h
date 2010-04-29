@@ -68,7 +68,7 @@ class PhysObj
 
         PhysObj(double mass, btCollisionShape * shape)
         {
-          initialize(Vector(0,0,0), Vector(0,0,0), Vector(0,0,0), 0, mass, shape);
+          initialize(Vector(0,0,0), Vector(0,0,0), Vector(1,0,0), 0, mass, shape);
         }
 
         Vector getPosition()
@@ -105,11 +105,19 @@ class PhysObj
         
         void setRotation(Vector newRot)
         {
-          btTransform transform = trans();
-          btQuaternion quat = transform.getRotation();
-          quat.setRotation(btVector3FromVector(newRot), quat.getAngle());
-          transform.setRotation(quat);
-          rigidBody->setWorldTransform(transform);
+          if (newRot.x() == 0 && newRot.y() == 0 && newRot.z() == 0)
+          {
+            setRotationMag(0.);
+            setRotation(Vector(0, 1, 0);
+          }
+          else
+          {
+            btTransform transform = trans();
+            btQuaternion quat = transform.getRotation();
+            quat.setRotation(btVector3FromVector(newRot), quat.getAngle());
+            transform.setRotation(quat);
+            rigidBody->setWorldTransform(transform);
+          }
         }
         
         void setRotationMag(double newRotMag)

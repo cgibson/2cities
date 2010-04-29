@@ -10,6 +10,7 @@ Console::Console()
     _consoleFont = NULL;
     _level = CONSOLE_INFO;
     _captured = false;
+    _shellfd = -1;
 }
 
 void Console::init()
@@ -140,6 +141,10 @@ void Console::update(int ms)
     static int updateTimeCtr = 0;
     static int updateTimes[CONSOLE_UPDATE_SAMPLES]; // average over many samples
 
+    // for shell command processing
+    static char outbuf[81];
+    static char outbuf_pos = 0;
+
     // use a circular buffer to average update times over CONSOLE_UPDATE_SAMPLES updates
     updateTimes[updateTimeCtr] = ms;
     updateTimeCtr++;
@@ -153,6 +158,69 @@ void Console::update(int ms)
         _updateTime = sum / CONSOLE_UPDATE_SAMPLES;
         updateTimeCtr = 0;
     }
+
+#ifndef WIN32
+    // are we processing a shell command (in a background process)
+    if (_shellfd > 0)
+    {
+        fd_set rfds;
+        struct timeval tv;
+        int retval;
+
+        FD_ZERO(&rfds);
+        FD_SET(_shellfd, &rfds);
+        tv.tv_sec = 0;
+        tv.tv_usec = 0;
+
+        retval = select(_shellfd + 1, &rfds, NULL, NULL, &tv);
+        if (retval == -1)
+        {
+            perror("select");
+        }
+        else if (retval)
+        {
+            // data is available
+            char buf[4096];
+            int bytes_read = 0;
+            if ((bytes_read = read(_shellfd, buf, 4096)) > 0)
+            {
+                for (int i = 0; i < bytes_read; i++)
+                {
+                    char c = buf[i];
+
+                    if (c == EOF)
+                    {
+                        close(_shellfd);
+                        _shellfd = -1;
+                    }
+                    else if (c == '\n' || outbuf_pos > 78)
+                    {
+                        if (c != '\n')
+                        {
+                            outbuf[outbuf_pos] = c;
+                            outbuf_pos++;
+                            outbuf[outbuf_pos] = '\0';
+                        }
+                        info("%s", outbuf);
+                        outbuf_pos = 0;
+                        outbuf[outbuf_pos] = '\0';
+                    }
+                    else
+                    {
+                        outbuf[outbuf_pos] = c;
+                        outbuf_pos++;
+                        outbuf[outbuf_pos] = '\0';
+                    }
+                }
+            }
+            else
+            {
+                close(_shellfd);
+                _shellfd = -1;
+            }
+        }
+    }
+#endif
 }
 
 void Console::info(const char *format, ...)
@@ -324,10 +392,51 @@ void Console::process(const char *cmd)
 
     // echo it back to the console
     command(buffer);
-
+    
     // if the first character is a '$' hand it to the shell
     // for processing
-    // TODO
+    if (buffer[0] == '$')
+    {
+#ifdef WIN32
+        error("Shell commands are only supported on Linux.");
+#else
+        // create a pipe to capture the output
+        int pipefd[2];
+        pipe(pipefd);
+        int pid = fork();
+        if (pid > 0) // parent process
+        {
+            // close the write end of the pipe
+            close(pipefd[1]);
+
+            // save the read end of the pipe
+            _shellfd = pipefd[0];
+        }
+        else if (pid == 0) // child process
+        {
+            // close the read end of the pipe
+            close(pipefd[0]);
+
+            // overwrite stdout and stderr
+            if (dup2(pipefd[1], STDOUT_FILENO) < 0)
+            {
+                perror("dup2");
+            }
+            if (dup2(pipefd[1], STDERR_FILENO) < 0)
+            {
+                perror("dup2");
+            }
+
+            // exec off the new process
+            execlp("sh", "sh", "-c", buffer + 1, NULL);
+        }
+        else
+        {
+            perror("fork");
+        }
+#endif
+        return;
+    }
     
     // parse it into its argc and argv
     int argc = 0;
@@ -407,6 +516,11 @@ void Console::registerCmd(const char *name, void (*func)(int argc, char *argv[])
         cmd.func = func;
         _cmds.push_back(cmd);
     }
+}
+
+void Console::clear()
+{
+    _lines.clear();
 }
 
 void Console::key_down(unsigned char key, int x, int y)

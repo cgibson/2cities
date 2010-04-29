@@ -13,6 +13,12 @@
 #include "../system/io.h"
 #include "OGLFT.h"
 
+// only on Linux (for shell command passthru)
+#ifndef WIN32
+    #include <unistd.h>
+    #include <sys/select.h>
+#endif
+
 // REQUIRES SPECIAL BUILD RULE IN MAKEFILE!!!
 #include "../../svnrev.h"
 
@@ -62,6 +68,7 @@ public:
 
     void process(const char *cmd);
     void registerCmd(const char *cmd, void (*func)(int argc, char *argv[]));
+    void clear();
 
     static void key_down(unsigned char key, int x, int y);
     static void key_up(unsigned char key, int x, int y);
@@ -80,6 +87,7 @@ private:
     bool _captured;
     void command(const char *format, ...);
     std::vector<console_cmd_t> _cmds;
+    int _shellfd;
 };
 
 #endif

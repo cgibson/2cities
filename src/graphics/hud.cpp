@@ -13,6 +13,7 @@ void Hud::init()
     // register commands with the console
     console.registerCmd("hello", Hud::hello);
     console.registerCmd("exit", Hud::exitApp);
+    console.registerCmd("clear", Hud::clearConsole);
 }
 
 void Hud::hello(int argc, char *argv[])
@@ -29,6 +30,11 @@ void Hud::hello(int argc, char *argv[])
 void Hud::exitApp(int argc, char *argv[])
 {
     exit(EXIT_SUCCESS);
+}
+
+void Hud::clearConsole(int argc, char *argv[])
+{
+    gfx::hud.console.clear();
 }
 
 void Hud::update(int ms)

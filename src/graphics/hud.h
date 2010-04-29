@@ -21,11 +21,10 @@ public:
     bool showConsole() const { return _showConsole; }
     void showConsole(bool show) { _showConsole = show; }
 
-    // example console command
+    // console commands
     static void hello(int argc, char *argv[]);
-
-    // exit console command
     static void exitApp(int argc, char *argv[]);
+    static void clearConsole(int argc, char *argv[]);
 
 private:
     bool _showConsole;

@@ -5,6 +5,7 @@ namespace io {
 
   std::map<unsigned char, bool> keys;
   std::map<int, bool> special_keys;
+  std::map<int, int> mouse_buttons;
 
   void key_down(unsigned char key, int x, int y) {
     keys[key] = true;
@@ -23,7 +24,7 @@ namespace io {
   }
   
   void mouse_click(int button, int state, int x, int y) {
-    
+     mouse_buttons[button] = state;
   }
 
   void mouse_motion(int x, int y) {

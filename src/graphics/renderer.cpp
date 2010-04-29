@@ -6,6 +6,7 @@
 #include "../state/CarnageState.h"
 
 #include <stdio.h>
+#include <iostream>
 #include <vector>
 //#include "../system/global.h"
 
@@ -66,19 +67,23 @@ void Renderer::draw()
   
   glDisable(GL_LIGHTING);
   
-  DEBUG_THETA+= 0.1f;
-  
   Vector pos;
+  Vector axis;
+  float angle;
   
   for(int i = 0; i < scene.size(); i++)
   {
     BuildingUnit unit = scene[i];
     pos = unit.getPosition();
+    axis = unit.getRotation();
+    angle = unit.getRotationMag();
+    std::cout << "Axis:" << axis.x() << " " << axis.y() << " " << axis.z() << std::endl;
+    std::cout << "Angle: " << angle << std::endl;
     glPushMatrix();
     glTranslatef(pos.x(), pos.y(), pos.z());
-    glRotatef(DEBUG_THETA, 0, 1, 0);
+    //glRotatef(angle, axis.x(), axis.y(), axis.z());
     glColor3f(1,0,0);
-    glutSolidCube(20);
+    glutSolidCube(1);
     glPopMatrix();
   }
   

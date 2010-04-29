@@ -6,7 +6,7 @@
 #include "../state/PhysObj.h"
 #include <vector>
 
-//#define AMMO_MASS 1
+//#define AMMO_MASS 10
 //#define BLDG_BLOCK_MASS 1
 
 class Physics
@@ -21,15 +21,6 @@ class Physics
     btRigidBody * groundBody;
     std::vector<AmmoUnit> ammunition;
     std::vector<BuildingUnit> buildingBlocks;
-//    std::vector<btRigidBody *> bldgBodies;
-//    std::vector<btRigidBody *> ammoBodies;
-//    std::vector<Vector> oldAmmoPositions;
-//    std::vector<Vector> oldBldgPositions;
-
-//    btRigidBody * placePhysicsObject(btCollisionShape * shape, Vector location,
-//            Vector velocity, btScalar mass);
-//    btVector3 VectorTObtVector3(Vector in);
-//    Vector VectorFrombtVector3(btVector3 in);
     std::vector<Vector> fileToBlockLocations(char * fileName);
 //    void emptyWorld();
   public:
@@ -44,8 +35,6 @@ class Physics
     void initPhysics();
     // Advance the simulation by timeChange milliseconds
     void update(int timeChange);
-//    void placeBlock(Vector location);
-//    void placeAmmo(Vector location, Vector velocity);
     int loadFromFile(char * fileName);
 };
 

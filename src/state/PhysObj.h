@@ -39,7 +39,7 @@ class PhysObj
           btTransform transform;
           transform.setIdentity();
           if (rigidBody != NULL)
-            rigidBody->getMotionState()->getWorldTransform(transform);
+            transform = rigidBody->getCenterOfMassTransform();
           return transform;
         }
         
@@ -94,13 +94,13 @@ class PhysObj
         {
           btTransform transform = trans();
           transform.setOrigin(btVector3FromVector(newPos));
-          rigidBody->setWorldTransform(transform);
+          
+          rigidBody->setCenterOfMassTransform(transform);
         }
         
         void setVelocity(Vector newVel)
         {
-          rigidBody->setInterpolationLinearVelocity(
-              btVector3FromVector(newVel));
+          rigidBody->setLinearVelocity(btVector3FromVector(newVel));
         }
         
         void setRotation(Vector newRot)
@@ -147,6 +147,7 @@ class DummyAmmoUnit: public AmmoUnit
 {
     protected:
         static btCollisionShape * shape;
+        int init;
         btCollisionShape * getShape()
         {
 /*          if (shape == null)
@@ -156,12 +157,12 @@ class DummyAmmoUnit: public AmmoUnit
           return shape;
         }
     public:
-        DummyAmmoUnit(double mass, btCollisionShape * shape):
-          AmmoUnit(mass, shape) {}
-        DummyAmmoUnit(Vector newPos, Vector newVel, Vector newRot, double newRotMag):
-          AmmoUnit(newPos, newVel, newRot, newRotMag, getMass(), getShape()) {}
+        DummyAmmoUnit(): //AmmoUnit(1., NULL) {}
+          AmmoUnit(getMass(), getShape()) {}
+        DummyAmmoUnit(Vector pos, Vector vel, Vector rot, double rotMag): //AmmoUnit(1, NULL) {}
+          AmmoUnit(pos, vel, rot, rotMag, getMass(), getShape()) {}
 
-        void doSomething();
+        void doSomething() {};
         double getMass() { return AMMO_MASS; }
 };
 

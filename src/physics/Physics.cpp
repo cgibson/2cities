@@ -35,17 +35,19 @@ void Physics::initPhysics()
   world->setGravity(btVector3(0,-10, 0));
   btCollisionShape * ground = new btBoxShape(btVector3(btScalar(100.),
           btScalar(GROUND_HEIGHT / 2.0), btScalar(100.)));
+//  btCollisionShape * ground = new btStaticPlaneShape(btVector3(0,1,0), 50);
   btAlignedObjectArray<btCollisionShape *> collisionShapes;
   collisionShapes.push_back(ground);
 
   btTransform groundTrans;
   groundTrans.setIdentity();
   groundTrans.setOrigin(btVector3(0,-GROUND_HEIGHT / 2.0,0));
-  btRigidBody::btRigidBodyConstructionInfo grbInfo(btScalar(0.),
-    new btDefaultMotionState(groundTrans), ground, btVector3(0,0,0));
+  btRigidBody::btRigidBodyConstructionInfo grbInfo(btScalar(0),
+    new btDefaultMotionState(groundTrans), ground, btVector3(0,8,0));
   // Put the ground into the world
   groundBody = new btRigidBody(grbInfo);
   world->addRigidBody(groundBody);
+  groundBody->setActivationState(ISLAND_SLEEPING);
   bldgShape = new btBoxShape(btVector3(BLDG_BLOCK_SIDE_LENGTH,
                                        BLDG_BLOCK_SIDE_LENGTH,
                                        BLDG_BLOCK_SIDE_LENGTH));
@@ -63,12 +65,15 @@ void Physics::update(int timeChange)
 void Physics::addAmmo(AmmoUnit ammo)
 {
   world->addRigidBody(ammo.getRigidBody());
+//  ammo.getRigidBody()->setActivationState(ISLAND_SLEEPING);
   ammunition.push_back(ammo);
 }
 
 void Physics::addBuildingBlock(BuildingUnit bldg)
 {
+//  bldg.getRigidBody()->setActivationState(ISLAND_SLEEPING);
   world->addRigidBody(bldg.getRigidBody());
+//  bldg.getRigidBody()->setActivationState(ISLAND_SLEEPING);
   buildingBlocks.push_back(bldg);
 }
 

@@ -7,7 +7,7 @@
 #define AMMO_MASS 1
 #define AMMO_RADIUS 1
 #define BLDG_BLOCK_MASS 1
-#define BLDG_BLOCK_SIDE_LENGTH 1
+#define BLDG_BLOCK_SIDE_LENGTH 1.
 
 
 /**
@@ -47,9 +47,14 @@ class PhysObj
         {
           btTransform transform;
           transform.setIdentity();
+          btVector3 inertia(0,0,0);
+          if (mass != 0)
+          {
+            shape->calculateLocalInertia(btScalar(mass), inertia);
+          }
           btDefaultMotionState * motionState = new btDefaultMotionState(transform);
           btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState,
-            shape, btVector3(0,0,0));
+            shape, inertia);
           rigidBody = new btRigidBody(rbInfo);
           setPosition(newPos);
           setVelocity(newVel);
@@ -107,7 +112,7 @@ class PhysObj
         {
           if (newRot.x() == 0 && newRot.y() == 0 && newRot.z() == 0)
           {
-            setRotationMag(0.0);
+            setRotationMag(0.);
             setRotation(Vector(0, 1, 0));
           }
           else

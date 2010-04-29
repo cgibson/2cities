@@ -22,6 +22,7 @@ class InGameState
        double theta;
        double phi;
        double distance;
+       double ammo_recharge;
 
 };
 

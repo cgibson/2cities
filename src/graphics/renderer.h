@@ -29,6 +29,7 @@ private:
   Lighting light;
   Material groundMat;
   Material blockMat;
+  Material ammoMat;
 };
 
 #endif

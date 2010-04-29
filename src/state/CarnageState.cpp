@@ -41,12 +41,15 @@ void CarnageState::initialize() {
       dummyBlock.setPosition(Vector(i/10,1,i%10));
       physics.addBuildingBlock(dummyBlock);
    }*/
+   /*
    for(int i = -10; i <= 10; i++)
    {
       dummyBlock = DummyBuildingUnit();
-      dummyBlock.setPosition(Vector(0,i + 10,(float)i / 2.0));
+      dummyBlock.setPosition(Vector(0,i + 10,(float)i / 3.0));
       physics.addBuildingBlock(dummyBlock);
-   }
+   }*/
+   
+   physics.loadFromFile("resources/test.lvl");
    // TODO END // TEMP DEV CODE
 }
 

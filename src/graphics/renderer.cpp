@@ -58,6 +58,12 @@ void Renderer::init_materials()
   specular = {0.1, 0.1, 0.1, 1.0};
   shininess = {100.0};
   blockMat = Material(ambient, diffuse, specular, shininess);
+
+  ambient = {0.1, 0.1, 0.1, 1.0};
+  diffuse = {0.1, 0.9, 0.9, 1.0};
+  specular = {0.1, 0.1, 0.1, 1.0};
+  shininess = {100.0};
+  ammoMat = Material(ambient, diffuse, specular, shininess);
 }
 
 void Renderer::init_lights()
@@ -99,7 +105,8 @@ void Renderer::draw()
   
   CarnageState *state = (CarnageState*)global::stateManager.currentState;
   
-  vector<BuildingUnit> scene = state->physics.getBuildingBlocks();
+  vector<BuildingUnit> blocks = state->physics.getBuildingBlocks();
+  vector<AmmoUnit> ammo = state->physics.getAmmo();
   
   //glDisable(GL_LIGHTING);
   
@@ -108,9 +115,9 @@ void Renderer::draw()
   float angle;
   
   blockMat.applyMaterial();
-  for(int i = 0; i < scene.size(); i++)
+  for(int i = 0; i < blocks.size(); i++)
   {
-    BuildingUnit unit = scene[i];
+    BuildingUnit unit = blocks[i];
     pos = unit.getPosition();
     axis = unit.getRotation();
     angle = unit.getRotationMag();
@@ -121,6 +128,18 @@ void Renderer::draw()
     glRotatef(angle, axis.x(), axis.y(), axis.z());
     glColor3f(1,0,0);
     glutSolidCube(1);
+    glPopMatrix();
+  }
+  
+  ammoMat.applyMaterial();
+  for(int i = 0; i < ammo.size(); i++)
+  {
+    AmmoUnit unit = ammo[i];
+    pos = unit.getPosition();
+    glPushMatrix();
+    glTranslatef(pos.x(), pos.y(), pos.z());
+    glColor3f(1,0,0);
+    glutSolidSphere(1,10,10);
     glPopMatrix();
   }
   

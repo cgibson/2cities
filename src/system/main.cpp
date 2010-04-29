@@ -46,7 +46,6 @@ void initState()
 {
   global::stateManager.changeCurrentState(CARNAGE_S);
   CarnageState *state = (CarnageState*)global::stateManager.currentState;
-  state->physics.addBuildingBlock(DummyBuildingUnit(Vector(0, 0, 0),Vector(0,0,0), 0.0f, 1.0f, 1.0f));
 }
 
 bool initialize()

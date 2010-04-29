@@ -3,16 +3,19 @@
 #include <math.h>
 
 #include "InGameState.h"
+#include "CarnageState.h"
 
 #include "../system/global.h"
 #include "../system/io.h"
 #include "../helper/camera.h"
 #include "../helper/Vector.h"
+#include "PhysObj.h"
 
 #define ANGLE_SPEED 2
 #define DIST_SPEED 10
 #define PI 3.1415
-#define DIST 20
+#define DIST 30
+#define RECHARGE_TIME 200
 
 const float BUTTON_ROTATE = 0.1f;
 
@@ -20,11 +23,12 @@ using namespace io;
 using namespace global;
 
 InGameState::InGameState() {
-   theta = 0;
+   theta = 3.0 * PI / 4.0f;
    distance = DIST;
-   phi = PI / 4.0f;
+   phi = PI / 5.0f;
    initialize();
    updateCamera();
+   ammo_recharge = RECHARGE_TIME;
 }
 
 InGameState::~InGameState() {}
@@ -44,6 +48,7 @@ void InGameState::initialize() {
 }
 
 void InGameState::update(long milli_time) {
+   ammo_recharge -= milli_time;
    updateInput(milli_time);
 }
 
@@ -82,6 +87,22 @@ void InGameState::updateInput(long milli_time) {
    
    if(keys['r']) {
      distance -= DIST_SPEED * (milli_time / 1000.0f);
+   }
+   
+   if(keys[' '] && ammo_recharge <= 0) {
+      Vector camera_pos = Vector(
+                           sin(theta) * distance * cos(phi),
+                           distance * sin(phi),
+                           cos(theta) * distance * cos(phi)
+                          );
+      Vector dir = camera_pos * -1;
+      dir.norm();
+      DummyAmmoUnit ammo = DummyAmmoUnit();
+      ammo.setPosition(camera_pos);
+      ammo.setVelocity(dir * 50);
+      ((CarnageState*)global::stateManager.currentState)->physics.addAmmo(ammo);
+      
+      ammo_recharge = RECHARGE_TIME;
    }
    
    updateCamera();

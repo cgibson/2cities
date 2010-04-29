@@ -104,11 +104,11 @@ vector<Vector> Physics::fileToBlockLocations(char * fileName)
             &x2, &y2, &z2)) == 6)
       for (xi = x1; xi < x2; xi += blockSize)
         for (yi = y1; yi < y2; yi += blockSize)
-          for (zi = z1; yi < y2; yi += blockSize)
-            result.push_back(Vector(xi / blockSize * BLDG_BLOCK_SIDE_LENGTH,
-                                    yi / blockSize * BLDG_BLOCK_SIDE_LENGTH 
+          for (zi = z1; zi < z2; zi += blockSize)
+            result.push_back(Vector((float)xi / blockSize * BLDG_BLOCK_SIDE_LENGTH,
+                                    (float)yi / blockSize * BLDG_BLOCK_SIDE_LENGTH 
                                       + BLDG_BLOCK_SIDE_LENGTH / 2.0,
-                                    zi / blockSize * BLDG_BLOCK_SIDE_LENGTH));
+                                    (float)zi / blockSize * BLDG_BLOCK_SIDE_LENGTH));
     if (numRead != 0)
     {
       printf("Unexpected data at end of file: ignored\n");

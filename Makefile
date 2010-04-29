@@ -24,12 +24,11 @@ CCFLAGS = -g ${INCLUDE_DIRS} ${DEFINES}
 LDFLAGS = -lGL -lGLU -lglut -lm -lfreetype
 
 # list of all object files
-OBJS = global.o io.o PhysObj.o CarnageState.o InGameState.o StateManager.o graphics.o renderer.o hud.o console.o Vector.o main.o Physics.o
+OBJS = global.o io.o PhysObj.o CarnageState.o InGameState.o StateManager.o graphics.o renderer.o hud.o console.o Vector.o main.o Physics.o GLSL_helper.o Lighting.o FBOHelper.o
 
 # main build rule (also deletes object files... we prolly shouldn't do that...)
 build: svnrev ${OBJS}
 	${CC} ${LDFLAGS} ${OBJS} ${LIB_OBJS} -o ${OUT}
-	rm *.o
 
 # fancy build rule to generate a .h file with the current svn rev number in it
 svnrev:
@@ -76,6 +75,15 @@ hud.o: src/graphics/hud.cpp
 
 console.o: src/graphics/console.cpp
 	${CC} -c ${CCFLAGS} src/graphics/console.cpp
+
+GLSL_helper.o: src/helper/GLSL_helper.cpp
+	${CC} -c ${CCFLAGS} src/helper/GLSL_helper.cpp
+
+FBOHelper.o: src/helper/FBOHelper.cpp
+	${CC} -c ${CCFLAGS} src/helper/FBOHelper.cpp
+	
+Lighting.o: src/graphics/Lighting.cpp
+	${CC} -c ${CCFLAGS} src/graphics/Lighting.cpp
 
 clean:
 	rm *.o svnrev.h ${OUT}

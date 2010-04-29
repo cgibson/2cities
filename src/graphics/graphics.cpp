@@ -1,8 +1,11 @@
 #include <GL/gl.h>
 #include <GL/glut.h>
+#include <string>
 
 #include "graphics.h"
+#include "Lighting.h"
 #include "../system/io.h"
+#include "../helper/GLSL_helper.h"
 
 
 namespace gfx{
@@ -10,6 +13,8 @@ namespace gfx{
   Renderer renderer;
   Hud hud;
   bool draw_wireframe;
+  
+  GLint shSimple;
 
   void display()
   {
@@ -26,10 +31,13 @@ namespace gfx{
 
   void init()
   {
+    loadShaders();
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
     
     draw_wireframe = false;
+    
+    renderer.init();
 
     hud.init();
   }
@@ -53,5 +61,38 @@ namespace gfx{
     display();
   }
   
+  /* Load all shaders for the program */
+  bool loadShaders()
+  {
+    bool success = true;
+    getGLversion();
+    success &= installShader( "resources/shaders/simpleShade", &shSimple );
+    
+    if(!success)
+    {
+      exit(-1);
+    }
+    
+    return success;
+  }
+  
+
+  bool installShader( string filename, int *shaderID )
+  {
+    string vert = filename;
+    string frag = filename;
+    vert.append(".vert");
+    frag.append(".frag");
+    
+    printf("Loading %s\n", vert.c_str());
+    printf("Loading %s\n", frag.c_str());
+    
+	  //install the shader
+	  if (InstallShader(textFileRead(vert), textFileRead(frag), shaderID) == -1) {
+		  printf("Error installing shader!\n");
+		  return 0;
+	  }
+	  return true;
+  }
   
 }

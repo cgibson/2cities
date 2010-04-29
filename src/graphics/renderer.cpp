@@ -3,7 +3,9 @@
 #include "renderer.h"
 #include "../helper/Vector.h"
 #include "../system/global.h"
+#include "../graphics/graphics.h"
 #include "../state/CarnageState.h"
+#include "Material.h"
 
 #include <stdio.h>
 #include <iostream>
@@ -17,9 +19,13 @@ Renderer::Renderer()
   global::camera.fov = 45.0f;
   global::camera.near = 1.0f;
   global::camera.far = 500.0f;
+}
+
+void Renderer::init()
+{
+  init_lights();
   
-  DEBUG_THETA = 0.0f;
-  
+  //init_materials();
 }
 
 void Renderer::updateLookat()
@@ -29,8 +35,46 @@ void Renderer::updateLookat()
             0, 1, 0);
 }
 
+void Renderer::do_lights()
+{
+  light.doLighting();
+}
+
+void Renderer::init_materials()
+{
+  GLfloat ambient[4];
+  GLfloat diffuse[4];
+  GLfloat specular[4];
+  GLfloat shininess[1];
+  
+  ambient = {0.1, 0.1, 0.1, 1.0};
+  diffuse = {0.9, 0.9, 0.9, 1.0};
+  specular = {0.1, 0.1, 0.1, 1.0};
+  shininess = {100.0};
+  groundMat = Material(ambient, diffuse, specular, shininess);
+
+  ambient = {0.1, 0.1, 0.1, 1.0};
+  diffuse = {0.9, 0.9, 0.1, 1.0};
+  specular = {0.1, 0.1, 0.1, 1.0};
+  shininess = {100.0};
+  blockMat = Material(ambient, diffuse, specular, shininess);
+}
+
+void Renderer::init_lights()
+{
+  std::cout << "initialized" << std::endl;
+  glEnable(GL_NORMALIZE);
+  glEnable(GL_LIGHTING);
+  light.createLight(50, 50, 50,
+                    0.8, 0.8, 0.8, 1,
+                    0.3,0.3,0.3,
+                    1.0, 1.0, 0.0);
+}
+
 void Renderer::draw()
 {
+  
+  
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // project the camera (need to do this every frame since the 2D overlay wipes it)
@@ -42,43 +86,36 @@ void Renderer::draw()
         global::camera.far);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    
+  // update lights
+  do_lights();
 
   glPushMatrix();
   
   // update camera
   updateLookat();
   
-  // update lights
-  
-  // render scene
-  /*glBegin(GL_TRIANGLES);
-    glColor3f(1,0,0);
-    glVertex3f(1, -1, 2);
-    glColor3f(0,1,0);
-    glVertex3f(-1, -1, 2);
-    glColor3f(0,0,1);
-    glVertex3f(0, 1, 2);
-  glEnd();
-  */
+  glUseProgram(gfx::shSimple);
   
   CarnageState *state = (CarnageState*)global::stateManager.currentState;
   
   vector<BuildingUnit> scene = state->physics.getBuildingBlocks();
   
-  glDisable(GL_LIGHTING);
+  //glDisable(GL_LIGHTING);
   
   Vector pos;
   Vector axis;
   float angle;
   
+  //blockMat.applyMaterial();
   for(int i = 0; i < scene.size(); i++)
   {
     BuildingUnit unit = scene[i];
     pos = unit.getPosition();
     axis = unit.getRotation();
     angle = unit.getRotationMag();
-    std::cout << "Axis:" << axis.x() << " " << axis.y() << " " << axis.z() << std::endl;
-    std::cout << "Angle: " << angle << std::endl;
+    //std::cout << "Axis:" << axis.x() << " " << axis.y() << " " << axis.z() << std::endl;
+    //std::cout << "Angle: " << angle << std::endl;
     glPushMatrix();
     glTranslatef(pos.x(), pos.y(), pos.z());
     glRotatef(angle, axis.x(), axis.y(), axis.z());
@@ -86,6 +123,18 @@ void Renderer::draw()
     glutSolidCube(1);
     glPopMatrix();
   }
+  
+  //groundMat.applyMaterial();
+  
+  glBegin(GL_QUADS);
+    glNormal3f(0,1,0);
+    glVertex3f(-100, -1, -100);
+    glVertex3f(-100, -1, 100);
+    glVertex3f(100, -1, 100);
+    glVertex3f(100, -1, -100);
+  glEnd();
+  
+  glUseProgram( 0 );  
   
   glPopMatrix();
 }

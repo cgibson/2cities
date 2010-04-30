@@ -31,8 +31,9 @@ class CarnageState: public InGameState
         virtual ~CarnageState();
 
         void initialize();
-//      void update(long milli_time);
-//      void updateInput(long milli_time);
+        void update(long milli_time);
+        void updateInput(long milli_time);
+        void updateCamera();
 
         virtual enum e_state stateType() { return CARNAGE_S; }
 

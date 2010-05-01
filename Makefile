@@ -24,7 +24,7 @@ CCFLAGS = -g ${INCLUDE_DIRS} ${DEFINES}
 LDFLAGS = -lGL -lGLU -lglut -lm -lfreetype
 
 # list of all object files
-OBJS = global.o io.o Network.o PhysObj.o BuildState.o CarnageState.o InGameState.o StateManager.o graphics.o renderer.o hud.o console.o Vector.o main.o Physics.o GLSL_helper.o Lighting.o FBOHelper.o
+OBJS = global.o io.o NetworkClient.o NetworkServer.o PhysObj.o BuildState.o CarnageState.o InGameState.o StateManager.o graphics.o renderer.o hud.o console.o Vector.o main.o Physics.o GLSL_helper.o Lighting.o FBOHelper.o
 
 all: build
 
@@ -45,8 +45,11 @@ main.o: src/system/main.cpp
 Physics.o: src/physics/Physics.cpp
 	${CC} -c ${CCFLAGS} src/physics/Physics.cpp
 
-Network.o: src/network/Network.cpp
-	${CC} -c ${CCFLAGS} src/network/Network.cpp
+NetworkClient.o: src/network/NetworkClient.cpp
+	${CC} -c ${CCFLAGS} src/network/NetworkClient.cpp
+
+NetworkServer.o: src/network/NetworkServer.cpp
+	${CC} -c ${CCFLAGS} src/network/NetworkServer.cpp
 
 PhysObj.o: src/state/PhysObj.cpp
 	${CC} -c ${CCFLAGS} src/state/PhysObj.cpp

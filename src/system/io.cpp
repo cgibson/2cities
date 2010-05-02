@@ -1,11 +1,13 @@
-
 #include <map>
+#include "global.h"
 
 namespace io {
 
   std::map<unsigned char, bool> keys;
   std::map<int, bool> special_keys;
   std::map<int, int> mouse_buttons;
+  float mouse_x;
+  float mouse_y;
 
   void key_down(unsigned char key, int x, int y) {
     keys[key] = true;
@@ -28,6 +30,10 @@ namespace io {
   }
 
   void mouse_motion(int x, int y) {
+	x -= (global::width >> 1);
+	y -= (global::height >> 1);
 
+    mouse_x = x;
+    mouse_y = y;
   }
 }

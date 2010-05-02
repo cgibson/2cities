@@ -10,6 +10,9 @@ namespace io
 {
   extern std::map<unsigned char, bool> keys;
   extern std::map<int, bool> special_keys;
+  extern std::map<int, int> mouse_buttons;
+  extern float mouse_x;
+  extern float mouse_y;
 
   extern void key_down(unsigned char key, int x, int y);
   extern void key_up  (unsigned char key, int x, int y);

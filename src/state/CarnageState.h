@@ -33,12 +33,11 @@ class CarnageState: public InGameState
         void initialize();
         void update(long milli_time);
         void updateInput(long milli_time);
-        void updateCamera();
 
         virtual enum e_state stateType() { return CARNAGE_S; }
 
     protected:
-
+        double ammo_recharge;
 };
 
 #endif

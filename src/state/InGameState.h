@@ -14,7 +14,6 @@ class InGameState
        virtual void initialize();
        virtual void update(long milli_time);
        virtual void updateInput(long milli_time);
-       virtual void updateCamera();
 
        virtual enum e_state stateType() { return GLOBAL_S; }
 
@@ -22,8 +21,6 @@ class InGameState
        double theta;
        double phi;
        double distance;
-       double ammo_recharge;
-
 };
 
 #endif

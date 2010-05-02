@@ -24,7 +24,6 @@ InGameState::InGameState() {
    distance = DIST;
    phi = PI / 5.0f;
    initialize();
-   updateCamera();
 }
 
 InGameState::~InGameState() {}
@@ -41,42 +40,55 @@ void InGameState::initialize() {
    glutMotionFunc(&io::mouse_motion);
    glutPassiveMotionFunc(&io::mouse_motion);
    //glutSetCursor(GLUT_CURSOR_NONE);
+
+   camera.eye = Vector( 0.0f, 30.0f, 30.0f);
+   camera.lookAt = Vector( 0.0f, 0.0f, 0.0f);
 }
 
 void InGameState::update(long milli_time) {
    updateInput(milli_time);
 }
 
-void InGameState::updateCamera()
-{
-  camera.lookAt = Vector(0,0,0);
-  camera.eye = Vector(
-                   sin(theta) * distance * cos(phi),
-                   distance * sin(phi),
-                   cos(theta) * distance * cos(phi)
-               );
-}
-
 void InGameState::updateInput(long milli_time) {
    // General Keyboard Layout
-   if(keys[27])
-	  exit(0);
-  
+
+   // Freelook Controls
+   float deltaTilt = 0;
+   float deltaTurn = 0;
+   if(special_keys[GLUT_KEY_UP]) {
+	   deltaTilt += ANGLE_SPEED * (milli_time / 1000.0f);
+   }
+   if(special_keys[GLUT_KEY_DOWN]) {
+	   deltaTilt -= ANGLE_SPEED * (milli_time / 1000.0f);
+   }
+   if(special_keys[GLUT_KEY_LEFT]) {
+	   deltaTurn -= ANGLE_SPEED * (milli_time / 1000.0f);
+   }
+   if(special_keys[GLUT_KEY_RIGHT]) {
+	   deltaTurn += ANGLE_SPEED * (milli_time / 1000.0f);
+   }
+   camera.phiMaxAngle = M_PI;
+   camera.phiMinAngle = 0.0f;
+   if(deltaTurn || deltaTilt)
+	   camera.rotateView(deltaTurn, deltaTilt);
+
+   // Strafe Controls
+   float deltaFwd  = 0;
+   float deltaSide = 0;
+   float deltaUp   = 0;
    if(keys['w']) {
-      phi += ANGLE_SPEED * (milli_time / 1000.0f);
+	   deltaFwd += 0.5f;
    }
-
    if(keys['s']) {
-      phi -= ANGLE_SPEED * (milli_time / 1000.0f);
+   	   deltaFwd -= 0.5f;
    }
-
-   if(keys['a']) {
-      theta -= ANGLE_SPEED * (milli_time / 1000.0f);
-   }
-
    if(keys['d']) {
-      theta += ANGLE_SPEED * (milli_time / 1000.0f);
+   	   deltaSide += 0.5f;
    }
+   if(keys['a']) {
+   	   deltaSide -= 0.5f;
+   }
+   camera.strafe(deltaFwd, deltaSide, deltaUp);
    
    if(keys['f']) {
      distance += DIST_SPEED * (milli_time / 1000.0f);
@@ -85,8 +97,6 @@ void InGameState::updateInput(long milli_time) {
    if(keys['r']) {
      distance -= DIST_SPEED * (milli_time / 1000.0f);
    }
-   
-   updateCamera();
 
    // TODO Mouse Control Items
 

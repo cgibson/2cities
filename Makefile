@@ -3,6 +3,7 @@ CC = g++
 
 # output names of the executables
 LINUX_BIN = 2cities
+WIN32_BIN = 2cities.exe
 
 # directories to include header files for libraries
 # general format is -Iinclude/<library directory>
@@ -13,6 +14,7 @@ DEFINES = -DGL_GLEXT_PROTOTYPES -DOGLFT_NO_SOLID -DOGLFT_NO_QT
 
 # directory that holds our static libraries
 LINUX_LIBDIR = lib/linux
+WIN32_LIBDIR = lib/win32
 
 # static libraries we're linking with
 LINUX_LIBS = $(LINUX_LIBDIR)/libBulletDynamics.a \
@@ -20,6 +22,11 @@ LINUX_LIBS = $(LINUX_LIBDIR)/libBulletDynamics.a \
 		   	 $(LINUX_LIBDIR)/libLinearMath.a \
 		   	 $(LINUX_LIBDIR)/libfreetype.a \
 			 $(LINUX_LIBDIR)/libz.a
+WIN32_LIBX = $(WIN32_LIBDIR)/libBulletDynamics.a \
+             $(WIN32_LIBDIR)/libBulletCollision.a \
+             $(WIN32_LIBDIR)/libLinearMath.a \
+             $(WIN32_LIBDIR)/libfreetype.a \
+             $(WIN32_LIBDIR)/libz.a
 
 # compiler (NOT LINKER!) flags, such as the optimizer, include paths, defines, etc.
 CCFLAGS_DEBUG = -g $(INCLUDE_DIRS) $(DEFINES)
@@ -48,11 +55,19 @@ linux: startlinux svnrev $(OBJS)
 startlinux:
 	@echo "========== BUILD STARTING [linux] =========="
 
+win32: startwin32 svnrev $(OBJS)
+	$(CC) $(LDFLAGS) $(OBJS) $(WIN32_LIBS) -o $(WIN32_BIN)
+	@echo "========== BUILD COMPLETE [win32] =========="
+
+startwin32:
+	@echo "========== BUILD STARTING [win32] =========="
+
 # build clean up
 clean: startclean
 	-rm *.o
 	-rm svnrev.h 
 	-rm $(LINUX_BIN)
+	-rm $(WIN32_BIN)
 	@echo "========== CLEAN COMPLETE =========="
 
 startclean:

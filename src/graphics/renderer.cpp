@@ -92,6 +92,8 @@ void Renderer::draw()
   
   glUseProgram(gfx::shSimple);
   
+  //TODO: Remove BEGIN
+  
   CarnageState *state = (CarnageState*)global::stateManager.currentState;
   
   vector<BuildingUnit> blocks = state->physics.getBuildingBlocks();
@@ -102,7 +104,6 @@ void Renderer::draw()
   Vector pos;
   Vector axis;
   float angle;
-  
   blockMat.applyMaterial();
   for(int i = 0; i < (int)blocks.size(); i++)
   {
@@ -141,6 +142,16 @@ void Renderer::draw()
     glVertex3f(100, -1, 100);
     glVertex3f(100, -1, -100);
   glEnd();
+  
+  
+  //TODO: Remove END
+  
+  InGameState *curstate = global::stateManager.currentState;
+  
+  for(int i = 0; i < curstate->objects.size(); i++)
+  {
+    curstate->objects[i].draw();
+  }
   
   glUseProgram( 0 );  
   

@@ -6,11 +6,9 @@
 #define _CARNAGE_STATE_H_
 
 #include <stdlib.h>
-#include <vector>
 
 #include "InGameState.h"
 #include "../physics/Physics.h"
-#include "../scene/WorldObject.h"
 #include "../system/enum.h"
 
 #include "PhysObj.h"				//TODO REMOVE
@@ -27,7 +25,6 @@ using namespace std;
 class CarnageState: public InGameState
 {
     public:
-		vector<WorldObject> objects;
         Physics physics;  					// TODO Remove
         
         CarnageState();

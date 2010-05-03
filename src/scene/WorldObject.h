@@ -30,10 +30,6 @@ class WorldObject
         enumeration::E_PHYSICS physics; //NONE, DYNAMIC, STATIC
         long timestamp; //change to int?
 
-        virtual void draw() {};
-        virtual void update(int elapsedTime) {};
-        virtual void think(int elapsedTime) {};
-
     public:
         WorldObject(unsigned int newid, unsigned int newplayerid, enumeration::E_SHAPE newshape)
         {
@@ -41,6 +37,11 @@ class WorldObject
             playerid = newplayerid;
             shape = newshape;
         }
+
+        virtual void draw() {};
+        virtual void update(int elapsedTime) {};
+        virtual void think(int elapsedTime) {};
+        
         unsigned int getID() {return id;}
         unsigned int getPlayerID() {return playerid;}
         Vector getPosition() {return position;}

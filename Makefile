@@ -22,7 +22,7 @@ LINUX_LIBS = $(LINUX_LIBDIR)/libBulletDynamics.a \
 		   	 $(LINUX_LIBDIR)/libLinearMath.a \
 		   	 $(LINUX_LIBDIR)/libfreetype.a \
 			 $(LINUX_LIBDIR)/libz.a
-WIN32_LIBX = $(WIN32_LIBDIR)/libBulletDynamics.a \
+WIN32_LIBS = $(WIN32_LIBDIR)/libBulletDynamics.a \
              $(WIN32_LIBDIR)/libBulletCollision.a \
              $(WIN32_LIBDIR)/libLinearMath.a \
              $(WIN32_LIBDIR)/libfreetype.a \
@@ -140,4 +140,3 @@ Lighting.o: src/graphics/Lighting.cpp
 
 OGLFT.o: src/graphics/OGLFT.cpp
 	$(CC) -c $(CCFLAGS) src/graphics/OGLFT.cpp
-

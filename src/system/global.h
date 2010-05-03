@@ -1,8 +1,8 @@
-#include "../state/StateManager.h"
-#include "../helper/camera.h"
-
 #ifndef _GLOBAL_H_
 #define _GLOBAL_H_
+
+#include "../state/StateManager.h"
+#include "../helper/camera.h"
 
 /*
  * All values within global namespace will be available for everyone

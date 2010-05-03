@@ -6,6 +6,10 @@
 #include <stdarg.h>
 #include <string.h>
 #include <ctype.h>
+#ifdef _WIN32
+    #include <windows.h>
+    #include <GL/glew.h>
+#endif
 #include <GL/glut.h>
 #include <list>
 #include <vector>
@@ -14,7 +18,7 @@
 #include "OGLFT.h"
 
 // only on Linux (for shell command passthru)
-#ifndef WIN32
+#ifndef _WIN32
     #include <unistd.h>
     #include <sys/select.h>
 #endif

@@ -1,5 +1,4 @@
 #include "Physics.h"
-#include <stdio.h>
 
 #define GROUND_HEIGHT 10
 using namespace std;

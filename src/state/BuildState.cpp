@@ -1,4 +1,8 @@
 #include <map>
+#ifdef _WIN32
+    #include <windows.h>
+    #include <glew.h>
+#endif
 #include <GL/glut.h>
 #include <math.h>
 

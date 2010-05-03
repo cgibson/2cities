@@ -7,13 +7,14 @@
  *
  */
 
-
-#include <GL/gl.h>
-#include <GL/glu.h>
+#ifdef _WIN32
+    #include <windows.h>
+    #include <GL/glew.h>
+#endif
 #include <GL/glut.h>
-
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <string>
 
 using namespace std;

@@ -1,12 +1,4 @@
-#include <GL/gl.h>
-#include <GL/glut.h>
-#include <string>
-
 #include "graphics.h"
-#include "Lighting.h"
-#include "../system/io.h"
-#include "../helper/GLSL_helper.h"
-
 
 namespace gfx{
 

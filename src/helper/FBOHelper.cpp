@@ -1,7 +1,5 @@
 #include "FBOHelper.h"
-#include "GL/gl.h"
-#include "GL/glext.h"
-#include <stdio.h>
+
 FBOHelper::FBOHelper( void )
 {
   mFboID = 0;
@@ -18,7 +16,7 @@ bool FBOHelper::generateShadowFBO( int w, int h )
 {
   mWidth = w;
   mHeight = h;
-		
+
 	// generate new FBO
 	glGenFramebuffersEXT( 1, &mFboID );
 	glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, mFboID );

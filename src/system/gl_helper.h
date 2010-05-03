@@ -1,9 +1,13 @@
-#include <GL/gl.h>
-#include <GL/glut.h>
-#include "global.h"
-
 #ifndef _GL_HELPER_H_
 #define _GL_HELPER_H_
+
+#ifdef _WIN32
+    #include <windows.h>
+    #include <GL/glew.h>
+#endif
+#include <GL/glut.h>
+
+#include "global.h"
 
 namespace gl{
   void init()

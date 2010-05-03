@@ -1,9 +1,14 @@
 #ifndef _VECTOR_H_
 #define _VECTOR_H_
 
-#include <GL/gl.h>
-#include <GL/glu.h>
+#ifdef _WIN32
+    #include <windows.h>
+    #include <GL/glew.h>
+#endif
 #include <GL/glut.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 
 class Vector {
 public:

@@ -1,10 +1,4 @@
 #include "Vector.h"
-#include "stdio.h"
-#include "math.h"
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
-#include <stdlib.h>
 
 Vector::Vector(GLdouble x, GLdouble y, GLdouble z)
 {

@@ -1,16 +1,5 @@
-#include <GL/gl.h>
-#include <GL/glut.h>
 #include "renderer.h"
-#include "../helper/Vector.h"
-#include "../system/global.h"
-#include "../graphics/graphics.h"
-#include "../state/CarnageState.h"
-#include "Material.h"
-
-#include <stdio.h>
-#include <iostream>
-#include <vector>
-//#include "../system/global.h"
+#include "graphics.h"
 
 Renderer::Renderer()
 {

@@ -1,9 +1,4 @@
 #include "GLSL_helper.h"
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
-#include <string.h>
-#include <string>
 
 using namespace std;
 

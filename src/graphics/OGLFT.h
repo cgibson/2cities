@@ -29,8 +29,13 @@
 #ifdef HAVE_MPATROL
 #include <mpdebug.h>
 #endif
-#include <GL/gl.h>
-#include <GL/glu.h>
+#ifdef _WIN32
+    #include <windows.h>
+    #include <GL/glew.h>
+#else
+    #include <GL/gl.h>
+    #include <GL/glu.h>
+#endif
 
 #ifndef OGLFT_NO_SOLID
 #include <GL/gle.h>

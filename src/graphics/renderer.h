@@ -1,12 +1,23 @@
+#ifndef _RENDERER_H_
+#define _RENDERER_H_
+
+#ifdef _WIN32
+    #include <windows.h>
+    #include <GL/glew.h>
+#endif
+#include <GL/glut.h>
+#include <stdio.h>
+#include <iostream>
+#include <vector>
+
 #include "../helper/Vector.h"
+#include "../system/global.h"
 #include "../helper/FBOHelper.h"
 #include "Material.h"
 #include "Lighting.h"
+#include "../state/CarnageState.h"
 
 using namespace std;
-
-#ifndef _RENDERER_H_
-#define _RENDERER_H_
 
 class Renderer{
 public:

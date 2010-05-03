@@ -1,7 +1,7 @@
 #ifndef _PHYSOBJ_H_
 #define _PHYSOBJ_H_
 
-#include "Vector.h"
+#include "../helper/Vector.h"
 #include "btBulletDynamicsCommon.h"
 
 #define AMMO_MASS 1

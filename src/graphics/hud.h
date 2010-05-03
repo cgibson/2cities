@@ -1,6 +1,10 @@
 #ifndef _HUD_H_
 #define _HUD_H_
 
+#ifdef _WIN32
+    #include <windows.h>
+    #include <GL/glew.h>
+#endif
 #include <stdlib.h>
 #include <GL/glut.h>
 #include "../system/global.h"

@@ -1,10 +1,11 @@
 #ifndef _PHYSICS_H_
 #define _PHYSICS_H_
 
-#include "btBulletDynamicsCommon.h"
-#include "../state/Vector.h"
-#include "../state/PhysObj.h"
+#include <stdio.h>
 #include <vector>
+#include "btBulletDynamicsCommon.h"
+#include "../helper/Vector.h"
+#include "../state/PhysObj.h"
 
 //#define AMMO_MASS 10
 //#define BLDG_BLOCK_MASS 1

@@ -1,5 +1,3 @@
-#include "../state/StateManager.h"
-#include "../helper/camera.h"
 #include "global.h"
 
 /*

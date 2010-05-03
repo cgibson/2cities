@@ -1,8 +1,13 @@
 #ifndef MATERIAL_INC
 #define MATERIAL_INC
 
+#ifdef _WIN32
+    #include <windows.h>
+    #include <GL/glew.h>
+#endif
 #include <GL/glut.h>
 #include <stdio.h>
+
 class Material {
   public:
     GLfloat ambient[4];

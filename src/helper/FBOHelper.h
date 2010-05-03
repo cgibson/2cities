@@ -1,7 +1,14 @@
 #ifndef _FBO_HELPER_H_
 #define _FBO_HELPER_H_
 
-#include "GL/gl.h"
+#ifdef _WIN32
+    #include <windows.h>
+    #include <GL/glew.h>
+#else
+    #include <GL/gl.h>
+    #include <GL/glext.h>
+#endif
+#include <stdio.h>
 
 class FBOHelper
 {

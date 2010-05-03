@@ -1,4 +1,8 @@
 #include <map>
+#ifdef _WIN32
+    #include <windows.h>
+    #include <GL/glew.h>
+#endif
 #include <GL/glut.h>
 
 #include "CarnageState.h"

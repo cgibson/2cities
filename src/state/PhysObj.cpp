@@ -1,5 +1,5 @@
 #include "PhysObj.h"
-#include "Vector.h"
+#include "../helper/Vector.h"
 
 btCollisionShape * DummyAmmoUnit::shape = new btSphereShape(
     btScalar(AMMO_RADIUS));

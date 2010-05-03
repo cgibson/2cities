@@ -1,7 +1,5 @@
 #include "Lighting.h"
-#include "../helper/Vector.h"
-#include <GL/glut.h>
-#include <stdio.h>
+
 LightData lights[MAX_LIGHTS];
 
 LightData::LightData()

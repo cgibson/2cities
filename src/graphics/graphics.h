@@ -1,12 +1,18 @@
-#include <GL/gl.h>
+#ifndef _GRAPHICS_H_
+#define _GRAPHICS_H_
+
+#ifdef _WIN32
+    #include <windows.h>
+    #include <GL/glew.h>
+#endif
 #include <GL/glut.h>
 #include <string>
 
+#include "Lighting.h"
 #include "renderer.h"
 #include "hud.h"
-
-#ifndef _GRAPHICS_H_
-#define _GRAPHICS_H_
+#include "../system/io.h"
+#include "../helper/GLSL_helper.h"
 
 namespace gfx{
 

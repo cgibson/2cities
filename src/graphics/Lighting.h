@@ -1,6 +1,15 @@
 #ifndef LIGHTING_INC
 #define LIGHTING_INC
 
+#ifdef _WIN32
+    #include <windows.h>
+    #include <GL/glew.h>
+#endif
+#include <GL/glut.h>
+#include <stdio.h>
+
+#include "../helper/Vector.h"
+
 #define MAX_LIGHTS 3
  
 class LightData {

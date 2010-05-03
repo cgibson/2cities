@@ -34,9 +34,10 @@ namespace io {
 	x -= (global::width >> 1);
 	y -= (global::height >> 1);
 
-    mouse_x = x;
-    mouse_y = y;
+    mouse_x += x;
+    mouse_y += y;
   }
+
   void mouse_window(int state) {
     if (state == GLUT_LEFT)
     	warp_mouse = false;

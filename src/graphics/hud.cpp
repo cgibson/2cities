@@ -1,7 +1,5 @@
 #include "hud.h"
 #include "graphics.h"
-#include "../system/global.h"
-#include "../state/CarnageState.h"
 
 Hud::Hud()
 {
@@ -14,7 +12,6 @@ void Hud::init()
 
     // register commands with the console
     console.registerCmd("hello", Hud::hello);
-    console.registerCmd("load", Hud::load);
     console.registerCmd("exit", Hud::exitApp);
     console.registerCmd("clear", Hud::clearConsole);
 }
@@ -28,20 +25,6 @@ void Hud::hello(int argc, char *argv[])
     }
 
     gfx::hud.console.info("Hello, %s!", argv[1]);
-}
-
-void Hud::load(int argc, char *argv[])
-{
-    if (argc != 2)
-    {
-        gfx::hud.console.error("Usage: %s <level file>", argv[0]);
-        return;
-    }
-
-    CarnageState *st = (CarnageState*)global::stateManager.currentState;
-    
-    //st->physics.clearWorld();
-    st->physics.loadFromFile(argv[1]);
 }
 
 void Hud::exitApp(int argc, char *argv[])

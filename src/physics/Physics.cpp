@@ -120,11 +120,6 @@ vector<Vector> Physics::fileToBlockLocations(char * fileName)
   return result;
 }
 
-void Physics::clearWorld()
-{
-  //Physics::emptyWorld();
-}
-
 // The current implementation only adds blocks to the world, no reinitilization.
 int Physics::loadFromFile(char * fileName)
 {

@@ -37,7 +37,6 @@ class Physics
     // Advance the simulation by timeChange milliseconds
     void update(int timeChange);
     int loadFromFile(char * fileName);
-    void clearWorld();
 };
 
 #endif

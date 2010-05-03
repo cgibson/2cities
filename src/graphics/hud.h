@@ -27,7 +27,6 @@ public:
 
     // console commands
     static void hello(int argc, char *argv[]);
-    static void load(int argc, char *argv[]);
     static void exitApp(int argc, char *argv[]);
     static void clearConsole(int argc, char *argv[]);
 

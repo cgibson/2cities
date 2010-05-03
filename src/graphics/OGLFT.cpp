@@ -2535,11 +2535,13 @@ namespace OGLFT {
 
     tess_obj_ = gluNewTess();
 
-    gluTessCallback( tess_obj_, GLU_TESS_VERTEX, (GLUTessCallback)vertexCallback );
+	// causing problems with the windows build... but we don't need to draw
+	// polygon fonts anyway... --Bob (5/2/2010)
+    /*gluTessCallback( tess_obj_, GLU_TESS_VERTEX, (GLUTessCallback)vertexCallback );
     gluTessCallback( tess_obj_, GLU_TESS_BEGIN, (GLUTessCallback)beginCallback );
     gluTessCallback( tess_obj_, GLU_TESS_END, (GLUTessCallback)endCallback );
     gluTessCallback( tess_obj_, GLU_TESS_COMBINE_DATA, (GLUTessCallback)combineCallback );
-    gluTessCallback( tess_obj_, GLU_TESS_ERROR, (GLUTessCallback)errorCallback );
+    gluTessCallback( tess_obj_, GLU_TESS_ERROR, (GLUTessCallback)errorCallback );*/
   }
 
   Filled::~Filled ( void )

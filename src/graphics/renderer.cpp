@@ -6,8 +6,8 @@ Renderer::Renderer()
   global::camera.eye = Vector(0,0,30);
   global::camera.lookAt = Vector(0,0,0);
   global::camera.fov = 45.0f;
-  global::camera.near = 1.0f;
-  global::camera.far = 500.0f;
+  global::camera.near_plane = 1.0f;
+  global::camera.far_plane = 500.0f;
 }
 
 void Renderer::init()
@@ -36,22 +36,22 @@ void Renderer::init_materials()
   GLfloat specular[4];
   GLfloat shininess[1];
   
-  ambient = {0.1, 0.1, 0.1, 1.0};
-  diffuse = {0.9, 0.9, 0.9, 1.0};
-  specular = {0.1, 0.1, 0.1, 1.0};
-  shininess = {100.0};
+  ambient[0] = 0.1; ambient[1] = 0.1; ambient[2] = 0.1; ambient[3] = 1.0;
+  diffuse[0] = 0.9; diffuse[1] = 0.9; diffuse[2] = 0.9; diffuse[3] = 1.0;
+  specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
+  shininess[0] = 100.0;
   groundMat = Material(ambient, diffuse, specular, shininess);
 
-  ambient = {0.1, 0.1, 0.1, 1.0};
-  diffuse = {0.9, 0.9, 0.1, 1.0};
-  specular = {0.1, 0.1, 0.1, 1.0};
-  shininess = {100.0};
+  ambient[0] = 0.1; ambient[1] = 0.1; ambient[2] = 0.1; ambient[3] = 1.0;
+  diffuse[0] = 0.9; diffuse[1] = 0.9; diffuse[2] = 0.1; diffuse[3] = 1.0;
+  specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
+  shininess[0] = 100.0;
   blockMat = Material(ambient, diffuse, specular, shininess);
 
-  ambient = {0.1, 0.1, 0.1, 1.0};
-  diffuse = {0.1, 0.9, 0.9, 1.0};
-  specular = {0.1, 0.1, 0.1, 1.0};
-  shininess = {100.0};
+  ambient[0] = 0.1; ambient[1] = 0.1; ambient[2] = 0.1; ambient[3] = 1.0;
+  diffuse[0] = 0.1; diffuse[1] = 0.9; diffuse[2] = 0.9; diffuse[3] = 1.0;
+  specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
+  shininess[0] = 100.0;
   ammoMat = Material(ambient, diffuse, specular, shininess);
 }
 
@@ -77,8 +77,8 @@ void Renderer::draw()
     glLoadIdentity();
     gluPerspective(global::camera.fov,
         global::width / (float)global::height,
-        global::camera.near,
-        global::camera.far);
+        global::camera.near_plane,
+        global::camera.far_plane);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
@@ -104,7 +104,7 @@ void Renderer::draw()
   float angle;
   
   blockMat.applyMaterial();
-  for(int i = 0; i < blocks.size(); i++)
+  for(int i = 0; i < (int)blocks.size(); i++)
   {
     BuildingUnit unit = blocks[i];
     pos = unit.getPosition();
@@ -121,7 +121,7 @@ void Renderer::draw()
   }
   
   ammoMat.applyMaterial();
-  for(int i = 0; i < ammo.size(); i++)
+  for(int i = 0; i < (int)ammo.size(); i++)
   {
     AmmoUnit unit = ammo[i];
     pos = unit.getPosition();

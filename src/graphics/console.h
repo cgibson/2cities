@@ -8,9 +8,11 @@
 #include <ctype.h>
 #ifdef _WIN32
     #include <windows.h>
-    #include <GL/glew.h>
+    #include <winGL/glew.h>
+	#include <winGL/glut.h>
+#else
+	#include <GL/glut.h>
 #endif
-#include <GL/glut.h>
 #include <list>
 #include <vector>
 #include "../system/global.h"
@@ -23,8 +25,16 @@
     #include <sys/select.h>
 #endif
 
-// REQUIRES SPECIAL BUILD RULE IN MAKEFILE!!!
-#include "../../svnrev.h"
+#ifdef _WIN32
+	#define snprintf sprintf_s
+#endif
+
+#ifndef _WIN32
+	// REQUIRES SPECIAL BUILD RULE IN MAKEFILE!!!
+	#include "../../svnrev.h"
+#else
+	#define SVN_REV "??"
+#endif
 
 #define CONSOLE_WIDTH 650
 #define CONSOLE_HEIGHT 320

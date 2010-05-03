@@ -1,9 +1,11 @@
 #include <map>
 #ifdef _WIN32
     #include <windows.h>
-    #include <glew.h>
+    #include <winGL/glew.h>
+	#include <winGL/glut.h>
+#else
+	#include <GL/glut.h>
 #endif
-#include <GL/glut.h>
 #include <math.h>
 
 #include "BuildState.h"

@@ -25,7 +25,7 @@ class PhysObj
 {
     protected:
         btRigidBody * rigidBody;
-        Vector VectorFrombtVector3(btVector3 in)
+        Vector VectorFrombtVector3(const btVector3& in)
         {
           return Vector(in.getX(), in.getY(), in.getZ());
         }

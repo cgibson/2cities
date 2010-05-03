@@ -48,7 +48,7 @@ void initState()
   CarnageState *state = (CarnageState*)global::stateManager.currentState;
 }
 
-bool initialize()
+void initialize()
 {
   
   global::width = 800;
@@ -75,6 +75,6 @@ bool initialize()
 int main(int argc, char** argv)
 {
   glutInit(&argc, argv);
-  bool r = initialize();
+  initialize();
   return 0;
 }

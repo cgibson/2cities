@@ -9,9 +9,11 @@
 
 #ifdef _WIN32
     #include <windows.h>
-    #include <GL/glew.h>
+    #include <winGL/glew.h>
+	#include <winGL/glut.h>
+#else
+	#include <GL/glut.h>
 #endif
-#include <GL/glut.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

@@ -31,10 +31,10 @@
 #endif
 #ifdef _WIN32
     #include <windows.h>
-    #include <GL/glew.h>
+    #include <winGL/glew.h>
+	#include <winGL/glut.h>
 #else
-    #include <GL/gl.h>
-    #include <GL/glu.h>
+	#include <GL/glut.h>
 #endif
 
 #ifndef OGLFT_NO_SOLID

@@ -15,8 +15,8 @@ public:
 	Vector eye;
 	Vector lookAt;
 	float fov;
-	float near;
-	float far;
+	float near_plane;
+	float far_plane;
 
 	int inverted;
 	float phiMaxAngle;
@@ -34,8 +34,8 @@ public:
 		eye    = newEye;
 		lookAt = newLookAt;
 		fov = 45.0f;
-		near = 1.0f;
-		far = 500.0f;
+		near_plane = 1.0f;
+		far_plane = 500.0f;
 
 		inverted = -1;
 		phiMaxAngle =  M_PI;
@@ -110,11 +110,11 @@ public:
 		return ret_value;
 	};
 
-	Vector rotateCamera(float delta_turn, float delta_tilt) {
+	void rotateCamera(float delta_turn, float delta_tilt) {
 		eye = orbitNode(lookAt, eye, delta_turn, delta_tilt);
 	};
 
-	Vector rotateView(float delta_turn, float delta_tilt) {
+	void rotateView(float delta_turn, float delta_tilt) {
 		lookAt = orbitNode(eye, lookAt, -delta_turn, delta_tilt * inverted);
 	};
 };

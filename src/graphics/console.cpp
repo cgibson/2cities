@@ -378,7 +378,7 @@ void Console::process(const char *cmd)
     bool only_spaces = true;
     int i = 0;
     int j = 0;
-    for (i = 0; i < strlen(cmd); i++)
+    for (i = 0; i < (int)strlen(cmd); i++)
     {
         if (isspace(cmd[i]) && only_spaces) continue;
         buffer[j] = cmd[i];
@@ -474,7 +474,7 @@ void Console::process(const char *cmd)
 
     // search through our list of functions for one with a matching name
     bool found = false;
-    for (i = 0; i < _cmds.size(); i++)
+    for (i = 0; i < (int)_cmds.size(); i++)
     {
         if (strcmp(_cmds[i].name, argv[0]) == 0)
         {
@@ -497,7 +497,7 @@ void Console::registerCmd(const char *name, void (*func)(int argc, char *argv[])
 {
     // override the command if it already exists
     bool found = false;
-    for (int i = 0; i < _cmds.size(); i++)
+    for (int i = 0; i < (int)_cmds.size(); i++)
     {
         if (strcmp(_cmds[i].name, name) == 0)
         {

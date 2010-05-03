@@ -3,10 +3,10 @@
 
 #ifdef _WIN32
     #include <windows.h>
-    #include <GL/glew.h>
+    #include <winGL/glew.h>
+	#include <winGL/glut.h>
 #else
-    #include <GL/gl.h>
-    #include <GL/glext.h>
+	#include <GL/glut.h>
 #endif
 #include <stdio.h>
 

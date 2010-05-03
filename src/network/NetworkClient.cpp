@@ -1,7 +1,4 @@
 #include "NetworkClient.h"
-#include "../system/global.h"
-#include "../state/PhysObj.h"
-#include "../state/CarnageState.h"
 
 using namespace global;
 
@@ -12,14 +9,34 @@ NetworkClient::NetworkClient() {
 NetworkClient::~NetworkClient() {}
 
 void NetworkClient::initialize() {
-
+	physicsEngine.initPhysics();
+	physicsEngine.loadFromFile("resources/test.lvl");
+	printf("Physics initialized\n");
 }
 
 void NetworkClient::update(long milli_time) {
-	//CarnageState *state = (CarnageState*)global::stateManager.currentState;
-	//state->Buildings = physics.getBuildingBlocks();
+	// Check for Packet
+
+	/*
+	// TODO // REMOVE TEMP INCLUDED CODE
+	physicsEngine.update(milli_time);
+	std::vector<BuildingUnit> physicsObjects = physicsEngine.getBuildingBlocks();
+	std::vector<WorldObject> worldObjs;
+	WorldObject worldObj;
+	for(int i=0; i<physicsObjects.size(); i++) {
+		worldObj = (WorldObject)physicsObjects[i];
+		worldObjs.push_back(worldObj);
+	}
+	((CarnageState*)global::stateManager.currentState)->objects = worldObjs;
+	*/
 }
 
-void NetworkClient::addObject(PhysObj newObj) {
-	// send request to server to add object
+void NetworkClient::addObject(enum E_WorldObjType newObjType, WorldObject newObj) {
+	// Send Enum to Server
+	sendObject(newObjType, newObj);
+}
+
+void NetworkClient::sendObject(enum E_WorldObjType newObjType, WorldObject newObj) {
+//	BuildingUnit tempObj = (BuildingUnit)newObj;
+//	physicsEngine.addBuildingBlock(tempObj);
 }

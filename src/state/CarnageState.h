@@ -9,9 +9,12 @@
 #include <vector>
 
 #include "InGameState.h"
-#include "E_State.h"
-#include "PhysObj.h"
 #include "../physics/Physics.h"
+#include "../scene/WorldObject.h"
+#include "../state/PhysObj.h"
+#include "../system/enum.h"
+
+#include "PhysObj.h"				//TODO REMOVE
 
 using namespace std;
 
@@ -25,7 +28,8 @@ using namespace std;
 class CarnageState: public InGameState
 {
     public:
-        Physics physics;
+		vector<WorldObject> objects;
+        Physics physics;  					// TODO Remove
         
         CarnageState();
         virtual ~CarnageState();

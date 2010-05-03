@@ -30,9 +30,9 @@ class WorldObject
         enumeration::E_PHYSICS physics; //NONE, DYNAMIC, STATIC
         long timestamp; //change to int?
 
-        virtual void draw();
-        virtual void update(int elapsedTime);
-        virtual void think(int elapsedTime);
+        virtual void draw() {};
+        virtual void update(int elapsedTime) {};
+        virtual void think(int elapsedTime) {};
 
     public:
         WorldObject(unsigned int newid, unsigned int newplayerid, enumeration::E_SHAPE newshape)

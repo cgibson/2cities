@@ -1,9 +1,4 @@
-#include <map>
-
 #include "NetworkServer.h"
-#include "../system/global.h"
-#include "../state/PhysObj.h"
-#include "../state/CarnageState.h"
 
 using namespace global;
 
@@ -24,6 +19,6 @@ void NetworkServer::update(long milli_time) {
 	// state->Ammo = physics.getAmmo();
 }
 
-void NetworkServer::addObject(PhysObj newObj) {
+void NetworkServer::addObject(WorldObject newObj) {
 	//physics.addAmmo(newAmmo);
 }

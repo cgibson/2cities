@@ -2,8 +2,10 @@
 #define _NETWORKSERVER_H_
 
 #include "../physics/Physics.h"
-#include "../state/PhysObj.h"
+#include "../scene/WorldObject.h"
+#include "../system/global.h"
 #include <vector>
+#include <map>
 
 class NetworkServer
 {
@@ -13,10 +15,10 @@ class NetworkServer
 
        void initialize();
        void update(long milli_time);
-       void addObject(PhysObj newObj);
+       void addObject(WorldObject newObj);
     protected:
        Physics physics;
-       std::vector<PhysObj> objects;				// Later to be WorldObj type
+       std::vector<WorldObject> objects;
 };
 
 #endif

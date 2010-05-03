@@ -33,24 +33,31 @@ CCFLAGS = $(CCFLAGS_DEBUG)
 LDFLAGS = -lGL -lGLU -lglut -lm
 
 # list of all object files
-OBJS = global.o io.o NetworkClient.o NetworkServer.o PhysObj.o \
+CLIENT_OBJS = global.o io.o NetworkClient.o NetworkServer.o PhysObj.o \
 	   BuildState.o CarnageState.o InGameState.o StateManager.o \
 	   graphics.o renderer.o hud.o console.o Vector.o main.o \
-	   Physics.o GLSL_helper.o Lighting.o FBOHelper.o OGLFT.o
+	   Physics.o GLSL_helper.o Lighting.o FBOHelper.o OGLFT.o \
+	   WorldObject.o
+
+SERVER_OBJS = global.o io.o NetworkServer.o PhysObj.o \
+	   BuildState.o CarnageState.o InGameState.o StateManager.o \
+	   Vector.o mainServer.o \
+	   Physics.o \
+	   WorldObject.o
 
 # default build rule (client and server)
 all: client server
 
 # client build rule
-client: startclient svnrev $(OBJS)
-	$(CC) $(LDFLAGS) $(OBJS) $(LIBS) -o $(CLIENT_BIN)
+client: startclient svnrev $(CLIENT_OBJS)
+	$(CC) $(LDFLAGS) $(CLIENT_OBJS) $(LIBS) -o $(CLIENT_BIN)
 	@echo "========== BUILD COMPLETE [client] =========="
 
 startclient:
 	@echo "========== BUILD STARTING [client] =========="
 
-server: startserver
-	@echo "Nothing to be done for server build (yet)."
+server: startserver svnrev $(CLIENT_OBJS)
+	$(CC) $(LDFLAGS) $(CLIENT_OBJS) $(LIBS) -o $(SERVER_BIN)
 	@echo "========== BUILD COMPLETE [server] =========="
 
 startserver:
@@ -78,6 +85,9 @@ svnrev:
 main.o: src/system/main.cpp
 	$(CC) -c $(CCFLAGS) src/system/main.cpp
 
+mainServer.o: src/system/mainServer.cpp
+	$(CC) -c $(CCFLAGS) src/system/mainServer.cpp
+
 Physics.o: src/physics/Physics.cpp
 	$(CC) -c $(CCFLAGS) src/physics/Physics.cpp
 
@@ -87,6 +97,9 @@ NetworkClient.o: src/network/NetworkClient.cpp
 NetworkServer.o: src/network/NetworkServer.cpp
 	$(CC) -c $(CCFLAGS) src/network/NetworkServer.cpp
 
+WorldObject.o: src/scene/WorldObject.cpp
+	$(CC) -c $(CCFLAGS) src/scene/WorldObject.cpp
+	
 PhysObj.o: src/state/PhysObj.cpp
 	$(CC) -c $(CCFLAGS) src/state/PhysObj.cpp
 

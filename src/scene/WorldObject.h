@@ -3,6 +3,7 @@
 
 #include "../helper/Vector.h"
 #include "../system/enum.h"
+#include "../math/quaternion.h"
 
 /**
  * Incomplete WorldObject class.
@@ -24,7 +25,7 @@ class WorldObject
         Vector position;
         Vector velocity;
         Vector force;
-        //Quaternion orientation;
+        Quaternion orientation;
         enumeration::E_SHAPE shape; //SMALL_SPHERE, MEDIUM_SPHERE, LARGE_SPHERE, SMALL_CUBE, etc
         enumeration::E_PHYSICS physics; //NONE, DYNAMIC, STATIC
         long timestamp; //change to int?
@@ -45,13 +46,13 @@ class WorldObject
         Vector getPosition() {return position;}
         Vector getVelocity() {return velocity;}
         Vector getForce() {return force;}
-        //Quaternion getOrientation() {return orientation;}
+        Quaternion getOrientation() {return orientation;}
         enumeration::E_SHAPE getShape() {return shape;}
         enumeration::E_PHYSICS getPhysics() {return physics;}
         void setPosition(Vector newposition) {position = newposition;}
         void setVelocity(Vector newvelocity) {velocity = newvelocity;}
         void setForce(Vector newforce) {force = newforce;}
-        //void setOrientation(enumeration::Quaternion neworientation) {orientation = neworientation;}
+        void setOrientation(Quaternion neworientation) {orientation = neworientation;}
         void setPhysics(enumeration::E_PHYSICS newphysics) {physics = newphysics;}
 };
 

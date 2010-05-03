@@ -1,11 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "StateManager.h"
-#include "E_State.h"
-#include "Preferences.h"
-#include "CarnageState.h"
-#include "PhysObj.h"
 
 /**
  * Represents the global game state.
@@ -28,11 +21,14 @@ StateManager::StateManager()
  * 
  * @param newState the newer state
  */
-void StateManager::changeCurrentState(e_state newState)
+void StateManager::changeCurrentState(enum E_STATE newState)
 {
     switch(newState)
     {
-    case CARNAGE_S:
+    case BUILD_STATE:
+        currentState = new BuildState();
+        break;
+    case CARNAGE_STATE:
         currentState = new CarnageState();
         break;
 

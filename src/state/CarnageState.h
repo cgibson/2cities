@@ -11,7 +11,6 @@
 #include "InGameState.h"
 #include "../physics/Physics.h"
 #include "../scene/WorldObject.h"
-#include "../state/PhysObj.h"
 #include "../system/enum.h"
 
 #include "PhysObj.h"				//TODO REMOVE
@@ -38,7 +37,7 @@ class CarnageState: public InGameState
         void update(long milli_time);
         void updateInput(long milli_time);
 
-        virtual enum e_state stateType() { return CARNAGE_S; }
+        virtual enum E_STATE stateType() { return CARNAGE_STATE; }
 
     protected:
         double ammo_recharge;

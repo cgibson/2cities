@@ -44,7 +44,7 @@ void updateLoop()
 
 void initState()
 {
-  global::stateManager.changeCurrentState(CARNAGE_S);
+  global::stateManager.changeCurrentState(CARNAGE_STATE);
   CarnageState *state = (CarnageState*)global::stateManager.currentState;
 }
 

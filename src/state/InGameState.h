@@ -3,7 +3,8 @@
 
 #include <stdlib.h>
 
-#include "E_State.h"
+#include "../system/enum.h"
+using namespace enumeration;
 
 class InGameState
 {
@@ -15,7 +16,7 @@ class InGameState
        virtual void update(long milli_time);
        virtual void updateInput(long milli_time);
 
-       virtual enum e_state stateType() { return GLOBAL_S; }
+       virtual enum E_STATE stateType() { return GLOBAL_STATE; }
 
     protected:
        double theta;

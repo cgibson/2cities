@@ -3,9 +3,12 @@
 
 #include <stdlib.h>
 
-#include "E_State.h"
+#include "InGameState.h"
 
-class BuildState
+#include "../system/enum.h"
+using namespace enumeration;
+
+class BuildState: public InGameState
 {
     public:
 	   BuildState();
@@ -16,7 +19,7 @@ class BuildState
        //void updateInput(long milli_time);
        //void updateCamera();
 
-       virtual enum e_state stateType() { return BUILD_S; }
+       virtual enum E_STATE stateType() { return BUILD_STATE; }
 };
 
 #endif

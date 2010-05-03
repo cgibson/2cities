@@ -13,6 +13,7 @@ namespace io
   extern std::map<int, int> mouse_buttons;
   extern float mouse_x;
   extern float mouse_y;
+  extern int warp_mouse;
 
   extern void key_down(unsigned char key, int x, int y);
   extern void key_up  (unsigned char key, int x, int y);
@@ -22,6 +23,7 @@ namespace io
 
   extern void mouse_click(int button, int state, int x, int y);
   extern void mouse_motion(int x, int y);
+  extern void mouse_window(int state);
 }
 
 #endif

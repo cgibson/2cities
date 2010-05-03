@@ -8,6 +8,7 @@ namespace io {
   std::map<int, int> mouse_buttons;
   float mouse_x;
   float mouse_y;
+  int warp_mouse;
 
   void key_down(unsigned char key, int x, int y) {
     keys[key] = true;
@@ -35,5 +36,11 @@ namespace io {
 
     mouse_x = x;
     mouse_y = y;
+  }
+  void mouse_window(int state) {
+    if (state == GLUT_LEFT)
+    	warp_mouse = false;
+    else
+    	warp_mouse = true;
   }
 }

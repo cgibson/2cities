@@ -41,10 +41,12 @@ void CarnageState::initialize() {
    glutMotionFunc(&io::mouse_motion);
    glutPassiveMotionFunc(&io::mouse_motion);
    glutSetCursor(GLUT_CURSOR_NONE);
+   glutEntryFunc(&io::mouse_window);
    
    camera.eye = Vector( 0.0f, 30.0f, 30.0f);
    camera.lookAt = Vector( 0.0f, 0.0f, 0.0f);
    mouse_buttons[GLUT_LEFT_BUTTON] = GLUT_UP;
+   warp_mouse = true;
 
    physics.initPhysics();
 
@@ -88,7 +90,9 @@ void CarnageState::updateInput(long milli_time) {
    float deltaCamTilt = 0;
    float deltaCamTurn = 0;
 
-   glutWarpPointer(global::width >> 1, global::height >> 1);
+   if(warp_mouse) {
+	   glutWarpPointer(global::width >> 1, global::height >> 1);
+   }
    if(mouse_x != 0) {
 	   deltaCamTurn =  mouse_x * MOUSE_SPEED * (milli_time / 1000.0f);
 	   mouse_x = 0;
@@ -97,7 +101,6 @@ void CarnageState::updateInput(long milli_time) {
    	   deltaCamTilt = -mouse_y * MOUSE_SPEED * (milli_time / 1000.0f);
    	   mouse_y = 0;
    }
-   //printf("deltaCamTurn=%4.6f deltaCamTilt=%4.6f\n", deltaCamTurn, deltaCamTilt);
    if(special_keys[GLUT_KEY_UP]) {
 	   deltaCamTilt += ANGLE_SPEED * (milli_time / 1000.0f);
    }
@@ -111,6 +114,7 @@ void CarnageState::updateInput(long milli_time) {
 	   deltaCamTurn += ANGLE_SPEED * (milli_time / 1000.0f);
    }
    if(deltaCamTurn || deltaCamTilt) {
+	   //printf("deltaCamTurn=%4.6f deltaCamTilt=%4.6f\n", deltaCamTurn, deltaCamTilt);
 	   camera.inverted = 1;
 	   camera.phiMaxAngle = M_PI;
 	   camera.phiMinAngle =-M_PI;

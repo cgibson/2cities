@@ -30,7 +30,7 @@ void updateLoop()
     ((CarnageState*)global::stateManager.currentState)->physics.update(elapsed);
 
     InGameState *curstate = global::stateManager.currentState;
-    for(int i = 0; i < curstate->objects.size(); i++)
+    for(int i = 0; i < (int)curstate->objects.size(); i++)
     {
       curstate->objects[i].update(elapsed);
     }

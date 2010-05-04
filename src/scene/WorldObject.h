@@ -1,7 +1,13 @@
 #ifndef _WORLDOBJECT_H_
 #define _WORLDOBJECT_H_
 
-#include "GL/glut.h"
+#ifdef _WIN32
+    #include <windows.h>
+    #include <winGL/glew.h>
+	#include <winGL/glut.h>
+#else
+	#include <GL/glut.h>
+#endif
 
 #include "../helper/Vector.h"
 #include "../system/enum.h"

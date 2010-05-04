@@ -1,15 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "2cities-vs2010", "2cities-vs2010.vcxproj", "{E580ED14-E7F8-41E7-966B-510716326E95}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "client", "client.vcxproj", "{9317EA3F-859F-488E-951C-13EB305C9ECE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "server", "server.vcxproj", "{CBB76960-494F-46B9-BE0C-550437B5D12F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E580ED14-E7F8-41E7-966B-510716326E95}.Release|Win32.ActiveCfg = Release|Win32
-		{E580ED14-E7F8-41E7-966B-510716326E95}.Release|Win32.Build.0 = Release|Win32
+		{9317EA3F-859F-488E-951C-13EB305C9ECE}.Release|Win32.ActiveCfg = Release|Win32
+		{9317EA3F-859F-488E-951C-13EB305C9ECE}.Release|Win32.Build.0 = Release|Win32
+		{CBB76960-494F-46B9-BE0C-550437B5D12F}.Release|Win32.ActiveCfg = Release|Win32
+		{CBB76960-494F-46B9-BE0C-550437B5D12F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

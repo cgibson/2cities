@@ -1,9 +1,9 @@
 #include "AmmoUnit.h"
 
-void AmmoUnit::AmmoUnit()
+AmmoUnit::AmmoUnit()
    : WorldObject(0, 0, UNIT_SHAPE) {}
 
-void AmmoUnit::AmmoUnit(unsigned int newid, unsigned int newplayerid)
+AmmoUnit::AmmoUnit(unsigned int newid, unsigned int newplayerid)
    : WorldObject(newid, newplayerid, UNIT_SHAPE) {}
 
 void AmmoUnit::draw() {

@@ -148,7 +148,7 @@ void Renderer::draw()
   
   InGameState *curstate = global::stateManager.currentState;
   
-  for(int i = 0; i < curstate->objects.size(); i++)
+  for(int i = 0; i < (int)curstate->objects.size(); i++)
   {
     curstate->objects[i].draw();
   }

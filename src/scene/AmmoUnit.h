@@ -1,6 +1,14 @@
 #ifndef _AMMOUNIT_H_
 #define _AMMOUNIT_H_
 
+#ifdef _WIN32
+    #include <windows.h>
+    #include <winGL/glew.h>
+	#include <winGL/glut.h>
+#else
+	#include <GL/glut.h>
+#endif
+
 #include "WorldObject.h"
 #include "../system/enum.h"
 
@@ -17,14 +25,14 @@ using namespace enumeration;
  */
 class AmmoUnit: public WorldObject
 {
-    protected:
-		virtual void draw() {};
-		virtual void update(int elapsedTime) {};
-		virtual void think(int elapsedTime) {};
+	public:
+        AmmoUnit();
+        AmmoUnit(unsigned int newid, unsigned int newplayerid);
 
-    public:
-        virtual void AmmoUnit();
-        virtual void AmmoUnit(unsigned int newid, unsigned int newplayerid);
+    protected:
+		virtual void draw();
+		virtual void update(int elapsedTime);
+		virtual void think(int elapsedTime);
 };
 
 #endif

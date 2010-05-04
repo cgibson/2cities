@@ -7,7 +7,7 @@ SERVER_BIN = 2cities-server
 
 # directories to include header files for libraries
 # general format is -Iinclude/<library directory>
-INCLUDE_DIRS = -Iinclude/bullet -Iinclude/freetype
+INCLUDE_DIRS = -Iinclude/bullet -Iinclude/freetype -Iinclude/lua
 
 # anything that needs to be defined for libraries or our code
 DEFINES = -DGL_GLEXT_PROTOTYPES -DOGLFT_NO_SOLID -DOGLFT_NO_QT
@@ -20,7 +20,8 @@ LIBS = $(LIBDIR)/libBulletDynamics.a \
 	   $(LIBDIR)/libBulletCollision.a \
 	   $(LIBDIR)/libLinearMath.a \
 	   $(LIBDIR)/libfreetype.a \
-	   $(LIBDIR)/libz.a
+	   $(LIBDIR)/libz.a \
+	   $(LIBDIR)/liblua.a
 
 # compiler (NOT LINKER!) flags, such as the optimizer, include paths, defines, etc.
 CCFLAGS_DEBUG = -g $(INCLUDE_DIRS) $(DEFINES)
@@ -37,7 +38,7 @@ CLIENT_OBJS = global.o io.o NetworkClient.o NetworkServer.o PhysObj.o \
 	   BuildState.o CarnageState.o InGameState.o StateManager.o \
 	   graphics.o renderer.o hud.o console.o Vector.o main.o \
 	   Physics.o GLSL_helper.o Lighting.o FBOHelper.o OGLFT.o \
-	   WorldObject.o quaternion.o 
+	   WorldObject.o quaternion.o luahelper.o 
 
 SERVER_OBJS = global.o io.o NetworkServer.o PhysObj.o \
 	   BuildState.o CarnageState.o InGameState.o StateManager.o \
@@ -150,3 +151,6 @@ Lighting.o: src/graphics/Lighting.cpp
 
 OGLFT.o: src/graphics/OGLFT.cpp
 	$(CC) -c $(CCFLAGS) src/graphics/OGLFT.cpp
+
+luahelper.o: src/helper/luahelper.cpp
+	$(CC) -c $(CCFLAGS) src/helper/luahelper.cpp

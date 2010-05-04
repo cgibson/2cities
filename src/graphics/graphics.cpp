@@ -15,7 +15,14 @@ namespace gfx{
 
   void display()
   {
+    if(draw_wireframe)
+    {
+      glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    }
     renderer.draw();
+    
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    
     hud.draw();
     glutSwapBuffers();
   }
@@ -74,12 +81,6 @@ namespace gfx{
     
     if(io::keys['p'])
     {
-      if(draw_wireframe)
-      {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-      }else{
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-      }
         draw_wireframe = !draw_wireframe;
     }
 

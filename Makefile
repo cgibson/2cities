@@ -37,7 +37,7 @@ CLIENT_OBJS = global.o io.o NetworkClient.o NetworkServer.o PhysObj.o \
 	   BuildState.o CarnageState.o InGameState.o StateManager.o \
 	   graphics.o renderer.o hud.o console.o Vector.o main.o \
 	   Physics.o GLSL_helper.o Lighting.o FBOHelper.o OGLFT.o \
-	   WorldObject.o
+	   WorldObject.o quaternion.o 
 
 SERVER_OBJS = global.o io.o NetworkServer.o PhysObj.o \
 	   BuildState.o CarnageState.o InGameState.o StateManager.o \
@@ -120,6 +120,9 @@ renderer.o: src/graphics/renderer.cpp
 	
 Vector.o: src/helper/Vector.cpp
 	$(CC) -c $(CCFLAGS) src/helper/Vector.cpp
+
+quaternion.o: src/math/quaternion.cpp
+	$(CC) -c $(CCFLAGS) src/math/quaternion.cpp
 	
 graphics.o: src/graphics/graphics.cpp
 	$(CC) -c $(CCFLAGS) src/graphics/graphics.cpp

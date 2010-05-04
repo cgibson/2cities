@@ -1,6 +1,8 @@
 #ifndef _WORLDOBJECT_H_
 #define _WORLDOBJECT_H_
 
+#include "GL/glut.h"
+
 #include "../helper/Vector.h"
 #include "../system/enum.h"
 #include "../math/quaternion.h"
@@ -37,11 +39,11 @@ class WorldObject
             playerid = newplayerid;
             shape = newshape;
         }
-
-        virtual void draw() {};
-        virtual void update(int elapsedTime) {};
-        virtual void think(int elapsedTime) {};
         
+        virtual void draw();
+        virtual void update(int elapsedTime);
+        virtual void think(int elapsedTime);
+
         unsigned int getID() {return id;}
         unsigned int getPlayerID() {return playerid;}
         Vector getPosition() {return position;}

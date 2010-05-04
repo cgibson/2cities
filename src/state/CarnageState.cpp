@@ -50,11 +50,23 @@ void CarnageState::initialize() {
    mouse_buttons[GLUT_LEFT_BUTTON] = GLUT_UP;
    warp_mouse = true;
 
-   physics.initPhysics();
+   // TODO Test Code
+   WorldObject tmpObj = WorldObject(0,0,enumeration::SMALL_SPHERE);
+   tmpObj.setPosition(Vector(-25,1,0));
+   tmpObj.setVelocity(Vector(10,25,0));
+   tmpObj.setForce(Vector(0,-8,0));
+   objects.push_back(tmpObj);
 
-   // TODO // Temp DEV hard coded world
+   tmpObj.setPosition(Vector(-25,1,0));
+   tmpObj.setVelocity(Vector(5,25,0));
+   tmpObj.setForce(Vector(0,-8,0));
+   objects.push_back(tmpObj);
+   // END Test Code
+
+   // TODO BEGIN SECTION TO BE REMOVED
+   physics.initPhysics();
    physics.loadFromFile("resources/test.lvl");
-   // TODO END // TEMP DEV CODE
+   // END REMOVE
 }
 
 void CarnageState::update(long milli_time) {
@@ -83,7 +95,7 @@ void CarnageState::updateInput(long milli_time) {
 	   deltaLocTurn += ANGLE_SPEED * (milli_time / 1000.0f);
    }
    if(deltaLocTurn || deltaLocTilt) {
-	   camera.phiMaxAngle = M_PI;
+	   camera.phiMaxAngle = M_PI-0.14;
 	   camera.phiMinAngle = 0.0f;
 	   camera.eye = camera.orbitNode(Vector(0,0,0), camera.eye, deltaLocTurn, deltaLocTilt);
    }

@@ -29,6 +29,12 @@ void updateLoop()
     
     ((CarnageState*)global::stateManager.currentState)->physics.update(elapsed);
 
+    InGameState *curstate = global::stateManager.currentState;
+    for(int i = 0; i < curstate->objects.size(); i++)
+    {
+      curstate->objects[i].update(elapsed);
+    }
+
     // update the fps counter (every quarter second)
     frameCount++;
     if (msNow - msFps > 250)

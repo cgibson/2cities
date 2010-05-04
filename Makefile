@@ -38,13 +38,13 @@ CLIENT_OBJS = global.o io.o NetworkClient.o NetworkServer.o PhysObj.o \
 	   BuildState.o CarnageState.o InGameState.o StateManager.o \
 	   graphics.o renderer.o hud.o console.o Vector.o main.o \
 	   Physics.o GLSL_helper.o Lighting.o FBOHelper.o OGLFT.o \
-	   WorldObject.o quaternion.o luahelper.o 
+	   WorldObject.o quaternion.o luahelper.o factory.o
 
 SERVER_OBJS = global.o io.o NetworkServer.o PhysObj.o \
 	   BuildState.o CarnageState.o InGameState.o StateManager.o \
 	   Vector.o mainServer.o \
 	   Physics.o \
-	   WorldObject.o
+	   WorldObject.o factory.o
 
 # default build rule (client and server)
 all: client server
@@ -148,6 +148,9 @@ FBOHelper.o: src/helper/FBOHelper.cpp
 	
 Lighting.o: src/graphics/Lighting.cpp
 	$(CC) -c $(CCFLAGS) src/graphics/Lighting.cpp
+	
+factory.o: src/scene/factory.cpp
+	$(CC) -c $(CCFLAGS) src/scene/factory.cpp
 
 OGLFT.o: src/graphics/OGLFT.cpp
 	$(CC) -c $(CCFLAGS) src/graphics/OGLFT.cpp

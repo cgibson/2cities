@@ -15,12 +15,16 @@
 #include "hud.h"
 #include "../system/io.h"
 #include "../helper/GLSL_helper.h"
+#include "../system/enum.h"
+
+using namespace enumeration;
 
 namespace gfx{
 
   extern Renderer renderer;
   extern Hud hud;
-  
+    
+  extern Material* materials;
   
   extern GLint shSimple;          // simple shader
   

@@ -2,6 +2,8 @@
 #define _GLOBAL_H_
 
 #include "../state/StateManager.h"
+#include "../network/NetworkClient.h"
+#include "../scene/factory.h"
 #include "../helper/camera.h"
 
 /*
@@ -11,6 +13,8 @@ namespace global
 {
 
   extern StateManager stateManager; // global state manager
+  extern NetworkClient network;
+  extern ObjectFactory factory;
   
   extern int width;  // window width
   extern int height; // wondow height

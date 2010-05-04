@@ -33,16 +33,12 @@ private:
   void init_lights();
   void do_lights();
   void updateLookat();
-  void init_materials();
   
   bool initFBO();
   
   Vector eye, lookAt;
   
   Lighting light;
-  Material groundMat;
-  Material blockMat;
-  Material ammoMat;
 };
 
 #endif

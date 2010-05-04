@@ -1,10 +1,15 @@
 #include "graphics.h"
+#include <stdio.h>
+
+#define MAX_MATERIAL_COUNT 10
 
 namespace gfx{
 
   Renderer renderer;
   Hud hud;
   bool draw_wireframe;
+  
+  Material* materials;
   
   GLint shSimple;
 
@@ -20,9 +25,37 @@ namespace gfx{
     renderer.reshape(w, h);
   }
   
+  void initMaterials()
+  {
+    materials = (Material*)malloc(sizeof(Material) * MAX_MATERIAL_COUNT);
+    
+    GLfloat ambient[4];
+    GLfloat diffuse[4];
+    GLfloat specular[4];
+    GLfloat shininess[1];
+    
+    ambient[0] = 0.1; ambient[1] = 0.1; ambient[2] = 0.1; ambient[3] = 1.0;
+    diffuse[0] = 0.9; diffuse[1] = 0.9; diffuse[2] = 0.9; diffuse[3] = 1.0;
+    specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
+    shininess[0] = 100.0;
+    materials[WHITE_MAT] = Material(ambient, diffuse, specular, shininess);
+
+    ambient[0] = 0.1; ambient[1] = 0.1; ambient[2] = 0.1; ambient[3] = 1.0;
+    diffuse[0] = 0.9; diffuse[1] = 0.9; diffuse[2] = 0.1; diffuse[3] = 1.0;
+    specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
+    shininess[0] = 100.0;
+    materials[YELLOW_MAT] = Material(ambient, diffuse, specular, shininess);
+
+    ambient[0] = 0.1; ambient[1] = 0.1; ambient[2] = 0.1; ambient[3] = 1.0;
+    diffuse[0] = 0.1; diffuse[1] = 0.1; diffuse[2] = 0.9; diffuse[3] = 1.0;
+    specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
+    shininess[0] = 100.0;
+    materials[BLUE_MAT] = Material(ambient, diffuse, specular, shininess);
+  }
 
   void init()
   {
+    initMaterials();
     loadShaders();
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);

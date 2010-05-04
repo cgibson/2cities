@@ -1,12 +1,38 @@
 #include "WorldObject.h"
+#include "../system/global.h"
+#include "../graphics/graphics.h"
+#include "stdio.h"
 
 void WorldObject::draw() {
 	Vector pos = getPosition();
-    glPushMatrix();
-    glTranslatef(pos.x(), pos.y(), pos.z());
-    glColor3f(1,0,0);
-    glutSolidSphere(1,10,10);
-    glPopMatrix();
+	Blueprint blueprint = global::factory.getBlueprint(type);
+	
+	gfx::materials[blueprint.getMaterial()].applyMaterial();
+	
+	//gfx::materials[YELLOW_MAT].applyMaterial();
+	
+	//printf("THIS: %d\nTYPE: %d\nDUMMY_SPHERE: %d\n", type, blueprint.getType(), enumeration::DUMMY_SPHERE);
+	
+	Vector size = blueprint.getSize();
+
+  //printf("size: %f %f %f\n", size.x(), size.y(), size.z());
+
+  glPushMatrix();
+  glTranslatef(pos.x(), pos.y(), pos.z());
+  
+	switch(blueprint.getShape())
+	{
+	  case SMALL_CUBE:
+	    glScalef(size.x(), size.y(), size.z());
+	    glutSolidCube(1);
+	    break;
+	  case SMALL_SPHERE: default:
+      glutSolidSphere(size.mag(),10,10);
+      break;
+    
+  }
+  
+  glPopMatrix();
 }
 
 void WorldObject::update(int elapsedTime) {

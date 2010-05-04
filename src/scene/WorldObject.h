@@ -12,6 +12,7 @@
 #include "../helper/Vector.h"
 #include "../system/enum.h"
 #include "../math/quaternion.h"
+#include "../scene/factory.h"
 
 /**
  * Incomplete WorldObject class.
@@ -20,6 +21,7 @@
  * @version 2 May 2010
  */
 
+using namespace enumeration;
 
 /**
  * WorldObject class. Note no acceleration/gravity Vector; applying forces
@@ -34,16 +36,16 @@ class WorldObject
         Vector velocity;
         Vector force;
         Quaternion orientation;
-        enumeration::E_SHAPE shape; //SMALL_SPHERE, MEDIUM_SPHERE, LARGE_SPHERE, SMALL_CUBE, etc
-        enumeration::E_PHYSICS physics; //NONE, DYNAMIC, STATIC
+        ObjectType type; //SMALL_SPHERE, MEDIUM_SPHERE, LARGE_SPHERE, SMALL_CUBE, etc
+        PhysicsState physics; //NONE, DYNAMIC, STATIC
         long timestamp; //change to int?
 
     public:
-        WorldObject(unsigned int newid, unsigned int newplayerid, enumeration::E_SHAPE newshape)
+        WorldObject(unsigned int newid, unsigned int newplayerid, ObjectType newtype)
         {
             id = newid;
             playerid = newplayerid;
-            shape = newshape;
+            type = newtype;
         }
         
         virtual void draw();
@@ -56,13 +58,13 @@ class WorldObject
         Vector getVelocity() {return velocity;}
         Vector getForce() {return force;}
         Quaternion getOrientation() {return orientation;}
-        enumeration::E_SHAPE getShape() {return shape;}
-        enumeration::E_PHYSICS getPhysics() {return physics;}
+        ObjectType getType() {return type;}
+        PhysicsState getPhysics() {return physics;}
         void setPosition(Vector newposition) {position = newposition;}
         void setVelocity(Vector newvelocity) {velocity = newvelocity;}
         void setForce(Vector newforce) {force = newforce;}
         void setOrientation(Quaternion neworientation) {orientation = neworientation;}
-        void setPhysics(enumeration::E_PHYSICS newphysics) {physics = newphysics;}
+        void setPhysics(PhysicsState newphysics) {physics = newphysics;}
 };
 
 #endif

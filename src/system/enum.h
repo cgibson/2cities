@@ -23,11 +23,11 @@ namespace enumeration {
   // Used by Network classes to determine which WorldObject to create/load
   // ENUM Will be passed from client->server when object creation requested
   typedef enum E_WorldObjType {
-      WorldObj_WO, Ammo_WO, Building_WO, DummyAmmo_WO, DummyBuilding_WO, DUMMY_BLOCK, DUMMY_SPHERE
+      DUMMY_BLOCK, DUMMY_SPHERE
   } ObjectType;
 
   typedef enum E_MaterialType {
-    YELLOW_MAT, BLUE_MAT
+    YELLOW_MAT, BLUE_MAT, WHITE_MAT
   } MaterialType;
   
 }

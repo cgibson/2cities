@@ -8,6 +8,8 @@ namespace global
 {
 
   StateManager stateManager; // global state manager
+  NetworkClient network;
+  ObjectFactory factory;
   
   int width;  // window width
   int height; // wondow height

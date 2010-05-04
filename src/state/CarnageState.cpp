@@ -51,7 +51,7 @@ void CarnageState::initialize() {
    warp_mouse = true;
 
    // TODO Test Code
-   WorldObject tmpObj = WorldObject(0,0,enumeration::SMALL_SPHERE);
+   WorldObject tmpObj = WorldObject(0,0,enumeration::DUMMY_SPHERE);
    tmpObj.setPosition(Vector(-25,1,0));
    tmpObj.setVelocity(Vector(10,25,0));
    tmpObj.setForce(Vector(0,-8,0));

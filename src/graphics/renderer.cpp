@@ -13,8 +13,6 @@ Renderer::Renderer()
 void Renderer::init()
 {
   init_lights();
-  
-  init_materials();
 }
 
 void Renderer::updateLookat()
@@ -27,32 +25,6 @@ void Renderer::updateLookat()
 void Renderer::do_lights()
 {
   light.doLighting();
-}
-
-void Renderer::init_materials()
-{
-  GLfloat ambient[4];
-  GLfloat diffuse[4];
-  GLfloat specular[4];
-  GLfloat shininess[1];
-  
-  ambient[0] = 0.1; ambient[1] = 0.1; ambient[2] = 0.1; ambient[3] = 1.0;
-  diffuse[0] = 0.9; diffuse[1] = 0.9; diffuse[2] = 0.9; diffuse[3] = 1.0;
-  specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
-  shininess[0] = 100.0;
-  groundMat = Material(ambient, diffuse, specular, shininess);
-
-  ambient[0] = 0.1; ambient[1] = 0.1; ambient[2] = 0.1; ambient[3] = 1.0;
-  diffuse[0] = 0.9; diffuse[1] = 0.9; diffuse[2] = 0.1; diffuse[3] = 1.0;
-  specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
-  shininess[0] = 100.0;
-  blockMat = Material(ambient, diffuse, specular, shininess);
-
-  ambient[0] = 0.1; ambient[1] = 0.1; ambient[2] = 0.1; ambient[3] = 1.0;
-  diffuse[0] = 0.1; diffuse[1] = 0.9; diffuse[2] = 0.9; diffuse[3] = 1.0;
-  specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
-  shininess[0] = 100.0;
-  ammoMat = Material(ambient, diffuse, specular, shininess);
 }
 
 void Renderer::init_lights()
@@ -104,7 +76,7 @@ void Renderer::draw()
   Vector pos;
   Vector axis;
   float angle;
-  blockMat.applyMaterial();
+  gfx::materials[YELLOW_MAT].applyMaterial();
   for(int i = 0; i < (int)blocks.size(); i++)
   {
     BuildingUnit unit = blocks[i];
@@ -121,7 +93,7 @@ void Renderer::draw()
     glPopMatrix();
   }
   
-  ammoMat.applyMaterial();
+  gfx::materials[BLUE_MAT].applyMaterial();
   for(int i = 0; i < (int)ammo.size(); i++)
   {
     AmmoUnit unit = ammo[i];
@@ -133,7 +105,7 @@ void Renderer::draw()
     glPopMatrix();
   }
   
-  groundMat.applyMaterial();
+  gfx::materials[WHITE_MAT].applyMaterial();
   
   glBegin(GL_QUADS);
     glNormal3f(0,1,0);

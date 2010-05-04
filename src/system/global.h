@@ -2,18 +2,19 @@
 #define _GLOBAL_H_
 
 #include "../state/StateManager.h"
-#include "../network/NetworkClient.h"
 #include "../scene/factory.h"
 #include "../helper/camera.h"
 
 /*
  * All values within global namespace will be available for everyone
  */
+class NetworkClient;
+
 namespace global
 {
 
   extern StateManager stateManager; // global state manager
-  extern NetworkClient network;
+  extern NetworkClient *network;
   extern ObjectFactory factory;
   
   extern int width;  // window width
@@ -29,5 +30,7 @@ namespace global
 
   extern int fps; // frames per second (not necessarily *live*)
 }
+
+//#include "../network/NetworkClient.h"
 
 #endif

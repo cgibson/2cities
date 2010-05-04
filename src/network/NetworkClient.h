@@ -12,6 +12,7 @@
 
 #include "../physics/Physics.h"
 
+using namespace global;
 using namespace enumeration;
 
 enum commType { AddObject, ReqUpdateObject, ReqUpdateState };

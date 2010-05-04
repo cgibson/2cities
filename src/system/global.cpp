@@ -1,5 +1,5 @@
 #include "global.h"
-
+#include "../network/NetworkClient.h"
 /*
  * All values within global namespace will be available for everyone
  */
@@ -8,7 +8,7 @@ namespace global
 {
 
   StateManager stateManager; // global state manager
-  NetworkClient network;
+  NetworkClient *network;
   ObjectFactory factory;
   
   int width;  // window width

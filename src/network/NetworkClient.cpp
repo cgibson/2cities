@@ -1,7 +1,5 @@
 #include "NetworkClient.h"
 
-using namespace global;
-
 NetworkClient::NetworkClient() {
 	initialize();
 }
@@ -9,9 +7,11 @@ NetworkClient::NetworkClient() {
 NetworkClient::~NetworkClient() {}
 
 void NetworkClient::initialize() {
-	physicsEngine.initPhysics();
-	physicsEngine.loadFromFile("resources/test.lvl");
-	printf("Physics initialized\n");
+	printf("Network initialized\n");
+
+	//physicsEngine.initPhysics();
+	//physicsEngine.loadFromFile("resources/test.lvl");
+	//printf("Physics initialized\n");
 }
 
 void NetworkClient::update(long milli_time) {

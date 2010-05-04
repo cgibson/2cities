@@ -34,17 +34,17 @@ CCFLAGS = $(CCFLAGS_DEBUG)
 LDFLAGS = -lGL -lGLU -lglut -lm
 
 # list of all object files
-CLIENT_OBJS = global.o io.o NetworkClient.o NetworkServer.o PhysObj.o \
+CLIENT_OBJS = global.o io.o Vector.o quaternion.o \
 	   BuildState.o CarnageState.o InGameState.o StateManager.o \
-	   graphics.o renderer.o hud.o console.o Vector.o main.o \
-	   Physics.o GLSL_helper.o Lighting.o FBOHelper.o OGLFT.o \
-	   WorldObject.o quaternion.o luahelper.o factory.o
+	   hud.o console.o graphics.o renderer.o \
+	   GLSL_helper.o Lighting.o FBOHelper.o OGLFT.o luahelper.o \
+	   Physics.o PhysObj.o WorldObject.o factory.o \
+	   NetworkClient.o main.o
 
-SERVER_OBJS = global.o io.o NetworkServer.o PhysObj.o \
+SERVER_OBJS = global.o io.o Vector.o quaternion.o \
 	   BuildState.o CarnageState.o InGameState.o StateManager.o \
-	   Vector.o mainServer.o \
-	   Physics.o \
-	   WorldObject.o factory.o
+	   Physics.o PhysObj.o WorldObject.o factory.o \
+	   NetworkServer.o mainServer.o
 
 # default build rule (client and server)
 all: client server

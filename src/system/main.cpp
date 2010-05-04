@@ -4,6 +4,7 @@
 #include "gl_helper.h"
 #include "../graphics/graphics.h"
 #include "../state/CarnageState.h"
+#include "../network/NetworkClient.h"
 
 int msLast = 0;
 bool running;
@@ -69,6 +70,8 @@ void initialize()
   gfx::init();
   
   initState();
+
+  global::network->initialize();
 
   glutIdleFunc(updateLoop);
   

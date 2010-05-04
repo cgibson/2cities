@@ -18,7 +18,7 @@ class NetworkServer
        void addObject(WorldObject newObj);
     protected:
        Physics physics;
-       std::vector<WorldObject> objects;
+       std::vector<WorldObject *> objects;
 };
 
 #endif

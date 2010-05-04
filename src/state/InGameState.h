@@ -12,7 +12,7 @@ using namespace std;
 class InGameState
 {
     public:
-       vector<WorldObject> objects;
+       vector<WorldObject *> objects;
 
        InGameState();
        virtual ~InGameState();

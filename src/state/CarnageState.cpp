@@ -51,15 +51,17 @@ void CarnageState::initialize() {
    warp_mouse = true;
 
    // TODO Test Code
-   WorldObject tmpObj = WorldObject(0,0,enumeration::DUMMY_SPHERE);
-   tmpObj.setPosition(Vector(-25,1,0));
-   tmpObj.setVelocity(Vector(10,25,0));
-   tmpObj.setForce(Vector(0,-8,0));
+   WorldObject *tmpObj;
+   tmpObj = new WorldObject(0,0,enumeration::DUMMY_SPHERE);
+   tmpObj->setPosition(Vector(-25,1,0));
+   tmpObj->setVelocity(Vector(10,25,0));
+   tmpObj->setForce(Vector(0,-8,0));
    objects.push_back(tmpObj);
 
-   tmpObj.setPosition(Vector(-25,1,0));
-   tmpObj.setVelocity(Vector(5,25,0));
-   tmpObj.setForce(Vector(0,-8,0));
+   tmpObj = new WorldObject(0,0,enumeration::DUMMY_SPHERE);
+   tmpObj->setPosition(Vector(-25,1,0));
+   tmpObj->setVelocity(Vector(5,25,0));
+   tmpObj->setForce(Vector(0,-8,0));
    objects.push_back(tmpObj);
    // END Test Code
 
@@ -143,7 +145,7 @@ void CarnageState::updateInput(long milli_time) {
 	  DummyAmmoUnit ammo = DummyAmmoUnit();
 	  ammo.setPosition(camera.eye);
 	  ammo.setVelocity(dir * 50);
-	  ((CarnageState*)global::stateManager.currentState)->physics.addAmmo(ammo);
+	  ((CarnageState*)global::stateManager->currentState)->physics.addAmmo(ammo);
 
 	  ammo_recharge = RECHARGE_TIME;
    }

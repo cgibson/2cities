@@ -5,7 +5,7 @@
 
 void WorldObject::draw() {
 	Vector pos = getPosition();
-	Blueprint blueprint = global::factory.getBlueprint(type);
+	Blueprint blueprint = global::factory->getBlueprint(type);
 	
 	gfx::materials[blueprint.getMaterial()].applyMaterial();
 	

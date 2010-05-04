@@ -66,7 +66,7 @@ void Renderer::draw()
   
   //TODO: Remove BEGIN
   
-  CarnageState *state = (CarnageState*)global::stateManager.currentState;
+  CarnageState *state = (CarnageState*)global::stateManager->currentState;
   
   vector<BuildingUnit> blocks = state->physics.getBuildingBlocks();
   vector<AmmoUnit> ammo = state->physics.getAmmo();
@@ -118,11 +118,11 @@ void Renderer::draw()
   
   //TODO: Remove END
   
-  InGameState *curstate = global::stateManager.currentState;
+  InGameState *curstate = global::stateManager->currentState;
   
   for(int i = 0; i < (int)curstate->objects.size(); i++)
   {
-    curstate->objects[i].draw();
+    curstate->objects[i]->draw();
   }
   
   glUseProgram( 0 );  

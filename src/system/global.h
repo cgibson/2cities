@@ -13,9 +13,9 @@ class NetworkClient;
 namespace global
 {
 
-  extern StateManager stateManager; // global state manager
+  extern StateManager *stateManager; // global state manager
   extern NetworkClient *network;
-  extern ObjectFactory factory;
+  extern ObjectFactory *factory;
   
   extern int width;  // window width
   extern int height; // wondow height

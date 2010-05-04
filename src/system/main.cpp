@@ -26,14 +26,14 @@ void updateLoop()
 
     // update all modules
     gfx::update(elapsed);
-    global::stateManager.currentState->update(elapsed);
+    global::stateManager->currentState->update(elapsed);
     
-    ((CarnageState*)global::stateManager.currentState)->physics.update(elapsed);
+    ((CarnageState*)global::stateManager->currentState)->physics.update(elapsed);
 
-    InGameState *curstate = global::stateManager.currentState;
+    InGameState *curstate = global::stateManager->currentState;
     for(int i = 0; i < (int)curstate->objects.size(); i++)
     {
-      curstate->objects[i].update(elapsed);
+      curstate->objects[i]->update(elapsed);
     }
 
     // update the fps counter (every quarter second)
@@ -51,8 +51,8 @@ void updateLoop()
 
 void initState()
 {
-  global::stateManager.changeCurrentState(CARNAGE_STATE);
-  CarnageState *state = (CarnageState*)global::stateManager.currentState;
+  global::stateManager->changeCurrentState(CARNAGE_STATE);
+  CarnageState *state = (CarnageState*)global::stateManager->currentState;
 }
 
 void initialize()

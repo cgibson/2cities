@@ -64,6 +64,7 @@
     <ClCompile Include="src\math\quaternion.cpp" />
     <ClCompile Include="src\network\NetworkServer.cpp" />
     <ClCompile Include="src\physics\Physics.cpp" />
+    <ClCompile Include="src\scene\factory.cpp" />
     <ClCompile Include="src\scene\WorldObject.cpp" />
     <ClCompile Include="src\state\BuildState.cpp" />
     <ClCompile Include="src\state\CarnageState.cpp" />
@@ -79,6 +80,8 @@
     <ClInclude Include="src\math\quaternion.h" />
     <ClInclude Include="src\network\NetworkServer.h" />
     <ClInclude Include="src\physics\Physics.h" />
+    <ClInclude Include="src\scene\blueprint.h" />
+    <ClInclude Include="src\scene\factory.h" />
     <ClInclude Include="src\scene\WorldObject.h" />
     <ClInclude Include="src\state\BuildState.h" />
     <ClInclude Include="src\state\CarnageState.h" />

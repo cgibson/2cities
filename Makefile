@@ -39,6 +39,7 @@ CLIENT_OBJS = global.o io.o Vector.o quaternion.o \
 	   hud.o console.o graphics.o renderer.o \
 	   GLSL_helper.o Lighting.o FBOHelper.o OGLFT.o luahelper.o \
 	   Physics.o PhysObj.o WorldObject.o factory.o \
+	   UIControl.o GameUI.o BlankUI.o \
 	   NetworkClient.o main.o
 
 SERVER_OBJS = global.o io.o Vector.o quaternion.o \
@@ -157,3 +158,12 @@ OGLFT.o: src/graphics/OGLFT.cpp
 
 luahelper.o: src/helper/luahelper.cpp
 	$(CC) -c $(CCFLAGS) src/helper/luahelper.cpp
+
+UIControl.o: src/graphics/UIControl.cpp
+	$(CC) -c $(CCFLAGS) src/graphics/UIControl.cpp
+
+GameUI.o: src/graphics/GameUI.cpp
+	$(CC) -c $(CCFLAGS) src/graphics/GameUI.cpp
+
+BlankUI.o: src/graphics/BlankUI.cpp
+	$(CC) -c $(CCFLAGS) src/graphics/BlankUI.cpp

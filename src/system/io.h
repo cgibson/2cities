@@ -11,6 +11,10 @@
 #include <map>
 #include "global.h"
 
+// use these constants like GLUT_LEFT_BUTTON for the mouse wheel events
+#define MOUSE_WHEEL_UP 3
+#define MOUSE_WHEEL_DOWN 4
+
 /*
  * All values within io namespace will be available for everyone
  */

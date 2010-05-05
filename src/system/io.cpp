@@ -18,13 +18,14 @@ namespace io
         glutMouseFunc(mouse_click);
         glutMotionFunc(mouse_motion);
         glutPassiveMotionFunc(mouse_motion);
-        // TODO: add mouse wheel here
         
         // we need to initialize our mouse button states, lest
         // we be bitten by their default values!
         mouse_buttons[GLUT_LEFT_BUTTON] = GLUT_UP;
         mouse_buttons[GLUT_RIGHT_BUTTON] = GLUT_UP;
         mouse_buttons[GLUT_MIDDLE_BUTTON] = GLUT_UP;
+        mouse_buttons[MOUSE_WHEEL_UP] = GLUT_UP;
+        mouse_buttons[MOUSE_WHEEL_DOWN] = GLUT_UP;
     }
 
     void update(int ms)

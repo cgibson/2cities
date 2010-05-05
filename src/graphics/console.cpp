@@ -10,6 +10,7 @@ Console::Console()
     _consoleFont = NULL;
     _level = CONSOLE_INFO;
     _captured = false;
+    _prevMouseCapturedState = false;
     _shellfd = -1;
 }
 
@@ -357,6 +358,10 @@ void Console::capture()
     glutKeyboardUpFunc(&Console::key_up);
     glutSpecialFunc(&Console::special_key_down);
     glutSpecialUpFunc(&Console::special_key_up);
+
+    // release the mouse
+    _prevMouseCapturedState = io::captured;
+    io::release_mouse();
 }
 
 void Console::release()
@@ -368,6 +373,13 @@ void Console::release()
     glutKeyboardUpFunc(&io::key_up);
     glutSpecialFunc(&io::special_key_down);
     glutSpecialUpFunc(&io::special_key_up);
+
+    // recapture the mouse (but only if it was
+    // captured before we released it)
+    if (_prevMouseCapturedState)
+    {
+        io::capture_mouse();
+    }
 }
 
 void Console::process(const char *cmd)

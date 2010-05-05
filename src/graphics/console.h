@@ -99,6 +99,7 @@ private:
     std::list<console_line_t> _lines;
     int _level;
     bool _captured;
+    bool _prevMouseCapturedState;
     void command(const char *format, ...);
     std::vector<console_cmd_t> _cmds;
     int _shellfd;

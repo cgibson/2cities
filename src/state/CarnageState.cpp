@@ -22,7 +22,6 @@
 #define DIST 30
 #define RECHARGE_TIME 200
 
-using namespace io;
 using namespace global;
 
 CarnageState::CarnageState() {
@@ -32,23 +31,13 @@ CarnageState::CarnageState() {
 CarnageState::~CarnageState() {}
 
 void CarnageState::initialize() {
-   // Keyboard Callbacks
-   glutKeyboardFunc(&io::key_down);
-   glutKeyboardUpFunc(&io::key_up);
-   glutSpecialFunc(&io::special_key_down);
-   glutSpecialUpFunc(&io::special_key_up);
+    // i/o initializtion not done in the state
+    // anymore, it's done globally at app launch
+    // we just capture the mouse
+    io::capture_mouse();
 
-   // Mouse Callbacks
-   glutMouseFunc(&io::mouse_click);
-   glutMotionFunc(&io::mouse_motion);
-   glutPassiveMotionFunc(&io::mouse_motion);
-   glutSetCursor(GLUT_CURSOR_NONE);
-   glutEntryFunc(&io::mouse_window);
-   
    camera.eye = Vector( 0.0f, 30.0f, 30.0f);
    camera.lookAt = Vector( 0.0f, 0.0f, 0.0f);
-   mouse_buttons[GLUT_LEFT_BUTTON] = GLUT_UP;
-   warp_mouse = true;
 
    // TODO Test Code
    WorldObject *tmpObj;
@@ -78,22 +67,23 @@ void CarnageState::update(long milli_time) {
 
 void CarnageState::updateInput(long milli_time) {
    // General Keyboard Layout
-   if(keys[27])
-	  exit(0);
+    if(io::keys[27]) {
+        exit(0);
+    }
 
    // Orbit Controls
    float deltaLocTilt = 0;
    float deltaLocTurn = 0;
-   if(keys['w']) {
+   if(io::keys['w']) {
 	   deltaLocTilt += ANGLE_SPEED * (milli_time / 1000.0f);
    }
-   if(keys['s']) {
+   if(io::keys['s']) {
 	   deltaLocTilt -= ANGLE_SPEED * (milli_time / 1000.0f);
    }
-   if(keys['a']) {
+   if(io::keys['a']) {
 	   deltaLocTurn -= ANGLE_SPEED * (milli_time / 1000.0f);
    }
-   if(keys['d']) {
+   if(io::keys['d']) {
 	   deltaLocTurn += ANGLE_SPEED * (milli_time / 1000.0f);
    }
    if(deltaLocTurn || deltaLocTilt) {
@@ -106,27 +96,22 @@ void CarnageState::updateInput(long milli_time) {
    float deltaCamTilt = 0;
    float deltaCamTurn = 0;
 
-   if(warp_mouse) {
-	   glutWarpPointer(global::width >> 1, global::height >> 1);
-   }
-   if(mouse_x != 0) {
-	   deltaCamTurn =  mouse_x * MOUSE_SPEED * (milli_time / 1000.0f);
-	   mouse_x = 0;
-   }
-   if(mouse_y != 0) {
-   	   deltaCamTilt = -mouse_y * MOUSE_SPEED * (milli_time / 1000.0f);
-   	   mouse_y = 0;
-   }
-   if(special_keys[GLUT_KEY_UP]) {
+    // only update the view if the mouse is captured
+    if (io::captured)
+    {
+	    deltaCamTurn =  io::mouse_x * MOUSE_SPEED * (milli_time / 1000.0f);
+   	    deltaCamTilt = -io::mouse_y * MOUSE_SPEED * (milli_time / 1000.0f);
+    }
+   if(io::special_keys[GLUT_KEY_UP]) {
 	   deltaCamTilt += ANGLE_SPEED * (milli_time / 1000.0f);
    }
-   if(special_keys[GLUT_KEY_DOWN]) {
+   if(io::special_keys[GLUT_KEY_DOWN]) {
 	   deltaCamTilt -= ANGLE_SPEED * (milli_time / 1000.0f);
    }
-   if(special_keys[GLUT_KEY_LEFT]) {
+   if(io::special_keys[GLUT_KEY_LEFT]) {
 	   deltaCamTurn -= ANGLE_SPEED * (milli_time / 1000.0f);
    }
-   if(special_keys[GLUT_KEY_RIGHT]) {
+   if(io::special_keys[GLUT_KEY_RIGHT]) {
 	   deltaCamTurn += ANGLE_SPEED * (milli_time / 1000.0f);
    }
    if(deltaCamTurn || deltaCamTilt) {
@@ -138,7 +123,7 @@ void CarnageState::updateInput(long milli_time) {
    }
 
    // FIRE CONTROLS
-   if((keys[' '] || mouse_buttons[GLUT_LEFT_BUTTON] == GLUT_DOWN) && ammo_recharge <= 0) {
+   if((io::keys[' '] || io::mouse_buttons[GLUT_LEFT_BUTTON] == GLUT_DOWN) && ammo_recharge <= 0) {
 	  Vector dir = (camera.eye-camera.lookAt) * -1;
 	  dir.norm();
 

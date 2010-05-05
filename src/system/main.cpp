@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "global.h"
 #include "gl_helper.h"
+#include "io.h"
 #include "../graphics/graphics.h"
 #include "../state/CarnageState.h"
 #include "../network/NetworkClient.h"
@@ -25,6 +26,7 @@ void updateLoop()
     int elapsed = msNow - msLast;
 
     // update all modules
+    io::update(elapsed);
     gfx::update(elapsed);
     global::stateManager->currentState->update(elapsed);
     
@@ -58,8 +60,8 @@ void initState()
 void initialize()
 {
   
-  global::width = 800;
-  global::height = 600;
+  global::width = 1024;
+  global::height = 768;
   global::fullscreen = false;
   global::app_title = (char*)malloc(sizeof(char) * 80);
   sprintf(global::app_title, "2Cities : The Game");
@@ -67,6 +69,7 @@ void initialize()
   gl::init();
   
   // initialization of all other modules
+  io::init();
   gfx::init();
   
   initState();

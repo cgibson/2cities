@@ -22,7 +22,7 @@ class Physics
     btRigidBody * groundBody;
     std::vector<AmmoUnit> ammunition;
     std::vector<BuildingUnit> buildingBlocks;
-    std::vector<Vector> fileToBlockLocations(char * fileName);
+    std::vector<Vector> fileToBlockLocations(const char * fileName);
 //    void emptyWorld();
   public:
     btBoxShape * bldgShape;
@@ -36,7 +36,7 @@ class Physics
     void initPhysics();
     // Advance the simulation by timeChange milliseconds
     void update(int timeChange);
-    int loadFromFile(char * fileName);
+    int loadFromFile(const char * fileName);
 };
 
 #endif

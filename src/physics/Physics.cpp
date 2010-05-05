@@ -92,7 +92,7 @@ vector<BuildingUnit> Physics::getBuildingBlocks()
 
 
 
-vector<Vector> Physics::fileToBlockLocations(char * fileName)
+vector<Vector> Physics::fileToBlockLocations(const char * fileName)
 {
   vector<Vector> result;
   FILE * inFile = fopen(fileName, "r");
@@ -121,7 +121,7 @@ vector<Vector> Physics::fileToBlockLocations(char * fileName)
 }
 
 // The current implementation only adds blocks to the world, no reinitilization.
-int Physics::loadFromFile(char * fileName)
+int Physics::loadFromFile(const char * fileName)
 {
   //Physics::emptyWorld();
   /////////////////////////////////////////////////////////////////////////////

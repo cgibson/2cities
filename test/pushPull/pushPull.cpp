@@ -496,12 +496,16 @@ void check_pull(int index, Face f)
 				// IF i is "in front of" rect_element AND rect_element "passes" another rectangle
 	   		if( rectangles[index]->min.x < rectangles[i]->min.x && rectangles[index]->max.x > rectangles[i]->min.x )
 		   	{
-			  		// check if i is in the path of rect_element
-			   	if( inPullPath(rectangles[index]->max.z, rectangles[index]->min.z, rectangles[i]->max.z, rectangles[i]->min.z) )
-				   {
-					   // set pull extent to collision rectangle's face
-   					rectangles[index]->max.x = rectangles[i]->min.x;
-	   			}
+					// check if i is not on the same "level" as index
+					if(rectangles[i]->min.y == rectangles[index]->min.y)
+					{			  		
+						// check if i is in the path of rect_element
+				   	if( inPullPath(rectangles[index]->max.z, rectangles[index]->min.z, rectangles[i]->max.z, rectangles[i]->min.z) )
+					   {
+						   // set pull extent to collision rectangle's face
+   						rectangles[index]->max.x = rectangles[i]->min.x;
+	   				}
+					}
 		   	}
 				// IF index is on top of i
 				if(rectangles[index]->min.y == rectangles[i]->max.y)
@@ -520,8 +524,11 @@ void check_pull(int index, Face f)
 			{
 				if( rectangles[index]->min.z < rectangles[i]->min.z && rectangles[index]->max.z > rectangles[i]->min.z )
 				{
-					if( inPullPath(rectangles[index]->max.x, rectangles[index]->min.x, rectangles[i]->max.x, rectangles[i]->min.x) )
-						rectangles[index]->max.z = rectangles[i]->min.z;
+					if(rectangles[i]->min.y == rectangles[index]->min.y)
+					{						
+						if( inPullPath(rectangles[index]->max.x, rectangles[index]->min.x, rectangles[i]->max.x, rectangles[i]->min.x) )
+							rectangles[index]->max.z = rectangles[i]->min.z;
+					}
 				}
 
 				if(rectangles[index]->min.y == rectangles[i]->max.y)
@@ -537,8 +544,11 @@ void check_pull(int index, Face f)
 			{
 				if( rectangles[index]->max.x > rectangles[i]->max.x && rectangles[index]->min.x < rectangles[i]->max.x )
 				{
-					if( inPullPath(rectangles[index]->max.z, rectangles[index]->min.z, rectangles[i]->max.z, rectangles[i]->min.z) )
-						rectangles[index]->min.x = rectangles[i]->max.x;
+					if(rectangles[i]->min.y == rectangles[index]->min.y)
+					{
+						if( inPullPath(rectangles[index]->max.z, rectangles[index]->min.z, rectangles[i]->max.z, rectangles[i]->min.z) )
+							rectangles[index]->min.x = rectangles[i]->max.x;
+					}
 				}
 
 				if(rectangles[index]->min.y == rectangles[i]->max.y)
@@ -554,8 +564,11 @@ void check_pull(int index, Face f)
 			{
 				if( rectangles[index]->max.z > rectangles[i]->max.z && rectangles[index]->min.z < rectangles[i]->max.z )
 				{
-					if( inPullPath(rectangles[index]->max.x, rectangles[index]->min.x, rectangles[i]->max.x, rectangles[i]->min.x) )
-						rectangles[index]->min.z = rectangles[i]->max.z;
+					if(rectangles[i]->min.y == rectangles[index]->min.y)
+					{					
+						if( inPullPath(rectangles[index]->max.x, rectangles[index]->min.x, rectangles[i]->max.x, rectangles[i]->min.x) )
+							rectangles[index]->min.z = rectangles[i]->max.z;
+					}
 				}
 
 				if(rectangles[index]->min.y == rectangles[i]->max.y)
@@ -719,11 +732,16 @@ void new_push_pull(Point mouse_pos)
 	{	
 		// IF PUSH
 		if(rectangles[rect_element]->distance2Face(intersection, mouse_pos) < 0)
+		{
+			printf("push!\n");
 			adjust_face(rect_element, intersection, mouse_pos, true, false);
-		
+		}
 		// IF PULL
 		else
+		{
+			printf("pull!\n");
 			adjust_face(rect_element, intersection, mouse_pos, true, true);
+		}
 	}
 }
 

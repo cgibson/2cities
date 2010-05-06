@@ -8,6 +8,7 @@ namespace io
     float mouse_x;
     float mouse_y;
     bool captured;
+    bool captured_prev;		// Used when user left/returns to window
 
     void init()
     {
@@ -18,6 +19,7 @@ namespace io
         glutMouseFunc(mouse_click);
         glutMotionFunc(mouse_motion);
         glutPassiveMotionFunc(mouse_motion);
+        glutEntryFunc(mouse_window);
         
         // we need to initialize our mouse button states, lest
         // we be bitten by their default values!
@@ -38,7 +40,7 @@ namespace io
 
     void capture_mouse()
     {
-        captured = true;
+    	captured_prev = captured = true;
         glutSetCursor(GLUT_CURSOR_NONE);
         mouse_x = 0.0;
         mouse_y = 0.0;
@@ -47,7 +49,7 @@ namespace io
 
     void release_mouse()
     {
-        captured = false;
+    	captured_prev = captured = false;
         glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
     }
 
@@ -89,4 +91,14 @@ namespace io
             mouse_y = y;
         }
     }
+
+    void mouse_window(int state) {
+      if (state == GLUT_LEFT) {
+    	  captured_prev = captured;
+    	  captured = false;
+      }
+      else
+    	  captured = captured_prev;
+    }
+
 }

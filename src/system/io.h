@@ -55,6 +55,7 @@ namespace io
     void special_key_up(int skey, int x, int y);
     void mouse_click(int button, int state, int x, int y);
     void mouse_motion(int x, int y);
+    void mouse_window(int state);
 }
 
 #endif

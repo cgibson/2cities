@@ -158,6 +158,7 @@ double distance_between(Point A, Point B);
 Point polar_to_point(Point center, double theta, double phi, double radius);
 Point point_hard_copy(Point p);
 intPoint point_to_intPoint(Point p);
+Point intpoint_to_Point(intPoint p);
 
 // opengl methods
 Point click2point(int x, int y);

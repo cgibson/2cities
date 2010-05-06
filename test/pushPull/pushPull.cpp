@@ -16,14 +16,13 @@ int GW;
 int GH;
 Point last, mouse_pos = Point(0,0, 0);
 GLfloat light_pos[4] = {0.0, 100.0, 0.0, 1.0};
-GLUquadricObj* mySphere;
 int city_radius = 150;
 int blocksize = 10;
 
 // boolean variables
 int draw_axis = 1, rect_element = -1;
 bool delete_mode = false, look_around = false, mouse_move = false, strafe = false, pauseGame = false, circles = true;
-Face intercetion = NONE;
+Face intersection = NONE;
 Point mouse_click;
 
 // camera variables
@@ -43,8 +42,11 @@ void mouse(int button, int state, int x, int y);
 void mouseMovement(int x, int y);
 void display();
 void push_pull(Point mouse_pos);
+void new_push_pull(Point mouse_pos);
 void draw_pushPullPlanes();
 void print_rectangles();
+void recursive_push(Face f, int bottom);
+void adjust_face(int index, Face f, Point mouse_pos, bool block, bool pull);
 
 /* file format
 min.x min.y min.z max.x max.y max.z
@@ -62,28 +64,6 @@ void saveRects2File(string filename)
       // write rectangle's max and min to file
       myfile << (rectangles[i]->min.x) << " " << (rectangles[i]->min.y) << " " << (rectangles[i]->min.z) << " " 
              << (rectangles[i]->max.x) << " " << (rectangles[i]->max.y) << " " << (rectangles[i]->max.z) << endl;
-   }
-}
-
-void readRectsFromFile(string filename)
-{
-   // clear rectangles vector
-   rectangles.clear();
-   // add rectangles to vector 
-   string line;
-   ifstream myfile (filename.c_str());
-   if(myfile.is_open())
-   {
-      while(!myfile.eof())
-      {
-         // create a new rectangle
-         Rectangle3D* rect = new Rectangle3D();
-         // read one line at a time
-         myfile >> rect->min.x >> rect->min.y >> rect->min.z >> rect->max.x >> rect->max.y >> rect->max.z;
-         // push_back rectangle
-         rectangles.push_back(rect);
-      }
-      myfile.close();
    }
 }
 
@@ -159,14 +139,6 @@ void wads(int sign, Vector move_along)
 	lookAt_pt.x += sign * (move_along.head.x - move_along.tail.x);
 	lookAt_pt.y += sign * (move_along.head.y - move_along.tail.y);
 	lookAt_pt.z += sign * (move_along.head.z - move_along.tail.z);
-	
-	//print_camera_variables();	
-	// check if eye is under water
-	/*if(eye_pt.z < 1)
-	{
-		eye_pt.z = 1;
-		lookAt_pt.z = 1;
-	}*/
 }
 
 void keyboard (unsigned char key, int x, int y)
@@ -213,19 +185,6 @@ void keyboard (unsigned char key, int x, int y)
          saveRects2File(filename);
          break;
 
-      // read rectangles from file and add to rectangles vector
-      case 'r':
-         printf("READ FROM FILE: ");
-         scanf("%s", filename);
-         readRectsFromFile(filename);
-         break;
-
-      // change the blocksize
-      case 'b':
-         printf("NEW BLOCKSIZE: ");
-         scanf("%d", &blocksize);
-         break;
-
 		// exit
       case 27:
          exit(0);
@@ -259,20 +218,22 @@ void mouse(int button, int state, int x, int y)
       }
       else if(state == GLUT_UP)
       {
-			/*rectangles[rectangles.size() - 1]->min = firstPoint;
-			rectangles[rectangles.size() - 1]->max.x = (point_to_intPoint(click2point(x, y)).x);
-			rectangles[rectangles.size() - 1]->max.z = (point_to_intPoint(click2point(x, y)).z);
+			Point click = click2point(x, y);
 			// adjust click for blocksize
-			if(rectangles[rectangles.size() - 1]->max.z < 0)
-				rectangles[rectangles.size() - 1]->max.z = rectangles[rectangles.size() - 1]->max.z - ((int)rectangles[rectangles.size() - 1]->max.z % -blocksize);
+			if(click.z < 0)
+				click.z = click.z - ((int)click.z % -blocksize);
 			else
-				rectangles[rectangles.size() - 1]->max.z = rectangles[rectangles.size() - 1]->max.z - ((int)rectangles[rectangles.size() - 1]->max.z % blocksize);			
-			if(rectangles[rectangles.size() - 1]->max.x < 0)
-				rectangles[rectangles.size() - 1]->max.x = rectangles[rectangles.size() - 1]->max.x - ((int)rectangles[rectangles.size() - 1]->max.x % -blocksize);
+				click.z = click.z - ((int)click.z % blocksize);			
+			if(click.x < 0)
+				click.x = click.x - ((int)click.x % -blocksize);
 			else
-				rectangles[rectangles.size() - 1]->max.x = rectangles[rectangles.size() - 1]->max.x - ((int)rectangles[rectangles.size() - 1]->max.x % blocksize);
+				click.x = click.x - ((int)click.x % blocksize);			
+			
+			rectangles[rectangles.size() - 1]->min = firstPoint;
+			rectangles[rectangles.size() - 1]->max.x = click.x;
+			rectangles[rectangles.size() - 1]->max.z = click.z;
 			rectangles[rectangles.size() - 1]->max.y = rectangles[rectangles.size() - 1]->min.y;
-			rectangles[rectangles.size() - 1]->adjust_bases();*/
+			rectangles[rectangles.size() - 1]->adjust_bases();
 
 			firstPoint.x = -1;
 			firstPoint.y = -1;
@@ -296,9 +257,9 @@ void mouse(int button, int state, int x, int y)
             if(temp_face != NONE)
             {
 					// IF there isn't a different potential face
-					if(intercetion == NONE)
+					if(intersection == NONE)
                {
-                  intercetion = temp_face;
+                  intersection = temp_face;
                   rect_element = i;
                }   
                // IF old face has a smaller min.y change rect_element
@@ -325,7 +286,7 @@ void mouse(int button, int state, int x, int y)
 			if(rect_element != -1)			
 				rectangles[rect_element]->print_rectangle();			
 			rect_element = -1;
-         intercetion = NONE;
+         intersection = NONE;
 		}   
 	} 
 	glutPostRedisplay();
@@ -347,7 +308,7 @@ void mouseMovement(int x, int y)
 		// draw plane
 		draw_pushPullPlanes();
 		// push or pull face
-		push_pull( click2point(x, y) );
+		new_push_pull( click2point(x, y) );
 	}
 	else if(firstPoint.x != -1 && !delete_mode)
 	{
@@ -364,7 +325,7 @@ void mouseMovement(int x, int y)
 				click.x = click.x - ((int)click.x % -blocksize);
 			else
 				click.x = click.x - ((int)click.x % blocksize);
-			
+
 			firstPoint = point_to_intPoint(click);
 			int building_index = -1;
 			// IF firstPoint is on TOP of an existing rectangle3D
@@ -443,21 +404,66 @@ void mouseMovement(int x, int y)
 	glutPostRedisplay();
 }
 
-void passiveMouse(int x, int y)
+// bump up all rectangles on top of rect_index
+void recursive_bump(int bottom, int delta_height)
 {
-   /*if(delete_mode)
+	// loop over all rectangles
+	int top;
+   for(top = 0; top < rectangles.size(); top++)
    {
-      static POINT lastMouse = {0,0};
-      GetCursorPos(&lastMouse);
-      SetCursorPos(320, 240);//what?
-      float moveX = float((320 - lastMouse.x)) / 100.0f;
-      float moveY = float((240 - lastMouse.y)) / 100.0f;
-      mouse_pos.x -= moveX;
-      mouse_pos.y += moveY;
-   }*/
+      // exclude self
+      if(top != bottom)
+      {
+         // IF i.min.y == rect_element.max.y (old_height)
+         if( rectangles[top]->min.y == (rectangles[bottom]->max.y - delta_height) )
+         {
+            // IF rect_element encapsulates i
+            if(rectangles[bottom]->encapsulates((rectangles[top]->max), (rectangles[top]->min)))
+            {
+               // add the difference in heights to i
+               rectangles[top]->min.y += delta_height;
+               rectangles[top]->max.y += delta_height;
+					// call the recursize_bump
+					recursive_bump(top, delta_height);
+            }
+         }
+      }
+   }
 }
 
-// re is the rect_element, i is the rectangle being compared to re
+void blockalize_face(int index, Face f, bool pull)
+{
+	if(f == FACE1)
+	{
+		if(pull)
+			rectangles[index]->max.x = rectangles[index]->max.x - ( (rectangles[index]->max.x - rectangles[index]->min.x) % blocksize);
+		else
+			rectangles[index]->max.x = rectangles[index]->max.x + (blocksize - ( (rectangles[index]->max.x - rectangles[index]->min.x) % blocksize));
+	}	
+	else if(f == FACE2)
+	{	
+		if(pull)		
+			rectangles[index]->max.z = rectangles[index]->max.z - ( (rectangles[index]->max.z - rectangles[index]->min.z) % blocksize);
+		else
+			rectangles[index]->max.z = rectangles[index]->max.z + (blocksize - ( (rectangles[index]->max.z - rectangles[index]->min.z) % blocksize));
+	}	
+	else if(f == FACE3)
+	{	
+		if(pull)		
+			rectangles[index]->min.x = rectangles[index]->min.x + ( (rectangles[index]->max.x - rectangles[index]->min.x) % blocksize);
+		else
+			rectangles[index]->min.x = rectangles[index]->min.x - (blocksize - ( (rectangles[index]->max.x - rectangles[index]->min.x) % blocksize));
+	}	
+	else if(f == FACE4)
+	{	
+		if(pull)		
+			rectangles[index]->min.z = rectangles[index]->min.z + ( (rectangles[index]->max.z - rectangles[index]->min.z) % blocksize);
+		else
+			rectangles[index]->min.z = rectangles[index]->min.z - (blocksize - ( (rectangles[index]->max.z - rectangles[index]->min.z) % blocksize));
+	}
+}
+
+// re is the rect_element(the rect i'm moving), i is the rectangle being compared to re
 bool inPullPath(int reMax, int reMin, int iMax, int iMin)
 {
    // IF reMax OR reMin is INSIDE OF iMax AND iMin
@@ -477,38 +483,222 @@ bool inPullPath(int reMax, int reMin, int iMax, int iMin)
    return false;
 }
 
-// bump up all rectangles on top of rect_index
-void recursive_bump(int rect_index, int delta_height)
+// check for rectangle collision
+// check for tops going beyond their bottoms
+void check_pull(int index, Face f)
 {
-	// loop over all rectangles
-	int i;
-   for(i = 0; i < rectangles.size(); i++)
-   {
-      // exclude self
-      if(i != rect_element)
-      {
-         // IF i.min.y == rect_element.max.y (old_height)
-         if( rectangles[i]->min.y == (rectangles[rect_index]->max.y - delta_height) )
-         {
-            // IF rect_element encapsulates i
-            if(rectangles[rect_element]->encapsulates((rectangles[i]->max), (rectangles[i]->min)))
-            {
-               // add the difference in heights to i
-               rectangles[i]->min.y += delta_height;
-               rectangles[i]->max.y += delta_height;
-					// call the recursize_bump
-					recursive_bump(i, delta_height);
-            }
-         }
-      }
-   }
+	for(int i = 0; i < rectangles.size(); i++)
+	{
+		if(i != index)
+		{
+			if(f == FACE1)
+			{
+				// IF i is "in front of" rect_element AND rect_element "passes" another rectangle
+	   		if( rectangles[index]->min.x < rectangles[i]->min.x && rectangles[index]->max.x > rectangles[i]->min.x )
+		   	{
+			  		// check if i is in the path of rect_element
+			   	if( inPullPath(rectangles[index]->max.z, rectangles[index]->min.z, rectangles[i]->max.z, rectangles[i]->min.z) )
+				   {
+					   // set pull extent to collision rectangle's face
+   					rectangles[index]->max.x = rectangles[i]->min.x;
+	   			}
+		   	}
+				// IF index is on top of i
+				if(rectangles[index]->min.y == rectangles[i]->max.y)
+				{
+					// IF i encapsulates index
+					if(rectangles[i]->semiEncapsulates(FACE1, rectangles[index]->max, rectangles[index]->min))
+					{
+						// IF face1 of index extends over face1 of i
+						if(rectangles[index]->max.x > rectangles[i]->max.x)
+							// adjust for constraints
+							rectangles[index]->max.x = rectangles[i]->max.x;
+					}
+				}
+			}
+			else if(f == FACE2)
+			{
+				if( rectangles[index]->min.z < rectangles[i]->min.z && rectangles[index]->max.z > rectangles[i]->min.z )
+				{
+					if( inPullPath(rectangles[index]->max.x, rectangles[index]->min.x, rectangles[i]->max.x, rectangles[i]->min.x) )
+						rectangles[index]->max.z = rectangles[i]->min.z;
+				}
+
+				if(rectangles[index]->min.y == rectangles[i]->max.y)
+				{
+					if(rectangles[i]->semiEncapsulates(FACE2, rectangles[index]->max, rectangles[index]->min))
+					{
+						if(rectangles[index]->max.z > rectangles[i]->max.z)
+							rectangles[index]->max.z = rectangles[i]->max.z;
+					}
+				}
+			}			
+			else if(f == FACE3)
+			{
+				if( rectangles[index]->max.x > rectangles[i]->max.x && rectangles[index]->min.x < rectangles[i]->max.x )
+				{
+					if( inPullPath(rectangles[index]->max.z, rectangles[index]->min.z, rectangles[i]->max.z, rectangles[i]->min.z) )
+						rectangles[index]->min.x = rectangles[i]->max.x;
+				}
+
+				if(rectangles[index]->min.y == rectangles[i]->max.y)
+				{
+					if(rectangles[i]->semiEncapsulates(FACE3, rectangles[index]->max, rectangles[index]->min))
+					{
+						if(rectangles[index]->min.x < rectangles[i]->min.x)
+							rectangles[index]->min.x = rectangles[i]->min.x;
+					}
+				}				
+			}
+			else if(f == FACE4)
+			{
+				if( rectangles[index]->max.z > rectangles[i]->max.z && rectangles[index]->min.z < rectangles[i]->max.z )
+				{
+					if( inPullPath(rectangles[index]->max.x, rectangles[index]->min.x, rectangles[i]->max.x, rectangles[i]->min.x) )
+						rectangles[index]->min.z = rectangles[i]->max.z;
+				}
+
+				if(rectangles[index]->min.y == rectangles[i]->max.y)
+				{
+					if(rectangles[i]->semiEncapsulates(FACE4, rectangles[index]->max, rectangles[index]->min))
+					{
+						if(rectangles[index]->min.z < rectangles[i]->min.z)
+							rectangles[index]->min.z = rectangles[i]->min.z;
+					}
+				}
+			}
+		}
+	}
 }
 
-void push_pull(Point mouse_pos)
+void recursive_push(Face f, int bottom)
 {
-   int i;
-	// change in y
-   if(intercetion == TOP)
+	int top;
+	for(top = 0; top < rectangles.size(); top++)
+	{
+		// exclude self
+      if(top != bottom)
+      {         
+			// IF i.min.y == rect_element.max.y
+         if( rectangles[top]->min.y == rectangles[bottom]->max.y )
+         {
+				// IF rect_element encapsulates i ON THREE SIDES
+            if(rectangles[bottom]->semiEncapsulates(f, (rectangles[top]->max), (rectangles[top]->min)))
+            {
+					if(rectangles[top]->distance2Face(f, intpoint_to_Point(rectangles[bottom]->whichPoint(f))) < 0)
+					{					
+						adjust_face(top, f, intpoint_to_Point(rectangles[bottom]->whichPoint(f)), false, false);
+						recursive_push(f, top);
+					}
+				}
+			}
+		}
+	}
+}
+
+void adjust_face(int index, Face f, Point mouse_pos, bool block, bool pull)
+{
+	if(f == FACE1)
+	{
+		// change face to match mouse position
+		rectangles[index]->max.x = mouse_pos.x;
+		// IF the max (as a result of the mouse move) is less than the min
+		if(rectangles[index]->max.x <= rectangles[index]->min.x)
+		{
+			// remove the rectangle
+			rectangles.erase( rectangles.begin() + index);
+			// IF this rectangle is the one that was initially selected from mouse()
+			if(index == rect_element)
+			{
+				// restore initial state
+				rect_element = -1;
+         	intersection = NONE;
+			}
+		}
+		// IF the max is not less than the min
+		else 
+		{
+			// IF the caller wants this rectangle to be adjusted to blocksize
+			if(block)
+				blockalize_face(index, f, pull);
+			// IF the caller wants to test rectangles above this one (only in the case of a push)
+			if(!pull)
+				recursive_push(f, index);
+			else
+				check_pull(index, f);
+		}
+	}	
+	else if(f == FACE2)
+	{	
+		rectangles[index]->max.z = mouse_pos.z;
+		if(rectangles[index]->max.z <= rectangles[index]->min.z)
+		{
+			rectangles.erase( rectangles.begin() + index);
+			if(index == rect_element)
+			{
+				rect_element = -1;
+         	intersection = NONE;
+			}
+		}
+		else 
+		{
+			if(block)
+				blockalize_face(index, f, pull);
+			if(!pull)
+				recursive_push(f, index);
+			else
+				check_pull(index, f);
+		}
+	}
+	else if(f == FACE3)
+	{		
+		rectangles[index]->min.x = mouse_pos.x;
+		if(rectangles[index]->min.x >= rectangles[index]->max.x)
+		{
+			rectangles.erase( rectangles.begin() + index);
+			if(index == rect_element)
+			{
+				rect_element = -1;
+         	intersection = NONE;
+			}
+		}
+		else 
+		{
+			if(block)
+				blockalize_face(index, f, pull);
+			if(!pull)
+				recursive_push(f, index);
+			else
+				check_pull(index, f);
+		}
+	}	
+	else if(f == FACE4)
+	{
+		rectangles[index]->min.z = mouse_pos.z;
+		if(rectangles[index]->min.z >= rectangles[index]->max.z)
+		{
+			rectangles.erase( rectangles.begin() + index);
+			if(index == rect_element)
+			{
+				rect_element = -1;
+         	intersection = NONE;
+			}
+		}
+		else 
+		{
+			if(block)
+				blockalize_face(index, f, pull);
+			if(!pull)
+				recursive_push(f, index);
+			else
+				check_pull(index, f);
+		}
+	}
+}
+
+void new_push_pull(Point mouse_pos)
+{
+	if(intersection == TOP)
    {
       // move rectangles on top of this rectangle too
       // record old height
@@ -523,238 +713,17 @@ void push_pull(Point mouse_pos)
 		if(old_height != rectangles[rect_element]->max.y)
 			recursive_bump(rect_element, rectangles[rect_element]->max.y - old_height);
    }
-   // change in x
-   else if(intercetion == FACE1)
-   {
-      // record old face1
-      int old_face1 = rectangles[rect_element]->max.x;
-      //update face1
-      rectangles[rect_element]->max.x = mouse_pos.x;
-		// max.x !< min.x
-		if(rectangles[rect_element]->max.x < rectangles[rect_element]->min.x)
-         rectangles[rect_element]->max.x = rectangles[rect_element]->min.x;
-		// now test rect collsion and rects ontop of this one
-		for(i = 0; i < rectangles.size(); i++)
-		{
-			// exclude self
-			if(i != rect_element)
-			{
-            // IF i is on top of rect_element
-				if(rectangles[rect_element]->max.y == rectangles[i]->min.y)
-            {
-               // IF their face1's are the same
-               if(rectangles[i]->max.x == old_face1)
-               {
-                  // IF pushing face in
-                  if(old_face1 > rectangles[rect_element]->max.x)
-                     rectangles[i]->max.x = rectangles[rect_element]->max.x;
-                  // IF max.x < min.x, erase
-                  if(rectangles[i]->max.x < rectangles[i]->min.x)
-                     rectangles.erase( rectangles.begin() + i);
-               }
-            }
-            else
-            {
-               // IF i is "in front of" rect_element AND rect_element "passes" another rectangle
-	   			if( rectangles[rect_element]->min.x < rectangles[i]->min.x && rectangles[rect_element]->max.x > rectangles[i]->min.x )
-		   		{
-			   		// check if i is in the path of rect_element
-				   	if( inPullPath(rectangles[rect_element]->max.z, rectangles[rect_element]->min.z, rectangles[i]->max.z, rectangles[i]->min.z) )
-					   {
-						   // set pull extent to collision rectangle's face
-   						rectangles[rect_element]->max.x = rectangles[i]->min.x;
-	   				}
-		   		}
-			   }
-         }
-		}
-		// adjust for blocksize
-		rectangles[rect_element]->max.x = rectangles[rect_element]->max.x - ( (rectangles[rect_element]->max.x - rectangles[rect_element]->min.x) % blocksize);
-   }
-   // change in z
-   else if(intercetion == FACE2)
-   {
-		// record old face2
-      int old_face2 = rectangles[rect_element]->max.z;
-      //update face2      
-		rectangles[rect_element]->max.z = mouse_pos.z;
-		// max.z !< min.z
-      if(rectangles[rect_element]->max.z < rectangles[rect_element]->min.z)
-         rectangles[rect_element]->max.z = rectangles[rect_element]->min.z;
-		// now test rect collsion
-		for(i = 0; i < rectangles.size(); i++)
-		{
-			// exclude self
-			if(i != rect_element)
-			{
-				// IF i is on top of rect_element
-				if(rectangles[rect_element]->max.y == rectangles[i]->min.y)
-            {
-               // IF their face2's are the same
-               if(rectangles[i]->max.z == old_face2)
-               {
-                  // IF pushing face in
-                  if(old_face2 > rectangles[rect_element]->max.z) 
-                     rectangles[i]->max.z = rectangles[rect_element]->max.z;
-                  // IF max.z < min.z, erase
-                  if(rectangles[i]->max.z < rectangles[i]->min.z)
-                     rectangles.erase( rectangles.begin() + i);
-               }
-            }				
-				else
-				{
-					// IF i is "in front of" rect_element AND rect_element "passes" another rectangle
-					if( rectangles[rect_element]->min.z < rectangles[i]->min.z && rectangles[rect_element]->max.z > rectangles[i]->min.z )
-					{
-						// check if i is in the path of rect_element
-						if( inPullPath(rectangles[rect_element]->max.x, rectangles[rect_element]->min.x, rectangles[i]->max.x, rectangles[i]->min.x) )
-						{
-							// set pull extent to collision rectangle's face
-							rectangles[rect_element]->max.z = rectangles[i]->min.z;
-						}
-					}
-				}
-			}
-		}
-		// adjust for blocksize
-		rectangles[rect_element]->max.z = rectangles[rect_element]->max.z - ( (rectangles[rect_element]->max.z - rectangles[rect_element]->min.z) % blocksize);
-   }
-   // change in x
-   else if(intercetion == FACE3)
-   {
-		// record old face3
-      int old_face3 = rectangles[rect_element]->min.x;
-      //update face3 
-		rectangles[rect_element]->min.x = mouse_pos.x;
-		// min.x !> max.x
-      if(rectangles[rect_element]->min.x > rectangles[rect_element]->max.x)
-         rectangles[rect_element]->min.x = rectangles[rect_element]->max.x;
-		// now test rect collsion
-		for(i = 0; i < rectangles.size(); i++)
-		{
-			// exclude self
-			if(i != rect_element)
-			{
-				// IF i is on top of rect_element
-				if(rectangles[rect_element]->max.y == rectangles[i]->min.y)
-            {
-               // IF their face1's are the same
-               if(rectangles[i]->min.x == old_face3)
-               {
-                  // IF pushing face in
-                  if(old_face3 < rectangles[rect_element]->min.x)
-                     rectangles[i]->min.x = rectangles[rect_element]->min.x;
-                  // IF min.x > max.x, erase
-                  if(rectangles[i]->min.x > rectangles[i]->max.x)
-                     rectangles.erase( rectangles.begin() + i);
-               }
-            }
-            else
-            {				
-					// IF i is "in front of" rect_element AND rect_element "passes" another rectangle
-					if( rectangles[rect_element]->max.x > rectangles[i]->max.x && rectangles[rect_element]->min.x < rectangles[i]->max.x )
-					{
-						// check if i is in the path of rect_element
-						if( inPullPath(rectangles[rect_element]->max.z, rectangles[rect_element]->min.z, rectangles[i]->max.z, rectangles[i]->min.z) )
-						{
-							// set pull extent to collision rectangle's face
-							rectangles[rect_element]->min.x = rectangles[i]->max.x;
-						}
-					}
-				}
-			}
-		}
-		// adjust for blocksize
-		rectangles[rect_element]->min.x = rectangles[rect_element]->min.x + ( (rectangles[rect_element]->max.x - rectangles[rect_element]->min.x) % blocksize);
-   }
-   // change in z
-   else if(intercetion == FACE4)
-   {
-		// record old face4
-      int old_face4 = rectangles[rect_element]->min.z;
-      //update face4      
-		rectangles[rect_element]->min.z = mouse_pos.z;
-		// min.z !> max.z
-      if(rectangles[rect_element]->min.z > rectangles[rect_element]->max.z)
-         rectangles[rect_element]->min.z = rectangles[rect_element]->max.z;
-		// now test rect collsion
-		for(i = 0; i < rectangles.size(); i++)
-		{
-			// exclude self
-			if(i != rect_element)
-			{
-				// IF i is on top of rect_element
-				if(rectangles[rect_element]->max.y == rectangles[i]->min.y)
-            {
-               // IF their face2's are the same
-               if(rectangles[i]->min.z == old_face4)
-               {
-                  // IF pushing face in
-                  if(old_face4 < rectangles[rect_element]->min.z)
-                     rectangles[i]->min.z = rectangles[rect_element]->min.z;
-                  // IF min.z > max.z, erase
-                  if(rectangles[i]->min.z > rectangles[i]->max.z)
-                     rectangles.erase( rectangles.begin() + i);
-               }
-            }				
-				else
-				{				
-					// IF i is "in front of" rect_element AND rect_element "passes" another rectangle
-					if( rectangles[rect_element]->max.z > rectangles[i]->max.z && rectangles[rect_element]->min.z < rectangles[i]->max.z )
-					{
-						// check if i is in the path of rect_element
-						if( inPullPath(rectangles[rect_element]->max.x, rectangles[rect_element]->min.x, rectangles[i]->max.x, rectangles[i]->min.x) )
-						{
-							// set pull extent to collision rectangle's face
-							rectangles[rect_element]->min.z = rectangles[i]->max.z;
-						}
-					}
-				}
-			}
-		}
-		// adjust for blocksize
-		rectangles[rect_element]->min.z = rectangles[rect_element]->min.z + ( (rectangles[rect_element]->max.z - rectangles[rect_element]->min.z) % blocksize);
-   }
-   // change in y
-   else if(intercetion == BOTTOM)
-   {
-	   rectangles[rect_element]->min.y = mouse_pos.y;
-		// min.y !< 0
-      if(rectangles[rect_element]->min.y < 0)
-         rectangles[rect_element]->min.y = 0;
-   }
-   //print_rectangles();
-}
 
-void draw_mouse_cursor()
-{
-	//Will be transparent
-   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-   glEnable(GL_BLEND);
-   glDisable(GL_DEPTH_TEST);
-   
-   //Draw the cursor at the current mouse pos
-   glBegin(GL_TRIANGLES);
-     glColor4f(0.75,0.75,0.75,0.75);
-     glVertex3f(mouse_pos.x, mouse_pos.y, DEPTH);
-     glVertex3f(mouse_pos.x, mouse_pos.y - 0.5f, DEPTH);
-     glVertex3f(mouse_pos.x + 0.5f, mouse_pos.y, DEPTH);
-   glEnd();
-   
-   //Alles wird wie vorher
-   glDisable(GL_BLEND);
-   glEnable(GL_DEPTH_TEST);
-}
-
-void draw_points()
-{
-	glColor3f(119.0 / 255, 136.0 / 255, 153.0 / 255);	
-	for(int i = 0; i < points.size(); i++)
-	{
-		glPushMatrix();
-   	glTranslated(points[i].x, points[i].y, points[i].z);
-		glutSolidSphere(2, 20, 20);
-		glPopMatrix();
+	// see if mouse_pos passes blocksize thresh hold
+	if(abs(rectangles[rect_element]->distance2Face(intersection, mouse_pos)) > blocksize)
+	{	
+		// IF PUSH
+		if(rectangles[rect_element]->distance2Face(intersection, mouse_pos) < 0)
+			adjust_face(rect_element, intersection, mouse_pos, true, false);
+		
+		// IF PULL
+		else
+			adjust_face(rect_element, intersection, mouse_pos, true, true);
 	}
 }
 
@@ -766,14 +735,7 @@ void draw_rectangles()
 
 // draws xz grid
 void draw_grid()
-{   
-   /*glEnable(GL_CULL_FACE);
-   glCullFace(GL_FRONT);
-   glBindTexture(GL_TEXTURE_2D, 1);
-   glColor3f(1, 1, 1);
-   gluSphere(mySphere, 150.0, 20, 20);
-   glDisable(GL_CULL_FACE);*/
-
+{
    // draw circle
    int i, sections = 40;
    GLfloat twoPi = 2.0 * 3.14159;
@@ -782,9 +744,7 @@ void draw_grid()
    glColor3f(1, 1, 1);
    glVertex3f(0, -0.5, 0);
    for(i = 0; i <= sections; i++)
-   {
       glVertex3f(city_radius * cos(i * twoPi / sections), -0.5, city_radius * sin(i * twoPi / sections));
-   }
    glEnd();
    
    radius = 200;
@@ -804,7 +764,7 @@ void draw_pushPullPlanes()
 	GLfloat twoPi = 2.0 * 3.14159;
 	glBegin(GL_TRIANGLE_FAN);
 	glColor3f(1, 1, 1);
-	if(intercetion == TOP)
+	if(intersection == TOP)
 	{
 		// x fan
 		glVertex3f(mouse_click.x, 0, 0);
@@ -894,15 +854,6 @@ int main( int argc, char** argv )
    glClearColor(1.0, 1.0, 1.0, 1.0);
    
    init_globals();
-   
-   // load textures
-   //LoadTexture("skyline2.bmp", 1);
-   
-   // create a sphere
-   mySphere = gluNewQuadric();
-   gluQuadricDrawStyle(mySphere, GLU_FILL);
-   // make opengl generate the texture coordinates for the sphere
-   gluQuadricTexture(mySphere, GL_TRUE);
 
    //register glut callback functions
    glutDisplayFunc( display );

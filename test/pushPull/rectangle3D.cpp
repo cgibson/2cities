@@ -33,6 +33,52 @@ void Rectangle3D::print_rectangle()
 	print_ipoint(max);
 }
 
+// returns distance from point to plane (specified face)
+// will adjust distance so if pt is "inside" the plane / face distance is negative
+int Rectangle3D::distance2Face(Face f, Point pt)
+{
+	int d = 0;	
+	if(f == FACE1)
+	{
+		d = pt.x - max.x;
+	}
+	else if(f == FACE2)
+	{
+		d = pt.z - max.z;
+	}
+	else if(f == FACE3)
+	{
+		d = min.x - pt.x;
+	}
+	else if(f == FACE4)
+	{
+		d = min.z - pt.z;
+	}
+	return d;
+}
+
+intPoint Rectangle3D::whichPoint(Face f)
+{
+	if(f == FACE1 || f == FACE2)
+		return max;
+	else if(f == FACE3 || f == FACE4)
+		return min;
+}
+
+// returns true if the rectangle is inside our rect (excluding Face f)
+bool Rectangle3D::semiEncapsulates(Face f, intPoint max_testpt, intPoint min_testpt)
+{
+   if(f == FACE1 && max_testpt.z <= max.z && min_testpt.z >= min.z && min_testpt.x >= min.x && min_testpt.x <= max.x)
+		return true;
+	else if(f == FACE2 && max_testpt.x <= max.x && min_testpt.x >= min.x && min_testpt.z >= min.z && min_testpt.z <= max.z)
+		return true;
+	else if(f == FACE3 && max_testpt.z <= max.z && min_testpt.z >= min.z && max_testpt.x <= max.x && max_testpt.x >= min.x)
+		return true;
+	else if(f == FACE4 && max_testpt.x <= max.x && min_testpt.x >= min.x && max_testpt.z <= max.z && max_testpt.z >= min.z)
+		return true;
+	return false;
+}
+
 // returns true if the parameters max and min are inside of our rectangle
 bool Rectangle3D::encapsulates(intPoint max_testpt, intPoint min_testpt)
 {

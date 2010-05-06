@@ -177,6 +177,11 @@ void draw_vector(Vector v)
 	glEnd();
 }
 
+Point intpoint_to_Point(intPoint p)
+{
+   return Point(p.x, p.y, p.z);
+}
+
 intPoint point_to_intPoint(Point p)
 {
    return intPoint((int)p.x, (int)p.y, (int)p.z);

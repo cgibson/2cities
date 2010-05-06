@@ -42,6 +42,9 @@ public:
    int compute_area();
    int compute_volume();
    bool encapsulates(intPoint max_testpt, intPoint min_testpt);
+	int distance2Face(Face f, Point pt);
+	intPoint whichPoint(Face f);
+	bool semiEncapsulates(Face f, intPoint max_testpt, intPoint min_testpt);
 };
 
 #endif

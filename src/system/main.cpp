@@ -9,6 +9,7 @@
 
 int msLast = 0;
 bool running;
+E_STATE beginState;
 
 void updateLoop()
 {
@@ -29,8 +30,6 @@ void updateLoop()
     io::update(elapsed);
     gfx::update(elapsed);
     global::stateManager->currentState->update(elapsed);
-    
-    ((CarnageState*)global::stateManager->currentState)->physics.update(elapsed);
 
     InGameState *curstate = global::stateManager->currentState;
     for(int i = 0; i < (int)curstate->objects.size(); i++)
@@ -53,8 +52,7 @@ void updateLoop()
 
 void initState()
 {
-  global::stateManager->changeCurrentState(CARNAGE_STATE);
-  CarnageState *state = (CarnageState*)global::stateManager->currentState;
+  global::stateManager->changeCurrentState(beginState);
 }
 
 void initialize()
@@ -86,6 +84,16 @@ void initialize()
  */
 int main(int argc, char** argv)
 {
+
+  if(argc == 2)
+  {
+    if(!strcmp(argv[1], "-build"))
+    {
+      beginState=BUILD_STATE;
+    }
+  }else{
+    beginState=CARNAGE_STATE;
+  }
   glutInit(&argc, argv);
   initialize();
   return 0;

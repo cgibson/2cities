@@ -63,6 +63,7 @@ void CarnageState::initialize() {
 void CarnageState::update(long milli_time) {
    ammo_recharge -= milli_time;
    updateInput(milli_time);
+   physics.update(milli_time);
 }
 
 void CarnageState::updateInput(long milli_time) {

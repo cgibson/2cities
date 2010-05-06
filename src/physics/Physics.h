@@ -6,6 +6,10 @@
 #include "btBulletDynamicsCommon.h"
 #include "../helper/Vector.h"
 #include "../state/PhysObj.h"
+#include "../scene/WorldObject.h"
+#include "PhysicsBody.h"
+
+#define GROUND_HEIGHT 10
 
 //#define AMMO_MASS 10
 //#define BLDG_BLOCK_MASS 1
@@ -22,11 +26,17 @@ class Physics
     btRigidBody * groundBody;
     std::vector<AmmoUnit> ammunition;
     std::vector<BuildingUnit> buildingBlocks;
+    std::vector<WorldObject> worldObjects;
+    std::vector<WorldObject> recentChanges;
+    std::vector<PhysicsBody> physicsBodies;
     std::vector<Vector> fileToBlockLocations(const char * fileName);
+    int isUniqueID(int id);
 //    void emptyWorld();
   public:
     btBoxShape * bldgShape;
     btSphereShape * ammoShape;
+    void addWorldObject(WorldObject newObject);
+    std::vector<WorldObject> getWorldObjects();
     
     std::vector<AmmoUnit> getAmmo();
     std::vector<BuildingUnit> getBuildingBlocks();

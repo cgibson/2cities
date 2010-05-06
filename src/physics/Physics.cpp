@@ -1,6 +1,5 @@
 #include "Physics.h"
 
-#define GROUND_HEIGHT 10
 using namespace std;
 //void Physics::emptyWorld()
 
@@ -57,8 +56,67 @@ void Physics::initPhysics()
 
 void Physics::update(int timeChange)
 {
+  vector<WorldObject> changed;//////////////////////////////////////////////////////////
   if (timeChange)
     world->stepSimulation(btScalar(timeChange / 1000.0), 10);
+  int i, j;
+  bool found;
+  for (i = 0; i < worldObjects.size(); i++)
+  {
+    found = false;
+    for (j = 0; !found && j < physicsBodies.size(); j++)
+    {
+      if (physicsBodies[j].getID() == worldObjects[i].getID())
+      {
+        found = true;
+        if (physicsBodies[j].update(&worldObjects[i]))
+        {
+          changed.push_back(worldObjects[i]);
+        }
+      }
+    }
+  }
+  
+}
+
+int Physics::isUniqueID(int id)
+{
+  int i;
+  int result = 1;
+  for (i = 0; result && i < worldObjects.size(); i++)
+  {
+    if (worldObjects[i].getID() == id)
+    {
+      result = 0;
+    }
+  }
+  return result;
+}
+
+void Physics::addWorldObject(WorldObject newObject)
+{
+  
+  if (isUniqueID(newObject.getID()))
+  {
+    PhysicsBody * newBody = new PhysicsBody(newObject);
+    // stall slow objects
+    if (newObject.getPosition().mag() < .01)
+    {
+      newBody->setActivationState(ISLAND_SLEEPING);
+    }
+    world->addRigidBody(newBody);
+    worldObjects.push_back(newObject);
+    physicsBodies.push_back(*newBody);
+  }
+  else
+  {
+    // TODO provide a reaction to a non-unique ID value.
+  }
+}
+
+vector<WorldObject> Physics::getWorldObjects()
+{
+  return worldObjects;
 }
 
 void Physics::addAmmo(AmmoUnit ammo)

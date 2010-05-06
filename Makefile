@@ -38,7 +38,7 @@ CLIENT_OBJS = global.o io.o Vector.o quaternion.o \
 	   BuildState.o CarnageState.o InGameState.o StateManager.o \
 	   hud.o console.o graphics.o renderer.o \
 	   GLSL_helper.o Lighting.o FBOHelper.o OGLFT.o luahelper.o \
-	   Physics.o PhysObj.o WorldObject.o factory.o \
+	   Physics.o PhysicsBody.o PhysObj.o WorldObject.o factory.o \
 	   UIControl.o GameUI.o BlankUI.o \
 	   NetworkClient.o main.o
 
@@ -92,6 +92,9 @@ mainServer.o: src/system/mainServer.cpp
 
 Physics.o: src/physics/Physics.cpp
 	$(CC) -c $(CCFLAGS) src/physics/Physics.cpp
+
+PhysicsBody.o: src/physics/Physics.cpp
+	$(CC) -c $(CCFLAGS) src/physics/PhysicsBody.cpp
 
 NetworkClient.o: src/network/NetworkClient.cpp
 	$(CC) -c $(CCFLAGS) src/network/NetworkClient.cpp

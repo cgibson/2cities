@@ -1,11 +1,14 @@
-#ifndef _NETWORKSERVER_H_
-#define _NETWORKSERVER_H_
+#ifndef _NETWORKPRIVATE_H_
+#define _NETWORKPRIVATE_H_
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
 
+#include "NetworkSystem.h"
+
 #include "../scene/WorldObject.h"
+#include "../state/PhysObj.h" // TODO Remove with PhysObj Migration
 
 #include "../physics/Physics.h"
 
@@ -15,24 +18,22 @@
 using namespace global;
 using namespace enumeration;
 
-class NetworkServer : public NetworkSystem
+class NetworkPrivate : public NetworkSystem
 {
 protected:
-	Physics *physicsEngine;
 
 public:
-	NetworkServer();
-	~NetworkServer();
+	Physics *physicsEngine; // TODO Move to protected with PhysObj Migration
+
+	NetworkPrivate();
+	~NetworkPrivate();
 
 	virtual void initialize();
 	virtual void update(long milli_time);
 
-	virtual int getPlayerID() { return _playerID; }
-
 	// Add new object to scene
 	virtual void addObject(WorldObject newObj);
-
-	virtual void reqUpdateObj(unsigned int objID) {};
+	virtual void addObject(AmmoUnit newObj); // TODO Remove with PhysObj Migration
 };
 
 #endif

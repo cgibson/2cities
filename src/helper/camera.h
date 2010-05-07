@@ -57,8 +57,8 @@ public:
 		_theta =  atan2(dx, dz) + M_PI;
 		_phi   = -atan2(dy, dxz);
 
-		printf("updateAngles: theta=%4.2f phi=%4.2f distance=%4.2f\n", _theta, _phi, _distance);
-		printf("              camera %s lookAt %s\n", eye.str(), lookAt.str());
+		//printf("updateAngles: theta=%4.2f phi=%4.2f distance=%4.2f\n", _theta, _phi, _distance);
+		//printf("              camera %s lookAt %s\n", eye.str(), lookAt.str());
 	};
 
 	void strafe(float fwdbk, float side, float updown) {
@@ -110,13 +110,29 @@ public:
 		return ret_value;
 	};
 
+	void orbitCameraAndView(Vector node1, float delta_turn, float delta_tilt) {
+		//updateAngles();
+		eye = orbitNode(node1, eye, delta_turn, delta_tilt);
+		//rebuildView();
+	};
+
 	void rotateCamera(float delta_turn, float delta_tilt) {
+		//updateAngles();
 		eye = orbitNode(lookAt, eye, delta_turn, delta_tilt);
 	};
 
 	void rotateView(float delta_turn, float delta_tilt) {
+		//updateAngles();
 		lookAt = orbitNode(eye, lookAt, -delta_turn, delta_tilt * inverted);
 	};
+
+	void rebuildView() {
+		lookAt = Vector(
+		   sin(-_theta) * _distance * cos(-_phi),
+						 _distance * sin(-_phi),
+		   cos(-_theta) * _distance * cos(-_phi)
+		) + eye;
+	}
 };
 
 #endif

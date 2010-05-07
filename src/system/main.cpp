@@ -5,7 +5,6 @@
 #include "io.h"
 #include "../graphics/graphics.h"
 #include "../state/CarnageState.h"
-#include "../network/NetworkClient.h"
 
 int msLast = 0;
 bool running;

@@ -11,8 +11,6 @@
 #include "../physics/Physics.h"
 #include "../system/enum.h"
 
-#include "PhysObj.h"				//TODO REMOVE
-
 using namespace std;
 
 /**
@@ -25,8 +23,6 @@ using namespace std;
 class CarnageState: public InGameState
 {
     public:
-        Physics physics;  					// TODO Remove
-        
         CarnageState();
         virtual ~CarnageState();
 

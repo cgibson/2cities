@@ -6,45 +6,32 @@
 #include <vector>
 
 #include "../scene/WorldObject.h"
-#include "../state/CarnageState.h"
-#include "../state/PhysObj.h" // TODO to be removed
-#include "../system/enum.h"
-#include "../system/global.h"
 
-#include "../physics/Physics.h"
+#include "../system/global.h"
+#include "../system/enum.h"
 
 using namespace global;
 using namespace enumeration;
 
-enum commType { AddObject, ReqUpdateObject, ReqUpdateState };
-
-class NetworkClient
+class NetworkClient : public NetworkSystem
 {
-	protected:
-	    unsigned int serverIP; // Type Likely to Change
-	    unsigned int serverPort;
+protected:
 
-	    int playerID;
+public:
+	NetworkClient();
+	~NetworkClient();
 
-	    void sendObject(enum E_WorldObjType newObjType, WorldObject newObj);
+	virtual void initialize();
+	virtual void update(long milli_time);
 
-    public:
-		Physics physicsEngine; // Temp Include
+	virtual void connectServer(const char * ip, unsigned int port);
 
-	    NetworkClient();
-       ~NetworkClient();
+	virtual int getPlayerID() { return _playerID; }
 
-       void initialize();
-       void update(long milli_time);
+	// Add new object to scene
+	virtual void addObject(WorldObject newObj);
 
-       void connectServer(/*ip*/);
-
-       // Create/Send a new Object to Server for propagation/Physics
-       void addObject(WorldObject newObj);
-       void addObject(AmmoUnit newObj);
-
-       void reqUpdateObj(unsigned int objID);
-       void reqUpdateState(enum E_STATE);
+	virtual void reqUpdateObj(unsigned int objID) {};
 };
 
 #endif

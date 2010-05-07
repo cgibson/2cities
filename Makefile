@@ -40,12 +40,23 @@ CLIENT_OBJS = global.o io.o Vector.o quaternion.o \
 	   GLSL_helper.o Lighting.o FBOHelper.o OGLFT.o luahelper.o \
 	   Physics.o PhysicsBody.o PhysObj.o WorldObject.o factory.o \
 	   UIControl.o GameUI.o BlankUI.o \
-	   NetworkClient.o main.o
+	   NetworkSystem.o NetworkPrivate.o NetworkClient.o NetworkServer.o \
+	   main.o
 
+# Should be just these items but WorldObject requires graphics items currently
+#SERVER_OBJS = global.o io.o Vector.o quaternion.o \
+#	   BuildState.o CarnageState.o InGameState.o StateManager.o \
+#	   Physics.o PhysicsBody.o PhysObj.o WorldObject.o factory.o \
+#	   NetworkSystem.o NetworkPrivate.o NetworkServer.o mainServer.o
+	   
 SERVER_OBJS = global.o io.o Vector.o quaternion.o \
 	   BuildState.o CarnageState.o InGameState.o StateManager.o \
-	   Physics.o PhysObj.o WorldObject.o factory.o \
-	   NetworkServer.o mainServer.o
+	   hud.o console.o graphics.o renderer.o \
+	   GLSL_helper.o Lighting.o FBOHelper.o OGLFT.o luahelper.o \
+	   Physics.o PhysicsBody.o PhysObj.o WorldObject.o factory.o \
+	   UIControl.o GameUI.o BlankUI.o \
+	   NetworkSystem.o NetworkPrivate.o NetworkClient.o NetworkServer.o \
+	   mainServer.o
 
 # default build rule (client and server)
 all: client server
@@ -58,8 +69,8 @@ client: startclient svnrev $(CLIENT_OBJS)
 startclient:
 	@echo "========== BUILD STARTING [client] =========="
 
-server: startserver svnrev $(CLIENT_OBJS)
-	$(CC) $(LDFLAGS) $(CLIENT_OBJS) $(LIBS) -o $(SERVER_BIN)
+server: startserver svnrev $(SERVER_OBJS)
+	$(CC) $(LDFLAGS) $(SERVER_OBJS) $(LIBS) -o $(SERVER_BIN)
 	@echo "========== BUILD COMPLETE [server] =========="
 
 startserver:
@@ -84,17 +95,39 @@ svnrev:
 	echo "#endif" >> svnrev.h
 
 # individual object file build rules
+# System	
 main.o: src/system/main.cpp
 	$(CC) -c $(CCFLAGS) src/system/main.cpp
 
 mainServer.o: src/system/mainServer.cpp
 	$(CC) -c $(CCFLAGS) src/system/mainServer.cpp
 
+global.o: src/system/global.cpp
+	$(CC) -c $(CCFLAGS) src/system/global.cpp
+	
+io.o: src/system/io.cpp
+	$(CC) -c $(CCFLAGS) src/system/io.cpp
+
+# Math LibrariesNetworkSystem.o
+Vector.o: src/helper/Vector.cpp
+	$(CC) -c $(CCFLAGS) src/helper/Vector.cpp
+
+quaternion.o: src/math/quaternion.cpp
+	$(CC) -c $(CCFLAGS) src/math/quaternion.cpp
+
+# Physics
 Physics.o: src/physics/Physics.cpp
 	$(CC) -c $(CCFLAGS) src/physics/Physics.cpp
 
 PhysicsBody.o: src/physics/Physics.cpp
 	$(CC) -c $(CCFLAGS) src/physics/PhysicsBody.cpp
+
+# Network Items
+NetworkSystem.o: src/network/NetworkSystem.cpp
+	$(CC) -c $(CCFLAGS) src/network/NetworkSystem.cpp
+
+NetworkPrivate.o: src/network/NetworkPrivate.cpp
+	$(CC) -c $(CCFLAGS) src/network/NetworkPrivate.cpp
 
 NetworkClient.o: src/network/NetworkClient.cpp
 	$(CC) -c $(CCFLAGS) src/network/NetworkClient.cpp
@@ -102,12 +135,17 @@ NetworkClient.o: src/network/NetworkClient.cpp
 NetworkServer.o: src/network/NetworkServer.cpp
 	$(CC) -c $(CCFLAGS) src/network/NetworkServer.cpp
 
+# Scene Objects
 WorldObject.o: src/scene/WorldObject.cpp
 	$(CC) -c $(CCFLAGS) src/scene/WorldObject.cpp
 	
+factory.o: src/scene/factory.cpp
+	$(CC) -c $(CCFLAGS) src/scene/factory.cpp
+
 PhysObj.o: src/state/PhysObj.cpp
 	$(CC) -c $(CCFLAGS) src/state/PhysObj.cpp
-
+	
+# GameStates
 InGameState.o: src/state/InGameState.cpp
 	$(CC) -c $(CCFLAGS) src/state/InGameState.cpp
 
@@ -119,24 +157,13 @@ BuildState.o: src/state/BuildState.cpp
 
 StateManager.o: src/state/StateManager.cpp
 	$(CC) -c $(CCFLAGS) src/state/StateManager.cpp
-	
+
+# Graphics
 renderer.o: src/graphics/renderer.cpp
 	$(CC) -c $(CCFLAGS) src/graphics/renderer.cpp
-	
-Vector.o: src/helper/Vector.cpp
-	$(CC) -c $(CCFLAGS) src/helper/Vector.cpp
 
-quaternion.o: src/math/quaternion.cpp
-	$(CC) -c $(CCFLAGS) src/math/quaternion.cpp
-	
 graphics.o: src/graphics/graphics.cpp
 	$(CC) -c $(CCFLAGS) src/graphics/graphics.cpp
-	
-global.o: src/system/global.cpp
-	$(CC) -c $(CCFLAGS) src/system/global.cpp
-	
-io.o: src/system/io.cpp
-	$(CC) -c $(CCFLAGS) src/system/io.cpp
 
 hud.o: src/graphics/hud.cpp
 	$(CC) -c $(CCFLAGS) src/graphics/hud.cpp
@@ -152,9 +179,6 @@ FBOHelper.o: src/helper/FBOHelper.cpp
 	
 Lighting.o: src/graphics/Lighting.cpp
 	$(CC) -c $(CCFLAGS) src/graphics/Lighting.cpp
-	
-factory.o: src/scene/factory.cpp
-	$(CC) -c $(CCFLAGS) src/scene/factory.cpp
 
 OGLFT.o: src/graphics/OGLFT.cpp
 	$(CC) -c $(CCFLAGS) src/graphics/OGLFT.cpp

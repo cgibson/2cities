@@ -13,7 +13,8 @@
 #include "../system/io.h"
 #include "../helper/camera.h"
 #include "../helper/Vector.h"
-#include "PhysObj.h"
+
+#include "PhysObj.h" // TODO Remove with PhysObj Migration
 
 #define ANGLE_SPEED 2
 #define MOUSE_SPEED 1
@@ -53,17 +54,11 @@ void CarnageState::initialize() {
    tmpObj->setForce(Vector(0,-8,0));
    objects.push_back(tmpObj);
    // END Test Code
-
-   // TODO BEGIN SECTION TO BE REMOVED
-   physics.initPhysics();
-   //physics.loadFromFile("resources/test.lvl");
-   // END REMOVE
 }
 
 void CarnageState::update(long milli_time) {
    ammo_recharge -= milli_time;
    updateInput(milli_time);
-   physics.update(milli_time);
 }
 
 void CarnageState::updateInput(long milli_time) {
@@ -128,19 +123,19 @@ void CarnageState::updateInput(long milli_time) {
 	  Vector dir = (camera.eye-camera.lookAt) * -1;
 	  dir.norm();
 
+	  // TODO REMOVE SECTION
 	  DummyAmmoUnit ammo = DummyAmmoUnit();
 	  ammo.setPosition(camera.eye);
 	  ammo.setVelocity(dir * 50);
-	  //((CarnageState*)global::stateManager->currentState)->physics.addAmmo(ammo);
 	  network->addObject(ammo);
-//	  network->physicsEngine
+	  // END REMOVE SECTION
 
+	  // TODO uniqueID creation & addObject(WorldObject)
 	  static int newObjID = 10000;
 	  WorldObject newObj = WorldObject(newObjID++,0,enumeration::DUMMY_SPHERE);
 	  newObj.setPosition(camera.eye);
 	  newObj.setVelocity(dir * 50);
 	  //network->addObject(newObj);
-
 
 	  ammo_recharge = RECHARGE_TIME;
    }

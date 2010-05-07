@@ -1,42 +1,59 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <iostream>
-#include <vector>
-
-#include "../network/NetworkServer.h"
-#include "../physics/Physics.h"
-#include "../state/CarnageState.h"
 #include "global.h"
+#include "gl_helper.h"
+#include "io.h"
+#include "../graphics/graphics.h"
+#include "../state/CarnageState.h"
+#include "../network/NetworkServer.h"
 
-#define WorldObj PhysObj
+E_STATE beginState;
 
 using namespace std;
 
 void initState()
 {
-//	global::stateManager.changeCurrentState(CARNAGE_S);
-//	CarnageState *state = (CarnageState*)global::stateManager.currentState;
+	  global::stateManager->changeCurrentState(beginState);
+}
+
+
+void initialize()
+{
+  global::app_title = (char*)malloc(sizeof(char) * 80);
+  sprintf(global::app_title, "2Cities : The Game");
+
+  // initialization of all other modules
+  initState();
+
+  global::network = new NetworkServer();
+  global::network->initialize();
 }
 
 /*
  * application kickstart.
  */
-int main(int argc, char** argv) {
-	initState();
+int main(int argc, char** argv)
+{
 
-	Physics physicsEngine;
-    physicsEngine.initPhysics();
-    physicsEngine.loadFromFile("resources/test.lvl");
-    cout << "Physics initialized" << endl;
+  if(argc == 2)
+  {
+    if(!strcmp(argv[1], "-build"))
+    {
+      beginState=BUILD_STATE;
+    }
+  }else{
+    beginState=CARNAGE_STATE;
+  }
 
-    NetworkServer network;
-    network.initialize();
-    cout << "Network initialized" << endl;
+  initialize();
 
-	while(1) {
+  char *input;
 
+  while(1) {
+    cout << "Enter Command:" << endl;
+    cin >> input;
 
-	}
+  }
 
-	return 0;
+  return 0;
 }

@@ -1,6 +1,8 @@
 #include "renderer.h"
 #include "graphics.h"
 
+#include "../network/NetworkPrivate.h"
+
 Renderer::Renderer()
 {
   global::camera.eye = Vector(0,0,30);
@@ -72,11 +74,10 @@ void Renderer::draw()
   
       CarnageState *state = (CarnageState*)global::stateManager->currentState;
       
-      vector<BuildingUnit> blocks = state->physics.getBuildingBlocks();
-      //vector<AmmoUnit> ammo = state->physics.getAmmo();
-      vector<AmmoUnit> ammo = network->physicsEngine.getAmmo();
-      printf("Found %i AmmoUnit\n",ammo.size());
-      
+      NetworkPrivate *tmpNetwork = (NetworkPrivate *)network;
+      vector<BuildingUnit> blocks = tmpNetwork->physicsEngine->getBuildingBlocks();
+      vector<AmmoUnit> ammo = tmpNetwork->physicsEngine->getAmmo();
+
       //glDisable(GL_LIGHTING);
       
       Vector pos;

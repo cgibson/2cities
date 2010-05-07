@@ -7,7 +7,7 @@
 
 #include "../scene/WorldObject.h"
 #include "../state/CarnageState.h"
-#include "../state/PhysObj.h"
+#include "../state/PhysObj.h" // TODO to be removed
 #include "../system/enum.h"
 #include "../system/global.h"
 
@@ -21,8 +21,6 @@ enum commType { AddObject, ReqUpdateObject, ReqUpdateState };
 class NetworkClient
 {
 	protected:
-		Physics physicsEngine; // Temp Include
-
 	    unsigned int serverIP; // Type Likely to Change
 	    unsigned int serverPort;
 
@@ -31,7 +29,9 @@ class NetworkClient
 	    void sendObject(enum E_WorldObjType newObjType, WorldObject newObj);
 
     public:
-	   NetworkClient();
+		Physics physicsEngine; // Temp Include
+
+	    NetworkClient();
        ~NetworkClient();
 
        void initialize();
@@ -41,6 +41,7 @@ class NetworkClient
 
        // Create/Send a new Object to Server for propagation/Physics
        void addObject(WorldObject newObj);
+       void addObject(AmmoUnit newObj);
 
        void reqUpdateObj(unsigned int objID);
        void reqUpdateState(enum E_STATE);

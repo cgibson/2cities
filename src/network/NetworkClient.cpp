@@ -41,6 +41,10 @@ void NetworkClient::addObject(WorldObject newObj) {
 	physicsEngine.addWorldObject(newObj);
 }
 
+void NetworkClient::addObject(AmmoUnit newObj) {
+	physicsEngine.addAmmo(newObj);
+}
+
 void NetworkClient::sendObject(enum E_WorldObjType newObjType, WorldObject newObj) {
 	//physicsEngine.addWorldObject(newObj);
 }

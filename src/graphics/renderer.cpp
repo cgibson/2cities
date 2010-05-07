@@ -73,7 +73,9 @@ void Renderer::draw()
       CarnageState *state = (CarnageState*)global::stateManager->currentState;
       
       vector<BuildingUnit> blocks = state->physics.getBuildingBlocks();
-      vector<AmmoUnit> ammo = state->physics.getAmmo();
+      //vector<AmmoUnit> ammo = state->physics.getAmmo();
+      vector<AmmoUnit> ammo = network->physicsEngine.getAmmo();
+      printf("Found %i AmmoUnit\n",ammo.size());
       
       //glDisable(GL_LIGHTING);
       

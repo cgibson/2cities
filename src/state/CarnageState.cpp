@@ -132,12 +132,14 @@ void CarnageState::updateInput(long milli_time) {
 	  ammo.setPosition(camera.eye);
 	  ammo.setVelocity(dir * 50);
 	  //((CarnageState*)global::stateManager->currentState)->physics.addAmmo(ammo);
+	  network->addObject(ammo);
+//	  network->physicsEngine
 
 	  static int newObjID = 10000;
 	  WorldObject newObj = WorldObject(newObjID++,0,enumeration::DUMMY_SPHERE);
 	  newObj.setPosition(camera.eye);
 	  newObj.setVelocity(dir * 50);
-	  network->addObject(newObj);
+	  //network->addObject(newObj);
 
 
 	  ammo_recharge = RECHARGE_TIME;

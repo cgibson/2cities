@@ -12,6 +12,7 @@
 class PhysicsBody : public btRigidBody
 {
   private:
+    btRigidBody * body; 
     static btCollisionShape * small_sphere;
 /*    btCollisionShape * medium_sphere;
     btCollisionShape * large_sphere;
@@ -35,6 +36,7 @@ class PhysicsBody : public btRigidBody
     }
     
   public:
+    btRigidBody * getRigidBody() {return body;}
     PhysicsBody(WorldObject);    
     int getID() {return id;}
     int getPlayerID() {return playerID;}

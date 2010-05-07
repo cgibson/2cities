@@ -13,6 +13,8 @@
 #include "../system/enum.h"
 #include "../math/quaternion.h"
 #include "../scene/factory.h"
+#include <stdint.h>
+#include <time.h>
 
 /**
  * Incomplete WorldObject class.
@@ -38,7 +40,7 @@ class WorldObject
         Quaternion orientation;
         ObjectType type; //SMALL_SPHERE, MEDIUM_SPHERE, LARGE_SPHERE, SMALL_CUBE, etc
         PhysicsState physics; //NONE, DYNAMIC, STATIC
-        long timestamp; //change to int?
+        uint64_t timestamp;
 
     public:
         WorldObject(unsigned int newid, unsigned int newplayerid, ObjectType newtype)
@@ -46,6 +48,7 @@ class WorldObject
             id = newid;
             playerid = newplayerid;
             type = newtype;
+            timestamp = 0;
         }
         WorldObject(const WorldObject& newObj) {
         	this->id = newObj.id;
@@ -71,11 +74,13 @@ class WorldObject
         Quaternion getOrientation() {return orientation;}
         ObjectType getType() {return type;}
         PhysicsState getPhysics() {return physics;}
+        uint64_t getTimeStamp() {return timestamp;}
         void setPosition(Vector newposition) {position = newposition;}
         void setVelocity(Vector newvelocity) {velocity = newvelocity;}
         void setForce(Vector newforce) {force = newforce;}
         void setOrientation(Quaternion neworientation) {orientation = neworientation;}
         void setPhysics(PhysicsState newphysics) {physics = newphysics;}
+        void setTimeStamp(time_t newTimeStamp) {timestamp = (uint64_t)newTimeStamp;}
 };
 
 #endif

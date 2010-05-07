@@ -99,14 +99,14 @@ void Physics::addWorldObject(WorldObject newObject)
   
   if (isUniqueID(newObject.getID()))
   {
-    PhysicsBody *newBody = new PhysicsBody(newObject);
+    PhysicsBody * newBody = new PhysicsBody(newObject);
     // stall slow objects
 
     if (newObject.getVelocity().mag() < .01)
     {
       newBody->setActivationState(ISLAND_SLEEPING);
     }
-    world->addRigidBody(newBody);
+    world->addRigidBody(newBody->getRigidBody());
     worldObjects.push_back(newObject);
     physicsBodies.push_back(*newBody);
   }

@@ -1,7 +1,8 @@
 #include "quaternion.h"
 
 Quaternion::Quaternion() {
-	m_h = m_i = m_j = m_k = 0;
+        m_h = 1;
+	m_i = m_j = m_k = 0;
 }
 
 Quaternion::Quaternion(float h, float i, float j, float k) {

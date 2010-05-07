@@ -6,9 +6,6 @@
 #include <vector>
 
 #include "../scene/WorldObject.h"
-#include "../state/PhysObj.h" // TODO Remove with PhysObj Migration
-
-#include "../physics/Physics.h" // TODO Remove with PhysObj Migration
 
 #include "../system/global.h"
 #include "../system/enum.h"
@@ -22,8 +19,6 @@ protected:
 	int _playerID;
 
 public:
-	Physics *physicsEngine; // TODO Remove with PhysObj Migration
-
 	NetworkSystem() { _playerID = -1;	}
 	~NetworkSystem() {};
 
@@ -36,7 +31,6 @@ public:
 
 	// Add new object to scene
 	virtual void addObject(WorldObject newObj) {};
-	virtual void addObject(AmmoUnit newObj) {}; // TODO Remove with PhysObj Migration
 
 	virtual void reqUpdateObj(unsigned int objID) {};
 };

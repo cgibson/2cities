@@ -15,7 +15,6 @@
 #include "../system/io.h"
 #include "../helper/camera.h"
 #include "../helper/Vector.h"
-#include "PhysObj.h"
 
 #define ANGLE_SPEED 2
 #define DIST_SPEED 10
@@ -35,17 +34,10 @@ InGameState::InGameState() {
 InGameState::~InGameState() {}
 
 void InGameState::initialize() {
-   // Keyboard Callbacks
-   glutKeyboardFunc(&io::key_down);
-   glutKeyboardUpFunc(&io::key_up);
-   glutSpecialFunc(&io::special_key_down);
-   glutSpecialUpFunc(&io::special_key_up);
-
-   // Mouse Callbacks
-   glutMouseFunc(&io::mouse_click);
-   glutMotionFunc(&io::mouse_motion);
-   glutPassiveMotionFunc(&io::mouse_motion);
-   //glutSetCursor(GLUT_CURSOR_NONE);
+    // i/o initializtion not done in the state
+    // anymore, it's done globally at app launch
+    // we just capture the mouse
+    io::capture_mouse();
 
    camera.eye = Vector( 0.0f, 30.0f, 30.0f);
    camera.lookAt = Vector( 0.0f, 0.0f, 0.0f);

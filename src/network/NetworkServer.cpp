@@ -24,11 +24,11 @@ void NetworkServer::update(long milli_time) {
 
 	// UPDATE LOCAL DATA
 	InGameState *currState = global::stateManager->currentState;
-	std::vector<WorldObject> physobjs = physicsEngine->getWorldObjects();
+	std::vector<WorldObject> PhysEngObjs = physicsEngine->getWorldObjects();
 	currState->objects.clear();
 
-	for(int i=0; i < physobjs.size(); i++) {
-		currState->objects.push_back(new WorldObject(physobjs[i]));
+	for(int i=0; i < PhysEngObjs.size(); i++) {
+		currState->objects.push_back(new WorldObject(PhysEngObjs[i]));
 		if (currState->objects[i]->getVelocity().mag() > 0) {
 			printf("Item %i is moving item with vel=%s pos=%s\n",i,
 					currState->objects[i]->getVelocity().str(),

@@ -14,7 +14,6 @@
 #include "../system/io.h"
 #include "../helper/camera.h"
 #include "../helper/Vector.h"
-#include "PhysObj.h"
 
 using namespace io;
 using namespace global;
@@ -26,17 +25,13 @@ BuildState::BuildState() {
 BuildState::~BuildState() {}
 
 void BuildState::initialize() {
-   // Keyboard Callbacks
-   glutKeyboardFunc(&io::key_down);
-   glutKeyboardUpFunc(&io::key_up);
-   glutSpecialFunc(&io::special_key_down);
-   glutSpecialUpFunc(&io::special_key_up);
+    // i/o initializtion not done in the state
+    // anymore, it's done globally at app launch
+    // we just capture the mouse
+    io::capture_mouse();
 
-   // Mouse Callbacks
-   glutMouseFunc(&io::mouse_click);
-   glutMotionFunc(&io::mouse_motion);
-   glutPassiveMotionFunc(&io::mouse_motion);
-   //glutSetCursor(GLUT_CURSOR_NONE);
+   camera.eye = Vector( 0.0f, 30.0f, 30.0f);
+   camera.lookAt = Vector( 0.0f, 0.0f, 0.0f);
 }
 
 /* TODO Inherit from InGameState

@@ -68,54 +68,7 @@ void Renderer::draw()
   
   //TODO: Remove BEGIN
   
-  switch(global::stateManager->currentState->stateType())
-  {
-    case CARNAGE_STATE:
-  
-      CarnageState *state = (CarnageState*)global::stateManager->currentState;
-      
-      NetworkPrivate *tmpNetwork = (NetworkPrivate *)network;
-      vector<BuildingUnit> blocks = tmpNetwork->physicsEngine->getBuildingBlocks();
-      vector<AmmoUnit> ammo = tmpNetwork->physicsEngine->getAmmo();
-
-      //glDisable(GL_LIGHTING);
-      
-      Vector pos;
-      Vector axis;
-      float angle;
-      gfx::materials[YELLOW_MAT].applyMaterial();
-      for(int i = 0; i < (int)blocks.size(); i++)
-      {
-        BuildingUnit unit = blocks[i];
-        pos = unit.getPosition();
-        axis = unit.getRotation();
-        angle = unit.getRotationMag();
-        //std::cout << "Axis:" << axis.x() << " " << axis.y() << " " << axis.z() << std::endl;
-        //std::cout << "Angle: " << angle << std::endl;
-        glPushMatrix();
-        glTranslatef(pos.x(), pos.y(), pos.z());
-        glRotatef(360 * angle / (2.0 * 3.1415f), axis.x(), axis.y(), axis.z());
-        glColor3f(1,0,0);
-        glutSolidCube(1);
-        glPopMatrix();
-      }
-      
-      gfx::materials[BLUE_MAT].applyMaterial();
-      for(int i = 0; i < (int)ammo.size(); i++)
-      {
-        AmmoUnit unit = ammo[i];
-        pos = unit.getPosition();
-        glPushMatrix();
-        glTranslatef(pos.x(), pos.y(), pos.z());
-        glColor3f(1,0,0);
-        glutSolidSphere(1,10,10);
-        glPopMatrix();
-      }
-    break;
-  }
-  
   gfx::materials[WHITE_MAT].applyMaterial();
-  
   glBegin(GL_QUADS);
     glNormal3f(0,1,0);
     glVertex3f(-100, -1, -100);
@@ -123,8 +76,7 @@ void Renderer::draw()
     glVertex3f(100, -1, 100);
     glVertex3f(100, -1, -100);
   glEnd();
-  
-  
+
   //TODO: Remove END
   
   InGameState *curstate = global::stateManager->currentState;

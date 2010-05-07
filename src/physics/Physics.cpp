@@ -121,6 +121,8 @@ vector<WorldObject> Physics::getWorldObjects()
   return worldObjects;
 }
 
+// TODO To Remove
+/*
 void Physics::addAmmo(AmmoUnit ammo)
 {
   world->addRigidBody(ammo.getRigidBody());
@@ -149,8 +151,7 @@ vector<BuildingUnit> Physics::getBuildingBlocks()
   result = buildingBlocks;
   return result;
 }
-
-
+*/
 
 vector<Vector> Physics::fileToBlockLocations(const char * fileName)
 {
@@ -198,11 +199,7 @@ int Physics::loadFromFile(const char * fileName)
 
     newObj = new WorldObject(i++, 0, enumeration::DUMMY_BLOCK);
     newObj->setPosition(*it);
-
     addWorldObject(*newObj);
-
-    // TODO To Remove
-    //addBuildingBlock(*(new DummyBuildingUnit(*it, Vector(0,0,0), Vector(0,0,0), 0)));
   }
   return 1;
 }

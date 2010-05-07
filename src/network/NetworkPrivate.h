@@ -8,7 +8,6 @@
 #include "NetworkSystem.h"
 
 #include "../scene/WorldObject.h"
-#include "../state/PhysObj.h" // TODO Remove with PhysObj Migration
 
 #include "../physics/Physics.h"
 
@@ -21,10 +20,9 @@ using namespace enumeration;
 class NetworkPrivate : public NetworkSystem
 {
 protected:
+	Physics *physicsEngine;
 
 public:
-	Physics *physicsEngine; // TODO Move to protected with PhysObj Migration
-
 	NetworkPrivate();
 	~NetworkPrivate();
 
@@ -33,7 +31,6 @@ public:
 
 	// Add new object to scene
 	virtual void addObject(WorldObject newObj);
-	virtual void addObject(AmmoUnit newObj); // TODO Remove with PhysObj Migration
 };
 
 #endif

@@ -14,8 +14,6 @@
 #include "../helper/camera.h"
 #include "../helper/Vector.h"
 
-#include "PhysObj.h" // TODO Remove with PhysObj Migration
-
 #define ANGLE_SPEED 2
 #define MOUSE_SPEED 1
 #define DIST_SPEED 10
@@ -39,21 +37,6 @@ void CarnageState::initialize() {
 
    camera.eye = Vector( 0.0f, 30.0f, 30.0f);
    camera.lookAt = Vector( 0.0f, 0.0f, 0.0f);
-
-   // TODO Test Code
-   WorldObject *tmpObj;
-   tmpObj = new WorldObject(0,0,enumeration::DUMMY_SPHERE);
-   tmpObj->setPosition(Vector(-25,1,0));
-   tmpObj->setVelocity(Vector(10,25,0));
-   tmpObj->setForce(Vector(0,-8,0));
-   objects.push_back(tmpObj);
-
-   tmpObj = new WorldObject(0,0,enumeration::DUMMY_SPHERE);
-   tmpObj->setPosition(Vector(-25,1,0));
-   tmpObj->setVelocity(Vector(5,25,0));
-   tmpObj->setForce(Vector(0,-8,0));
-   objects.push_back(tmpObj);
-   // END Test Code
 }
 
 void CarnageState::update(long milli_time) {
@@ -83,7 +66,7 @@ void CarnageState::updateInput(long milli_time) {
 	   deltaLocTurn += ANGLE_SPEED * (milli_time / 1000.0f);
    }
    if(deltaLocTurn || deltaLocTilt) {
-	   camera.phiMaxAngle = M_PI-0.14;
+	   camera.phiMaxAngle = M_PI-0.2;
 	   camera.phiMinAngle = 0.0f;
 	   camera.eye = camera.orbitNode(Vector(0,0,0), camera.eye, deltaLocTurn, deltaLocTilt);
    }
@@ -123,19 +106,12 @@ void CarnageState::updateInput(long milli_time) {
 	  Vector dir = (camera.eye-camera.lookAt) * -1;
 	  dir.norm();
 
-	  // TODO REMOVE SECTION
-	  DummyAmmoUnit ammo = DummyAmmoUnit();
-	  ammo.setPosition(camera.eye);
-	  ammo.setVelocity(dir * 50);
-	  network->addObject(ammo);
-	  // END REMOVE SECTION
-
 	  // TODO uniqueID creation & addObject(WorldObject)
 	  static int newObjID = 10000;
 	  WorldObject newObj = WorldObject(newObjID++,0,enumeration::DUMMY_SPHERE);
 	  newObj.setPosition(camera.eye);
 	  newObj.setVelocity(dir * 50);
-	  //network->addObject(newObj);
+	  network->addObject(newObj);
 
 	  ammo_recharge = RECHARGE_TIME;
    }

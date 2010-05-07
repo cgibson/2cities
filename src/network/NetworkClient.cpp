@@ -23,5 +23,5 @@ bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 }
 
 void NetworkClient::addObject(WorldObject newObj) {
-	physicsEngine->addWorldObject(newObj);
+
 }

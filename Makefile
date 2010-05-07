@@ -38,7 +38,7 @@ CLIENT_OBJS = global.o io.o Vector.o quaternion.o \
 	   BuildState.o CarnageState.o InGameState.o StateManager.o \
 	   hud.o console.o graphics.o renderer.o \
 	   GLSL_helper.o Lighting.o FBOHelper.o OGLFT.o luahelper.o \
-	   Physics.o PhysicsBody.o PhysObj.o WorldObject.o factory.o \
+	   Physics.o PhysicsBody.o WorldObject.o factory.o \
 	   UIControl.o GameUI.o BlankUI.o \
 	   NetworkSystem.o NetworkPrivate.o NetworkClient.o NetworkServer.o \
 	   main.o
@@ -53,13 +53,13 @@ SERVER_OBJS = global.o io.o Vector.o quaternion.o \
 	   BuildState.o CarnageState.o InGameState.o StateManager.o \
 	   hud.o console.o graphics.o renderer.o \
 	   GLSL_helper.o Lighting.o FBOHelper.o OGLFT.o luahelper.o \
-	   Physics.o PhysicsBody.o PhysObj.o WorldObject.o factory.o \
+	   Physics.o PhysicsBody.o WorldObject.o factory.o \
 	   UIControl.o GameUI.o BlankUI.o \
 	   NetworkSystem.o NetworkPrivate.o NetworkClient.o NetworkServer.o \
 	   mainServer.o
 
 # default build rule (client and server)
-all: client server
+all: client #server
 
 # client build rule
 client: startclient svnrev $(CLIENT_OBJS)
@@ -141,9 +141,6 @@ WorldObject.o: src/scene/WorldObject.cpp
 	
 factory.o: src/scene/factory.cpp
 	$(CC) -c $(CCFLAGS) src/scene/factory.cpp
-
-PhysObj.o: src/state/PhysObj.cpp
-	$(CC) -c $(CCFLAGS) src/state/PhysObj.cpp
 	
 # GameStates
 InGameState.o: src/state/InGameState.cpp

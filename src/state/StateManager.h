@@ -14,7 +14,6 @@
 #include "CarnageState.h"
 
 #include "Preferences.h"
-#include "PhysObj.h"			// TODO to be removed
 
 #include "../system/enum.h"
 using namespace enumeration;

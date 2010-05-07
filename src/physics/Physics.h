@@ -5,7 +5,6 @@
 #include <vector>
 #include "btBulletDynamicsCommon.h"
 #include "../helper/Vector.h"
-#include "../state/PhysObj.h"
 #include "../scene/WorldObject.h"
 #include "PhysicsBody.h"
 
@@ -13,6 +12,11 @@
 
 //#define AMMO_MASS 10
 //#define BLDG_BLOCK_MASS 1
+
+#define AMMO_MASS 1
+#define AMMO_RADIUS 1
+#define BLDG_BLOCK_MASS 1
+#define BLDG_BLOCK_SIDE_LENGTH 1.
 
 class Physics
 {
@@ -24,8 +28,6 @@ class Physics
     btDefaultCollisionConfiguration * collConf;
     btAlignedObjectArray<btCollisionShape *> collisionShapes;
     btRigidBody * groundBody;
-    std::vector<AmmoUnit> ammunition;
-    std::vector<BuildingUnit> buildingBlocks;
     std::vector<WorldObject> worldObjects;
     std::vector<WorldObject> recentChanges;
     std::vector<PhysicsBody> physicsBodies;
@@ -38,10 +40,6 @@ class Physics
     void addWorldObject(WorldObject newObject);
     std::vector<WorldObject> getWorldObjects();
     
-    std::vector<AmmoUnit> getAmmo();
-    std::vector<BuildingUnit> getBuildingBlocks();
-    void addAmmo(AmmoUnit ammo);
-    void addBuildingBlock(BuildingUnit bldg);
     void exitPhysics();
     void initPhysics();
     // Advance the simulation by timeChange milliseconds

@@ -53,7 +53,7 @@ bool PhysicsBody::update(WorldObject * wo)
   Quaternion quat;
 //  btQuaternion btq = this->getOrientation();
   btQuaternion btq = body->getWorldTransform().getRotation();
-  printf("rotation: (%f, %f, %f) by %f\n", btq.getAxis().getX(), btq.getAxis().getY(), btq.getAxis().getZ(), btq.getAngle());
+//  printf("rotation: (%f, %f, %f) by %f\n", btq.getAxis().getX(), btq.getAxis().getY(), btq.getAxis().getZ(), btq.getAngle());
   quat.setAxis(btV3toV(btq.getAxis()));
   quat.setAngle(btq.getAngle() * 180 / 3.14159 );
   wo->setOrientation(quat);

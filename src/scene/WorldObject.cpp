@@ -5,6 +5,7 @@
 
 void WorldObject::draw() {
 	Vector pos = getPosition();
+	Quaternion ori = getOrientation();
 	Blueprint blueprint = global::factory->getBlueprint(type);
 	
 	gfx::materials[blueprint.getMaterial()].applyMaterial();
@@ -19,7 +20,8 @@ void WorldObject::draw() {
 
   glPushMatrix();
   glTranslatef(pos.x(), pos.y(), pos.z());
-  
+//  printf("ori: (%f, %f, %f) by %f\n", ori.getH(),ori.getI(),ori.getJ(),ori.getK());
+  glRotatef(ori.getK(), ori.getH(), ori.getI(), ori.getJ());
 	switch(blueprint.getShape())
 	{
 	  case SMALL_CUBE:

@@ -57,7 +57,7 @@ void Physics::initPhysics()
 
 void Physics::update(int timeChange)
 {
-  vector<WorldObject> changed;//////////////////////////////////////////////////////////
+  vector<WorldObject> changed;
   if (timeChange)
     world->stepSimulation(btScalar(timeChange / 1000.0), 10);
   int i, j;

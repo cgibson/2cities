@@ -12,6 +12,8 @@
 class PhysicsBody : public btRigidBody
 {
   private:
+    btRigidBody::btRigidBodyConstructionInfo getCI(WorldObject input);
+
     btRigidBody * body; 
     static btCollisionShape * small_sphere;
 /*    btCollisionShape * medium_sphere;
@@ -23,8 +25,10 @@ class PhysicsBody : public btRigidBody
     ObjectType type;
     int id;
     int playerID;
-    static btCollisionShape * getShape(ObjectType type);
+    
+  public:
     static btScalar getMass(ObjectType type);
+    static btCollisionShape * getShape(ObjectType type);
     static Vector btV3toV(btVector3 in) 
     {
       return Vector(in.getX(), in.getY(), in.getZ());
@@ -34,8 +38,6 @@ class PhysicsBody : public btRigidBody
     {
       return btVector3(btScalar(in.x()), btScalar(in.y()), btScalar(in.z()));
     }
-    
-  public:
     btRigidBody * getRigidBody() {return body;}
     PhysicsBody(WorldObject);    
     int getID() {return id;}

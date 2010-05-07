@@ -5,16 +5,17 @@
 
 btScalar PhysicsBody::getMass(ObjectType type)
 {
-  return btScalar(1.0);
-  // return btScalar(global::factory->getBlueprint(type).getMass());
+  //return btScalar(1.0);
+  return btScalar(global::factory->getBlueprint(type).getMass());
 }
 
 PhysicsBody::PhysicsBody(WorldObject input):
- btRigidBody(
+/* btRigidBody(
     getMass(input.getType()),
-    new btDefaultMotionState(), getShape(input.getType()), btVector3(0,0,0))
+    new btDefaultMotionState(), getShape(input.getType()), btVector3(0,0,0))*/
 /*btRigidBody::btRigidBodyConstructionInfo(getMass(input.getType(), new btDefaultMotionState(btTransform()),
             getShape(input.getType()), btVector3(0,0,0))*/
+btRigidBody(getCI(input))
 {
   id = input.getID();
   playerID = input.getPlayerID();
@@ -28,41 +29,45 @@ PhysicsBody::PhysicsBody(WorldObject input):
   trans.setOrigin(VtobtV3(pos));
   btQuaternion quat;
   quat.setRotation(VtobtV3(ori.getAxis()), btScalar(ori.getAngle()));
-//  trans.setRotation(quat);
+  trans.setRotation(quat);
   setCenterOfMassTransform(trans);
   // set velocity
   setLinearVelocity(VtobtV3(vel));
-  // set rotation
-//  setOrientation(quat);
-//  btRigidBody::btRigidBodyConstructionInfo rbInfo(getMass(input.getType()), new btDefaultMotionState(trans), getShape(input.getType()), btVector3(0,0,0));
-//  body = new btRigidBody(rbInfo);
     body = (btRigidBody *)(this);
-//  body->setLinearVelocity(VtobtV3(vel));
-//  body->setOrientation(quat);
+}
+
+btRigidBody::btRigidBodyConstructionInfo PhysicsBody::getCI(WorldObject input)
+{
+  btScalar mass = PhysicsBody::getMass(input.getType());
+  btVector3 inertia(0,0,0);
+  btCollisionShape * thisShape = getShape(input.getType());
+  Quaternion quat = input.getOrientation();
+  btQuaternion q2;
+  q2.setRotation(VtobtV3(quat.getAxis()), btScalar(quat.getAngle()));
+  btDefaultMotionState * ms = new btDefaultMotionState();
+  
+  if (mass != 0)
+  {
+    thisShape->calculateLocalInertia(mass, inertia);
+  }
+  btRigidBody::btRigidBodyConstructionInfo ci(mass, ms, thisShape, inertia);
+  return ci;
 }
 
 bool PhysicsBody::update(WorldObject * wo)
 {
-  float epsilon = .1;////////////////////////////////////////////////////////////////////////
+  float epsilon = .1;
   Vector oldPos = wo->getPosition();
-//  Vector newPos = btV3toV(this->getCenterOfMassPosition());
   Vector newPos = btV3toV(body->getCenterOfMassPosition());
   wo->setPosition(newPos);
-//  wo->setVelocity(btV3toV(this->getLinearVelocity()));
   wo->setVelocity(btV3toV(body->getLinearVelocity()));
   Quaternion quat;
-//  btQuaternion btq = this->getOrientation();
-  btQuaternion btq = body->getWorldTransform().getRotation();
-//  printf("rotation: (%f, %f, %f) by %f\n", btq.getAxis().getX(), btq.getAxis().getY(), btq.getAxis().getZ(), btq.getAngle());
+  btQuaternion btq = body->getOrientation();
   quat.setAxis(btV3toV(btq.getAxis()));
   quat.setAngle(btq.getAngle() * 180 / 3.14159 );
   wo->setOrientation(quat);
   wo->setForce(Vector(0,0,0));
-//  printf(" timestampOld: %d", wo->getTimeStamp());
-//  printf(" timeStampCurrent: %d", time(NULL));
   wo->setTimeStamp(time(NULL));
-//  printf(" timestampNew: %d", wo->getTimeStamp());
-//  printf(" delta: %f\n", (newPos - oldPos).mag());
   return (newPos - oldPos).mag() > epsilon;
 }
 
@@ -80,11 +85,11 @@ btCollisionShape *  PhysicsBody::getShape(ObjectType objectType)
     case SMALL_SPHERE: default:
       return small_sphere;*/
     case DUMMY_BLOCK:
-      s = small_sphere;
+      s = small_cube;break;
     case DUMMY_SPHERE:
-      s = small_sphere;
+      s = small_sphere;break;
   }
-//  btVector
+  //  btVector3
   return s;
 }
 
@@ -100,7 +105,7 @@ btCollisionShape * PhysicsBody::dummy_sphere = new btSphereShape(
 */
 
 btCollisionShape * PhysicsBody::small_cube = new btBoxShape(VtobtV3(
-Vector(.5,.5,.5)));
+Vector(.5, .5, .5)));
 
 //    global::factory->getBlueprint(DUMMY_BLOCK).getSize()));
 /*

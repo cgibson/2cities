@@ -30,7 +30,7 @@ public:
 	virtual void initialize() {};
 	virtual void update(long milli_time) {};
 
-	virtual void connectServer(const char * ip, unsigned int port) {};
+	virtual bool connectServer(const char * ip, unsigned int port) { return false; };
 
 	virtual int getPlayerID() { return _playerID; }
 

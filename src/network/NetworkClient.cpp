@@ -17,8 +17,9 @@ void NetworkClient::update(long milli_time) {
 	// TODO UPDATE LOCAL DATA
 }
 
-void NetworkClient::connectServer(const char * ip, unsigned int port) {
+bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 
+	return false;
 }
 
 void NetworkClient::addObject(WorldObject newObj) {

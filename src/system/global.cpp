@@ -7,9 +7,9 @@
 namespace global
 {
 
-  StateManager *stateManager = new StateManager; // global state manager
-  NetworkClient *network = new NetworkClient;
-  ObjectFactory *factory = new ObjectFactory;
+  StateManager *stateManager = new StateManager(); // global state manager
+  ObjectFactory *factory = new ObjectFactory();
+  NetworkClient *network = new NetworkClient();
   
   int width;  // window width
   int height; // wondow height

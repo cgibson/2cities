@@ -47,6 +47,17 @@ class WorldObject
             playerid = newplayerid;
             type = newtype;
         }
+        WorldObject(const WorldObject& newObj) {
+        	this->id = newObj.id;
+        	this->playerid = newObj.playerid;
+        	this->position = newObj.position;
+        	this->velocity = newObj.velocity;
+        	this->force = newObj.force;
+        	this->orientation = newObj.orientation;
+        	this->type = newObj.type;
+        	this->physics = newObj.physics;
+        	this->timestamp = newObj.timestamp;
+        }
         
         virtual void draw();
         virtual void update(int elapsedTime);

@@ -7,6 +7,7 @@
 
 #include "../scene/WorldObject.h"
 #include "../state/CarnageState.h"
+#include "../state/PhysObj.h"
 #include "../system/enum.h"
 #include "../system/global.h"
 
@@ -39,7 +40,7 @@ class NetworkClient
        void connectServer(/*ip*/);
 
        // Create/Send a new Object to Server for propagation/Physics
-       void addObject(enum E_WorldObjType newObjType, WorldObject newObj);
+       void addObject(WorldObject newObj);
 
        void reqUpdateObj(unsigned int objID);
        void reqUpdateState(enum E_STATE);

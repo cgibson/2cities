@@ -14,7 +14,7 @@ void ObjectFactory::loadConfig(char* filename)
   printf("DUMMY SPHERE: %d\n", DUMMY_SPHERE);
   
   // dummy block
-  tmp = Blueprint(DUMMY_BLOCK, 1.0f, YELLOW_MAT, SMALL_CUBE, Vector(0.5, 0.5, 0.5));
+  tmp = Blueprint(DUMMY_BLOCK, 1.0f, YELLOW_MAT, SMALL_CUBE, Vector(1.0f, 1.0f, 1.0f));
   blueprints[DUMMY_BLOCK] = tmp;
   
   // dummy sphere

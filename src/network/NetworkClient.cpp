@@ -1,42 +1,46 @@
 #include "NetworkClient.h"
 
 NetworkClient::NetworkClient() {
-	initialize();
+	//initialize();
 }
 
 NetworkClient::~NetworkClient() {}
 
 void NetworkClient::initialize() {
-	printf("Network initialized\n");
+	printf("Network Initialized\n");
 
-	//physicsEngine.initPhysics();
-	//physicsEngine.loadFromFile("resources/test.lvl");
-	//printf("Physics initialized\n");
+	physicsEngine.initPhysics();
+	physicsEngine.loadFromFile("resources/test.lvl");
+	printf("Network Initiated Level in PhysicsEngine\n");
 }
 
 void NetworkClient::update(long milli_time) {
 	// Check for Packet
 
-	/*
 	// TODO // REMOVE TEMP INCLUDED CODE
 	physicsEngine.update(milli_time);
-	std::vector<BuildingUnit> physicsObjects = physicsEngine.getBuildingBlocks();
-	std::vector<WorldObject> worldObjs;
-	WorldObject worldObj;
-	for(int i=0; i<physicsObjects.size(); i++) {
-		worldObj = (WorldObject)physicsObjects[i];
-		worldObjs.push_back(worldObj);
+
+	InGameState *currState = global::stateManager->currentState;
+
+	std::vector<WorldObject> physobjs = physicsEngine.getWorldObjects();
+	currState->objects.clear();
+
+	for(int i=0; i < physobjs.size(); i++) {
+		currState->objects.push_back(new WorldObject(physobjs[i]));
+		if (currState->objects[i]->getVelocity().mag() > 0) {
+			printf("Item %i is moving item with vel=%s pos=%s\n",i,
+					currState->objects[i]->getVelocity().str(),
+					currState->objects[i]->getPosition().str());
+		}
 	}
-	((CarnageState*)global::stateManager.currentState)->objects = worldObjs;
-	*/
+
+	printf("Network Updated %i items!\n\n", physobjs.size());
 }
 
-void NetworkClient::addObject(enum E_WorldObjType newObjType, WorldObject newObj) {
-	// Send Enum to Server
-	sendObject(newObjType, newObj);
+void NetworkClient::addObject(WorldObject newObj) {
+	physicsEngine.addWorldObject(newObj);
 }
 
 void NetworkClient::sendObject(enum E_WorldObjType newObjType, WorldObject newObj) {
-//	BuildingUnit tempObj = (BuildingUnit)newObj;
-//	physicsEngine.addBuildingBlock(tempObj);
+	//physicsEngine.addWorldObject(newObj);
 }

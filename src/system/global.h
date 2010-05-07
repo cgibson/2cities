@@ -31,6 +31,6 @@ namespace global
   extern int fps; // frames per second (not necessarily *live*)
 }
 
-//#include "../network/NetworkClient.h"
+#include "../network/NetworkClient.h"
 
 #endif

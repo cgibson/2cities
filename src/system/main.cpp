@@ -30,6 +30,7 @@ void updateLoop()
     io::update(elapsed);
     gfx::update(elapsed);
     global::stateManager->currentState->update(elapsed);
+    global::network->update(elapsed);
 
     InGameState *curstate = global::stateManager->currentState;
     for(int i = 0; i < (int)curstate->objects.size(); i++)

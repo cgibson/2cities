@@ -1,4 +1,5 @@
 #include "Physics.h"
+#include "../system/global.h"
 
 using namespace std;
 //void Physics::emptyWorld()
@@ -98,9 +99,10 @@ void Physics::addWorldObject(WorldObject newObject)
   
   if (isUniqueID(newObject.getID()))
   {
-    PhysicsBody * newBody = new PhysicsBody(newObject);
+    PhysicsBody *newBody = new PhysicsBody(newObject);
     // stall slow objects
-    if (newObject.getPosition().mag() < .01)
+
+    if (newObject.getVelocity().mag() < .01)
     {
       newBody->setActivationState(ISLAND_SLEEPING);
     }
@@ -187,11 +189,20 @@ int Physics::loadFromFile(const char * fileName)
   // This call will need to change with any movement to the placement of
   // the file load instruction.
   /////////////////////////////////////////////////////////////////////////////
+  int i = 0;
+  WorldObject *newObj;
   for (vector<Vector>::iterator it = toPlace.begin(); it < toPlace.end();
       it++)
   {
     Vector position = *it;
-    addBuildingBlock(*(new DummyBuildingUnit(*it, Vector(0,0,0), Vector(0,0,0), 0)));
+
+    newObj = new WorldObject(i++, 0, enumeration::DUMMY_BLOCK);
+    newObj->setPosition(*it);
+
+    addWorldObject(*newObj);
+
+    // TODO To Remove
+    //addBuildingBlock(*(new DummyBuildingUnit(*it, Vector(0,0,0), Vector(0,0,0), 0)));
   }
   return 1;
 }

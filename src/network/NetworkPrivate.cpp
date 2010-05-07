@@ -8,9 +8,8 @@ NetworkPrivate::NetworkPrivate() {
 
 	physicsEngine = new Physics();
 	physicsEngine->initPhysics();
-	physicsEngine->loadFromFile("resources/test.lvl");
 	// TODO replace with console output
-	printf("Network Initiated Level in PhysicsEngine\n");
+	printf("Network Initiated PhysicsEngine\n");
 }
 
 NetworkPrivate::~NetworkPrivate() {}
@@ -45,4 +44,8 @@ void NetworkPrivate::update(long milli_time) {
 
 void NetworkPrivate::addObject(WorldObject newObj) {
 	physicsEngine->addWorldObject(newObj);
+}
+
+void NetworkPrivate::loadLevel(const char * file) {
+	physicsEngine->loadFromFile(file);
 }

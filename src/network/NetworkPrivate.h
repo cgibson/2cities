@@ -31,6 +31,9 @@ public:
 
 	// Add new object to scene
 	virtual void addObject(WorldObject newObj);
+
+	// Load a stored lvl
+	virtual void loadLevel(const char * file);
 };
 
 #endif

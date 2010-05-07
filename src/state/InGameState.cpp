@@ -17,7 +17,8 @@
 #include "../helper/Vector.h"
 
 #define ANGLE_SPEED 2
-#define DIST_SPEED 10
+#define MOUSE_SPEED 1
+#define STRAFE_SPEED 20
 #define PI 3.1415
 #define DIST 30
 
@@ -49,55 +50,73 @@ void InGameState::update(long milli_time) {
 
 void InGameState::updateInput(long milli_time) {
    // General Keyboard Layout
+	if(io::keys[27]) {
+		exit(0);
+	}
 
-   // Freelook Controls
-   float deltaTilt = 0;
-   float deltaTurn = 0;
-   if(special_keys[GLUT_KEY_UP]) {
-	   deltaTilt += ANGLE_SPEED * (milli_time / 1000.0f);
+   if(io::keys['f']) {
+	   if (io::captured) {
+		   io::release_mouse();
+	   } else {
+		   io::capture_mouse();
+	   }
    }
-   if(special_keys[GLUT_KEY_DOWN]) {
-	   deltaTilt -= ANGLE_SPEED * (milli_time / 1000.0f);
-   }
-   if(special_keys[GLUT_KEY_LEFT]) {
-	   deltaTurn -= ANGLE_SPEED * (milli_time / 1000.0f);
-   }
-   if(special_keys[GLUT_KEY_RIGHT]) {
-	   deltaTurn += ANGLE_SPEED * (milli_time / 1000.0f);
-   }
-   camera.phiMaxAngle = M_PI;
-   camera.phiMinAngle = 0.0f;
-   if(deltaTurn || deltaTilt)
-	   camera.rotateView(deltaTurn, deltaTilt);
 
    // Strafe Controls
    float deltaFwd  = 0;
    float deltaSide = 0;
    float deltaUp   = 0;
-   if(keys['w']) {
-	   deltaFwd += 0.5f;
+   if(io::keys['w']) {
+	   deltaFwd += STRAFE_SPEED * (milli_time / 1000.0f);
    }
-   if(keys['s']) {
-   	   deltaFwd -= 0.5f;
+   if(io::keys['s']) {
+	   deltaFwd -= STRAFE_SPEED * (milli_time / 1000.0f);
    }
-   if(keys['d']) {
-   	   deltaSide += 0.5f;
+   if(io::keys['a']) {
+	   deltaSide += STRAFE_SPEED * (milli_time / 1000.0f);
    }
-   if(keys['a']) {
-   	   deltaSide -= 0.5f;
+   if(io::keys['d']) {
+	   deltaSide -= STRAFE_SPEED * (milli_time / 1000.0f);
    }
-   camera.strafe(deltaFwd, deltaSide, deltaUp);
-   
-   if(keys['f']) {
-     distance += DIST_SPEED * (milli_time / 1000.0f);
+   if(io::keys[' ']) {
+	   deltaUp += STRAFE_SPEED * (milli_time / 1000.0f);
    }
-   
-   if(keys['r']) {
-     distance -= DIST_SPEED * (milli_time / 1000.0f);
+   if(io::keys['c']) {
+	   deltaUp -= STRAFE_SPEED * (milli_time / 1000.0f);
+   }
+   if(deltaFwd || deltaSide || deltaUp) {
+	   camera.strafe(deltaFwd, deltaSide, deltaUp);
    }
 
-   // TODO Mouse Control Items
+   // Freelook Controls
+   float deltaCamTilt = 0;
+   float deltaCamTurn = 0;
 
+	// only update the view if the mouse is captured
+	if (io::captured)
+	{
+		deltaCamTurn =  io::mouse_x * MOUSE_SPEED * (milli_time / 1000.0f);
+		deltaCamTilt = -io::mouse_y * MOUSE_SPEED * (milli_time / 1000.0f);
+	}
+   if(io::special_keys[GLUT_KEY_UP]) {
+	   deltaCamTilt += ANGLE_SPEED * (milli_time / 1000.0f);
+   }
+   if(io::special_keys[GLUT_KEY_DOWN]) {
+	   deltaCamTilt -= ANGLE_SPEED * (milli_time / 1000.0f);
+   }
+   if(io::special_keys[GLUT_KEY_LEFT]) {
+	   deltaCamTurn -= ANGLE_SPEED * (milli_time / 1000.0f);
+   }
+   if(io::special_keys[GLUT_KEY_RIGHT]) {
+	   deltaCamTurn += ANGLE_SPEED * (milli_time / 1000.0f);
+   }
+   if(deltaCamTurn || deltaCamTilt) {
+	   //printf("deltaCamTurn=%4.6f deltaCamTilt=%4.6f\n", deltaCamTurn, deltaCamTilt);
+	   camera.inverted = 1;
+	   camera.phiMaxAngle = M_PI;
+	   camera.phiMinAngle =-M_PI;
+	   camera.rotateView(deltaCamTurn, deltaCamTilt);
+   }
 
 }
 

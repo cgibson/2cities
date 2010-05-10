@@ -24,6 +24,7 @@ client_srcs = {
     "helper/GLSL_helper.cpp",
     "helper/FBOHelper.cpp",
     "helper/luahelper.cpp",
+    "helper/texloader.cpp",
     "math/quaternion.cpp",
     "network/NetworkPrivate.cpp",
     "network/NetworkClient.cpp",

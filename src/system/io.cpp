@@ -76,6 +76,11 @@ namespace io
     void mouse_click(int button, int state, int x, int y)
     {
         mouse_buttons[button] = state;
+        if(!captured)
+        {
+          mouse_x = x;
+          mouse_y = y;
+        }
     }
 
     void mouse_motion(int x, int y)

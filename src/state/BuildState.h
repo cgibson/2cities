@@ -15,8 +15,8 @@ class BuildState: public InGameState
        virtual ~BuildState();
 
        void initialize();
-       //void update(long milli_time);
-       //void updateInput(long milli_time);
+       void update(long milli_time);
+       void updateInput(long milli_time);
        //void updateCamera();
 
        virtual enum E_STATE stateType() { return BUILD_STATE; }

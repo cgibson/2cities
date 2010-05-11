@@ -14,6 +14,7 @@
 #include "../system/io.h"
 #include "../helper/camera.h"
 #include "../helper/Vector.h"
+#include "../graphics/graphics.h"
 
 using namespace io;
 using namespace global;
@@ -28,14 +29,21 @@ void BuildState::initialize() {
     // i/o initializtion not done in the state
     // anymore, it's done globally at app launch
     // we just capture the mouse
-    io::capture_mouse();
-
+    //io::capture_mouse();
+   io::release_mouse();
    camera.eye = Vector( 0.0f, 30.0f, 30.0f);
    camera.lookAt = Vector( 0.0f, 0.0f, 0.0f);
 }
 
-/* TODO Inherit from InGameState
 void BuildState::update(long milli_time) {
 	BuildState::updateInput(milli_time);
+	//gfx::hud.console.info("Hello, BuildState!");
 }
-*/
+
+void BuildState::updateInput(long milli_time) {
+  
+	if(io::mouse_buttons[GLUT_LEFT_BUTTON] == GLUT_DOWN)
+	{
+	  gfx::hud.console.info("Hello, Left Mouse at points %d, %d!", io::mouse_x, io::mouse_y);
+	}
+}

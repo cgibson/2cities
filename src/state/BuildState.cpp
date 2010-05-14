@@ -26,24 +26,28 @@ BuildState::BuildState() {
 BuildState::~BuildState() {}
 
 void BuildState::initialize() {
-    // i/o initializtion not done in the state
-    // anymore, it's done globally at app launch
-    // we just capture the mouse
-    //io::capture_mouse();
+#ifdef CLIENT
+	// i/o initializtion not done in the state
+   // anymore, it's done globally at app launch
+   // we just capture the mouse
+   //io::capture_mouse();
    io::release_mouse();
    camera.eye = Vector( 0.0f, 30.0f, 30.0f);
    camera.lookAt = Vector( 0.0f, 0.0f, 0.0f);
+#endif
 }
 
 void BuildState::update(long milli_time) {
+#ifdef CLIENT
 	BuildState::updateInput(milli_time);
-	//gfx::hud.console.info("Hello, BuildState!");
+#endif
 }
 
 void BuildState::updateInput(long milli_time) {
-  
+#ifdef CLIENT
 	if(io::mouse_buttons[GLUT_LEFT_BUTTON] == GLUT_DOWN)
 	{
 	  gfx::hud.console.info("Hello, Left Mouse at points %d, %d!", io::mouse_x, io::mouse_y);
 	}
+#endif
 }

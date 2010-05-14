@@ -43,23 +43,9 @@ client_srcs = {
 }
 
 server_srcs = {
-    "graphics/hud.cpp",
-    "graphics/console.cpp",
-    "graphics/graphics.cpp",
-    "graphics/renderer.cpp",
-    "graphics/Lighting.cpp",
-    "graphics/OGLFT.cpp",
-    "graphics/UIControl.cpp",
-    "graphics/GameUI.cpp",
-    "graphics/BlankUI.cpp",
-    "helper/luahelper.cpp",
-    "helper/GLSL_helper.cpp",
-    "helper/FBOHelper.cpp",
     "helper/Vector.cpp",
     "math/quaternion.cpp",
     "network/NetworkSystem.cpp",
-    "network/NetworkPrivate.cpp",
-    "network/NetworkClient.cpp",
     "network/NetworkServer.cpp",
     "physics/Physics.cpp",
     "physics/PhysicsBody.cpp",
@@ -70,6 +56,5 @@ server_srcs = {
     "state/InGameState.cpp",
     "state/StateManager.cpp",
     "system/global.cpp",
-    "system/io.cpp",
     "system/mainServer.cpp"
 }

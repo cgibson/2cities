@@ -1,47 +1,44 @@
 #include "WorldObject.h"
 #include "../system/global.h"
-#include "../graphics/graphics.h"
 #include "stdio.h"
 
+#ifdef CLIENT
+	#include "../graphics/graphics.h"
+#endif
+
 void WorldObject::draw() {
+#ifdef CLIENT
 	Vector pos = getPosition();
 	Quaternion ori = getOrientation();
 	Blueprint blueprint = global::factory->getBlueprint(type);
-	
+
 	gfx::materials[blueprint.getMaterial()].applyMaterial();
-	
-	//gfx::materials[YELLOW_MAT].applyMaterial();
-	
-	//printf("THIS: %d\nTYPE: %d\nDUMMY_SPHERE: %d\n", type, blueprint.getType(), enumeration::DUMMY_SPHERE);
 	
 	Vector size = blueprint.getSize();
 
-  //printf("size: %f %f %f\n", size.x(), size.y(), size.z());
-
-  glPushMatrix();
-  glTranslatef(pos.x(), pos.y(), pos.z());
-//  printf("ori: (%f, %f, %f) by %f\n", ori.getH(),ori.getI(),ori.getJ(),ori.getK());
-  glRotatef(ori.getK(), ori.getH(), ori.getI(), ori.getJ());
+	glPushMatrix();
+	glTranslatef(pos.x(), pos.y(), pos.z());
+	glRotatef(ori.getK(), ori.getH(), ori.getI(), ori.getJ());
 	switch(blueprint.getShape())
 	{
-	  case SMALL_CUBE:
-	    glScalef(size.x(), size.y(), size.z());
-	    glutSolidCube(1);
-	    break;
-	  case SMALL_SPHERE: default:
-      glutSolidSphere(size.mag(),10,10);
-      break;
-    
-  }
-  
-  glPopMatrix();
+		case SMALL_CUBE:
+			glScalef(size.x(), size.y(), size.z());
+			glutSolidCube(1);
+			break;
+		case SMALL_SPHERE: default:
+			glutSolidSphere(size.mag(),10,10);
+			break;
+	}
+	glPopMatrix();
+#endif
 }
 
 void WorldObject::update(int elapsedTime) {
 /*
 	Vector pos = getPosition();
 	Vector vel = getVelocity();
-	Vector acc = getForce();
+	Vector acc = Vector(0,-8,0);
+
 	vel = vel + (acc * (elapsedTime/1000.0f));
 	pos = pos + (vel * (elapsedTime/1000.0f));
 

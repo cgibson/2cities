@@ -11,9 +11,10 @@
 
 #include "../physics/Physics.h"
 
+#include "NetworkSystem.h"
+
 #include "../system/global.h"
 #include "../system/enum.h"
-
 using namespace global;
 using namespace enumeration;
 

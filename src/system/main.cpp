@@ -6,6 +6,8 @@
 #include "../graphics/graphics.h"
 #include "../state/CarnageState.h"
 
+#include "../network/Network.h"
+
 int msLast = 0;
 bool running;
 E_STATE beginState;

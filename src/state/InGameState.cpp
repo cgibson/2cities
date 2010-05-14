@@ -35,20 +35,25 @@ InGameState::InGameState() {
 InGameState::~InGameState() {}
 
 void InGameState::initialize() {
-    // i/o initializtion not done in the state
+#ifdef CLIENT
+	// i/o initializtion not done in the state
     // anymore, it's done globally at app launch
     // we just capture the mouse
     io::capture_mouse();
 
    camera.eye = Vector( 0.0f, 30.0f, 30.0f);
    camera.lookAt = Vector( 0.0f, 0.0f, 0.0f);
+#endif
 }
 
 void InGameState::update(long milli_time) {
+#ifdef CLIENT
    updateInput(milli_time);
+#endif
 }
 
 void InGameState::updateInput(long milli_time) {
+#ifdef CLIENT
    // General Keyboard Layout
 	if(io::keys[27]) {
 		exit(0);
@@ -117,6 +122,6 @@ void InGameState::updateInput(long milli_time) {
 	   camera.phiMinAngle =-M_PI;
 	   camera.rotateView(deltaCamTurn, deltaCamTilt);
    }
-
+#endif
 }
 

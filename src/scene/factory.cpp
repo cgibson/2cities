@@ -3,15 +3,21 @@
 
 ObjectFactory::ObjectFactory()
 {
+#ifdef DEBUG
+  printf("ObjectFactory Initializing...");
+#endif
+
   blueprints = (Blueprint*)malloc(sizeof(Blueprint) * MAX_OBJECT_TYPES);
   loadConfig(NULL);
+
+#ifdef DEBUG
+  printf("ObjectFactory Initialized!\n");
+#endif
 }
 
 void ObjectFactory::loadConfig(char* filename)
 {
   Blueprint tmp;
-  
-  printf("DUMMY SPHERE: %d\n", DUMMY_SPHERE);
   
   // dummy block
   tmp = Blueprint(DUMMY_BLOCK, 1.0f, YELLOW_MAT, SMALL_CUBE, Vector(1.0f, 1.0f, 1.0f));

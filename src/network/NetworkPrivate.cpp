@@ -1,15 +1,16 @@
 #include "NetworkPrivate.h"
 
 NetworkPrivate::NetworkPrivate() {
-	_playerID = 0;
+	PRINTINFO("Network Initializing...");
+	PRINTINFO("Network Initialized!\n");
 
-	// TODO replace with console output
-	printf("Network Initialized\n");
-
+	PRINTINFO("Network Initializing PhysicsEngine...");
 	physicsEngine = new Physics();
 	physicsEngine->initPhysics();
-	// TODO replace with console output
-	printf("Network Initiated PhysicsEngine\n");
+	PRINTINFO("PhysicsEngine Initialized!\n");
+
+//	physicsEngine->loadFromFile("resources/test.lvl");
+	PRINTINFO("Network Initiated Level in PhysicsEngine\n");
 }
 
 NetworkPrivate::~NetworkPrivate() {}
@@ -17,29 +18,18 @@ NetworkPrivate::~NetworkPrivate() {}
 void NetworkPrivate::initialize() {}
 
 void NetworkPrivate::update(long milli_time) {
+	// Update PhysicsEngine
 	physicsEngine->update(milli_time);
 
-	InGameState *currState = global::stateManager->currentState;
-
+	// Update Current Gamestate
 	std::vector<WorldObject> PhysEngObjs = physicsEngine->getWorldObjects();
-	currState->objects.clear();
+	//InGameState *currState = global::stateManager->currentState;
+	//currState->objects.clear();
 
 	for(int i=0; i < PhysEngObjs.size(); i++) {
-		currState->objects.push_back(new WorldObject(PhysEngObjs[i]));
-		if (currState->objects[i]->getVelocity().mag() > 0) {
-			/*
-			printf("Item %i is moving item with vel=%s pos=%s\n",i,
-					currState->objects[i]->getVelocity().str(),
-					currState->objects[i]->getPosition().str());
-			*/
-		}
+		//currState->objects.push_back(new WorldObject(PhysEngObjs[i]));
+		updateLocalObject(new WorldObject(PhysEngObjs[i]));
 	}
-	/*
-	printf("Physics Objects: WorldObjects=%i, BuildingBlocks=%i, AmmoUnits=%i\n",
-			physicsEngine->getWorldObjects().size(),
-			physicsEngine->getBuildingBlocks().size(),
-			physicsEngine->getAmmo().size());
-	*/
 }
 
 void NetworkPrivate::addObject(WorldObject newObj) {

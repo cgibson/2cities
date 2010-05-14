@@ -29,7 +29,10 @@ namespace enumeration {
   typedef enum E_MaterialType {
     YELLOW_MAT, BLUE_MAT, WHITE_MAT
   } MaterialType;
-  
+
+  typedef enum E_NetworkInterface {
+	N_PRIVATE, N_CLIENT, N_SERVER
+  } NetworkInterface;
 }
 
 #endif

@@ -1,4 +1,3 @@
-#include <map>
 #ifdef _WIN32
     #include <windows.h>
     #include <winGL/glew.h>
@@ -9,6 +8,7 @@
 
 #include "CarnageState.h"
 
+#include <map>
 #include "../system/global.h"
 #include "../system/io.h"
 #include "../helper/camera.h"
@@ -30,23 +30,28 @@ CarnageState::CarnageState() {
 CarnageState::~CarnageState() {}
 
 void CarnageState::initialize() {
-    // i/o initializtion not done in the state
+#ifdef CLIENT
+	// i/o initializtion not done in the state
     // anymore, it's done globally at app launch
     // we just capture the mouse
     io::capture_mouse();
 
    camera.eye = Vector( 0.0f, 30.0f, 30.0f);
    camera.lookAt = Vector( 0.0f, 0.0f, 0.0f);
-   
+#endif
+
    network->loadLevel("resources/test.lvl");
 }
 
 void CarnageState::update(long milli_time) {
-   ammo_recharge -= milli_time;
+#ifdef CLIENT
+	ammo_recharge -= milli_time;
    updateInput(milli_time);
+#endif
 }
 
 void CarnageState::updateInput(long milli_time) {
+#ifdef CLIENT
    // General Keyboard Layout
    if(io::keys[27]) {
       exit(0);
@@ -119,6 +124,7 @@ void CarnageState::updateInput(long milli_time) {
 
 	  ammo_recharge = RECHARGE_TIME;
    }
+#endif
 }
 
 

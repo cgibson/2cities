@@ -9,9 +9,13 @@
 
 #include "../physics/Physics.h"
 
+#include "NetworkSystem.h"
+#include "../../include/ting/Socket.hpp"
+#include "../../include/ting/WaitSet.hpp"
+#include "Player.h"
+
 #include "../system/global.h"
 #include "../system/enum.h"
-
 using namespace global;
 using namespace enumeration;
 
@@ -19,6 +23,11 @@ class NetworkServer : public NetworkSystem
 {
 protected:
 	Physics *physicsEngine;
+	vector<Player *> players;
+
+	ting::UDPSocket *incomingSock;
+	ting::WaitSet *waitSet;
+	int lastGroup;
 
 public:
 	NetworkServer();
@@ -27,12 +36,13 @@ public:
 	virtual void initialize();
 	virtual void update(long milli_time);
 
-	virtual int getPlayerID() { return _playerID; }
-
 	// Add new object to scene
 	virtual void addObject(WorldObject newObj);
 
 	virtual void reqUpdateObj(unsigned int objID) {};
+
+	// Load a stored lvl
+	virtual void loadLevel(const char * file);
 };
 
 #endif

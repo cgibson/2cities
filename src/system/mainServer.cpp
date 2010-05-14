@@ -1,59 +1,78 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
+#include <string.h>
+
 #include "global.h"
-#include "gl_helper.h"
-#include "io.h"
-#include "../graphics/graphics.h"
 #include "../state/CarnageState.h"
-#include "../network/NetworkServer.h"
+#include "../system/enum.h"
+
+using namespace std;
+using namespace enumeration;
 
 E_STATE beginState;
 
-using namespace std;
-
-void initState()
-{
-	  global::stateManager->changeCurrentState(beginState);
+void initState() {
+	global::stateManager->changeCurrentState(beginState);
 }
 
 
-void initialize()
-{
-  global::app_title = (char*)malloc(sizeof(char) * 80);
-  sprintf(global::app_title, "2Cities : The Game");
-
-  // initialization of all other modules
-  initState();
-
-  global::network = new NetworkServer();
-  global::network->initialize();
+void initialize() {
+ 	// initialization of all other modules
+	initState();
 }
 
 /*
  * application kickstart.
  */
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
+	if(argc == 2) {
+		if(!strcmp(argv[1], "-build")) {
+		  beginState=BUILD_STATE;
+		}
+	}
+	else {
+		beginState=CARNAGE_STATE;
+	}
 
-  if(argc == 2)
-  {
-    if(!strcmp(argv[1], "-build"))
-    {
-      beginState=BUILD_STATE;
-    }
-  }else{
-    beginState=CARNAGE_STATE;
-  }
+	initialize();
+	network->update(0);
 
-  initialize();
+	while(1) {
+		sleep(1);
+		network->update(1000);
+	}
+	/*
+	char input[100];
+	while(1) {
+		cout << "Enter Command:" << endl;
+		cin >> input;
 
-  char *input;
+		if(!strcmp(input, "objects")) {
+			cout << "*** Printing Objects ***" << endl;
+			for(int i=0; i < stateManager->currentState->objects.size(); i++)
+				cout << "Obj #" << i << ": " << stateManager->currentState->objects[i]->getPosition().str() << endl;
+			cout  << "*** Objects Completed ***" << endl;
+		}
+		if(!strcmp(input, "newObject")) {
+			Vector dir(1,0,0);
+			dir.norm();
 
-  while(1) {
-    cout << "Enter Command:" << endl;
-    cin >> input;
+			// TODO uniqueID creation & addObject(WorldObject)
+			static int newObjID = 10000;
+			WorldObject newObj = WorldObject(newObjID++,0,enumeration::DUMMY_SPHERE);
+			newObj.setPosition(Vector(0,10,0));
+			newObj.setVelocity(dir * 50);
+			network->addObject(newObj);
+		}
+		if(!strcmp(input, "newLevel")) {
+			network->loadLevel("resources/test.lvl");
+		}
 
-  }
+		network->update(100);
+	}
+	*/
 
-  return 0;
+
+	return 0;
 }

@@ -1,10 +1,7 @@
 #include "global.h"
-#ifdef CLIENT
-  #include "../network/NetworkPrivate.h"
-  #include "../network/NetworkClient.h"
-#else
-  #include "../network/NetworkServer.h"
-#endif
+
+#include "../network/NetworkManager.h"
+
 /*
  * All values within global namespace will be available for everyone
  */
@@ -13,13 +10,8 @@ namespace global
 {
   StateManager *stateManager = new StateManager(); // global state manager
   ObjectFactory *factory = new ObjectFactory();
-#ifdef CLIENT
-  NetworkSystem *network = new NetworkPrivate();
-  //NetworkSystem *network = new NetworkClient();
-#else
-  NetworkSystem *network = new NetworkServer();
-#endif
-  
+  NetworkManager *networkManager = new NetworkManager();
+
   int width;  // window width
   int height; // wondow height
   

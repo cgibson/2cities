@@ -16,9 +16,6 @@ NetworkServer::NetworkServer() {
 	physicsEngine = new Physics();
 	physicsEngine->initPhysics();
 	PRINTINFO("PhysicsEngine Initialized!\n");
-
-//	physicsEngine->loadFromFile("resources/test.lvl");
-	PRINTINFO("Network Initiated Level in PhysicsEngine\n");
 }
 
 NetworkServer::~NetworkServer() {}
@@ -30,54 +27,64 @@ void NetworkServer::update(long milli_time) {
 	physicsEngine->update(milli_time);
 
 	// UPDATE LOCAL DATA
-	InGameState *currState = global::stateManager->currentState;
 	std::vector<WorldObject> PhysEngObjs = physicsEngine->getWorldObjects();
 	for(int i=0; i < PhysEngObjs.size(); i++) {
 		updateLocalObject(new WorldObject(PhysEngObjs[i]));
 	}
 
-	printf("Physics Objects: WorldObjects=%i\n",
-			physicsEngine->getWorldObjects().size());
-
 	// TODO UPDATE DELTAs
 
-	// Network Details
+	// Incoming Network Section
 	try {
 		// Check for incoming items
 		if(waitSet->WaitWithTimeout(0)) {
-			printf("-> Packet Waiting\n");
-			ting::Buffer<ting::u8> buf(new ting::u8[1500], 1500);
-			ting::IPAddress ip;
+			printf("-> Packet waiting on some Socket!\n");
+
 			if(incomingSock->CanRead()) {
-				// Read Packet
-				incomingSock->Recv(buf, ip);
+				ting::IPAddress ip;
+				Network::NetworkPacket *pktPtr;
+				pktPtr = RecvPacket(incomingSock, &ip);
 
-				// Create new player and add to players
-				Player *currPlayer = new Player;
-				players.push_back(currPlayer);
-				static int newPlayerID = 1;
-				currPlayer->ID = newPlayerID++;
+				printf("check packet details\n");
+				if(pktPtr != 0 && pktPtr->header.type == Network::CONN_REQ) {
+					printf("Client is requesting to connect!\n");
 
-				// Add Socket/IP to currPlayer
-				currPlayer->socket = new ting::UDPSocket;
-				currPlayer->socket->Open();
-				// TODO currPlayer->ip = new ting::IPAddress(ip.host, ip.port);
-				currPlayer->ip = new ting::IPAddress("127.0.0.1", ip.port);
+					// Create new player and add to players
+					Player *currPlayer = new Player;
+					players.push_back(currPlayer);
 
-				// Add Socket to waitSet
-				waitSet->Add(currPlayer->socket, ting::Waitable::READ);
+					static int newPlayerID = 1;
+					currPlayer->ID = newPlayerID++;
 
-				// Send reply so they have new UDP port
-				strcpy((char*)buf.Begin(),"Connection Successfully Established!");
-				currPlayer->socket->Send(buf, (*(currPlayer->ip)));
-				printf("<- Replied with '%s' to %i:%i\n", buf.Begin(), currPlayer->ip->host, currPlayer->ip->port);
+					// Add Socket/IP to currPlayer
+					currPlayer->socket = new ting::UDPSocket;
+					currPlayer->socket->Open();
+					currPlayer->ip = new ting::IPAddress(ip.host, ip.port);
+					currPlayer->ip->host = 16777343;	// TODO Remove Local Host
+
+					// Add Socket to waitSet
+					waitSet->Add(currPlayer->socket, ting::Waitable::READ);
+
+					// Send reply so they have new UDP port
+					unsigned char msg[] = "";
+					pktPtr = new NetworkPacket(CONN_REPLY, msg, sizeof(msg));
+
+					printf("Sending Connection Reply...\n");
+					SendPacket(currPlayer->socket, currPlayer->ip, pktPtr);
+					printf(" <- Replied to %i:%i\n",currPlayer->ip->host, currPlayer->ip->port);
+				}
+				else {
+					printf("Received an unexpected packet on the server!");
+				}
 			}
 
 			// check each players[i]->socket->CanRead();
+			// TODO Update to NetworkPacket class
 			for(int p=0; p<players.size(); p++) {
-				ting::IPAddress ip;
 				if (players[p]->socket->CanRead()) {
-					// READ OBJECT
+					ting::Buffer<ting::u8> buf(new ting::u8[1500], 1500);
+					ting::IPAddress ip;
+
 					players[p]->socket->Recv(buf, ip);
 					WorldObject newObj(*(WorldObject*)(buf.Begin()));
 					printf("Received Obj #%i\n", newObj.getID());
@@ -85,33 +92,41 @@ void NetworkServer::update(long milli_time) {
 				}
 			}
 		}
+	} catch(ting::Socket::Exc &e) {
+		std::cout << "Network error: " << e.What() << std::endl;
+	}
 
+	// Outgoing Network Section
+	try {
 		// send data to clients
 		const int groupSize = 10;
 		const int packetSize = groupSize * sizeof(WorldObject);
 		ting::Buffer<ting::u8> buf(new ting::u8[packetSize], packetSize);
+
+		InGameState *currState = global::stateManager->currentState;
 		int objectSize = currState->objects.size();
-		int sendSize = min(300, objectSize);
+		int sendSize = min(50, objectSize);
+
 		if (players.size() > 0) {
 			for(int o=0; o < sendSize; o+=groupSize) {
 				// TODO build packet
 				for(int i=0; i<groupSize; i++) {
 					int currObj = (o+i+lastGroup)%objectSize;
-					printf("%i ",currState->objects[currObj]->getID());
+//					printf("%i ",currState->objects[currObj]->getID());
 					memcpy((WorldObject*)(buf.Begin())+i, currState->objects[currObj], sizeof(WorldObject));
 				}
 				// Send to all clients
-				printf("... -> Sending to Player ");
+//				printf("... -> Sending to Player ");
 				for(int p=0; p<players.size(); p++) {
 					if(!players[p]->socket->IsValid()) {
 						printf("Socket !IsValid!\n");
 					}
-					printf("#%i ", players[p]->ID);
+//					printf("#%i ", players[p]->ID);
 					players[p]->socket->Send(buf, *(players[p]->ip));
 				}
-				printf("\n");
+//				printf("\n");
 			}
-			printf("...Group Send Complete!\n");
+//			printf("...Group Send Complete!\n");
 			lastGroup += sendSize;
 		}
 	} catch(ting::Socket::Exc &e){
@@ -124,5 +139,6 @@ void NetworkServer::addObject(WorldObject newObj) {
 }
 
 void NetworkServer::loadLevel(const char * file) {
+	PRINTINFO("Network Initiated Level in PhysicsEngine\n");
 	physicsEngine->loadFromFile(file);
 }

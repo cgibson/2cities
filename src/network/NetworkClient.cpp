@@ -28,23 +28,28 @@ void NetworkClient::update(long milli_time) {
 		// TODO Check Packet Type
 
 		// If Objects, update local objects received
-		printf("Objects ");
+//		printf("Objects ");
 		for(int i=0; i<10; i++) {
 			WorldObject *objRecv = new WorldObject(*((WorldObject*)(buf.Begin())+i));
-			printf("%i ", objRecv->getID());
+//			printf("%i ", objRecv->getID());
 			updateLocalObject(objRecv);
 		}
-		printf("Received\n");
+//		printf("Received\n");
 	}
 }
 
 bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 	serverIP = new ting::IPAddress(ip, port);
-	ting::Buffer<ting::u8> buf(new ting::u8[1500], 1500);
-	strcpy((char*)buf.Begin(),"I'd like to connect!");
+	Network::NetworkPacket *pktPtr;
+	ting::Buffer<ting::u8> *bufPtr;
+
+	unsigned char msg[] = "I'd like to connect!";
+	pktPtr = new NetworkPacket(CONN_REQ, msg, sizeof(msg));
 
 	printf("Sending Connection Request...");
-	socket->Send(buf, *serverIP);
+	SendPacket(socket, serverIP, pktPtr);
+	printf("sent '%s'\n",pktPtr->data);
+	//delete pktPtr;
 
 	// Wait for reply response for 1.5 second (1500 ms)
 	printf("...Waiting for Server Reply");
@@ -54,9 +59,10 @@ bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 		return false;
 	}
 	else {
-		socket->Recv(buf, *serverIP);
-		serverIP->host = 16777343;		// TODO remove whe
-		printf("...%s\n", buf.Begin());
+		ting::IPAddress sourceIP;
+		pktPtr = RecvPacket(socket, &sourceIP);
+		serverIP->port = sourceIP.port;
+		printf("...%s\n", pktPtr->data);
 		isConnected = true;
 		return true;
 	}
@@ -69,4 +75,5 @@ void NetworkClient::addObject(WorldObject newObj) {
 		PRINTINFO("Sending Object\n");
 		socket->Send(buf, *serverIP);
 	}
+	global::stateManager->currentState->objects.push_back(new WorldObject(newObj));
 }

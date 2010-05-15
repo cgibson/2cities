@@ -5,8 +5,7 @@
 #include "io.h"
 #include "../graphics/graphics.h"
 #include "../state/CarnageState.h"
-
-#include "../network/Network.h"
+#include "../network/NetworkManager.h"
 
 int msLast = 0;
 bool running;
@@ -31,7 +30,7 @@ void updateLoop()
     io::update(elapsed);
     gfx::update(elapsed);
     global::stateManager->currentState->update(elapsed);
-    global::network->update(elapsed);
+    global::networkManager->network->update(elapsed);
 
     InGameState *curstate = global::stateManager->currentState;
     for(int i = 0; i < (int)curstate->objects.size(); i++)
@@ -74,7 +73,7 @@ void initialize()
   
   initState();
 
-  global::network->initialize();
+  global::networkManager->initialize();
 
   glutIdleFunc(updateLoop);
   

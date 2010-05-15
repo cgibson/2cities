@@ -12,6 +12,13 @@ using namespace enumeration;
 
 E_STATE beginState;
 
+#include <time.h>
+void sleepMS(unsigned int mseconds)
+{
+    clock_t goal = mseconds * CLOCKS_PER_SEC / 1000 + clock();
+    while (goal > clock());
+}
+
 void initState() {
 	global::stateManager->changeCurrentState(beginState);
 }
@@ -20,6 +27,7 @@ void initState() {
 void initialize() {
  	// initialization of all other modules
 	initState();
+	networkManager->initialize();
 }
 
 /*
@@ -36,12 +44,21 @@ int main(int argc, char** argv) {
 	}
 
 	initialize();
-	network->update(0);
+	networkManager->network->update(0);
 
+	unsigned long timePrev = clock();
+	unsigned long timeCurr;
+	unsigned int elasped = 0;
 	while(1) {
-		sleep(1);
-		network->update(1000);
+		sleepMS(5);
+		timeCurr = clock();
+		elasped = (timeCurr - timePrev)/1000;
+		timePrev = timeCurr;
+		networkManager->network->update(elasped);
+		//printf("newLine %i\n", elasped);
 	}
+
+
 	/*
 	char input[100];
 	while(1) {

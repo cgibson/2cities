@@ -38,7 +38,6 @@ public:
     static void exitApp(int argc, char *argv[]);
     static void clearConsole(int argc, char *argv[]);
     static void swapUIcmd(int argc, char *argv[]);
-    static void networkCmds(int argc, char *argv[]);
 
 private:
     bool _showConsole;

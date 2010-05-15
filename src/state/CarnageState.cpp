@@ -40,7 +40,7 @@ void CarnageState::initialize() {
    camera.lookAt = Vector( 0.0f, 0.0f, 0.0f);
 #endif
 
-   network->loadLevel("resources/test.lvl");
+   networkManager->network->loadLevel("resources/test.lvl");
 }
 
 void CarnageState::update(long milli_time) {
@@ -57,7 +57,7 @@ void CarnageState::updateInput(long milli_time) {
       exit(0);
    }
    if(io::keys['l']) {
-      network->loadLevel("resources/test.lvl");
+	   networkManager->network->loadLevel("resources/test.lvl");
    }
    // Orbit Controls
    float deltaLocTilt = 0;
@@ -120,7 +120,7 @@ void CarnageState::updateInput(long milli_time) {
 	  WorldObject newObj = WorldObject(newObjID++,0,enumeration::DUMMY_SPHERE);
 	  newObj.setPosition(camera.eye);
 	  newObj.setVelocity(dir * 50);
-	  network->addObject(newObj);
+	  networkManager->network->addObject(newObj);
 
 	  ammo_recharge = RECHARGE_TIME;
    }

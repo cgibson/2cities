@@ -19,8 +19,7 @@
 using namespace global;
 using namespace enumeration;
 
-class NetworkServer : public NetworkSystem
-{
+class NetworkServer : public NetworkSystem {
 protected:
 	Physics *physicsEngine;
 	vector<Player *> players;

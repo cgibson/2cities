@@ -25,7 +25,7 @@ using namespace enumeration;
 
 namespace Network {
 	typedef enum N_PacketType {
-		CONN_REQ, CONN_REP, SERVER_UPD, CLIENT_SEND
+		CONN_REQ, CONN_REPLY, SERVER_UPD, CLIENT_SEND
 	} PacketType;
 
 	class NetworkPacketHeader {
@@ -37,16 +37,32 @@ namespace Network {
 	public:
 		Network::NetworkPacketHeader header;
 		unsigned char* data;
-		int dataSize;
+		unsigned int   dataSize;
+
+		NetworkPacket() {};
+		NetworkPacket(N_PacketType newType, unsigned char * newData, unsigned int newDataSize) {
+			header.type = newType;
+			dataSize = newDataSize;
+			data = new unsigned char[dataSize];
+			memcpy(data, newData, dataSize);
+		}
+		~NetworkPacket() {
+			delete data;
+		}
 	};
 }
+
+using namespace Network;
 
 class NetworkSystem {
 protected:
 	void updateLocalObject(WorldObject *obj);
 
-	ting::Buffer<ting::u8>* BuildBuffer(Network::NetworkPacket* packet);
-	Network::NetworkPacket* ReadBuffer(ting::Buffer<ting::u8>* buf);
+	ting::Buffer<ting::u8>* BuildBuffer(NetworkPacket* packet);
+	NetworkPacket* ReadBuffer(ting::Buffer<ting::u8>* buf, unsigned int recvSize);
+
+	void SendPacket(ting::UDPSocket *socket, ting::IPAddress *serverIP, NetworkPacket* pktPtr);
+	NetworkPacket* RecvPacket(ting::UDPSocket *socket, ting::IPAddress *sourceIP);
 
 public:
 	NetworkSystem() {}
@@ -65,42 +81,5 @@ public:
 
 	virtual void reqUpdateObj(unsigned int objID) {};
 };
-
-// Method to take a WorldObject* and update/add it to the main vector (based on ID field)
-// ** NOTE: Current VERY inefficient **
-// TODO Improve efficiency
-inline void NetworkSystem::updateLocalObject(WorldObject *obj) {
-	int i=0;
-
-	std::vector<WorldObject *> *currObjects = &(global::stateManager->currentState->objects);
-	while (i < currObjects->size() && (*currObjects)[i]->getID() != obj->getID())
-		i++;
-
-	if (i == currObjects->size())
-		currObjects->push_back(obj);
-	else
-		(*currObjects)[i] = obj;
-}
-
-inline ting::Buffer<ting::u8>* NetworkSystem::BuildBuffer(Network::NetworkPacket* packet) {
-	int bufSize = packet->dataSize + sizeof(packet->header);
-	ting::Buffer<ting::u8> *buf = new ting::Buffer<ting::u8>(new ting::u8[bufSize], bufSize);
-
-	memcpy(buf->Begin(), &packet->header, sizeof(packet->header));
-	memcpy(buf->Begin() + sizeof(packet->header), packet->data, packet->dataSize);
-
-	return buf;
-}
-
-inline Network::NetworkPacket* NetworkSystem::ReadBuffer(ting::Buffer<ting::u8>* buf) {
-	Network::NetworkPacket* packet = new Network::NetworkPacket;
-
-	memcpy(&packet->header, buf->Begin(), sizeof(&packet->header));
-
-	packet->dataSize = buf->Size() - sizeof(&packet->header);
-	memcpy(&packet->data, buf->Begin() + sizeof(&packet->header), packet->dataSize);
-
-	return packet;
-}
 
 #endif

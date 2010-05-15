@@ -7,17 +7,18 @@
 
 #include "../scene/WorldObject.h"
 
-#include "NetworkSystem.h"
 #include "../../include/ting/Socket.hpp"
 #include "../../include/ting/WaitSet.hpp"
+
+#include "NetworkSystem.h"
+using namespace Network;
 
 #include "../system/global.h"
 #include "../system/enum.h"
 using namespace global;
 using namespace enumeration;
 
-class NetworkClient : public NetworkSystem
-{
+class NetworkClient : public NetworkSystem {
 protected:
 	ting::UDPSocket *socket;
 	ting::WaitSet *waitSet;

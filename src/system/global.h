@@ -8,13 +8,13 @@
 /*
  * All values within global namespace will be available for everyone
  */
-class NetworkSystem;
+class NetworkManager;
 
 namespace global
 {
   extern StateManager *stateManager; // global state manager
   extern ObjectFactory *factory;
-  extern NetworkSystem *network;
+  extern NetworkManager *networkManager;
 
   extern int width;  // window width
   extern int height; // wondow height
@@ -30,6 +30,6 @@ namespace global
   extern int fps; // frames per second (not necessarily *live*)
 }
 
-#include "../network/NetworkSystem.h"
+#include "../network/NetworkManager.h"
 
 #endif

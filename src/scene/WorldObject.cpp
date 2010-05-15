@@ -34,7 +34,7 @@ void WorldObject::draw() {
 }
 
 void WorldObject::update(int elapsedTime) {
-/*
+
 	Vector pos = getPosition();
 	Vector vel = getVelocity();
 	Vector acc = Vector(0,-8,0);
@@ -42,15 +42,15 @@ void WorldObject::update(int elapsedTime) {
 	vel = vel + (acc * (elapsedTime/1000.0f));
 	pos = pos + (vel * (elapsedTime/1000.0f));
 
-	if(pos.y() > 0) {
+	if(pos.y() > 1 && abs(vel.y()) > 1) {
 		setPosition(pos);
 		setVelocity(vel);
 	}
 	else {
-		setPosition(Vector(pos.x(),0,pos.z()));
-		setVelocity(Vector(0,0,0));
+		//setPosition(Vector(pos.x(),1,pos.z()));
+		//setVelocity(Vector(0,0,0));
 	}
-*/
+
 }
 
 void WorldObject::think(int elapsedTime) {

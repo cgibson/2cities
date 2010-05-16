@@ -1,7 +1,10 @@
 #include "renderer.h"
 #include "graphics.h"
+#include "../system/enum.h"
 
 #include "../network/NetworkPrivate.h"
+
+using namespace enumeration;
 
 Renderer::Renderer()
 {
@@ -81,8 +84,16 @@ void Renderer::draw()
   
   InGameState *curstate = global::stateManager->currentState;
   
+  //ObjectType lastType, curType;
+  //curType = lastType = curstate->objects[0].getType();
+  
   for(int i = 0; i < (int)curstate->objects.size(); i++)
   {
+    /*curType = curState->objects[i].getType();
+    if(curType != lastType)
+    {
+    
+    }*/
     curstate->objects[i]->draw();
   }
   

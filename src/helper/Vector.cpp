@@ -1,6 +1,6 @@
 #include "Vector.h"
 
-Vector::Vector(GLdouble x, GLdouble y, GLdouble z)
+Vector::Vector(double x, double y, double z)
 {
   p_x = x;
   p_y = y;
@@ -63,24 +63,24 @@ char* Vector::str( void ) {
     return buffer;
 }
 
-GLdouble Vector::x()
+double Vector::x()
 {
   return p_x;
 }
 
-GLdouble Vector::y()
+double Vector::y()
 {
   return p_y;
 }
 
-GLdouble Vector::z()
+double Vector::z()
 {
   return p_z;
 }
 
-GLdouble *Vector::array()
+double *Vector::array()
 {
-  GLdouble *ret = (GLdouble*)malloc(sizeof(GLdouble) * 3);
+  double *ret = (double*)malloc(sizeof(double) * 3);
   ret[0] = p_x;
   ret[1] = p_y;
   ret[2] = p_z;

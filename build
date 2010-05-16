@@ -109,7 +109,8 @@ ldflags.server = {
     "m",
     "GL", -- TODO: remove me
     "GLU", -- TODO: remove me
-    "glut" -- TODO: remove me
+    "glut", -- TODO: remove me
+    "SDL"
 }
 
 --------------------------------------------------------------------------

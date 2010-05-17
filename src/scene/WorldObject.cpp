@@ -42,20 +42,38 @@ void WorldObject::update(int elapsedTime) {
 	vel = vel + (acc * (elapsedTime/1000.0f));
 	pos = pos + (vel * (elapsedTime/1000.0f));
 
-	//if(pos.y() > 1 && abs(vel.y()) > 1)
-	//if(abs(vel.mag()) > 0.5)
-	//{
-	//	setPosition(pos);
-	//	setVelocity(vel);
-  //}
-	//}
-	//else {
-		//setPosition(Vector(pos.x(),1,pos.z()));
-		//setVelocity(Vector(0,0,0));
-	//}
+	if(pos.y() > 1) {
+		setPosition(pos);
+		setVelocity(vel);
+	}
+	else {
+	}
 
 }
 
 void WorldObject::think(int elapsedTime) {
 
+}
+
+void WorldObject::print() {
+/*	Items in WorldObjects (for reference)
+ *
+ * 	unsigned int id;
+ * 	unsigned int playerid;
+ * 	Vector position;
+ * 	Vector velocity;
+ * 	Vector force;
+ * 	Quaternion orientation;
+ * 	ObjectType type; //SMALL_SPHERE, MEDIUM_SPHERE, LARGE_SPHERE, SMALL_CUBE, etc
+ * 	PhysicsState physics; //NONE, DYNAMIC, STATIC
+ * 	uint64_t timestamp;
+ */
+    printf("***Object Details***\n"
+    		" ID       : %i\n"
+    		" PlayerID : %i\n"
+    		" position : %s\n"
+    		" velocity : %s\n"
+    		" force    : %s\n"
+    		"*******************\n",
+    		id, playerid, position.str(), velocity.str(), force.str());
 }

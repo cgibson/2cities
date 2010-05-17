@@ -5,6 +5,6 @@ public:
 	int ID;
 	char *playerName;
 
-	ting::UDPSocket *socket;
-	ting::IPAddress *ip;
+	ting::UDPSocket socket;
+	ting::IPAddress ip;
 };

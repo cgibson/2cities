@@ -21,27 +21,30 @@ using namespace enumeration;
 
 class NetworkServer : public NetworkSystem {
 protected:
-	Physics *physicsEngine;
-	vector<Player *> players;
+	Physics physicsEngine;
 
-	ting::UDPSocket *incomingSock;
+	vector<Player *> players;
+	ting::UDPSocket incomingSock;
 	ting::WaitSet *waitSet;
-	int lastGroup;
+
+	unsigned int _sendObjNext;
+	unsigned int _playerIDNext;
 
 public:
 	NetworkServer();
 	~NetworkServer();
 
-	virtual void initialize();
-	virtual void update(long milli_time);
+	void initialize();
+	void update(long milli_time);
 
 	// Add new object to scene
-	virtual void addObject(WorldObject newObj);
+	void addObject(WorldObject newObj);
+	void addObjectPhys(WorldObject newObj);
 
-	virtual void reqUpdateObj(unsigned int objID) {};
+	void reqUpdateObj(unsigned int objID) {};
 
 	// Load a stored lvl
-	virtual void loadLevel(const char * file);
+	void loadLevel(const char * file);
 };
 
 #endif

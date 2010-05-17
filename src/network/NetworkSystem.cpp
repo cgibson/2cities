@@ -1,61 +1,81 @@
 #include "NetworkSystem.h"
 
-// Method to take a WorldObject* and update/add it to the main vector (based on ID field)
-// ** NOTE: Current VERY inefficient **
-// TODO Improve efficiency
-void NetworkSystem::updateLocalObject(WorldObject *obj) {
+/* Method to take a WorldObject* and update/add it to the main vector (based on ID field)
+ *
+ * Passed Object Pointer must remain alive past function call and shouldn't be deleted
+ * until object in later updates OR gameState changes.
+ *
+ * NOTE: Currently implementation is VERY inefficient **
+ * TODO Improve efficiency
+ */
+void NetworkSystem::updateLocalObject(WorldObject *objPtr) {
 	int i=0;
-
 	std::vector<WorldObject *> *currObjects = &(global::stateManager->currentState->objects);
-	while (i < currObjects->size() && (*currObjects)[i]->getID() != obj->getID())
-		i++;
 
-	if (i == currObjects->size())
-		currObjects->push_back(obj);
-	else
-		(*currObjects)[i] = obj;
+	// Find Location in main Object vector
+	while (i < currObjects->size() && (*currObjects)[i]->getID() != objPtr->getID()) { i++; }
+
+	// if not found, add to end of vector
+	if (i == currObjects->size()) {
+		currObjects->push_back(objPtr);
+	}
+	// if found, replace pointer with current one
+	else {
+		//WorldObject *oldObjPtr = (*currObjects)[i];
+		(*currObjects)[i] = objPtr;
+		//delete oldObjPtr;
+	}
 }
 
-ting::Buffer<ting::u8>* NetworkSystem::BuildBuffer(NetworkPacket* packet) {
-	int bufSize = packet->dataSize + sizeof(packet->header);
-	ting::Buffer<ting::u8> *buf = new ting::Buffer<ting::u8>(new ting::u8[bufSize], bufSize);
+/* Creates Buffer required for send, sends packet, and cleans up
+ */
+int NetworkSystem::SendPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ting::IPAddress *destIP_P) {
+	if(socket->IsNotValid()) {
+		printf("Socket Not Open/Valid Yet\n");
+		return -1;
+	}
 
-	memcpy(buf->Begin(), &packet->header, sizeof(packet->header));
-	memcpy(buf->Begin() + sizeof(packet->header), packet->data, packet->dataSize);
+	printf("SendPacket\n");	// TODO DEBUG CODE
+	pktPtr->display();
 
-	return buf;
+	int bufSize = pktPtr->dataSize + sizeof(NetworkPacketHeader);
+	ting::u8 strPtr[bufSize];
+	ting::Buffer<ting::u8> buf(strPtr, sizeof(strPtr));
+	memcpy(buf.Buf(), &(pktPtr->header), sizeof(NetworkPacketHeader));
+	memcpy(buf.Buf() + sizeof(NetworkPacketHeader), pktPtr->data, pktPtr->dataSize);
+
+	int sentSize = socket->Send(buf, *destIP_P);
+	printf("Sent Packet of %i bytes\n",sentSize);	// TODO DEBUG CODE
+
+	return sentSize;
 }
 
-NetworkPacket* NetworkSystem::ReadBuffer(ting::Buffer<ting::u8>* buf, unsigned int recvSize) {
+/* Creates Buffer required for recv, recv packet, and cleans up
+ * Note: ipPtr's addresses will be updated with packets source's information
+ */
+int NetworkSystem::RecvPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ting::IPAddress *srcIP_P) {
+	printf("RecvPacket\n");	// TODO DEBUG CODE
+
+	ting::u8 strPtr[2000];
+	ting::Buffer<ting::u8> buf(strPtr, sizeof(strPtr));
+
+	int recvSize = socket->Recv(buf, *srcIP_P);
+	printf("Recv Packet of %i bytes\n", recvSize);	// TODO DEBUG CODE
+
 	// Check if packet can possibly be valid
 	if(recvSize <  sizeof(NetworkPacketHeader)) {
 		printf("** ReadBuffer: Received Bad Packet! (too small)\n");
-		return 0;
+		return -1;
 	}
 
-	Network::NetworkPacket* packet = new Network::NetworkPacket;
-	memcpy(&packet->header, buf->Begin(), sizeof(&packet->header));
+	pktPtr->dataSize = recvSize - sizeof(NetworkPacketHeader);
+	pktPtr->data = new unsigned char(pktPtr->dataSize);
+	memcpy(&(pktPtr->header), buf.Buf(), sizeof(NetworkPacketHeader));
+	memcpy(pktPtr->data, buf.Buf() + sizeof(NetworkPacketHeader), pktPtr->dataSize);
 
-	packet->dataSize = recvSize - sizeof(&packet->header);
-	packet->data = new unsigned char(packet->dataSize);
-	memcpy(packet->data, buf->Begin() + sizeof(&packet->header), packet->dataSize);
+	// TODO DEBUG REMOVE
+	printf("RecvPacket->pktPtr: ");
+	pktPtr->display();
 
-	return packet;
-}
-
-void NetworkSystem::SendPacket(ting::UDPSocket *socket, ting::IPAddress *serverIP, NetworkPacket* pktPtr) {
-	ting::Buffer<ting::u8> *bufPtr;
-	bufPtr = BuildBuffer(pktPtr);
-	socket->Send(*bufPtr, *serverIP);
-	//delete bufPtr;
-}
-
-NetworkPacket* NetworkSystem::RecvPacket(ting::UDPSocket *socket, ting::IPAddress *sourceIP) {
-	ting::Buffer<ting::u8> buf(new ting::u8[1500], 1500);
-	unsigned int recvSize = socket->Recv(buf, *sourceIP);
-
-	NetworkPacket *pktPtr;
-	pktPtr = ReadBuffer(&buf, recvSize);
-
-	return pktPtr;
+	return recvSize;
 }

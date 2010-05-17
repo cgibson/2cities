@@ -4,13 +4,14 @@ NetworkClient::NetworkClient() {
 	PRINTINFO("Network Initializing...");
 	ting::SocketLib socketsLib;
 
-	socket = new ting::UDPSocket;
-	socket->Open();
+	socket.Open();
 
 	waitSet = new ting::WaitSet(1);
-	waitSet->Add(socket, ting::Waitable::READ);
+	waitSet->Add(&socket, ting::Waitable::READ);
 
 	isConnected = false;
+	_playerID = 0;
+	_currObjID = _playerID * 10000;
 	PRINTINFO("Network Initialized!\n");
 }
 
@@ -20,39 +21,39 @@ void NetworkClient::initialize() {}
 
 void NetworkClient::update(long milli_time) {
 	// Check for Waiting Network Data
-	if(isConnected && waitSet->WaitWithTimeout(0)) {
-		ting::IPAddress ip;
-		ting::Buffer<ting::u8> buf(new ting::u8[1500], 1500);
-		socket->Recv(buf, ip);
-
-		// TODO Check Packet Type
-
-		// If Objects, update local objects received
-//		printf("Objects ");
-		for(int i=0; i<10; i++) {
-			WorldObject *objRecv = new WorldObject(*((WorldObject*)(buf.Begin())+i));
-//			printf("%i ", objRecv->getID());
-			updateLocalObject(objRecv);
+	while(isConnected && waitSet->WaitWithTimeout(0)) {
+		ting::IPAddress sourceIP;
+		NetworkPacket pkt;
+		RecvPacket(&pkt, &socket, &sourceIP);
+		if(pkt.header.type == OBJECT_SEND) {
+			//WorldObject tmpObj(*(WorldObject*)(pktPtr->data));
+			//updateLocalObject(tmpObj);
+			//printf("Received Obj #%i\n", tmpObj.getID());
 		}
-//		printf("Received\n");
+		else {
+			printf("Received an unknown packet type!\n");
+		}
+		printf("Done with packet update!\n");
 	}
 }
 
+
+void NetworkClient::sendMsg(char * msgStr) {
+	printf("Sending Msg...\n");
+	NetworkPacket tmpPkt(TEXT_MSG, (unsigned char *)msgStr, strlen(msgStr)+1);
+	SendPacket(&tmpPkt,&socket,&serverIP);
+}
+
 bool NetworkClient::connectServer(const char * ip, unsigned int port) {
-	serverIP = new ting::IPAddress(ip, port);
-	Network::NetworkPacket *pktPtr;
-	ting::Buffer<ting::u8> *bufPtr;
+	serverIP = ting::IPAddress(ip, port);
+	NetworkPacket pkt;
 
-	unsigned char msg[] = "I'd like to connect!";
-	pktPtr = new NetworkPacket(CONN_REQ, msg, sizeof(msg));
-
+	unsigned char msg[] = "";
+	NetworkPacket tmpPkt(CONN_REQ, msg, sizeof(msg));
 	printf("Sending Connection Request...");
-	SendPacket(socket, serverIP, pktPtr);
-	printf("sent '%s'\n",pktPtr->data);
-	//delete pktPtr;
+	SendPacket(&tmpPkt,	&socket, &serverIP);
 
 	// Wait for reply response for 1.5 second (1500 ms)
-	printf("...Waiting for Server Reply");
 	if(!waitSet->WaitWithTimeout(1500)) {
 		printf("...Connection Timed Out!\n");
 		isConnected = false;
@@ -60,20 +61,33 @@ bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 	}
 	else {
 		ting::IPAddress sourceIP;
-		pktPtr = RecvPacket(socket, &sourceIP);
-		serverIP->port = sourceIP.port;
-		printf("...%s\n", pktPtr->data);
-		isConnected = true;
-		return true;
+		RecvPacket(&pkt, &socket, &sourceIP);
+
+		if(pkt.header.type == CONN_REPLY) {
+			serverIP.port = sourceIP.port;
+			_playerID = *(int*)(pkt.data);
+			_currObjID = _playerID * 10000;
+			printf("...Connected as Player %i!\n", _playerID);
+			isConnected = true;
+			return true;
+		}
+		else {
+			printf("... Connection Issue!\n");
+			isConnected = false;
+			return false;
+		}
 	}
 }
 
 void NetworkClient::addObject(WorldObject newObj) {
+	newObj.setID(_currObjID++);
+	newObj.setPlayerID(_playerID);
 	if(isConnected) {
-		ting::Buffer<ting::u8> buf(new ting::u8[150], 150);
-		memcpy(buf.Begin(), &newObj, sizeof(WorldObject));
-		PRINTINFO("Sending Object\n");
-		socket->Send(buf, *serverIP);
+		NetworkPacket pkt(OBJECT_SEND, (unsigned char *)(&newObj), sizeof(newObj));
+		SendPacket(&pkt, &socket, &serverIP);
+		newObj.print();
 	}
-	global::stateManager->currentState->objects.push_back(new WorldObject(newObj));
+
+	// Add to local system for interpolation
+	updateLocalObject(new WorldObject(newObj));
 }

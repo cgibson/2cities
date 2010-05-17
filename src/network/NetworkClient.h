@@ -20,9 +20,9 @@ using namespace enumeration;
 
 class NetworkClient : public NetworkSystem {
 protected:
-	ting::UDPSocket *socket;
+	ting::UDPSocket socket;
 	ting::WaitSet *waitSet;
-	ting::IPAddress *serverIP;
+	ting::IPAddress serverIP;
 
 	bool isConnected;
 
@@ -34,6 +34,7 @@ public:
 	virtual void update(long milli_time);
 
 	virtual bool connectServer(const char * ip, unsigned int port);
+	virtual void sendMsg(char * msgStr);
 
 	// Add new object to scene
 	virtual void addObject(WorldObject newObj);

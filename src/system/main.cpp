@@ -59,8 +59,8 @@ void initState()
 void initialize()
 {
   
-  global::width = 1024;
-  global::height = 768;
+  global::width = 640;
+  global::height = 480;
   global::fullscreen = false;
   global::app_title = (char*)malloc(sizeof(char) * 80);
   sprintf(global::app_title, "2Cities : The Game");

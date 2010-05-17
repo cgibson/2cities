@@ -25,6 +25,8 @@ void NetworkManager::initialize() {
 #ifdef CLIENT
 	gfx::hud.console.registerCmd("connect", NetworkManager::consoleCmds);
 	gfx::hud.console.registerCmd("network", NetworkManager::consoleCmds);
+	gfx::hud.console.registerCmd("msg", NetworkManager::consoleCmds);
+	gfx::hud.console.registerCmd("cl", NetworkManager::consoleCmds); // TODO DEBUG REMOVE
 #endif
 }
 
@@ -50,6 +52,29 @@ void NetworkManager::changeNetworkInterface(E_NetworkInterface networkType) {
 
 void NetworkManager::consoleCmds(int argc, char *argv[]) {
 #ifdef CLIENT
+	// TODO DEBUG REMOVE
+	if(!strcmp(argv[0],"cl")) {
+		networkManager->network->connectServer("127.0.0.1", 5060);
+	}
+
+	if(!strcmp(argv[0],"msg")) {
+		int totalSize = 0;
+		for(int i=1;i<argc;i++)
+			totalSize += strlen(argv[i]) + 1;
+
+		char msg[totalSize+1];
+		int currPos = 0;
+		for(int i=1;i<argc;i++) {
+			strcpy(msg+currPos, argv[i]);
+			currPos += strlen(argv[i]);
+			msg[currPos] = ' ';
+			currPos++;
+		}
+		msg[currPos-1] = '\0';
+		printf("Sent> '%s'\n",msg);
+		networkManager->network->sendMsg(msg);
+	}
+
 	if(!strcmp(argv[0],"connect")) {
 		int results = 0;
 		if (!strcmp(argv[1],"local")) {

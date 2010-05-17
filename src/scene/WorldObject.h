@@ -66,6 +66,8 @@ class WorldObject
         virtual void update(int elapsedTime);
         virtual void think(int elapsedTime);
 
+        virtual void print();
+
         unsigned int getID() {return id;}
         unsigned int getPlayerID() {return playerid;}
         Vector getPosition() {return position;}
@@ -75,6 +77,9 @@ class WorldObject
         ObjectType getType() {return type;}
         PhysicsState getPhysics() {return physics;}
         uint64_t getTimeStamp() {return timestamp;}
+
+        void setID(unsigned int newid) { id = newid; }
+        void setPlayerID(unsigned int newplayerid) { playerid = newplayerid;}
         void setPosition(Vector newposition) {position = newposition;}
         void setVelocity(Vector newvelocity) {velocity = newvelocity;}
         void setForce(Vector newforce) {force = newforce;}

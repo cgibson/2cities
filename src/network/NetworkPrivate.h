@@ -18,7 +18,7 @@ using namespace enumeration;
 
 class NetworkPrivate : public NetworkSystem {
 protected:
-	Physics *physicsEngine;
+	Physics physicsEngine;
 
 public:
 	NetworkPrivate();

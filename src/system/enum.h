@@ -20,19 +20,21 @@ namespace enumeration {
     NONE, DYNAMIC, STATIC
   } PhysicsState;
 
+  // Used by BuildState to determine which face the user has selected
+  typedef enum E_FACE {
+  		NOTHING, TOP, FACE1, FACE2, FACE3, FACE4, BOTTOM	
+  } Face;
+	
   // Used by Network classes to determine which WorldObject to create/load
   // ENUM Will be passed from client->server when object creation requested
   typedef enum E_WorldObjType {
-      DUMMY_BLOCK, DUMMY_SPHERE
+      DUMMY_BLOCK, DUMMY_SPHERE, CUSTOM_BLOCK
   } ObjectType;
 
   typedef enum E_MaterialType {
     YELLOW_MAT, BLUE_MAT, WHITE_MAT
   } MaterialType;
-
-  typedef enum E_NetworkInterface {
-	N_PRIVATE, N_CLIENT, N_SERVER
-  } NetworkInterface;
+  
 }
 
 #endif

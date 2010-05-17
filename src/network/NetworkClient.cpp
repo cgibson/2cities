@@ -21,38 +21,6 @@ NetworkClient::~NetworkClient() {
 
 void NetworkClient::initialize() {}
 
-void NetworkClient::update(long milli_time) {
-	// Check for Waiting Network Data
-	while(isConnected && waitSet->WaitWithTimeout(0)) {
-		ting::IPAddress sourceIP;
-		NetworkPacket pkt;
-		RecvPacket(&pkt, &socket, &sourceIP);
-		if(pkt.header.type == OBJECT_SEND) {
-			updateLocalObject(new WorldObject(*(WorldObject*)(pkt.data)));
-		}
-		else {
-			printf("Received an unknown packet type!\n");
-		}
-	}
-}
-
-
-void NetworkClient::sendMsg(char * msgStr) {
-	printf("Sending Msg...\n");
-	NetworkPacket tmpPkt(TEXT_MSG, (unsigned char *)msgStr, strlen(msgStr)+1);
-	SendPacket(tmpPkt, &socket, serverIP);
-
-	socket.Close();
-	isConnected = false;
-}
-
-void NetworkClient::disconnectServer() {
-	unsigned char msg[] = "";
-	NetworkPacket tmpPkt(DISCONNECT, msg, sizeof(msg));
-	printf("Disconnecting!");
-	SendPacket(tmpPkt, &socket, serverIP);
-}
-
 bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 	serverIP = ting::IPAddress(ip, port);
 
@@ -92,15 +60,57 @@ bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 	}
 }
 
+void NetworkClient::disconnectServer() {
+	unsigned char msg[] = "";
+	NetworkPacket tmpPkt(DISCONNECT, msg, sizeof(msg));
+	printf("Disconnecting!");
+	SendPacket(tmpPkt, &socket, serverIP);
+
+	socket.Close();
+	isConnected = false;
+}
+
+void NetworkClient::update(long milli_time) {
+	ting::IPAddress sourceIP;
+	NetworkPacket pkt;
+	int pktsRecv = 0;
+
+	// Check for Waiting Network Data
+	while(isConnected && waitSet->WaitWithTimeout(0) && pktsRecv < MAX_PACKETS_PER_CYCLE) {
+		RecvPacket(&pkt, &socket, &sourceIP);
+		if(pkt.header.type == OBJECT_SEND) {
+			updateObjectLocal(new WorldObject(*(WorldObject*)(pkt.data)));
+		}
+		else {
+			printf("Received an unknown packet type!\n");
+		}
+		pktsRecv++;
+	}
+//	printf("Received %i packets\n", pktsRecv);
+}
+
+void NetworkClient::sendMsg(char * msgStr) {
+	printf("Sending Msg...\n");
+	NetworkPacket tmpPkt(TEXT_MSG, (unsigned char *)msgStr, strlen(msgStr)+1);
+	SendPacket(tmpPkt, &socket, serverIP);
+}
+
 void NetworkClient::addObject(WorldObject newObj) {
 	newObj.setID(_currObjID++);
 	newObj.setPlayerID(_playerID);
+
 	if(isConnected) {
 		NetworkPacket pkt(OBJECT_SEND, (unsigned char *)(&newObj), sizeof(newObj));
 		SendPacket(pkt, &socket, serverIP);
-		newObj.print();
+//		newObj.print();
 	}
 
 	// Add to local system for interpolation
-	updateLocalObject(new WorldObject(newObj));
+	updateObjectLocal(new WorldObject(newObj));
+}
+
+void NetworkClient::loadLevel(const char * file) {
+	printf("Sending Level Request...\n");
+	NetworkPacket tmpPkt(LEVEL_LOAD, (unsigned char *)file, strlen(file)+1);
+	SendPacket(tmpPkt, &socket, serverIP);
 }

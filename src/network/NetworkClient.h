@@ -18,6 +18,8 @@ using namespace Network;
 using namespace global;
 using namespace enumeration;
 
+#define MAX_PACKETS_PER_CYCLE 250
+
 class NetworkClient : public NetworkSystem {
 protected:
 	ting::UDPSocket socket;
@@ -41,6 +43,9 @@ public:
 	virtual void addObject(WorldObject newObj);
 
 	virtual void reqUpdateObj(unsigned int objID) {};
+
+	// Load a stored lvl
+	void loadLevel(const char * file);
 };
 
 #endif

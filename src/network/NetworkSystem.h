@@ -31,7 +31,8 @@ protected:
 	int _playerID;
 	unsigned int _currObjID;
 
-	void updateLocalObject(WorldObject *obj);
+	void updateObjectLocal(WorldObject *obj);
+	void updateObjectVector(vector<WorldObject *> *objVec, WorldObject *objPtr);
 
 	int SendPacket(NetworkPacket  pktPtr, ting::UDPSocket *socket, ting::IPAddress  destIP);
 	int RecvPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ting::IPAddress *srcIP);

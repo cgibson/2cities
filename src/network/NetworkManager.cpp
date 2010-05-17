@@ -27,6 +27,7 @@ void NetworkManager::initialize() {
 	gfx::hud.console.registerCmd("network", NetworkManager::consoleCmds);
 	gfx::hud.console.registerCmd("msg", NetworkManager::consoleCmds);
 	gfx::hud.console.registerCmd("disconnect", NetworkManager::consoleCmds);
+	gfx::hud.console.registerCmd("loadlevel", NetworkManager::consoleCmds);
 	gfx::hud.console.registerCmd("cl", NetworkManager::consoleCmds); // TODO DEBUG REMOVE
 #endif
 }
@@ -49,6 +50,7 @@ void NetworkManager::changeNetworkInterface(E_NetworkInterface networkType) {
 	default:
 		break;
 	}
+	delete oldNetwork;
 }
 
 void NetworkManager::consoleCmds(int argc, char *argv[]) {
@@ -56,6 +58,16 @@ void NetworkManager::consoleCmds(int argc, char *argv[]) {
 	// TODO DEBUG REMOVE
 	if(!strcmp(argv[0],"cl")) {
 		networkManager->network->connectServer("127.0.0.1", 5060);
+	}
+
+	if(!strcmp(argv[0],"loadlevel")) {
+		if (argc != 2) {
+			gfx::hud.console.error("Usage: %s <level> (default: resource/test.lvl)... Loading Default", argv[0]);
+			networkManager->network->loadLevel("resources/test.lvl");
+		}
+		else {
+			networkManager->network->loadLevel(argv[1]);
+		}
 	}
 
 	if(!strcmp(argv[0],"msg")) {
@@ -116,7 +128,6 @@ void NetworkManager::consoleCmds(int argc, char *argv[]) {
 		}
 		else if(!strcmp(argv[1],"server")) {
 			networkManager->changeNetworkInterface(N_SERVER);
-			networkManager->network->loadLevel("resources/test.lvl");
 		}
 		else {
 			gfx::hud.console.error("Usage: %s <private | client | server>", argv[0]);

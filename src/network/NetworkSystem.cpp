@@ -8,23 +8,31 @@
  * NOTE: Currently implementation is VERY inefficient **
  * TODO Improve efficiency
  */
-void NetworkSystem::updateLocalObject(WorldObject *objPtr) {
+void NetworkSystem::updateObjectVector(vector<WorldObject *> *objVec, WorldObject *objPtr) {
 	int i=0;
-	std::vector<WorldObject *> *currObjects = &(global::stateManager->currentState->objects);
-
 	// Find Location in main Object vector
-	while (i < currObjects->size() && (*currObjects)[i]->getID() != objPtr->getID()) { i++; }
+	while (i < objVec->size() && (*objVec)[i]->getID() != objPtr->getID()) { i++; }
 
 	// if not found, add to end of vector
-	if (i == currObjects->size()) {
-		currObjects->push_back(objPtr);
+	if (i == objVec->size()) {
+		objVec->push_back(objPtr);
 	}
 	// if found, replace pointer with current one
 	else {
-		//WorldObject *oldObjPtr = (*currObjects)[i];
-		(*currObjects)[i] = objPtr;
-		//delete oldObjPtr;
+		WorldObject *oldObjPtr = (*objVec)[i];
+		(*objVec)[i] = objPtr;
+		delete oldObjPtr;
 	}
+}
+
+/* Method to take a WorldObject* and update/add it to the main vector (based on ID field)
+ *
+ * Passed Object Pointer must remain alive past function call and shouldn't be deleted
+ * until object in later updates OR gameState changes.
+ */
+void NetworkSystem::updateObjectLocal(WorldObject *objPtr) {
+	std::vector<WorldObject *> *currObjects = &(global::stateManager->currentState->objects);
+	updateObjectVector(currObjects,objPtr);
 }
 
 /* Creates Buffer required for send, sends packet, and cleans up

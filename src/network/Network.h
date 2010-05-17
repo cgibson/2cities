@@ -24,9 +24,11 @@ using namespace global;
 using namespace enumeration;
 
 namespace Network {
-	typedef enum N_PacketType {
-		UNKNOWN, CONN_REQ, CONN_REPLY, DISCONNECT, STATUS_REQ, TEXT_MSG, OBJECT_REQ, OBJECT_SEND
-	} PacketType;
+	enum N_PacketType {
+		UNKNOWN, CONN_REQ, CONN_REPLY, DISCONNECT, STATUS_REQ, LEVEL_LOAD, TEXT_MSG, OBJECT_REQ, OBJECT_SEND, OBJECT_BATCHSEND
+	};
+
+	const unsigned int OBJECT_BATCHSEND_SIZE = 10;
 
 	// A separate class to make the header distinct
 	class NetworkPacketHeader {
@@ -93,6 +95,10 @@ namespace Network {
 				break;
 			case OBJECT_SEND :
 				printf("OBJECT_SEND: objectID=%i\n", ((WorldObject*)data)->getID());
+				break;
+			case OBJECT_BATCHSEND :
+				printf("OBJECT_BATCHSEND\n");
+				// TODO print objects included in batch.
 				break;
 			default:
 				printf("No Print Rule for Header Type! EMUM=%i\n",(int)(header.type));

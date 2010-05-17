@@ -40,7 +40,7 @@ void CarnageState::initialize() {
    camera.lookAt = Vector( 0.0f, 0.0f, 0.0f);
 #endif
 
-   networkManager->network->loadLevel("resources/test.lvl");
+   //networkManager->network->loadLevel("resources/test.lvl");
 }
 
 void CarnageState::update(long milli_time) {

@@ -19,14 +19,20 @@
 using namespace global;
 using namespace enumeration;
 
+#define MAX_PACKETS_PER_CYCLE 1000
+
 class NetworkServer : public NetworkSystem {
 protected:
 	Physics physicsEngine;
 
-	vector<Player *> players;
-	ting::UDPSocket incomingSock;
-	ting::WaitSet *waitSet;
+	vector<Player *> _players;
 
+	ting::UDPSocket _incomingSock;
+	ting::WaitSet *_waitSet;
+
+	vector<WorldObject *> _serverObjs;
+
+	bool _dedicatedServer;
 	unsigned int _sendObjNext;
 	unsigned int _playerIDNext;
 
@@ -36,6 +42,9 @@ public:
 
 	void initialize();
 	void update(long milli_time);
+
+	void dedicatedServer(bool toggle) {	_dedicatedServer = toggle; }
+	bool dedicatedServer(void) { return _dedicatedServer; }
 
 	// Add new object to scene
 	void addObject(WorldObject newObj);

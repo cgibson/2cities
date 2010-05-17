@@ -50,7 +50,7 @@ int main(int argc, char** argv) {
 	unsigned long timeCurr;
 	unsigned int elasped = 0;
 	while(1) {
-		sleepMS(5000);
+		sleepMS(1);
 		timeCurr = clock();
 		elasped = (timeCurr - timePrev)/1000;
 		timePrev = timeCurr;

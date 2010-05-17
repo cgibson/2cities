@@ -39,13 +39,16 @@ namespace enumeration {
   // Used by Network classes to determine which WorldObject to create/load
   // ENUM Will be passed from client->server when object creation requested
   typedef enum E_WorldObjType {
-      TYPE_MIN, DUMMY_BLOCK=TYPE_MIN, WARPED_CUBE, DUMMY_SPHERE, FRACTAL_BOMB, TYPE_MAX
+      TYPE_MIN, DUMMY_BLOCK=TYPE_MIN, WARPED_CUBE, DUMMY_SPHERE, FRACTAL_BOMB, CUSTOM_BLOCK, TYPE_MAX
   } ObjectType;
 
   typedef enum E_MaterialType {
     MAT_TYPE_MIN, YELLOW_MAT=MAT_TYPE_MIN, BLUE_MAT, WHITE_MAT, MAT_TYPE_MAX
   } MaterialType;
   
+  typedef enum E_NetworkInterface {
+	  N_PRIVATE, N_CLIENT, N_SERVER
+  } NetworkInterface;
 }
 
 #endif

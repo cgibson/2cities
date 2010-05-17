@@ -41,7 +41,8 @@ client_srcs = {
     "state/StateManager.cpp",
     "system/global.cpp",
     "system/io.cpp",
-    "system/main.cpp"
+    "system/main.cpp",
+	 "helper/Point.cpp"
 }
 
 server_srcs = {
@@ -75,5 +76,5 @@ server_srcs = {
     "system/io.cpp",
     "system/mainServer.cpp",
     "scene/CustomObject.cpp",
-    "helper/Pointer.cpp"
+    "helper/Point.cpp"
 }

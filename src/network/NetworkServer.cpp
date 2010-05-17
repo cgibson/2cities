@@ -71,10 +71,8 @@ void NetworkServer::update(long milli_time) {
 					int msg = currPlayer->ID;
 
 					printf("Sending Connection Reply...\n");
-					SendPacket(
-							&NetworkPacket(CONN_REPLY, (unsigned char*)&msg, sizeof(int)),
-							&(currPlayer->socket),
-							&(currPlayer->ip));
+					NetworkPacket tmpPkt(CONN_REPLY, (unsigned char*)&msg, sizeof(int));
+					SendPacket(&tmpPkt,	&(currPlayer->socket), &(currPlayer->ip));
 				}
 				else {
 					printf("Received an unexpected packet on the server!");
@@ -135,11 +133,12 @@ void NetworkServer::addObject(WorldObject newObj) {
 }
 
 void NetworkServer::addObjectPhys(WorldObject newObj) {
-	physicsEngine.addWorldObject(newObj);
+	//physicsEngine.addWorldObject(newObj);
 	printf("Added item to PhysicsEngine\n");
+	newObj.print();
 }
 
 void NetworkServer::loadLevel(const char * file) {
+	//physicsEngine.loadFromFile(file);
 	PRINTINFO("Network Initiated Level in PhysicsEngine\n");
-	physicsEngine.loadFromFile(file);
 }

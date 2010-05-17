@@ -10,6 +10,7 @@ int main() {
 		printf("sizeof(data)=%i\n",sizeof(data));
 		memcpy(data,"This is a super cool test",25);
 		sendSock.Send(data, sizeof(data), ip);
+		printf("sent '%s' to %i:%i\n", data, ip.host, ip.port);
 	}catch(ting::Socket::Exc &e){
 		std::cout << "Network error: " << e.What() << std::endl;
 	}

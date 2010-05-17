@@ -12,7 +12,7 @@ int main(int argc, char** argv) {
 		while(1){
 			ting::Buffer<ting::u8> buf(new ting::u8[2000], 2000);
 			rcvSock.Recv(buf, ip);
-			printf("'%s'\n", buf.Begin());
+			printf("received '%s' from %i:%i\n", buf.Begin(), ip.host, ip.port);
 		}
 	}catch(ting::Socket::Exc &e){
 		std::cout << "Network error: " << e.What() << std::endl;

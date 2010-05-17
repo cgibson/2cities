@@ -37,7 +37,7 @@ void WorldObject::update(int elapsedTime) {
 
 	Vector pos = getPosition();
 	Vector vel = getVelocity();
-	Vector acc = Vector(0,-8,0);
+	Vector acc = Vector(0,-10,0);
 
 	vel = vel + (acc * (elapsedTime/1000.0f));
 	pos = pos + (vel * (elapsedTime/1000.0f));

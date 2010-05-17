@@ -16,7 +16,6 @@
 #include "../helper/Vector.h"
 #include "../graphics/graphics.h"
 #include "../scene/CustomObject.h"
-#include "../helper/Point.h"
 
 #define ANGLE_SPEED 2
 #define MOUSE_SPEED 1

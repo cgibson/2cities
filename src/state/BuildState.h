@@ -5,6 +5,7 @@
 
 #include "InGameState.h"
 #include "../system/enum.h"
+#include "../helper/Point.h"
 
 using namespace enumeration;
 

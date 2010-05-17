@@ -41,8 +41,7 @@ client_srcs = {
     "state/StateManager.cpp",
     "system/global.cpp",
     "system/io.cpp",
-    "system/main.cpp",
-	 "helper/Point.cpp"
+    "system/main.cpp"
 }
 
 server_srcs = {

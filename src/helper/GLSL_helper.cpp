@@ -196,7 +196,7 @@ int InstallShader(const GLchar *vShaderText, const GLchar *fShaderText, int* sha
 	printOpenGLError();
 	glGetProgramiv(shadeProg, GL_LINK_STATUS, &linked);
 	printProgramInfoLog(shadeProg);
-	//printf("sucessfully installed shader %d\n", shadeProg);
+	printf("sucessfully installed shader %d\n", shadeProg);
 	
 	*shaderID = shadeProg;
 	

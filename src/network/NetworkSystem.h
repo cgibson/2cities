@@ -33,7 +33,7 @@ protected:
 
 	void updateLocalObject(WorldObject *obj);
 
-	int SendPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ting::IPAddress *destIP);
+	int SendPacket(NetworkPacket  pktPtr, ting::UDPSocket *socket, ting::IPAddress  destIP);
 	int RecvPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ting::IPAddress *srcIP);
 
 public:
@@ -46,6 +46,7 @@ public:
 	int getPlayerID() { return _playerID; };
 
 	virtual bool connectServer(const char * ip, unsigned int port) { return false; };
+	virtual void disconnectServer() { };
 	virtual void sendMsg(char * msgStr) {};
 
 	// Add new object to scene

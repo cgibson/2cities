@@ -34,6 +34,7 @@ public:
 	virtual void update(long milli_time);
 
 	virtual bool connectServer(const char * ip, unsigned int port);
+	virtual void disconnectServer();
 	virtual void sendMsg(char * msgStr);
 
 	// Add new object to scene

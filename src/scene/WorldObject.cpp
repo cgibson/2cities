@@ -42,7 +42,7 @@ void WorldObject::update(int elapsedTime) {
 	vel = vel + (acc * (elapsedTime/1000.0f));
 	pos = pos + (vel * (elapsedTime/1000.0f));
 
-	if(pos.y() > 1) {
+	if(pos.y() > 1 && abs(vel.mag()) > 1.0) {
 		setPosition(pos);
 		setVelocity(vel);
 	}

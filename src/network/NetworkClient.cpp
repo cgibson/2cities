@@ -15,7 +15,9 @@ NetworkClient::NetworkClient() {
 	PRINTINFO("Network Initialized!\n");
 }
 
-NetworkClient::~NetworkClient() {}
+NetworkClient::~NetworkClient() {
+	disconnectServer();
+}
 
 void NetworkClient::initialize() {}
 
@@ -26,14 +28,11 @@ void NetworkClient::update(long milli_time) {
 		NetworkPacket pkt;
 		RecvPacket(&pkt, &socket, &sourceIP);
 		if(pkt.header.type == OBJECT_SEND) {
-			//WorldObject tmpObj(*(WorldObject*)(pktPtr->data));
-			//updateLocalObject(tmpObj);
-			//printf("Received Obj #%i\n", tmpObj.getID());
+			updateLocalObject(new WorldObject(*(WorldObject*)(pkt.data)));
 		}
 		else {
 			printf("Received an unknown packet type!\n");
 		}
-		printf("Done with packet update!\n");
 	}
 }
 
@@ -41,17 +40,30 @@ void NetworkClient::update(long milli_time) {
 void NetworkClient::sendMsg(char * msgStr) {
 	printf("Sending Msg...\n");
 	NetworkPacket tmpPkt(TEXT_MSG, (unsigned char *)msgStr, strlen(msgStr)+1);
-	SendPacket(&tmpPkt,&socket,&serverIP);
+	SendPacket(tmpPkt, &socket, serverIP);
+
+	socket.Close();
+	isConnected = false;
+}
+
+void NetworkClient::disconnectServer() {
+	unsigned char msg[] = "";
+	NetworkPacket tmpPkt(DISCONNECT, msg, sizeof(msg));
+	printf("Disconnecting!");
+	SendPacket(tmpPkt, &socket, serverIP);
 }
 
 bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 	serverIP = ting::IPAddress(ip, port);
-	NetworkPacket pkt;
+
+	if(socket.IsNotValid()) {
+		socket.Open();
+	}
 
 	unsigned char msg[] = "";
 	NetworkPacket tmpPkt(CONN_REQ, msg, sizeof(msg));
 	printf("Sending Connection Request...");
-	SendPacket(&tmpPkt,	&socket, &serverIP);
+	SendPacket(tmpPkt, &socket, serverIP);
 
 	// Wait for reply response for 1.5 second (1500 ms)
 	if(!waitSet->WaitWithTimeout(1500)) {
@@ -61,6 +73,7 @@ bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 	}
 	else {
 		ting::IPAddress sourceIP;
+		NetworkPacket pkt;
 		RecvPacket(&pkt, &socket, &sourceIP);
 
 		if(pkt.header.type == CONN_REPLY) {
@@ -84,7 +97,7 @@ void NetworkClient::addObject(WorldObject newObj) {
 	newObj.setPlayerID(_playerID);
 	if(isConnected) {
 		NetworkPacket pkt(OBJECT_SEND, (unsigned char *)(&newObj), sizeof(newObj));
-		SendPacket(&pkt, &socket, &serverIP);
+		SendPacket(pkt, &socket, serverIP);
 		newObj.print();
 	}
 

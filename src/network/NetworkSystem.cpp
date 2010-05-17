@@ -29,23 +29,23 @@ void NetworkSystem::updateLocalObject(WorldObject *objPtr) {
 
 /* Creates Buffer required for send, sends packet, and cleans up
  */
-int NetworkSystem::SendPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ting::IPAddress *destIP_P) {
+int NetworkSystem::SendPacket(NetworkPacket  pkt, ting::UDPSocket *socket, ting::IPAddress  destIP_P) {
 	if(socket->IsNotValid()) {
 		printf("Socket Not Open/Valid Yet\n");
 		return -1;
 	}
 
-	printf("SendPacket\n");	// TODO DEBUG CODE
-	pktPtr->display();
+//	printf("SendPacket\n");	// TODO DEBUG CODE
+//	pkt.display();
 
-	int bufSize = pktPtr->dataSize + sizeof(NetworkPacketHeader);
+	int bufSize = pkt.dataSize + sizeof(NetworkPacketHeader);
 	ting::u8 strPtr[bufSize];
 	ting::Buffer<ting::u8> buf(strPtr, sizeof(strPtr));
-	memcpy(buf.Buf(), &(pktPtr->header), sizeof(NetworkPacketHeader));
-	memcpy(buf.Buf() + sizeof(NetworkPacketHeader), pktPtr->data, pktPtr->dataSize);
+	memcpy(buf.Buf(), &(pkt.header), sizeof(NetworkPacketHeader));
+	memcpy(buf.Buf() + sizeof(NetworkPacketHeader), pkt.data, pkt.dataSize);
 
-	int sentSize = socket->Send(buf, *destIP_P);
-	printf("Sent Packet of %i bytes\n",sentSize);	// TODO DEBUG CODE
+	int sentSize = socket->Send(buf, destIP_P);
+//	printf("Sent Packet of %i bytes\n",sentSize);	// TODO DEBUG CODE
 
 	return sentSize;
 }
@@ -54,13 +54,14 @@ int NetworkSystem::SendPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ti
  * Note: ipPtr's addresses will be updated with packets source's information
  */
 int NetworkSystem::RecvPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ting::IPAddress *srcIP_P) {
-	printf("RecvPacket\n");	// TODO DEBUG CODE
+	// TODO DEBUG CODE
+//	printf("RecvPacket\n");
 
 	ting::u8 strPtr[2000];
 	ting::Buffer<ting::u8> buf(strPtr, sizeof(strPtr));
 
 	int recvSize = socket->Recv(buf, *srcIP_P);
-	printf("Recv Packet of %i bytes\n", recvSize);	// TODO DEBUG CODE
+//	printf("Recv Packet of %i bytes\n", recvSize);	// TODO DEBUG CODE
 
 	// Check if packet can possibly be valid
 	if(recvSize <  sizeof(NetworkPacketHeader)) {
@@ -68,14 +69,11 @@ int NetworkSystem::RecvPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ti
 		return -1;
 	}
 
-	pktPtr->dataSize = recvSize - sizeof(NetworkPacketHeader);
-	pktPtr->data = new unsigned char(pktPtr->dataSize);
-	memcpy(&(pktPtr->header), buf.Buf(), sizeof(NetworkPacketHeader));
-	memcpy(pktPtr->data, buf.Buf() + sizeof(NetworkPacketHeader), pktPtr->dataSize);
+	*pktPtr = NetworkPacket(&buf, recvSize);
 
 	// TODO DEBUG REMOVE
-	printf("RecvPacket->pktPtr: ");
-	pktPtr->display();
+//	printf("RecvPacket->pktPtr: ");
+//	pktPtr->display();
 
 	return recvSize;
 }

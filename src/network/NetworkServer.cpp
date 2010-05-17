@@ -72,7 +72,7 @@ void NetworkServer::update(long milli_time) {
 
 					printf("Sending Connection Reply...\n");
 					NetworkPacket tmpPkt(CONN_REPLY, (unsigned char*)&msg, sizeof(int));
-					SendPacket(&tmpPkt,	&(currPlayer->socket), &(currPlayer->ip));
+					SendPacket(tmpPkt, &(currPlayer->socket), currPlayer->ip);
 				}
 				else {
 					printf("Received an unexpected packet on the server!");
@@ -80,12 +80,16 @@ void NetworkServer::update(long milli_time) {
 			}
 
 			// check each players[i]->socket->CanRead();
-			// TODO Update to NetworkPacket class
 			for(int p=0; p<players.size(); p++) {
 				if (players[p]->socket.CanRead()) {
 					RecvPacket(&pkt, &(players[p]->socket), &ip);
 					if(pkt.header.type == OBJECT_SEND) {
 						addObjectPhys(*(WorldObject*)(pkt.data));
+					}
+					else if (pkt.header.type == DISCONNECT) {
+						printf("Player #%i is Disconnecting!\n", players[p]->ID);
+						players.erase(players.begin()+p);
+						exit(1);
 					}
 					else if (pkt.header.type == TEXT_MSG) {
 						printf("MSG: %s\n", (char *)pkt.data);
@@ -99,23 +103,20 @@ void NetworkServer::update(long milli_time) {
 	} catch(ting::Socket::Exc &e) {
 		std::cout << "Network error: " << e.What() << std::endl;
 	}
-/*
+
 	// Outgoing Network Section
 	try {
 		vector<WorldObject *> *objList = &global::stateManager->currentState->objects;
-		int sendSize = min(50, (int)objList->size());
+		int sendSize = min(10, (int)objList->size());
 
 		if (players.size() > 0) {
 			for(int obj=_sendObjNext; obj < _sendObjNext+sendSize; obj=(++obj)% objList->size() ) {
 				// Build Packet with an Object
 				NetworkPacket pkt(OBJECT_SEND, (unsigned char *)((*objList)[obj]), sizeof(WorldObject));
 
-				//WorldObject tmpObj(*(WorldObject*)(pktPtr->data));
-				//printf("id(%i) pos(%s)\n",tmpObj.getID(), tmpObj.getPosition().str());
-
 				// Send to Players
 				for(int p=0; p<players.size(); p++) {
-					SendPacket(&pkt, &(players[p]->socket), &(players[p]->ip));
+					SendPacket(pkt, &(players[p]->socket), players[p]->ip);
 				}
 			}
 			_sendObjNext += sendSize;
@@ -123,7 +124,7 @@ void NetworkServer::update(long milli_time) {
 	} catch(ting::Socket::Exc &e){
 		std::cout << "Network error: " << e.What() << std::endl;
 	}
-*/
+
 }
 
 void NetworkServer::addObject(WorldObject newObj) {
@@ -133,12 +134,10 @@ void NetworkServer::addObject(WorldObject newObj) {
 }
 
 void NetworkServer::addObjectPhys(WorldObject newObj) {
-	//physicsEngine.addWorldObject(newObj);
-	printf("Added item to PhysicsEngine\n");
-	newObj.print();
+	physicsEngine.addWorldObject(newObj);
 }
 
 void NetworkServer::loadLevel(const char * file) {
-	//physicsEngine.loadFromFile(file);
+	physicsEngine.loadFromFile(file);
 	PRINTINFO("Network Initiated Level in PhysicsEngine\n");
 }

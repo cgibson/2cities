@@ -26,6 +26,7 @@ void NetworkManager::initialize() {
 	gfx::hud.console.registerCmd("connect", NetworkManager::consoleCmds);
 	gfx::hud.console.registerCmd("network", NetworkManager::consoleCmds);
 	gfx::hud.console.registerCmd("msg", NetworkManager::consoleCmds);
+	gfx::hud.console.registerCmd("disconnect", NetworkManager::consoleCmds);
 	gfx::hud.console.registerCmd("cl", NetworkManager::consoleCmds); // TODO DEBUG REMOVE
 #endif
 }
@@ -73,6 +74,10 @@ void NetworkManager::consoleCmds(int argc, char *argv[]) {
 		msg[currPos-1] = '\0';
 		printf("Sent> '%s'\n",msg);
 		networkManager->network->sendMsg(msg);
+	}
+
+	if(!strcmp(argv[0],"disconnect")) {
+
 	}
 
 	if(!strcmp(argv[0],"connect")) {

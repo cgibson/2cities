@@ -25,9 +25,10 @@ using namespace enumeration;
 
 namespace Network {
 	typedef enum N_PacketType {
-		UNKNOWN, CONN_REQ, CONN_REPLY, TEXT_MSG, OBJECT_REQ, OBJECT_SEND
+		UNKNOWN, CONN_REQ, CONN_REPLY, DISCONNECT, STATUS_REQ, TEXT_MSG, OBJECT_REQ, OBJECT_SEND
 	} PacketType;
 
+	// A separate class to make the header distinct
 	class NetworkPacketHeader {
 	public:
 		Network::N_PacketType type;
@@ -35,23 +36,32 @@ namespace Network {
 
 	class NetworkPacket {
 	public:
-		Network::NetworkPacketHeader header;
+		NetworkPacketHeader header;
 		unsigned char* data;
 		unsigned int   dataSize;
 
 		NetworkPacket() {
-			header.type = UNKNOWN;
+			dataSize = 0;
 			data = NULL;
-		};
+			header.type = UNKNOWN;
+		}
+
+		NetworkPacket(ting::Buffer<unsigned char> *buf, unsigned int recvSize) {
+			dataSize = recvSize - sizeof(NetworkPacketHeader);
+			data = new unsigned char[dataSize];
+			memcpy(&header, buf->Buf(), sizeof(NetworkPacketHeader));
+			memcpy(data, buf->Buf() + sizeof(NetworkPacketHeader), dataSize);
+		}
+
 		NetworkPacket(N_PacketType newType, unsigned char *newData, unsigned int newDataSize) {
-			header.type = newType;
 			dataSize = newDataSize;
 			data = new unsigned char[dataSize];
+			header.type = newType;
 			memcpy(data, newData, dataSize);
 		}
+
 		~NetworkPacket() {
-//			if (data != NULL)
-//				delete data;
+			//delete [] data;
 		}
 
 		NetworkPacket operator=( const NetworkPacket& pkt) {
@@ -64,12 +74,16 @@ namespace Network {
 		}
 
 		void display() {
+			printf("PacketDisplay> ");
 			switch (header.type) {
 			case CONN_REQ :
 				printf("CONN_REQ\n");
 				break;
 			case CONN_REPLY :
 				printf("CONN_REPLY: playerID=%i\n", *(int*)(data));
+				break;
+			case DISCONNECT :
+				printf("DISCONNECT\n");
 				break;
 			case TEXT_MSG :
 				printf("TEXT_MSG: %s\n", data);
@@ -81,7 +95,7 @@ namespace Network {
 				printf("OBJECT_SEND: objectID=%i\n", ((WorldObject*)data)->getID());
 				break;
 			default:
-				printf("No Print Rule for Header Type!\n");
+				printf("No Print Rule for Header Type! EMUM=%i\n",(int)(header.type));
 				break;
 			}
 		}

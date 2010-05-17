@@ -57,27 +57,25 @@ void Physics::initPhysics()
 
 void Physics::update(int timeChange)
 {
+  printf("Updating by: %d milliseconds.\n", timeChange);
   vector<WorldObject> changed;
+  int maxBody = physicsBodies.size();
+  vector<WorldObject> newWorldObjects(maxBody, WorldObject());
   if (timeChange)
     world->stepSimulation(btScalar(timeChange / 1000.0), 10);
-  int i, j;
-  bool found;
-  for (i = 0; i < worldObjects.size(); i++)
+  int i;
+  for (i = 0; i < maxBody; i++)
   {
-    found = false;
-    for (j = 0; !found && j < physicsBodies.size(); j++)
+    if (physicsBodies[i]->update())
     {
-      if (physicsBodies[j].getID() == worldObjects[i].getID())
-      {
-        found = true;
-        if (physicsBodies[j].update(&worldObjects[i]))
-        {
-          changed.push_back(worldObjects[i]);
-        }
-      }
+      changed.push_back(physicsBodies[i]->getWorldObject());
     }
+    newWorldObjects[i] = physicsBodies[i]->getWorldObject();
   }
-  
+  printf("changed.size() = %d, ", changed.size());
+  printf("newWorldObjects.size() = %d, ", newWorldObjects.size());
+  printf("worldObjects.size() = %d\n", worldObjects.size());
+  worldObjects = newWorldObjects;
 }
 
 int Physics::isUniqueID(int id)
@@ -94,21 +92,21 @@ int Physics::isUniqueID(int id)
   return result;
 }
 
-void Physics::addWorldObject(WorldObject newObject)
+void Physics::addWorldObject(WorldObject worldObject)
 {
   
-  if (isUniqueID(newObject.getID()))
+  if (isUniqueID(worldObject.getID()))
   {
-    PhysicsBody * newBody = new PhysicsBody(newObject);
+    PhysicsBody * newBody = new PhysicsBody(worldObject);
     // stall slow objects
 
-    if (newObject.getVelocity().mag() < .01)
+    if (worldObject.getVelocity().mag() < .01)
     {
       newBody->setActivationState(ISLAND_SLEEPING);
     }
     world->addRigidBody(newBody->getRigidBody());
-    worldObjects.push_back(newObject);
-    physicsBodies.push_back(*newBody);
+    physicsBodies.push_back(newBody);
+//    worldObjects.push_back(worldObject);
   }
   else
   {
@@ -116,42 +114,45 @@ void Physics::addWorldObject(WorldObject newObject)
   }
 }
 
+void Physics::emptyWorld()
+{
+#ifdef DEBUG
+  printf("Function: Physics::emptyWorld() called, removing all PhysicsObjects\n");
+#endif
+  vector<PhysicsBody *> temp = physicsBodies;
+  // blank out the viewed objects
+  worldObjects.clear();
+  physicsBodies.clear();
+  int i = temp.size();
+  // iterate backwards through the existing PhysicsBodies, removing them all.
+  while (i-- > 0)
+  {
+    world->removeRigidBody(temp[i]);
+  }
+}
+
+bool Physics::removeWorldObject(int id)
+{
+  bool removed = false;
+  for (int i = 0; !removed && i < physicsBodies.size(); i++)
+  {
+    if (physicsBodies[i]->getID() == id)
+    {
+      // Get rid of the associated PhysicsBody
+      world->removeRigidBody(physicsBodies[i]->getRigidBody());
+      physicsBodies.erase(physicsBodies.begin() + i);
+      // Update the WorldObject associated with it
+      update(0);
+      removed = true;
+    }
+  }
+  return removed;
+}
+
 vector<WorldObject> Physics::getWorldObjects()
 {
   return worldObjects;
 }
-
-// TODO To Remove
-/*
-void Physics::addAmmo(AmmoUnit ammo)
-{
-  world->addRigidBody(ammo.getRigidBody());
-//  ammo.getRigidBody()->setActivationState(ISLAND_SLEEPING);
-  ammunition.push_back(ammo);
-}
-
-void Physics::addBuildingBlock(BuildingUnit bldg)
-{
-//  bldg.getRigidBody()->setActivationState(ISLAND_SLEEPING);
-  world->addRigidBody(bldg.getRigidBody());
-//  bldg.getRigidBody()->setActivationState(ISLAND_SLEEPING);
-  buildingBlocks.push_back(bldg);
-}
-
-vector<AmmoUnit> Physics::getAmmo()
-{
-  vector<AmmoUnit> result;
-  result = ammunition;
-  return result;
-}
-
-vector<BuildingUnit> Physics::getBuildingBlocks()
-{
-  vector<BuildingUnit> result;
-  result = buildingBlocks;
-  return result;
-}
-*/
 
 vector<Vector> Physics::fileToBlockLocations(const char * fileName)
 {
@@ -184,13 +185,14 @@ vector<Vector> Physics::fileToBlockLocations(const char * fileName)
 // The current implementation only adds blocks to the world, no reinitilization.
 int Physics::loadFromFile(const char * fileName)
 {
-  //Physics::emptyWorld();
+  Physics::emptyWorld();
   /////////////////////////////////////////////////////////////////////////////
   vector<Vector> toPlace = Physics::fileToBlockLocations(fileName);
   // This call will need to change with any movement to the placement of
   // the file load instruction.
   /////////////////////////////////////////////////////////////////////////////
   int i = 0;
+  printf("Loading file: \"%s\"\n", fileName);
   WorldObject *newObj;
   for (vector<Vector>::iterator it = toPlace.begin(); it < toPlace.end();
       it++)
@@ -200,6 +202,7 @@ int Physics::loadFromFile(const char * fileName)
     newObj = new WorldObject(i++, 0, enumeration::DUMMY_BLOCK);
     newObj->setPosition(*it);
     addWorldObject(*newObj);
+    printf("adding object: %d\n", i);
   }
   return 1;
 }

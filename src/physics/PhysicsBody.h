@@ -12,23 +12,16 @@
 class PhysicsBody : public btRigidBody
 {
   private:
-    btRigidBody::btRigidBodyConstructionInfo getCI(WorldObject input);
+    btRigidBody::btRigidBodyConstructionInfo getCI(WorldObject);
 
     btRigidBody * body; 
+    WorldObject wo;
     static btCollisionShape * small_sphere;
-/*    btCollisionShape * medium_sphere;
-    btCollisionShape * large_sphere;
-*/    static btCollisionShape * small_cube;
-
-    static btCollisionShape * dummy_block;
-    static btCollisionShape * dummy_sphere;
+    static btCollisionShape * small_cube;
     ObjectType type;
-    int id;
-    int playerID;
     
   public:
     static btScalar getMass(ObjectType type);
-    static btCollisionShape * getShape(ObjectType type);
     static Vector btV3toV(btVector3 in) 
     {
       return Vector(in.getX(), in.getY(), in.getZ());
@@ -39,11 +32,12 @@ class PhysicsBody : public btRigidBody
       return btVector3(btScalar(in.x()), btScalar(in.y()), btScalar(in.z()));
     }
     btRigidBody * getRigidBody() {return body;}
-    PhysicsBody(WorldObject);    
-    int getID() {return id;}
-    int getPlayerID() {return playerID;}
-    int getType() {return type;}
-    bool update(WorldObject * wo);
+    PhysicsBody(WorldObject);
+    int getID() {return wo.getID();}
+    int getPlayerID() {return wo.getPlayerID();}
+    int getType() {return wo.getType();}
+    WorldObject getWorldObject() {return wo;}
+    bool update();
 };
 
 #endif

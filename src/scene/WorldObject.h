@@ -43,6 +43,13 @@ class WorldObject
         uint64_t timestamp;
 
     public:
+	WorldObject()
+        {
+            id = 0;
+            playerid = 0;
+            type = DUMMY_BLOCK;
+            timestamp = 0;
+        }
         WorldObject(unsigned int newid, unsigned int newplayerid, ObjectType newtype)
         {
             id = newid;

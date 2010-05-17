@@ -21,6 +21,7 @@
 class Physics
 {
   private:
+    void emptyWorld();
     btDiscreteDynamicsWorld * world;
     btSequentialImpulseConstraintSolver * solver;
     btBroadphaseInterface * broadphase;
@@ -30,7 +31,7 @@ class Physics
     btRigidBody * groundBody;
     std::vector<WorldObject> worldObjects;
     std::vector<WorldObject> recentChanges;
-    std::vector<PhysicsBody> physicsBodies;
+    std::vector<PhysicsBody *> physicsBodies;
     std::vector<Vector> fileToBlockLocations(const char * fileName);
     int isUniqueID(int id);
 //    void emptyWorld();
@@ -45,6 +46,7 @@ class Physics
     // Advance the simulation by timeChange milliseconds
     void update(int timeChange);
     int loadFromFile(const char * fileName);
+    bool removeWorldObject(int);
 };
 
 #endif

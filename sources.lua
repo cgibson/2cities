@@ -27,6 +27,7 @@ client_srcs = {
     "helper/luahelper.cpp",
     "helper/texloader.cpp",
     "math/quaternion.cpp",
+	 "network/NetworkSystem.cpp",
     "network/NetworkPrivate.cpp",
     "network/NetworkClient.cpp",
     "network/NetworkServer.cpp",

@@ -8,7 +8,18 @@ namespace enumeration {
   } State;
 
   typedef enum E_SHAPE {
-    SMALL_SPHERE, MEDIUM_SPHERE, LARGE_SPHERE, SMALL_CUBE
+    SHAPE_MIN,
+      SHAPE_SPHERE_MIN = SHAPE_MIN,
+        SMALL_SPHERE=SHAPE_SPHERE_MIN,
+        MEDIUM_SPHERE,
+        LARGE_SPHERE,
+        FRACTAL_BOMB_SHAPE,
+      SHAPE_SPHERE_MAX,
+      SHAPE_BOX_MIN=SHAPE_SPHERE_MAX,
+        SMALL_CUBE=SHAPE_BOX_MIN,
+        WARPED_CUBE_SHAPE,
+      SHAPE_BOX_MAX,
+    SHAPE_MAX
   } Shape;
 
   // Used by Server to decide whether to load into PhysicsEngine or not
@@ -28,11 +39,11 @@ namespace enumeration {
   // Used by Network classes to determine which WorldObject to create/load
   // ENUM Will be passed from client->server when object creation requested
   typedef enum E_WorldObjType {
-      DUMMY_BLOCK, DUMMY_SPHERE, CUSTOM_BLOCK
+      TYPE_MIN, DUMMY_BLOCK=TYPE_MIN, WARPED_CUBE, DUMMY_SPHERE, FRACTAL_BOMB, TYPE_MAX
   } ObjectType;
 
   typedef enum E_MaterialType {
-    YELLOW_MAT, BLUE_MAT, WHITE_MAT
+    MAT_TYPE_MIN, YELLOW_MAT=MAT_TYPE_MIN, BLUE_MAT, WHITE_MAT, MAT_TYPE_MAX
   } MaterialType;
   
 }

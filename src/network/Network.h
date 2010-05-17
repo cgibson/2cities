@@ -25,7 +25,11 @@ using namespace enumeration;
 
 namespace Network {
 	enum N_PacketType {
-		UNKNOWN, CONN_REQ, CONN_REPLY, DISCONNECT, STATUS_REQ, LEVEL_LOAD, TEXT_MSG, OBJECT_REQ, OBJECT_SEND, OBJECT_BATCHSEND
+		UNKNOWN,
+		CONN_REQ, CONN_REPLY, DISCONNECT,
+		STATUS_REQ, STATUS_REPLY,
+		LEVEL_LOAD, TEXT_MSG,
+		OBJECT_KILL, OBJECT_REQ, OBJECT_SEND, OBJECT_BATCHSEND
 	};
 
 	const unsigned int OBJECT_BATCHSEND_SIZE = 10;
@@ -39,25 +43,25 @@ namespace Network {
 	class NetworkPacket {
 	public:
 		NetworkPacketHeader header;
-		unsigned char* data;
+		unsigned char data[2000];
 		unsigned int   dataSize;
 
 		NetworkPacket() {
 			dataSize = 0;
-			data = NULL;
+			//data = NULL;
 			header.type = UNKNOWN;
 		}
 
 		NetworkPacket(ting::Buffer<unsigned char> *buf, unsigned int recvSize) {
 			dataSize = recvSize - sizeof(NetworkPacketHeader);
-			data = new unsigned char[dataSize];
+			//data = new unsigned char[dataSize];
 			memcpy(&header, buf->Buf(), sizeof(NetworkPacketHeader));
 			memcpy(data, buf->Buf() + sizeof(NetworkPacketHeader), dataSize);
 		}
 
 		NetworkPacket(N_PacketType newType, unsigned char *newData, unsigned int newDataSize) {
 			dataSize = newDataSize;
-			data = new unsigned char[dataSize];
+			//data = new unsigned char[dataSize];
 			header.type = newType;
 			memcpy(data, newData, dataSize);
 		}
@@ -70,7 +74,7 @@ namespace Network {
 			this->header.type = pkt.header.type;
 			this->dataSize = pkt.dataSize;
 
-			this->data = new unsigned char[this->dataSize];
+			//this->data = new unsigned char[this->dataSize];
 			memcpy(this->data, pkt.data, this->dataSize);
 			return(*this );
 		}

@@ -20,7 +20,11 @@ using namespace global;
 using namespace enumeration;
 
 #ifndef MAX_SEND_PACKETS_PER_CYCLE
-	#define MAX_SEND_PACKETS_PER_CYCLE 1000
+	#define MAX_SEND_PACKETS_PER_CYCLE 500
+#endif
+
+#ifndef MAX_RECV_PACKETS_PER_CYCLE
+	//#define MAX_RECV_PACKETS_PER_CYCLE 15
 #endif
 
 class NetworkServer : public NetworkSystem {

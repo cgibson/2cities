@@ -86,7 +86,8 @@ void NetworkServer::update(long milli_time) {
 
 			// check each _players[i]->socket->CanRead();
 			for(int p=0; p<_players.size(); p++) {
-				if (_players[p]->socket.CanRead()) {
+				int pktsRecv = 0;
+				while (_players[p]->socket.CanRead() && pktsRecv++ < 10) {
 					RecvPacket(&pkt, &(_players[p]->socket), &ip);
 					if(pkt.header.type == OBJECT_SEND) {
 						addObjectPhys(*(WorldObject*)(pkt.data));
@@ -115,9 +116,6 @@ void NetworkServer::update(long milli_time) {
 
 	// Outgoing Network Section
 	try {
-
-		vector<WorldObject *> *objList = &global::stateManager->currentState->objects;
-
 		// Send up to MAX_PACKETS_PER_CYCLE Packets
 		int sendSize = min(MAX_SEND_PACKETS_PER_CYCLE, (int)_serverObjs.size());
 		if (_players.size() > 0 || _dedicatedServer == false) {

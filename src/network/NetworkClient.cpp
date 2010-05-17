@@ -37,6 +37,7 @@ bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 	if(!waitSet->WaitWithTimeout(1500)) {
 		printf("...Connection Timed Out!\n");
 		isConnected = false;
+		socket.Close();
 		return false;
 	}
 	else {
@@ -55,6 +56,7 @@ bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 		else {
 			printf("... Connection Issue!\n");
 			isConnected = false;
+			socket.Close();
 			return false;
 		}
 	}
@@ -62,9 +64,9 @@ bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 
 void NetworkClient::disconnectServer() {
 	unsigned char msg[] = "";
-	NetworkPacket tmpPkt(DISCONNECT, msg, sizeof(msg));
+	NetworkPacket pkt(DISCONNECT, msg, sizeof(msg));
 	printf("Disconnecting!");
-	SendPacket(tmpPkt, &socket, serverIP);
+	SendPacket(pkt, &socket, serverIP);
 
 	socket.Close();
 	isConnected = false;
@@ -90,9 +92,9 @@ void NetworkClient::update(long milli_time) {
 }
 
 void NetworkClient::sendMsg(char * msgStr) {
-	printf("Sending Msg...\n");
 	NetworkPacket tmpPkt(TEXT_MSG, (unsigned char *)msgStr, strlen(msgStr)+1);
 	SendPacket(tmpPkt, &socket, serverIP);
+	printf("Sent TextMsg.\n");
 }
 
 void NetworkClient::addObject(WorldObject newObj) {
@@ -100,9 +102,8 @@ void NetworkClient::addObject(WorldObject newObj) {
 	newObj.setPlayerID(_playerID);
 
 	if(isConnected) {
-		NetworkPacket pkt(OBJECT_SEND, (unsigned char *)(&newObj), sizeof(newObj));
+		NetworkPacket pkt(OBJECT_SEND, (unsigned char *)(&newObj), sizeof(WorldObject));
 		SendPacket(pkt, &socket, serverIP);
-//		newObj.print();
 	}
 
 	// Add to local system for interpolation
@@ -110,7 +111,7 @@ void NetworkClient::addObject(WorldObject newObj) {
 }
 
 void NetworkClient::loadLevel(const char * file) {
-	printf("Sending Level Request...\n");
 	NetworkPacket tmpPkt(LEVEL_LOAD, (unsigned char *)file, strlen(file)+1);
 	SendPacket(tmpPkt, &socket, serverIP);
+	printf("Sent LoadLevel Request.\n");
 }

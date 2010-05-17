@@ -32,19 +32,16 @@ void NetworkSystem::updateObjectVector(vector<WorldObject *> *objVec, WorldObjec
  */
 void NetworkSystem::updateObjectLocal(WorldObject *objPtr) {
 	std::vector<WorldObject *> *currObjects = &(global::stateManager->currentState->objects);
-	updateObjectVector(currObjects,objPtr);
+	updateObjectVector(currObjects, objPtr);
 }
 
 /* Creates Buffer required for send, sends packet, and cleans up
  */
 int NetworkSystem::SendPacket(NetworkPacket  pkt, ting::UDPSocket *socket, ting::IPAddress  destIP_P) {
 	if(socket->IsNotValid()) {
-		printf("Socket Not Open/Valid Yet\n");
+		printf("SendPacket> Socket IsNotValid\n");
 		return -1;
 	}
-
-//	printf("SendPacket\n");	// TODO DEBUG CODE
-//	pkt.display();
 
 	int bufSize = pkt.dataSize + sizeof(NetworkPacketHeader);
 	ting::u8 strPtr[bufSize];
@@ -53,7 +50,6 @@ int NetworkSystem::SendPacket(NetworkPacket  pkt, ting::UDPSocket *socket, ting:
 	memcpy(buf.Buf() + sizeof(NetworkPacketHeader), pkt.data, pkt.dataSize);
 
 	int sentSize = socket->Send(buf, destIP_P);
-//	printf("Sent Packet of %i bytes\n",sentSize);	// TODO DEBUG CODE
 
 	return sentSize;
 }
@@ -62,14 +58,15 @@ int NetworkSystem::SendPacket(NetworkPacket  pkt, ting::UDPSocket *socket, ting:
  * Note: ipPtr's addresses will be updated with packets source's information
  */
 int NetworkSystem::RecvPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ting::IPAddress *srcIP_P) {
-	// TODO DEBUG CODE
-//	printf("RecvPacket\n");
+	if(socket->IsNotValid()) {
+		printf("RecvPacket> Socket IsNotValid\n");
+		return -1;
+	}
 
 	ting::u8 strPtr[2000];
 	ting::Buffer<ting::u8> buf(strPtr, sizeof(strPtr));
 
 	int recvSize = socket->Recv(buf, *srcIP_P);
-//	printf("Recv Packet of %i bytes\n", recvSize);	// TODO DEBUG CODE
 
 	// Check if packet can possibly be valid
 	if(recvSize <  sizeof(NetworkPacketHeader)) {
@@ -78,10 +75,6 @@ int NetworkSystem::RecvPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ti
 	}
 
 	*pktPtr = NetworkPacket(&buf, recvSize);
-
-	// TODO DEBUG REMOVE
-//	printf("RecvPacket->pktPtr: ");
-//	pktPtr->display();
 
 	return recvSize;
 }

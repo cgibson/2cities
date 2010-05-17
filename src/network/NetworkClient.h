@@ -18,7 +18,9 @@ using namespace Network;
 using namespace global;
 using namespace enumeration;
 
-#define MAX_PACKETS_PER_CYCLE 250
+#ifndef MAX_RECV_PACKETS_PER_CYCLE
+	#define MAX_RECV_PACKETS_PER_CYCLE 250
+#endif
 
 class NetworkClient : public NetworkSystem {
 protected:

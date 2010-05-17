@@ -37,18 +37,17 @@ void WorldObject::update(int elapsedTime) {
 
 	Vector pos = getPosition();
 	Vector vel = getVelocity();
-	Vector acc = Vector(0,-10,0);
+	Vector grav = Vector(0,-10,0);
 
-	vel = vel + (acc * (elapsedTime/1000.0f));
+	if(pos.y() > 1)
+		vel = vel + (grav * (elapsedTime/1000.0f));
+
 	pos = pos + (vel * (elapsedTime/1000.0f));
 
-	if(pos.y() > 1 && abs(vel.mag()) > 1.0) {
+	if(abs(vel.mag()) > 1.0) {
 		setPosition(pos);
 		setVelocity(vel);
 	}
-	else {
-	}
-
 }
 
 void WorldObject::think(int elapsedTime) {

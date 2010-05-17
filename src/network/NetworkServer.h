@@ -19,7 +19,9 @@
 using namespace global;
 using namespace enumeration;
 
-#define MAX_PACKETS_PER_CYCLE 1000
+#ifndef MAX_SEND_PACKETS_PER_CYCLE
+	#define MAX_SEND_PACKETS_PER_CYCLE 1000
+#endif
 
 class NetworkServer : public NetworkSystem {
 protected:

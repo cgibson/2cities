@@ -76,7 +76,7 @@ void NetworkClient::update(long milli_time) {
 	int pktsRecv = 0;
 
 	// Check for Waiting Network Data
-	while(isConnected && waitSet->WaitWithTimeout(0) && pktsRecv < MAX_PACKETS_PER_CYCLE) {
+	while(isConnected && waitSet->WaitWithTimeout(0) && pktsRecv < MAX_RECV_PACKETS_PER_CYCLE) {
 		RecvPacket(&pkt, &socket, &sourceIP);
 		if(pkt.header.type == OBJECT_SEND) {
 			updateObjectLocal(new WorldObject(*(WorldObject*)(pkt.data)));

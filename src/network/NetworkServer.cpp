@@ -119,7 +119,7 @@ void NetworkServer::update(long milli_time) {
 		vector<WorldObject *> *objList = &global::stateManager->currentState->objects;
 
 		// Send up to MAX_PACKETS_PER_CYCLE Packets
-		int sendSize = min(MAX_PACKETS_PER_CYCLE, (int)_serverObjs.size());
+		int sendSize = min(MAX_SEND_PACKETS_PER_CYCLE, (int)_serverObjs.size());
 		if (_players.size() > 0 || _dedicatedServer == false) {
 			for(int i=0; i < sendSize; i++) {
 				int obj=(_sendObjNext + i)%_serverObjs.size();

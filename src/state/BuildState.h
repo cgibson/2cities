@@ -43,6 +43,7 @@ class BuildState : public InGameState
 		void adjust_face(int index, Face f, Point mouse_pos, bool block, bool pull);
 		void new_push_pull(Point mouse_pos);
 		Point adjustPointForBlocksize(Point click);
+		void placeY(int rect_index, int below_index);
 
        virtual enum E_STATE stateType() { return BUILD_STATE; }
 };

@@ -242,6 +242,7 @@ void BuildState::mouseUpToggle(int button)
 	static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->print_rectangle();
 	LAST_BUTTON = button;
 	MOUSE_DOWN = false;
+	counter = 0;
 }
 
 void BuildState::mouseDownHandler()
@@ -261,6 +262,7 @@ void BuildState::mouseDownHandler()
 			click.adjustPointForBlocksize(blocksize);
 			// push_back new CustomObject
 			currState->objects.push_back( new CustomObject( currState->objects.size(), 0, CUSTOM_BLOCK, firstPoint, Point(io::mouse_x, io::mouse_y) ) );
+			placeY(currState->objects.size() - 1, -1);
 			printf("added rectangle\n");
 		}
 		// push / pull rectangles
@@ -283,7 +285,9 @@ void BuildState::mouseDownHandler()
 			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_x(click.getx());
 			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_z(click.getz());
 			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_y(static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->get_min_y());
-			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->adjust_bases();		
+			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->adjust_bases();
+			placeY(currState->objects.size() - 1, -1);
+			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->print_rectangle();
 			counter++;
 		}
 		else if(LAST_BUTTON == GLUT_LEFT_BUTTON)
@@ -335,6 +339,12 @@ void BuildState::mouseDownHandler()
 
 	}
 }*/
+
+void BuildState::placeY(int rect_index, int below_index)
+{
+	static_cast<CustomObject*>(objects[rect_index])->set_min_y(0);
+	static_cast<CustomObject*>(objects[rect_index])->set_max_y(0);
+}
 
 // bump up all static_cast<CustomObject*>(objects on top of rect_index
 void BuildState::recursive_bump(int bottom, int delta_height)

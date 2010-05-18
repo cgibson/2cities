@@ -12,26 +12,28 @@
 
 class Material {
   public:
-    GLfloat ambient[4];
-    GLfloat diffuse[4];
-    GLfloat specular[4];
-    GLfloat shininess[1];
+    GLfloat data[16];
+    
     Material(GLfloat in_ambient[4], GLfloat in_diffuse[4], GLfloat in_specular[4], GLfloat in_shininess[1])
     {
       int i;
       for(i = 0; i < 4; i++)
       {
-      ambient[i] = in_ambient[i];
-      diffuse[i] = in_diffuse[i];
-      specular[i] = in_specular[i];
+        data[i + (4 * 0)] = in_ambient[i];
+        data[i + (4 * 1)] = in_diffuse[i];
+        data[i + (4 * 2)] = in_specular[i];
       }
-      shininess[0] = in_shininess[0];
+      data[12] = in_shininess[0];
     }
-    void applyMaterial() {
-      glMaterialfv(GL_FRONT, GL_AMBIENT, ambient);
-      glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
-      glMaterialfv(GL_FRONT, GL_SPECULAR, specular);
-      glMaterialfv(GL_FRONT, GL_SHININESS, shininess);
+    
+    void applyMaterial(GLint program, const char *uniform)
+    {
+      int loc = glGetUniformLocation(program, uniform);
+      applyMaterial(program, loc);
+    }
+    
+    void applyMaterial(int program, int location) {
+      glUniform4fv(location, 4, const_cast<GLfloat*>(data));
     }
     
     void interpolateFloats(GLfloat *list1, GLfloat *list2, 
@@ -45,7 +47,7 @@ class Material {
       }
     }
     
-    Material interpolate(Material other, float t)
+    /*Material interpolate(Material other, float t)
     {
       Material res;
       GLfloat *rAmbient = (GLfloat *)(res.ambient);
@@ -62,7 +64,7 @@ class Material {
                         (GLfloat**)&rShininess, 1, t);
       
       return res;
-    }
+    }*/
     Material(){};
 private:
 };

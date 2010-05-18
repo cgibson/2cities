@@ -29,7 +29,10 @@ namespace gfx{
   extern GLint shSimple;          // simple shader
   
   extern bool draw_wireframe;
-
+  
+  extern GLint cur_shader;
+  
+  void useShader(GLint program);
   void display();
   void reshape(int w, int h);
   void init();

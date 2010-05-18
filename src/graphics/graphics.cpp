@@ -12,6 +12,14 @@ namespace gfx{
   Material* materials;
   
   GLint shSimple;
+  
+  GLint cur_shader;
+  
+  void useShader(GLint program)
+  {
+    cur_shader = program;
+    glUseProgram(program);
+  }
 
   void display()
   {

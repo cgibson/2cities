@@ -16,13 +16,7 @@
  
 class LightData {
   public:
-    float pos[4];
-    float diffuse[4];
-    float ambient[4];
-    float specular;
-    float constantAttenuation;
-    float linearAttenuation;
-    float quadraticAttenuation;
+    GLfloat data[9]; // 3->pos, 3->diffuse, 3->ambient
     
 
     LightData();
@@ -31,12 +25,13 @@ class LightData {
 
 class Lighting {
   public:
-    void doLighting();
-    void setLightPos(int index, float x, float y, float z);
-    void createLight(float x, float y, float z,
- 		           float Dr, float Dg, float Db, float spec,
- 		           float Ar, float Ag, float Ab,
- 		           float cA, float lA, float qA);
+    GLfloat data[9]; // 3->pos, 3->diffuse, 3->ambient
+    void doLighting(GLint program,int location);
+    void doLighting(GLint program, const char *uniform);
+    void setLightPos(GLfloat x, GLfloat y, GLfloat z);
+    void createLight(GLfloat x, GLfloat y, GLfloat z,
+ 		           GLfloat Dr, GLfloat Dg, GLfloat Db,
+ 		           GLfloat Ar, GLfloat Ag, GLfloat Ab);
 };
 
 #endif

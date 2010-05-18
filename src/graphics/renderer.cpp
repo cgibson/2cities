@@ -29,7 +29,7 @@ void Renderer::updateLookat()
 
 void Renderer::do_lights()
 {
-  light.doLighting();
+  light.doLighting(gfx::shSimple, "light");
 }
 
 void Renderer::init_lights()
@@ -38,9 +38,8 @@ void Renderer::init_lights()
   glEnable(GL_NORMALIZE);
   glEnable(GL_LIGHTING);
   light.createLight(50, 50, 50,
-                    0.8, 0.8, 0.8, 1,
-                    0.3,0.3,0.3,
-                    1.0, 1.0, 0.0);
+                    0.8, 0.8, 0.8,
+                    0.3,0.3,0.3);
 }
 
 void Renderer::draw()
@@ -67,11 +66,11 @@ void Renderer::draw()
   // update camera
   updateLookat();
   
+  //gfx::useShader(gfx::shSimple);
   glUseProgram(gfx::shSimple);
-  
   //TODO: Remove BEGIN
   
-  gfx::materials[WHITE_MAT].applyMaterial();
+  gfx::materials[WHITE_MAT].applyMaterial(gfx::shSimple, "frontMat");
   glBegin(GL_QUADS);
     glNormal3f(0,1,0);
     glVertex3f(-100, -1, -100);

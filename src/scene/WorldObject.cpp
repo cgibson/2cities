@@ -12,7 +12,7 @@ void WorldObject::draw() {
 	Quaternion ori = getOrientation();
 	Blueprint blueprint = global::factory->getBlueprint(type);
 
-	gfx::materials[blueprint.getMaterial()].applyMaterial();
+	gfx::materials[blueprint.getMaterial()].applyMaterial(gfx::shSimple, "frontMat");
 	
 	Vector size = blueprint.getSize();
 
@@ -66,7 +66,7 @@ void WorldObject::print() {
  * 	ObjectType type; //SMALL_SPHERE, MEDIUM_SPHERE, LARGE_SPHERE, SMALL_CUBE, etc
  * 	PhysicsState physics; //NONE, DYNAMIC, STATIC
  * 	uint64_t timestamp;
- */
+ *
     printf("***Object Details***\n"
     		" ID       : %i\n"
     		" PlayerID : %i\n"
@@ -75,4 +75,12 @@ void WorldObject::print() {
     		" force    : %s\n"
     		"*******************\n",
     		id, playerid, position.str(), velocity.str(), force.str());
+    		*/
+   printf("***Object Details***\n"
+    		" ID       : %i\n", id);
+   printf(" PlayerID : %i\n", playerid);
+   printf(" position : %s\n", position.str());
+   printf(" velocity : %s\n", velocity.str());
+   printf(" force    : %s\n", force.str());
+   printf("*******************\n");
 }

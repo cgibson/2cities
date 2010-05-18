@@ -41,6 +41,8 @@ void WorldObject::update(int elapsedTime) {
 
 	if(pos.y() > 1)
 		vel = vel + (grav * (elapsedTime/1000.0f));
+	else
+		vel.y(0.0f);
 
 	pos = pos + (vel * (elapsedTime/1000.0f));
 

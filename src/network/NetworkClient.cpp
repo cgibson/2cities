@@ -99,6 +99,7 @@ void NetworkClient::sendMsg(char * msgStr) {
 }
 
 void NetworkClient::addObject(WorldObject newObj) {
+	printf("addObject:\n");
 	newObj.setID(_currObjID++);
 	newObj.setPlayerID(_playerID);
 
@@ -109,6 +110,7 @@ void NetworkClient::addObject(WorldObject newObj) {
 
 	// Add to local system for interpolation
 	updateObjectLocal(new WorldObject(newObj));
+	newObj.print();
 }
 
 void NetworkClient::loadLevel(const char * file) {

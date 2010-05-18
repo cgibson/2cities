@@ -184,16 +184,20 @@ void NetworkServer::update(long milli_time) {
 }
 
 void NetworkServer::addObject(WorldObject newObj) {
+	printf("addObject:\n");
 	newObj.setID(_currObjID++);
 	newObj.setPlayerID(_playerID);
 	addObjectPhys(newObj);
 
 	// Add to local system for interpolation
 	updateObjectLocal(new WorldObject(newObj));
+	newObj.print();
 }
 
 void NetworkServer::addObjectPhys(WorldObject newObj) {
+	printf("addObjectPhys:\n");
 	physicsEngine.addWorldObject(newObj);
+	newObj.print();
 }
 
 void NetworkServer::loadLevel(const char * file) {

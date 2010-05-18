@@ -69,7 +69,6 @@ Blueprint ObjectFactory::getBlueprint(ObjectType type)
   return blueprints[0];
 }
 
-#ifdef SERVER
 btCollisionShape * ObjectFactory::getShape(ObjectType type)
 {
   if (!validBlueprintNumber(type))
@@ -101,4 +100,3 @@ btCollisionShape * ObjectFactory::getShape(ObjectType type)
   }
   return shapes[type];
 }
-#endif

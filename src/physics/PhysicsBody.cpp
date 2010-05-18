@@ -34,9 +34,7 @@ btRigidBody::btRigidBodyConstructionInfo PhysicsBody::getCI(WorldObject worldObj
   btScalar mass = PhysicsBody::getMass(worldObject.getType());
   btVector3 inertia(0,0,0);
   btCollisionShape * thisShape = NULL;
-#ifdef SERVER
   thisShape = global::factory->getShape(worldObject.getType());
-#endif
 
   btDefaultMotionState * ms = new btDefaultMotionState();
   

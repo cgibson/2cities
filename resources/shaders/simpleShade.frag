@@ -24,7 +24,7 @@ void main (void)
     vec3 norm = normalize(N);
     vec4 finalColor = vec4(0.0, 0.0, 0.0, 0.0);
     
-    vec3 aux = (vec3(50,50,50)-v);
+    vec3 aux = ((vec4(light.position,1) * gl_ModelViewProjectionMatrixInverse).xyz-v);
     vec3 L = normalize(aux);
     vec3 E = normalize(-v);
     vec3 R = normalize(-reflect(L,norm));

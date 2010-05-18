@@ -67,20 +67,26 @@ void Console::draw()
     // if our fonts didn't load, kinda no point in going further...
     if (!_titleFont->isValid() || !_consoleFont->isValid()) return;
 
-    // draw the title
-    _titleFont->setHorizontalJustification(OGLFT::Face::LEFT);
-    _titleFont->draw(CONSOLE_LEFT + 6, global::height - CONSOLE_TOP - 25 + 6, "Debug Console");
-
     // draw the svn revision number
     snprintf(buffer, 25, "Rev #%s", SVN_REV);
-    _titleFont->setHorizontalJustification(OGLFT::Face::CENTER);
-    _titleFont->draw(CONSOLE_LEFT + (CONSOLE_WIDTH / 2), global::height - CONSOLE_TOP - 25 + 6, buffer);
+    _titleFont->setHorizontalJustification(OGLFT::Face::LEFT);
+    _titleFont->draw(CONSOLE_LEFT + 6, global::height - CONSOLE_TOP - 25 + 6, buffer);
+
+	// draw the receive packet count
+	snprintf(buffer, 25, "%d tx", global::pbs_sent);
+	_titleFont->setHorizontalJustification(OGLFT::Face::RIGHT);
+    _titleFont->draw(CONSOLE_LEFT + CONSOLE_WIDTH - 6 - 280, global::height - CONSOLE_TOP - 25 + 6, buffer);
+
+	// draw the transmit packet count
+	snprintf(buffer, 25, "%d rx", global::pbs_recv);
+	_titleFont->setHorizontalJustification(OGLFT::Face::RIGHT);
+    _titleFont->draw(CONSOLE_LEFT + CONSOLE_WIDTH - 6 - 190, global::height - CONSOLE_TOP - 25 + 6, buffer);
 
     // draw the update loop time
     snprintf(buffer, 25, "%d ms", _updateTime);
     _titleFont->setHorizontalJustification(OGLFT::Face::RIGHT);
     _titleFont->draw(CONSOLE_LEFT + CONSOLE_WIDTH - 6 - 100, global::height - CONSOLE_TOP - 25 + 6, buffer);
-    
+
     // draw the fps
     snprintf(buffer, 25, "%d fps", global::fps);
     _titleFont->setHorizontalJustification(OGLFT::Face::RIGHT);
@@ -113,7 +119,7 @@ void Console::draw()
         _consoleFont->draw(CONSOLE_LEFT + 6, global::height - CONSOLE_TOP - 25 - ((line_num + 1) * 12), it->line);
         line_num++;
     }
-    
+
     // draw the footer
     glBegin(GL_QUADS);
         if (!_captured)
@@ -404,7 +410,7 @@ void Console::process(const char *cmd)
 
     // echo it back to the console
     command(buffer);
-    
+
     // if the first character is a '$' hand it to the shell
     // for processing
     if (buffer[0] == '$')
@@ -449,7 +455,7 @@ void Console::process(const char *cmd)
 #endif
         return;
     }
-    
+
     // parse it into its argc and argv
     int argc = 0;
     char **argv = (char **)malloc(sizeof(char *) * CONSOLE_MAX_ARGS);
@@ -544,7 +550,7 @@ void Console::key_down(unsigned char key, int x, int y)
         gfx::hud.showConsole(false);
         return;
     }
-   
+
     // check for special keys
     switch (key)
     {
@@ -563,7 +569,7 @@ void Console::key_down(unsigned char key, int x, int y)
             {
                 Console::_input[Console::_inputPos] = '\0';
                 gfx::hud.console.process(Console::_input);
-                
+
                 Console::_inputPos = 0;
                 Console::_input[Console::_inputPos] = 219; // block cursor
                 Console::_input[Console::_inputPos + 1] = '\0';

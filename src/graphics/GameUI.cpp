@@ -43,6 +43,14 @@ void GameUI::init()
 		lua_pop(_L, 1);
 	lua_pop(_L, 1);
 
+	// set the window width and height
+	lua_getglobal(_L, "window");
+		lua_pushnumber(_L, global::width);
+		lua_setfield(_L, -2, "width");
+		lua_pushnumber(_L, global::height);
+		lua_setfield(_L, -2, "height");
+	lua_pop(_L, 1);
+
 	// call the init function to hook up ui components
 	lua_getglobal(_L, "init");
 	if (!lua_isnil(_L, -1))
@@ -59,6 +67,14 @@ void GameUI::init()
 
 void GameUI::update(int ms)
 {
+	// set the window width and height
+	lua_getglobal(_L, "window");
+		lua_pushnumber(_L, global::width);
+		lua_setfield(_L, -2, "width");
+		lua_pushnumber(_L, global::height);
+		lua_setfield(_L, -2, "height");
+	lua_pop(_L, 1);
+
 	// fire off the lua script's update function (if defined)
 	lua_getglobal(_L, "update");
 	if (!lua_isnil(_L, -1))

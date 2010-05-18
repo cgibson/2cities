@@ -17,7 +17,7 @@ void updateLoop()
     static int frameCount = 0;
 
     // calculate milliseconds since last update
-    int msNow = glutGet(GLUT_ELAPSED_TIME);
+    int msNow = elapsed_ms();
     if (msLast == 0)
     {
         // bootstrap the first call
@@ -64,7 +64,15 @@ void initialize()
   global::fullscreen = false;
   global::app_title = (char*)malloc(sizeof(char) * 80);
   sprintf(global::app_title, "2Cities : The Game");
-  
+ 
+  // initialize SDL (timer and sound in the future)
+  if (SDL_Init(SDL_INIT_TIMER) < 0)
+  {
+    fprintf(stderr, "Oh noes! Failed to initialize SDL! Sadface!\n");
+    exit(EXIT_FAILURE);
+  }
+  atexit(SDL_Quit);
+
   gl::init();
   
   // initialization of all other modules

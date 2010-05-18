@@ -24,4 +24,9 @@ namespace global
   float fill_color[4] = {1.0f, 1.0f, 1.0f, 1.0f};
 
   int fps;
+
+  int elapsed_ms()
+  {
+    return (int)SDL_GetTicks();
+  }
 }

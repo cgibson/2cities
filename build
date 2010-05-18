@@ -103,6 +103,7 @@ ldflags.client = {
     "GL",
     "GLU",
     "glut",
+    "SDL",
     "m"
 }
 ldflags.server = {

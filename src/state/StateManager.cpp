@@ -31,6 +31,7 @@ StateManager::StateManager()
  */
 void StateManager::changeCurrentState(enum E_STATE newState)
 {
+    InGameState *oldInGameState = currentState;
     switch(newState)
     {
     case BUILD_STATE:
@@ -43,6 +44,7 @@ void StateManager::changeCurrentState(enum E_STATE newState)
     default:
         break;
     }
+    delete oldInGameState;
 }
 
 /**

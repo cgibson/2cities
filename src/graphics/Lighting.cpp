@@ -38,12 +38,13 @@ void Lighting::setLightPos(GLfloat x, GLfloat y, GLfloat z)
     
 void Lighting::doLighting(GLint program, const char *uniform)
 {
+  glUseProgram(program);
   int loc = glGetUniformLocation(program, "light.position");
-  glUniform3fv(loc, 1, const_cast<GLfloat*>(position));
+  glUniform3fv(loc, 1, position);
   loc = glGetUniformLocation(program, "light.diffuse");
-  glUniform4fv(loc, 1, const_cast<GLfloat*>(diffuse));
+  glUniform4fv(loc, 1, diffuse);
   loc = glGetUniformLocation(program, "light.ambient");
-  glUniform4fv(loc, 1, const_cast<GLfloat*>(ambient));
+  glUniform4fv(loc, 1, ambient);
 }
     
 void Lighting::doLighting(GLint program, int location) {

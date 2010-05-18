@@ -16,38 +16,35 @@ struct gl_Light {
 uniform gl_Material material;
 uniform gl_Light light;
 
+varying vec3 lightPos;
 varying vec3 N;
 varying vec3 v; 
   
 void main (void) 
 {
-    vec3 norm = normalize(N);
-    vec4 finalColor = vec4(0.0, 0.0, 0.0, 0.0);
+    vec3 view_vec = normalize(v);
+    vec3 light_vec = normalize(lightPos);
+    vec3 normal = normalize(N);
     
-    vec3 aux = ((vec4(light.position,1) * gl_ModelViewProjectionMatrixInverse).xyz-v);
-    vec3 L = normalize(aux);
-    vec3 E = normalize(-v);
-    vec3 R = normalize(-reflect(L,norm));
-    float dist = length(aux);
-    vec4 Ispec = vec4(0);
-    float NdotL = max(0.0, dot(norm,L));
+    vec3 reflection = normalize( -reflect(view_vec,normal) );
 
-    vec4 diffuse = material.diffuse * light.diffuse;
+    vec4 finalColor = vec4(0.0, 0.0, 0.0, 0.0);
+
+    float NdotL = clamp(dot(normal,light_vec), 0.0, 1.0);
+
+    vec4 diffuse = material.diffuse * NdotL;//* light.diffuse * NdotL;
+    vec4 ambient = material.ambient;// * light.ambient;
+    vec4 phong = ambient + diffuse;
     
-    vec4 Iamb = material.ambient;
-    
-    vec4 Idiff = (material.diffuse * max(dot(norm,L), 0.0));
-    Idiff = clamp(Idiff, 0.0, 1.0);
-    
-    if(NdotL > 0.0)
+    /*if(NdotL > 0.0)
     {
     Ispec = material.specular
     * pow(max(dot(R,E),0.0),0.3*material.shininess[0]);
     Ispec *= max(dot(norm,L) , 0.0);
     Ispec = clamp(Ispec, 0.0, 1.0);
-    }
+    }*/
     
-    finalColor += (Iamb + Idiff);// + Ispec);
+    finalColor += phong;// + Ispec);
     
     gl_FragColor = finalColor;
   }

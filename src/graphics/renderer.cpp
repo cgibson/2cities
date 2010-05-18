@@ -29,7 +29,7 @@ void Renderer::updateLookat()
 
 void Renderer::do_lights()
 {
-  light.doLighting(gfx::shSimple, "light");
+  light.doLighting(gfx::cur_shader, "light");
 }
 
 void Renderer::init_lights()
@@ -67,10 +67,10 @@ void Renderer::draw()
   updateLookat();
   
   //gfx::useShader(gfx::shSimple);
-  glUseProgram(gfx::shSimple);
+  gfx::useShader(gfx::shSimple);
   //TODO: Remove BEGIN
   
-  gfx::materials[WHITE_MAT].applyMaterial(gfx::shSimple, "material");
+  gfx::materials[WHITE_MAT].applyMaterial(gfx::cur_shader, "material");
   
   glBegin(GL_QUADS);
     glNormal3f(0,1,0);

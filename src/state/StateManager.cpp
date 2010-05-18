@@ -3,6 +3,9 @@
 	#include "../graphics/graphics.h"
 #endif
 
+#include "BuildState.h"
+#include "CarnageState.h"
+
 using namespace enumeration;
 
 /**

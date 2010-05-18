@@ -39,11 +39,11 @@ void Lighting::setLightPos(GLfloat x, GLfloat y, GLfloat z)
 void Lighting::doLighting(GLint program, const char *uniform)
 {
   glUseProgram(program);
-  int loc = glGetUniformLocation(program, "light.position");
+  int loc = glGetUniformLocation(program, "light_position");
   glUniform3fv(loc, 1, position);
-  loc = glGetUniformLocation(program, "light.diffuse");
+  loc = glGetUniformLocation(program, "light_diffuse");
   glUniform4fv(loc, 1, diffuse);
-  loc = glGetUniformLocation(program, "light.ambient");
+  loc = glGetUniformLocation(program, "light_ambient");
   glUniform4fv(loc, 1, ambient);
 }
     

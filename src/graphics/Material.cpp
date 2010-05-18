@@ -15,14 +15,13 @@ Material::Material(GLfloat in_ambient[4], GLfloat in_diffuse[4], GLfloat in_spec
 void Material::applyMaterial(GLint program, const char *uniform)
 {
   glUseProgram(program);
-  int loc = glGetUniformLocation(program, "material.ambient");
+  int loc = glGetUniformLocation(program, "material_ambient");
   glUniform4fv(loc, 1, ambient);
-  printf("I'm getting %d, %d\n", program, loc);
-  loc = glGetUniformLocation(program, "material.diffuse");
+  loc = glGetUniformLocation(program, "material_diffuse");
   glUniform4fv(loc, 1, diffuse);
-  loc = glGetUniformLocation(program, "material.specular");
+  loc = glGetUniformLocation(program, "material_specular");
   glUniform4fv(loc, 1, specular);
-  loc = glGetUniformLocation(program, "material.shininess");
+  loc = glGetUniformLocation(program, "material_shininess");
   glUniform1f(loc, shininess);
 }
 

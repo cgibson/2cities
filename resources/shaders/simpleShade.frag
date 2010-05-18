@@ -1,20 +1,27 @@
 //uniform gl_Test material;
 
-struct gl_Material {
+//TODO: change to include structures
+/*struct gl_Material {
 		vec4 ambient;    
 		vec4 diffuse;    
 		vec4 specular;   
 		vec4 shininess; 
-};
-
+};*/
+uniform vec4 material_ambient;
+uniform vec4 material_diffuse;
+uniform vec4 material_specular;
+uniform float material_shininess;
+/*
 struct gl_Light {
 		vec3 position;    
 		vec4 diffuse;    
 		vec4 ambient;   
-};
-
-uniform gl_Material material;
-uniform gl_Light light;
+};*/
+uniform vec3 light_position;
+uniform vec4 light_diffuse;
+uniform vec4 light_ambient;
+//uniform gl_Material material;
+//uniform gl_Light light;
 
 varying vec3 lightPos;
 varying vec3 N;
@@ -32,8 +39,8 @@ void main (void)
 
     float NdotL = clamp(dot(normal,light_vec), 0.0, 1.0);
 
-    vec4 diffuse = material.diffuse * NdotL;//* light.diffuse * NdotL;
-    vec4 ambient = material.ambient;// * light.ambient;
+    vec4 diffuse = material_diffuse * NdotL;//* light.diffuse * NdotL;
+    vec4 ambient = material_ambient;// * light.ambient;
     vec4 phong = ambient + diffuse;
     
     /*if(NdotL > 0.0)

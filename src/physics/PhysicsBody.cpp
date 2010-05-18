@@ -47,6 +47,9 @@ btRigidBody::btRigidBodyConstructionInfo PhysicsBody::getCI(WorldObject worldObj
     thisShape->calculateLocalInertia(mass, inertia);
   }
   btRigidBody::btRigidBodyConstructionInfo ci(mass, ms, thisShape, inertia);
+//  printf("Friction was: %f,\t", ci.m_friction);
+  ci.m_friction = 0.75;
+//  printf("Friction is now: %f", ci.m_friction); 
   return ci;
 }
 
@@ -63,7 +66,7 @@ float PhysicsBody::boundForce(float in)
 Vector PhysicsBody::getForce()
 {
   // everything has a default energy of 10
-  float linear = boundForce(btV3toV(body->getLinearVelocity()).mag());
+  float linear = boundForce(btV3toV(body->getInterpolationLinearVelocity()).mag());
   float angular = boundForce(btV3toV(body->getAngularVelocity()).mag());
   float force = boundForce(75);
 //  printf("linear = %f\n", linear);

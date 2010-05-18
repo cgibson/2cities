@@ -16,32 +16,38 @@ void Lighting::createLight(GLfloat x, GLfloat y, GLfloat z,
 	    GLfloat Dr, GLfloat Dg, GLfloat Db,
 	    GLfloat Ar, GLfloat Ag, GLfloat Ab)
 {
-  data[0] = x;
-  data[1] = y;
-  data[2] = z;
-  data[3] = Dr;
-  data[4] = Dg;
-  data[5] = Db;
-  data[6] = Ar;
-  data[7] = Ag;
-  data[8] = Ab;
+  position[0] = x;
+  position[1] = y;
+  position[2] = z;
+  diffuse[0] = Dr;
+  diffuse[1] = Dg;
+  diffuse[2] = Db;
+  diffuse[3] = 1;
+  ambient[0] = Ar;
+  ambient[1] = Ag;
+  ambient[2] = Ab;
+  ambient[3] = 1;
 }
 
 void Lighting::setLightPos(GLfloat x, GLfloat y, GLfloat z)
 {
-  data[0] = x;
-  data[1] = y;
-  data[2] = z;
+  position[0] = x;
+  position[1] = y;
+  position[2] = z;
 }
     
 void Lighting::doLighting(GLint program, const char *uniform)
 {
-  int loc = glGetUniformLocation(program, uniform);
-  doLighting(program, loc);
+  int loc = glGetUniformLocation(program, "light.position");
+  glUniform3fv(loc, 1, const_cast<GLfloat*>(position));
+  loc = glGetUniformLocation(program, "light.diffuse");
+  glUniform4fv(loc, 1, const_cast<GLfloat*>(diffuse));
+  loc = glGetUniformLocation(program, "light.ambient");
+  glUniform4fv(loc, 1, const_cast<GLfloat*>(ambient));
 }
     
 void Lighting::doLighting(GLint program, int location) {
 
-  glUniform3fv(location, 3, const_cast<GLfloat*>(data));
+  //glUniform3fv(location, 3, const_cast<GLfloat*>(data));
 }
 

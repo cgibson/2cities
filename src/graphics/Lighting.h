@@ -16,7 +16,9 @@
  
 class LightData {
   public:
-    GLfloat data[9]; // 3->pos, 3->diffuse, 3->ambient
+    GLfloat position[3];
+    GLfloat diffuse[4];
+    GLfloat specular[4];
     
 
     LightData();
@@ -25,7 +27,9 @@ class LightData {
 
 class Lighting {
   public:
-    GLfloat data[9]; // 3->pos, 3->diffuse, 3->ambient
+    GLfloat position[3];
+    GLfloat diffuse[4];
+    GLfloat ambient[4];
     void doLighting(GLint program,int location);
     void doLighting(GLint program, const char *uniform);
     void setLightPos(GLfloat x, GLfloat y, GLfloat z);

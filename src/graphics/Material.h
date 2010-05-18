@@ -12,28 +12,38 @@
 
 class Material {
   public:
-    GLfloat data[16];
+    GLfloat ambient[4];
+    GLfloat diffuse[4];
+    GLfloat specular[4];
+    GLfloat shininess;
     
     Material(GLfloat in_ambient[4], GLfloat in_diffuse[4], GLfloat in_specular[4], GLfloat in_shininess[1])
     {
       int i;
       for(i = 0; i < 4; i++)
       {
-        data[i + (4 * 0)] = in_ambient[i];
-        data[i + (4 * 1)] = in_diffuse[i];
-        data[i + (4 * 2)] = in_specular[i];
+        ambient[i] = in_ambient[i];
+        diffuse[i] = in_diffuse[i];
+        specular[i] = in_specular[i];
       }
-      data[12] = in_shininess[0];
+      shininess = in_shininess[0];
     }
     
     void applyMaterial(GLint program, const char *uniform)
     {
-      int loc = glGetUniformLocation(program, uniform);
-      applyMaterial(program, loc);
+      glUseProgram(program);
+      int loc = glGetUniformLocation(program, "material.ambient");
+      glUniform4fv(loc, 1, ambient);
+      loc = glGetUniformLocation(program, "material.diffuse");
+      glUniform4fv(loc, 1, diffuse);
+      loc = glGetUniformLocation(program, "material.specular");
+      glUniform4fv(loc, 1, specular);
+      loc = glGetUniformLocation(program, "material.shininess");
+      glUniform1f(loc, shininess);
     }
     
     void applyMaterial(int program, int location) {
-      glUniform4fv(location, 4, const_cast<GLfloat*>(data));
+      //glUniform4fv(location, 4, const_cast<GLfloat*>(data));
     }
     
     void interpolateFloats(GLfloat *list1, GLfloat *list2, 

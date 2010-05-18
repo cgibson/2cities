@@ -70,7 +70,8 @@ void Renderer::draw()
   glUseProgram(gfx::shSimple);
   //TODO: Remove BEGIN
   
-  gfx::materials[WHITE_MAT].applyMaterial(gfx::shSimple, "frontMat");
+  gfx::materials[YELLOW_MAT].applyMaterial(gfx::shSimple, "material");
+  
   glBegin(GL_QUADS);
     glNormal3f(0,1,0);
     glVertex3f(-100, -1, -100);

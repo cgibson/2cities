@@ -10,11 +10,11 @@
 #endif
 #include <stdlib.h>
 #include <string.h>
+#include <vector>
 #include "../system/global.h"
 #include "../system/io.h"
 #include "console.h"
 #include "GameUI.h"
-#include "BlankUI.h"
 
 class Hud {
 public:
@@ -27,23 +27,29 @@ public:
     void draw();
 
     // use this command to swap UI's
-    void swapUI(int which);
+	void swapUI(const char *script);
 
     // shows or hides the console
     bool showConsole() const { return _showConsole; }
     void showConsole(bool show) { _showConsole = show; }
 
+    // access uis
+    GameUI *getUI(int i) const { return _allUIs[i]; }
+	int numUIs() const { return (int)_allUIs.size(); }
+
     // console commands
-    static void hello(int argc, char *argv[]);
     static void exitApp(int argc, char *argv[]);
     static void clearConsole(int argc, char *argv[]);
     static void swapUIcmd(int argc, char *argv[]);
 
 private:
     bool _showConsole;
-    GameUI *_ui;
-    BlankUI _blankUI;
-    // TODO: add one of each as necessary
+	std::vector<GameUI *> _allUIs;
+	GameUI *_currentUI;
+	char *_unloadUI;
+	bool _unloadingUI;
+	GameUI *loadUI(const char *script);
+	void unloadUI();
 };
 
 #endif

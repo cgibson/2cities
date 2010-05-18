@@ -2,7 +2,7 @@
 
 namespace lua
 {
-    lua_State *setup(const char *scriptName, void (*registerFuncs)())
+    lua_State *setup(const char *scriptName, void (*registerFuncs)(lua_State *L))
     {
         // create new interpreter state
         lua_State *L = luaL_newstate();
@@ -11,7 +11,7 @@ namespace lua
         luaL_openlibs(L);
 
         // register our C function hooks
-        registerFuncs();
+        registerFuncs(L);
 
         // run the interpreter on the script
         if (luaL_dofile(L, scriptName))

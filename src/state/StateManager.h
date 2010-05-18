@@ -12,10 +12,9 @@
 #include "InGameState.h"
 #include "BuildState.h"
 #include "CarnageState.h"
-
 #include "Preferences.h"
-
 #include "../system/enum.h"
+
 using namespace enumeration;
 
 class StateManager
@@ -24,6 +23,8 @@ class StateManager
         void* preferences;
         InGameState* currentState;
         StateManager();
+	void initialize();
+	static void stateConsoleCmds(int argc, char *argv[]);
         void changeCurrentState(enum E_STATE newState);
         void setPreference(int prefID, int newPref);
         int getPreference(int prefID);

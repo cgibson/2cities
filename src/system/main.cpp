@@ -54,6 +54,7 @@ void updateLoop()
 void initState()
 {
   global::stateManager->changeCurrentState(beginState);
+  global::stateManager->initialize();
 }
 
 void initialize()

@@ -224,6 +224,12 @@ void NetworkServer::loadLevel(const char * file) {
 	global::stateManager->currentState->objects.clear();
 	// Clear Server objects
 	_serverObjs.clear();
+	// Send to Clients
+	char msg[] = "";
+	NetworkPacket pkt(LEVEL_CLEAR, (unsigned char *)&msg, sizeof(msg));
+	for(int p=0; p<_players.size(); p++) {
+		SendPacket(pkt, &(_players[p]->socket), _players[p]->ip);
+	}
 	// Load level (which will clear PhysicsEngine objects)
 	physicsEngine.loadFromFile(file);
 	PRINTINFO("Network Initiated Level in PhysicsEngine\n");

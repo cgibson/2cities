@@ -97,6 +97,9 @@ void NetworkClient::update(long milli_time) {
 		else if(pkt.header.type == OBJECT_SEND) {
 			updateObjectLocal(new WorldObject(*(WorldObject*)(pkt.data)));
 		}
+		else if(pkt.header.type == LEVEL_CLEAR) {
+			global::stateManager->currentState->objects.clear();
+		}
 		else {
 			printf("Received an unknown packet type!\n");
 		}

@@ -16,6 +16,8 @@ public:
   float getI();
   float getJ();
   float getK();
+
+  char *str();
 private:
   float m_h, m_i, m_j, m_k;
 };

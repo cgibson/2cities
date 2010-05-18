@@ -58,7 +58,7 @@ double Vector::mag()
 }
 
 char* Vector::str( void ) {
-    char *buffer = (char*)calloc(300, sizeof(char));
+	char *buffer = new char[200];
     sprintf(buffer, "<%.2f, %.2f, %.2f>", p_x, p_y, p_z);
     return buffer;
 }

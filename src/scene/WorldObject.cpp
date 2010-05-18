@@ -46,7 +46,8 @@ void WorldObject::update(int elapsedTime) {
 
 	pos = pos + (vel * (elapsedTime/1000.0f));
 
-	if(abs(vel.mag()) > 1.0) {
+	//printf("vel.mag=%f\n",vel.mag());
+	if(abs(vel.mag()) > 4.0) {
 		setPosition(pos);
 		setVelocity(vel);
 	}
@@ -78,11 +79,12 @@ void WorldObject::print() {
     		"*******************\n",
     		id, playerid, position.str(), velocity.str(), force.str());
     		*/
-   printf("***Object Details***\n"
-    		" ID       : %i\n", id);
+   printf("***Object Details***\n");
+   printf(" ID       : %i\n", id);
    printf(" PlayerID : %i\n", playerid);
    printf(" position : %s\n", position.str());
    printf(" velocity : %s\n", velocity.str());
    printf(" force    : %s\n", force.str());
+   printf(" orient   : %s\n", orientation.str());
    printf("*******************\n");
 }

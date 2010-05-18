@@ -83,14 +83,6 @@ void NetworkClient::update(long milli_time) {
 		RecvPacket(&pkt, &socket, &sourceIP);
 		if(pkt.header.type == OBJECT_SEND) {
 			updateObjectLocal(new WorldObject(*(WorldObject*)(pkt.data)));
-
-			// TODO DEBUG REMOVE CODE
-			WorldObject tmpObj(*(WorldObject*)(pkt.data));
-			//if(tmpObj.getID() > 9999) {
-			//	printf("Ammo Received: ");
-				tmpObj.print();
-			//}
-			// END DEBUG
 		}
 		else {
 			printf("Received an unknown packet type!\n");
@@ -118,7 +110,6 @@ void NetworkClient::addObject(WorldObject newObj) {
 
 	// Add to local system for interpolation
 	updateObjectLocal(new WorldObject(newObj));
-	newObj.print();
 }
 
 void NetworkClient::loadLevel(const char * file) {

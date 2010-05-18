@@ -74,14 +74,6 @@ void NetworkServer::networkIncomingGeneral() {
 			// Add Socket/IP to currPlayer
 			currPlayer->socket.Open();
 			currPlayer->ip = ting::IPAddress(ip.host>>24, (ip.host<<8)>>24, (ip.host<<16)>>24, (ip.host<<24)>>24, ip.port);
-			//currPlayer->ip = ip;
-			//currPlayer->ip.host = 16777343;	// TODO Remove Local Host
-
-			// DEBUG
-			//printf("ip.host = %i CPs->ip.host = %i ting::IPAddress('192.168.5.76',0).host=%i\n", ip.host, currPlayer->ip.host, ting::IPAddress("192.168.5.76",0).host);
-			//printf("ip.host = %i.%i.%i.%i\n", ip.host>>24, (ip.host<<8)>>24, (ip.host<<16)>>24, (ip.host<<24)>>24);
-			//printf("ip.host = %i\n", .host);
-
 
 			// Add Socket to _waitSet
 			_waitSet->Add(&(currPlayer->socket), ting::Waitable::READ);
@@ -184,20 +176,16 @@ void NetworkServer::update(long milli_time) {
 }
 
 void NetworkServer::addObject(WorldObject newObj) {
-	printf("addObject:\n");
 	newObj.setID(_currObjID++);
 	newObj.setPlayerID(_playerID);
 	addObjectPhys(newObj);
 
 	// Add to local system for interpolation
 	updateObjectLocal(new WorldObject(newObj));
-	newObj.print();
 }
 
 void NetworkServer::addObjectPhys(WorldObject newObj) {
-	printf("addObjectPhys:\n");
 	physicsEngine.addWorldObject(newObj);
-	newObj.print();
 }
 
 void NetworkServer::loadLevel(const char * file) {

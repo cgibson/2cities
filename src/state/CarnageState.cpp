@@ -111,7 +111,7 @@ void CarnageState::updateInput(long milli_time) {
 	  Vector dir = (camera.eye-camera.lookAt) * -1;
 	  dir.norm();
 
-	  // TODO uniqueID creation & addObject(WorldObject)
+	  // uniqueID creation & addObject(WorldObject)
 	  static int newObjID = 10000;
 	  WorldObject newObj = WorldObject(newObjID++,0,enumeration::DUMMY_SPHERE);
 	  newObj.setPosition(camera.eye);

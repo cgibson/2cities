@@ -38,3 +38,9 @@ float Quaternion::getH(){ return m_h; }
 float Quaternion::getI(){ return m_i; }
 float Quaternion::getJ(){ return m_j; }
 float Quaternion::getK(){ return m_k; }
+
+char* Quaternion::str() {
+	char *buffer = new char[200];
+	sprintf(buffer, "<%.2f, %.2f, %.2f, %.2f>", m_h, m_i, m_j, m_k);
+	return buffer;
+}

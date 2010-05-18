@@ -7,6 +7,18 @@ btScalar PhysicsBody::getMass(ObjectType type)
   return btScalar(global::factory->getBlueprint(type).getMass());
 }
 
+void PhysicsBody::setPosition(Vector in)
+{
+	btTransform trans = body->getCenterOfMassTransform();
+	trans.setOrigin(VtobtV3(in));
+	body->setCenterOfMassTransform(trans);
+}
+
+void PhysicsBody::setVelocity(Vector in)
+{
+	
+}
+
 PhysicsBody::PhysicsBody(WorldObject worldObject):
 btRigidBody(getCI(worldObject))
 {
@@ -48,8 +60,11 @@ btRigidBody::btRigidBodyConstructionInfo PhysicsBody::getCI(WorldObject worldObj
   }
   btRigidBody::btRigidBodyConstructionInfo ci(mass, ms, thisShape, inertia);
 //  printf("Friction was: %f,\t", ci.m_friction);
+//  printf("Restitution was: %f,\t", ci.m_restitution);
   ci.m_friction = 0.75;
+  ci.m_restitution = 0;
 //  printf("Friction is now: %f", ci.m_friction); 
+//  printf("Restitution is now: %f", ci.m_restitution); 
   return ci;
 }
 
@@ -75,7 +90,32 @@ Vector PhysicsBody::getForce()
   return Vector(linear, angular, force);
 }
 
-bool PhysicsBody::update()
+bool PhysicsBody::drawnByBlackHoleAt(Vector loc, float strength,
+                                     float far,float eh)
+{
+  Vector line = loc - wo.getPosition();
+  if (line.mag() < far)
+  {
+		if (line.mag() < eh)
+		{
+			return false;
+			setPosition(loc);
+			setVelocity(Vector(0,0,0));
+			body->setActivationState(ISLAND_SLEEPING);
+		}
+		else
+		{
+			float force = (far - (line.mag() - eh)) / (far - eh) * strength;
+			line.norm();
+			btVector3 forceApp = btVector3(line.x() * force, line.y() * force,
+			                               line.z() * force);
+			body->applyCentralForce(forceApp);
+		}
+  }
+  return true;
+}
+
+int PhysicsBody::update()
 {
   float epsilon = .1;
   Vector oldPos = wo.getPosition();
@@ -92,28 +132,18 @@ bool PhysicsBody::update()
   Vector force = getForce();
   wo.setForce(force);
   wo.setTimeStamp(global::elapsed_ms());
-  return (newPos - oldPos).mag() > epsilon;
+  if (wo.getID() >= 10000)
+  {
+//    if (drawnByBlackHoleAt(Vector(0, 100, 0), 10, 1000, 10))
+//      return -1;
+  }
+  if (wo.getID() < 10000 && wo.getID() % 2 && (body->getActivationState() & ISLAND_SLEEPING))
+//    if (drawnByBlackHoleAt(Vector(-10, 10, 0), 100, 100, .5))
+//      return -1;
+  if (wo.getID() < 10000 && wo.getID() % 2 - 1 && (body->getActivationState() & ISLAND_SLEEPING))
+//		if (drawnByBlackHoleAt(Vector(10, 10, 0), 100, 100, .5))
+//		  return -1;
+  if ((newPos - oldPos).mag() > epsilon)
+    return 1;
+  return 0;
 }
-
-/*
-void PhysicsBody::applyCentralForce(const btVector3& force)
-{
-  setm_totalForce += force*getLinearFactor();
-  printf("updating object %d with force of magnitude %f.\n", wo->getID(), btV3toV(force).mag());
-}
-
-void PhysicsBody::applyGravity()
-{
-  printf("PhysicsBody::applyGravity() called.\n");
-  if (isStaticOrKinematicObject())
-    return;
-  applyCentralForce(m_gravity);
-}*/
-
-btCollisionShape * PhysicsBody::small_cube = new btBoxShape(VtobtV3(
-Vector(.5, .5, .5)));
-
-btCollisionShape * PhysicsBody::small_sphere = new btSphereShape(
-    btScalar(
-1));
-

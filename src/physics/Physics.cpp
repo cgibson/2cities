@@ -59,18 +59,27 @@ void Physics::update(int timeChange)
 {
 //  printf("Updating by: %d milliseconds.\n", timeChange);
   vector<WorldObject> changed;
-  int maxBody = physicsBodies.size();
-  vector<WorldObject> newWorldObjects(maxBody, WorldObject());
+  vector<PhysicsBody *> temp = physicsBodies;
+  vector<WorldObject> newWorldObjects(temp.size(), WorldObject());
   if (timeChange)
     world->stepSimulation(btScalar(timeChange / 1000.0), 10);
-  int i;
-  for (i = 0; i < maxBody; i++)
+  int i, result;
+  for (i = 0; i < temp.size(); i++)
   {
-    if (physicsBodies[i]->update())
+		result = temp[i]->update();
+    if (result == 1)
     {
-      changed.push_back(physicsBodies[i]->getWorldObject());
+      changed.push_back(temp[i]->getWorldObject());
     }
-    newWorldObjects[i] = physicsBodies[i]->getWorldObject();
+    if (result == 0)
+    {
+			//removeWorldObject(temp[i]->getWorldObject().getID());
+      newWorldObjects[i] = temp[i]->getWorldObject();
+		}
+		else
+		{
+      newWorldObjects[i] = temp[i]->getWorldObject();
+		}
   }
 //  printf("changed.size() = %d, ", changed.size());
 //  printf("newWorldObjects.size() = %d, ", newWorldObjects.size());

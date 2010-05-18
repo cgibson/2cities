@@ -16,11 +16,13 @@ class PhysicsBody : public btRigidBody
 
     btRigidBody * body; 
     WorldObject wo;
-    static btCollisionShape * small_sphere;
-    static btCollisionShape * small_cube;
     ObjectType type;
     float forceScale;
     float boundForce(float);
+    // Location to be drawn to, strength, far depth, event horizon depth
+    bool drawnByBlackHoleAt(Vector, float, float, float);
+    void setPosition(Vector newPos);
+    void setVelocity(Vector newVel);
   public:
     static btScalar getMass(ObjectType type);
     static Vector btV3toV(btVector3 in) 
@@ -38,9 +40,7 @@ class PhysicsBody : public btRigidBody
     int getPlayerID() {return wo.getPlayerID();}
     int getType() {return wo.getType();}
     WorldObject getWorldObject() {return wo;}
-    bool update();
-    void applyGravity();
-    void applyCentralForce(const btVector3&);
+    int update();
     Vector getForce();
 };
 

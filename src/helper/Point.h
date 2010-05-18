@@ -27,7 +27,8 @@ public:
   void setx(GLdouble x){p_x = x;}
   void sety(GLdouble y){p_y = y;}
   void setz(GLdouble z){p_z = z;}
-  
+	  
+  void set(Point p){p_x = p.p_x;p_y = p.p_y;p_z = p.p_z;}
   char *str();
   
 	Point operator=( const Point& );

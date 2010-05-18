@@ -75,28 +75,39 @@ void Renderer::draw()
   
   glBegin(GL_QUADS);
     glNormal3f(0,1,0);
-    glVertex3f(-100, -1, -100);
-    glVertex3f(-100, -1, 100);
-    glVertex3f(100, -1, 100);
-    glVertex3f(100, -1, -100);
+    glVertex3f(-100, 0, -100);
+    glVertex3f(-100, 0,  100);
+    glVertex3f( 100, 0,  100);
+    glVertex3f( 100, 0, -100);
   glEnd();
 
   //TODO: Remove END
   
   InGameState *curstate = global::stateManager->currentState;
   
-  //ObjectType lastType, curType;
-  //curType = lastType = curstate->objects[0].getType();
-  
-  for(int i = 0; i < (int)curstate->objects.size(); i++)
+  if(curstate->objects.size() > 0)
   {
-    /*curType = curState->objects[i].getType();
-    if(curType != lastType)
-    {
-    
-    }*/
-    curstate->objects[i]->draw();
-  }
+	  ObjectType lastType, curType;
+	  curType = lastType = curstate->objects[0]->getType();
+	  Blueprint blueprint = global::factory->getBlueprint(curType);	
+	  Material curMat = gfx::materials[blueprint.getMaterial()];
+	  
+	  curMat.applyMaterial(gfx::cur_shader, ""); 
+	  //printf("SOMETHING HERE\n");
+	  for(int i = 0; i < (int)curstate->objects.size(); i++)
+	  {
+		curType = curstate->objects[i]->getType();
+		if(curType != lastType)
+		{
+			//printf("DIFFERENCE!\n");
+			lastType = curType;
+			blueprint = global::factory->getBlueprint(curType);	
+			curMat = gfx::materials[blueprint.getMaterial()];
+			curMat.applyMaterial(gfx::cur_shader, ""); 
+		}
+		curstate->objects[i]->draw();
+	  }
+	}
   
   glUseProgram( 0 );  
   

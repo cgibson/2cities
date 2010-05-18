@@ -6,6 +6,7 @@
 namespace gfx{
 
   Renderer renderer;
+  ModelHandler modelHandler = ModelHandler();
   Hud hud;
   bool draw_wireframe;
   
@@ -86,6 +87,7 @@ namespace gfx{
     renderer.init();
 
     hud.init();
+    modelHandler.initialize();
   }
   
   

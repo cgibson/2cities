@@ -10,10 +10,8 @@ void WorldObject::draw() {
 #ifdef CLIENT
 	Vector pos = getPosition();
 	Quaternion ori = getOrientation();
-	Blueprint blueprint = global::factory->getBlueprint(type);
-
-	gfx::materials[YELLOW_MAT].applyMaterial(gfx::cur_shader, "frontMat");
 	
+	Blueprint blueprint = global::factory->getBlueprint(type);
 	Vector size = blueprint.getSize();
 
 	glPushMatrix();
@@ -22,8 +20,7 @@ void WorldObject::draw() {
 	switch(blueprint.getShape())
 	{
 		case SMALL_CUBE:
-			glScalef(size.x(), size.y(), size.z());
-			glutSolidCube(1);
+			gfx::modelHandler.drawShadedCube(1);
 			break;
 		case SMALL_SPHERE: default:
 			glutSolidSphere(size.mag(),10,10);

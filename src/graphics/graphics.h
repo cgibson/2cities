@@ -12,6 +12,7 @@
 
 #include "Lighting.h"
 #include "renderer.h"
+#include "modelhandler.h"
 #include "hud.h"
 #include "../system/io.h"
 #include "../helper/GLSL_helper.h"
@@ -22,6 +23,7 @@ using namespace enumeration;
 namespace gfx{
 
   extern Renderer renderer;
+  extern ModelHandler modelHandler;
   extern Hud hud;
     
   extern Material* materials;

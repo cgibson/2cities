@@ -12,9 +12,15 @@
 
 #ifdef SERVER
 	#define PRINTINFO(x) printf(x);
+	//#define PRINTINFO(x,y) printf(x,y);
+	//#define PRINTINFO(x,y,z) printf(x,y,z);
 #else
-	//#include "../graphics/graphics.h"
-	//#define PRINTINFO(x) gfx::hud.console.info(x);
+/*
+	#include "../graphics/graphics.h"
+	#define PRINTINFO(x) gfx::hud.console.info(x);
+	#define PRINTINFO(x,y) gfx::hud.console.info(x,y);
+	#define PRINTINFO(x,y,z) gfx::hud.console.info(x,y,z);
+	*/
 	#define PRINTINFO(x) printf(x);
 #endif
 
@@ -31,18 +37,30 @@ protected:
 	int _playerID;
 	unsigned int _currObjID;
 
+	int _pktCountRecv; // Count of packets over a 250 ms period
+	int _pktCountSent;
+	int _pktPeriod;
+
 	void updateObjectLocal(WorldObject *obj);
 	void updateObjectVector(vector<WorldObject *> *objVec, WorldObject *objPtr);
 
 	int SendPacket(NetworkPacket  pktPtr, ting::UDPSocket *socket, ting::IPAddress  destIP);
 	int RecvPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ting::IPAddress *srcIP);
 
+	void buildBatchPacket(NetworkPacket *pkt, WorldObject objs[], unsigned int size);
+	int  readBatchPacket (NetworkPacket *pkt, WorldObject objs[], unsigned int size);
+
 public:
-	NetworkSystem() {}
+	NetworkSystem() {
+		_pktCountRecv = 0;
+		_pktCountSent = 0;
+		_pktPeriod = 0;
+	}
 	~NetworkSystem() {};
 
 	virtual void initialize() {};
-	virtual void update(long milli_time) {};
+	virtual void update(long elapsed) {};
+	void updatePktData(long elapsed);
 
 	int getPlayerID() { return _playerID; };
 

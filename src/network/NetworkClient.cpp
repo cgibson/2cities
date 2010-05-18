@@ -1,6 +1,6 @@
 #include "NetworkClient.h"
 
-NetworkClient::NetworkClient() {
+NetworkClient::NetworkClient() : NetworkSystem() {
 	PRINTINFO("Network Initializing...");
 	ting::SocketLib socketsLib;
 
@@ -74,6 +74,8 @@ void NetworkClient::disconnectServer() {
 }
 
 void NetworkClient::update(long milli_time) {
+	updatePktData(milli_time);
+
 	ting::IPAddress sourceIP;
 	NetworkPacket pkt;
 	int pktsRecv = 0;
@@ -83,6 +85,12 @@ void NetworkClient::update(long milli_time) {
 		RecvPacket(&pkt, &socket, &sourceIP);
 		if(pkt.header.type == OBJECT_SEND) {
 			updateObjectLocal(new WorldObject(*(WorldObject*)(pkt.data)));
+		}
+		if(pkt.header.type == OBJECT_BATCHSEND) {
+			WorldObject objBatch[10];
+			int objBatchSize = readBatchPacket(&pkt, objBatch, 10);
+			for(int i=0; i<objBatchSize; i++)
+				updateObjectLocal(new WorldObject(objBatch[i]));
 		}
 		else {
 			printf("Received an unknown packet type!\n");
@@ -99,7 +107,6 @@ void NetworkClient::sendMsg(char * msgStr) {
 }
 
 void NetworkClient::addObject(WorldObject newObj) {
-	printf("addObject:\n");
 	newObj.setID(_currObjID++);
 	newObj.setPlayerID(_playerID);
 
@@ -113,6 +120,9 @@ void NetworkClient::addObject(WorldObject newObj) {
 }
 
 void NetworkClient::loadLevel(const char * file) {
+	// Clear GameState objects
+	global::stateManager->currentState->objects.clear();
+
 	NetworkPacket tmpPkt(LEVEL_LOAD, (unsigned char *)file, strlen(file)+1);
 	SendPacket(tmpPkt, &socket, serverIP);
 	printf("Sent LoadLevel Request.\n");

@@ -35,6 +35,20 @@ void NetworkSystem::updateObjectLocal(WorldObject *objPtr) {
 	updateObjectVector(currObjects, objPtr);
 }
 
+void NetworkSystem::updatePktData(long elapsed) {
+	_pktPeriod += elapsed;
+	if(_pktPeriod > 250) {
+		global::pbs_recv = _pktCountRecv * 4;
+		global::pbs_sent = _pktCountSent * 4;
+
+		//printf("pbs> Recv: %i Sent: %i\n",global::pbs_recv,global::pbs_sent);
+
+		_pktCountRecv = 0;
+		_pktCountSent = 0;
+		_pktPeriod = 0;
+	}
+}
+
 /* Creates Buffer required for send, sends packet, and cleans up
  */
 int NetworkSystem::SendPacket(NetworkPacket  pkt, ting::UDPSocket *socket, ting::IPAddress  destIP_P) {
@@ -50,6 +64,7 @@ int NetworkSystem::SendPacket(NetworkPacket  pkt, ting::UDPSocket *socket, ting:
 	memcpy(buf.Buf() + sizeof(NetworkPacketHeader), pkt.data, pkt.dataSize);
 
 	int sentSize = socket->Send(buf, destIP_P);
+	_pktCountSent++;
 
 	return sentSize;
 }
@@ -67,6 +82,7 @@ int NetworkSystem::RecvPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ti
 	ting::Buffer<ting::u8> buf(strPtr, sizeof(strPtr));
 
 	int recvSize = socket->Recv(buf, *srcIP_P);
+	_pktCountRecv++;
 
 	// Check if packet can possibly be valid
 	if(recvSize <  sizeof(NetworkPacketHeader)) {
@@ -77,4 +93,34 @@ int NetworkSystem::RecvPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ti
 	*pktPtr = NetworkPacket(&buf, recvSize);
 
 	return recvSize;
+}
+
+void NetworkSystem::buildBatchPacket(NetworkPacket *pkt, WorldObject objs[], unsigned int size) {
+	if (size * sizeof(WorldObject) > 1500) {
+		printf("buildBatchPacket trying to add too much!\n");
+		return;
+	}
+
+	for(int o=0; o<size; o++) {
+		memcpy(pkt->data + o*sizeof(WorldObject), &(objs[o]), sizeof(WorldObject));
+	}
+	pkt->header.type = OBJECT_BATCHSEND;
+	pkt->dataSize = size * sizeof(WorldObject);
+}
+
+int NetworkSystem::readBatchPacket(NetworkPacket *pkt, WorldObject objs[], unsigned int size) {
+	if (pkt->header.type != OBJECT_BATCHSEND) {
+		printf("readBatchPacket trying to read a non-OBJECT_BATCHSEND packet!\n");
+		return -1;
+	}
+	if (pkt->dataSize % sizeof(WorldObject) != 0) {
+		printf("readBatchPacket trying to read a malformed OBJECT_BATCHSEND packet!\n");
+		return -1;
+	}
+
+	int objCount = pkt->dataSize / sizeof(WorldObject);
+	for(int o=0; o<objCount; o++)
+		memcpy(&(objs[o]), pkt->data + o*sizeof(WorldObject), sizeof(WorldObject));
+
+	return objCount;
 }

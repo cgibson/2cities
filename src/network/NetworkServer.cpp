@@ -111,7 +111,6 @@ void NetworkServer::networkIncomingPlayers(int p) {
 			_waitSet->Remove(&_players[p]->socket);
 			_players[p]->socket.Close();
 			_players.erase(_players.begin()+p);
-			exit(1);
 			break;
 		case LEVEL_LOAD :
 			printf("LEVEL_LOAD: %s\n", (char *)pkt.data);
@@ -134,25 +133,33 @@ void NetworkServer::networkOutgoing() {
 	// Outgoing Network Section
 	try {
 		// Send up to MAX_PACKETS_PER_CYCLE Packets
-		int sendSize = min(MAX_SEND_PACKETS_PER_CYCLE, (int)_serverObjs.size());
-		if (_players.size() > 0 || _dedicatedServer == false) {
-			for(int i=0; i < sendSize; i++) {
-				int obj=(_sendObjNext + i)%_serverObjs.size();
-				// Add Locally (if hosted)
-				if(!_dedicatedServer)
-					updateObjectLocal(new WorldObject(*_serverObjs[obj]));
+		const int objsSize = _serverObjs.size();
+		const int sendSize = min(MAX_SEND_PACKETS_PER_CYCLE*10, objsSize);
+		if (sendSize > 0 && (_players.size() > 0 || _dedicatedServer == false)) {
+			int currObj = _sendObjNext;
+			while(currObj < _sendObjNext + sendSize) {
+				// Update Locally
+				for(int o=0; o<10; o++)
+					updateObjectLocal(new WorldObject(*_serverObjs[(currObj+o)%objsSize]));
 
-				// Send to _players
-				NetworkPacket pkt(OBJECT_SEND, (unsigned char *)(_serverObjs[obj]), sizeof(WorldObject));
+				// Build Batch Packet
+				WorldObject objGroup[10];
+				for(int o=0; o<10; o++)
+					objGroup[o] = *_serverObjs[(currObj+o)%objsSize];
+				NetworkPacket pkt;
+				buildBatchPacket(&pkt, objGroup, 10);
+
+				// Send to each _players
 				for(int p=0; p<_players.size(); p++) {
 					SendPacket(pkt, &(_players[p]->socket), _players[p]->ip);
 				}
+				currObj += 10;
 			}
 
-			if(_serverObjs.size() == 0)
+			if(objsSize == 0)
 				_sendObjNext = 0;
 			else
-				_sendObjNext = (_sendObjNext + sendSize)% _serverObjs.size();
+				_sendObjNext = (_sendObjNext + sendSize)%objsSize;
 		}
 	} catch(ting::Socket::Exc &e){
 		std::cout << "Network error: " << e.What() << std::endl;
@@ -160,8 +167,17 @@ void NetworkServer::networkOutgoing() {
 }
 
 void NetworkServer::update(long milli_time) {
+	updatePktData(milli_time);
+
 	// Update Physics Engine
-	physicsEngine.update(milli_time);
+	static int physicsDelay = 0;
+	if(physicsDelay <= 0) {
+		physicsEngine.update(20 - physicsDelay);
+		physicsDelay = 20;
+	}
+	else {
+		physicsDelay -= milli_time;
+	}
 
 	// UPDATE LOCAL DATA
 	std::vector<WorldObject> PhysEngObjs = physicsEngine.getWorldObjects();
@@ -189,6 +205,11 @@ void NetworkServer::addObjectPhys(WorldObject newObj) {
 }
 
 void NetworkServer::loadLevel(const char * file) {
+	// Clear GameState objects
+	global::stateManager->currentState->objects.clear();
+	// Clear Server objects
+	_serverObjs.clear();
+	// Load level (which will clear PhysicsEngine objects)
 	physicsEngine.loadFromFile(file);
 	PRINTINFO("Network Initiated Level in PhysicsEngine\n");
 }

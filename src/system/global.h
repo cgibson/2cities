@@ -29,6 +29,8 @@ namespace global
   extern float fill_color[4];
 
   extern int fps; // frames per second (not necessarily *live*)
+  extern int pbs_recv;
+  extern int pbs_sent;
 
   // call this to get the number of milliseconds elapsed since the program started
   int elapsed_ms();

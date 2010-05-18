@@ -101,8 +101,11 @@ namespace Network {
 				printf("OBJECT_SEND: objectID=%i\n", ((WorldObject*)data)->getID());
 				break;
 			case OBJECT_BATCHSEND :
-				printf("OBJECT_BATCHSEND\n");
+				printf("OBJECT_BATCHSEND: IDs... ");
 				// TODO print objects included in batch.
+				for(int i=0; i<10; i++)
+					printf("%i ",((WorldObject*)data + i)->getID());
+				printf("\n");
 				break;
 			default:
 				printf("No Print Rule for Header Type! EMUM=%i\n",(int)(header.type));

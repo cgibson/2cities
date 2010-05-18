@@ -12,17 +12,9 @@ using namespace enumeration;
 
 E_STATE beginState;
 
-#include <time.h>
-void sleepMS(unsigned int mseconds)
-{
-    clock_t goal = mseconds * CLOCKS_PER_SEC / 1000 + clock();
-    while (goal > clock());
-}
-
 void initState() {
 	global::stateManager->changeCurrentState(beginState);
 }
-
 
 void initialize() {
  	// initialization of all other modules

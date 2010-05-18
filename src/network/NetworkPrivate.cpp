@@ -7,9 +7,6 @@ NetworkPrivate::NetworkPrivate() {
 	PRINTINFO("Network Initializing PhysicsEngine...");
 	physicsEngine.initPhysics();
 	PRINTINFO("PhysicsEngine Initialized!\n");
-
-//	physicsEngine->loadFromFile("resources/test.lvl");
-	PRINTINFO("Network Initiated Level in PhysicsEngine\n");
 }
 
 NetworkPrivate::~NetworkPrivate() {}
@@ -29,9 +26,11 @@ void NetworkPrivate::update(long milli_time) {
 
 void NetworkPrivate::addObject(WorldObject newObj) {
 	physicsEngine.addWorldObject(newObj);
-	newObj.print();
 }
 
 void NetworkPrivate::loadLevel(const char * file) {
+	// Clear GameState objects
+	global::stateManager->currentState->objects.clear();
+
 	physicsEngine.loadFromFile(file);
 }

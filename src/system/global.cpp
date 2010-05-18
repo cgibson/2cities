@@ -24,6 +24,8 @@ namespace global
   float fill_color[4] = {1.0f, 1.0f, 1.0f, 1.0f};
 
   int fps;
+  int pbs_recv;
+  int pbs_sent;
 
   int elapsed_ms()
   {

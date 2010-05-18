@@ -19,7 +19,7 @@ class PhysicsBody : public btRigidBody
     static btCollisionShape * small_sphere;
     static btCollisionShape * small_cube;
     ObjectType type;
-    
+    float forceScale;
   public:
     static btScalar getMass(ObjectType type);
     static Vector btV3toV(btVector3 in) 
@@ -38,6 +38,9 @@ class PhysicsBody : public btRigidBody
     int getType() {return wo.getType();}
     WorldObject getWorldObject() {return wo;}
     bool update();
+    void applyGravity();
+    void applyCentralForce(const btVector3&);
+    Vector getForce();
 };
 
 #endif

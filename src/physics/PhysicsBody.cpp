@@ -48,6 +48,24 @@ btRigidBody::btRigidBodyConstructionInfo PhysicsBody::getCI(WorldObject worldObj
   return ci;
 }
 
+Vector PhysicsBody::getForce()
+{
+  // everything has a default energy of 10
+  Vector result = Vector(0,0,10);
+  float linear = btV3toV(body->getLinearVelocity()).mag();
+  float linearFactor = 0.2;
+  float angular = btV3toV(body->getAngularVelocity()).mag();
+  float angularFactor = 5.0;
+  result = result + (Vector(1,0,0) * linearFactor * linear * linear);
+  result = result + (Vector(0,1,0) * angularFactor * angular * angular);
+//  printf("linear = %f\n", linear);
+//  printf("angular = %f\n", angular);
+//  printf("result.mag() = %f\n", result.mag());
+  if (result.mag() > 100.0)
+    result = Vector(0,0,100);
+  return result;
+}
+
 bool PhysicsBody::update()
 {
   float epsilon = .1;
@@ -60,11 +78,26 @@ bool PhysicsBody::update()
   quat.setAxis(btV3toV(btq.getAxis()));
   quat.setAngle(btq.getAngle() * 180 / 3.14159 );
   wo.setOrientation(quat);
-  wo.setForce(Vector(0,0,0));
+  Vector force = getForce();
+  wo.setForce(force);
   wo.setTimeStamp(time(NULL));
-//  printf("newPos.mag() = %f\n", newPos.mag());
   return (newPos - oldPos).mag() > epsilon;
 }
+
+/*
+void PhysicsBody::applyCentralForce(const btVector3& force)
+{
+  setm_totalForce += force*getLinearFactor();
+  printf("updating object %d with force of magnitude %f.\n", wo->getID(), btV3toV(force).mag());
+}
+
+void PhysicsBody::applyGravity()
+{
+  printf("PhysicsBody::applyGravity() called.\n");
+  if (isStaticOrKinematicObject())
+    return;
+  applyCentralForce(m_gravity);
+}*/
 
 btCollisionShape * PhysicsBody::small_cube = new btBoxShape(VtobtV3(
 Vector(.5, .5, .5)));

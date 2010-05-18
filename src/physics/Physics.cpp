@@ -57,7 +57,7 @@ void Physics::initPhysics()
 
 void Physics::update(int timeChange)
 {
-  printf("Updating by: %d milliseconds.\n", timeChange);
+//  printf("Updating by: %d milliseconds.\n", timeChange);
   vector<WorldObject> changed;
   int maxBody = physicsBodies.size();
   vector<WorldObject> newWorldObjects(maxBody, WorldObject());
@@ -72,9 +72,9 @@ void Physics::update(int timeChange)
     }
     newWorldObjects[i] = physicsBodies[i]->getWorldObject();
   }
-  printf("changed.size() = %d, ", changed.size());
-  printf("newWorldObjects.size() = %d, ", newWorldObjects.size());
-  printf("worldObjects.size() = %d\n", worldObjects.size());
+//  printf("changed.size() = %d, ", changed.size());
+//  printf("newWorldObjects.size() = %d, ", newWorldObjects.size());
+//  printf("worldObjects.size() = %d\n", worldObjects.size());
   worldObjects = newWorldObjects;
 }
 

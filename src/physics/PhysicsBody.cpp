@@ -8,7 +8,6 @@ btScalar PhysicsBody::getMass(ObjectType type)
 }
 
 PhysicsBody::PhysicsBody(WorldObject worldObject):
-void
 btRigidBody(getCI(worldObject))
 {
   wo = worldObject;
@@ -79,7 +78,7 @@ bool PhysicsBody::update()
   Vector oldPos = wo.getPosition();
   Vector newPos = btV3toV(body->getCenterOfMassPosition());
   wo.setPosition(newPos);
-  wo.setVelocity(btV3toV(body->getLinearInterpolationVelocity()));
+  wo.setVelocity(btV3toV(body->getLinearVelocity()));
   Quaternion quat;
   btQuaternion btq = body->getOrientation();
 //  btTransform trans = body->getCenterOfMassTransform();

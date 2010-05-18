@@ -66,6 +66,12 @@ namespace gfx{
     specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
     shininess[0] = 100.0;
     materials[BLUE_MAT] = Material(ambient, diffuse, specular, shininess);
+
+    ambient[0] = 0.1; ambient[1] = 0.1; ambient[2] = 0.1; ambient[3] = 1.0;
+    diffuse[0] = 0.1; diffuse[1] = 0.9; diffuse[2] = 0.1; diffuse[3] = 1.0;
+    specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
+    shininess[0] = 100.0;
+    materials[GREEN_MAT] = Material(ambient, diffuse, specular, shininess);
   }
 
   void init()

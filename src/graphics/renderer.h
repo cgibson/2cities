@@ -28,12 +28,13 @@ public:
   void draw();
   void draw_scene();
   void reshape(int w, int h);
+  void getMatrices(GLdouble **mvMatrix, GLdouble **pMatrix, GLint **vMatrix);
 private:
   void update_view();
   void init_lights();
   void do_lights();
   void updateLookat();
-  
+  static void outputMatrices(int argc, char* argv[]);
   bool initFBO();
   
   Vector eye, lookAt;

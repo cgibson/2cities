@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include "../graphics/graphics.h"
 
 class Point {
 private:
@@ -31,6 +32,8 @@ public:
   void set(Point p){p_x = p.p_x;p_y = p.p_y;p_z = p.p_z;}
   char *str();
   
+	void adjustPointForBlocksize(int blocksize);
+
 	Point operator=( const Point& );
 
 //  friend ostream& operator<<( ostream&, const Vector& );

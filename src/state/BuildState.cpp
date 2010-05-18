@@ -21,6 +21,7 @@ namespace BuildStateGlobals
 {
 	bool DELETE_MODE;
 	bool MOUSE_DOWN;
+	int LAST_BUTTON;
 	int blocksize, rect_element, counter;
 	Face intersection;
 	Point firstPoint, last, mouse_click;
@@ -45,6 +46,9 @@ BuildState::~BuildState() {}
 void BuildState::initialize() {
 	DELETE_MODE = false;
 	MOUSE_DOWN = false;
+	counter = 0;
+	blocksize = 10;
+	firstPoint = Point();
     // i/o initializtion not done in the state
     // anymore, it's done globally at app launch
     // we just capture the mouse
@@ -53,8 +57,8 @@ void BuildState::initialize() {
    camera.eye = Vector( 0.0f, 30.0f, 30.0f);
    camera.lookAt = Vector( 0.0f, 0.0f, 0.0f);
 
-	io::register_mouse_down(BuildState::mouseDownHandler);
-	io::register_mouse_up(BuildState::mouseUpHandler);
+	io::register_mouse_down(BuildState::mouseDownToggle);
+	io::register_mouse_up(BuildState::mouseUpToggle);
 	io::register_key_down(BuildState::keyDownHandler);
 
 	// make a simple CustomObject and add it to static_cast<CustomObject*>(objects vector
@@ -68,7 +72,11 @@ void BuildState::update(long milli_time) {
 }
 
 void BuildState::updateInput(long milli_time) {
-   // General Keyboard Layout
+   // General Mouse Layout
+	if(MOUSE_DOWN)
+		mouseDownHandler();
+
+	// General Keyboard Layout
 	if(io::keys[27]) {
 		exit(0);
 	}
@@ -214,66 +222,78 @@ void BuildState::keyDownHandler(int key, bool special)
    }*/
 }
 
-void BuildState::mouseDownHandler(int button)
+// called only on the first click down
+void BuildState::mouseDownToggle(int button)
+{
+	printf("first click io::mouse_x %d io::mouse_y %d\n", io::mouse_x, io::mouse_y);	
+	LAST_BUTTON = button;
+	MOUSE_DOWN = true;
+	firstPoint.set(Point(io::mouse_x, io::mouse_y));
+	printf("firstPoint.x %f firstPoint.y %f firstPoint.z %f\n", firstPoint.getx(), firstPoint.gety(), firstPoint.getz());
+	firstPoint.adjustPointForBlocksize(blocksize);
+	printf("firstPoint.x %f firstPoint.y %f firstPoint.z %f\n", firstPoint.getx(), firstPoint.gety(), firstPoint.getz());
+}
+
+// called only on the first mouse up
+void BuildState::mouseUpToggle(int button)
+{
+	InGameState *currState = global::stateManager->currentState;	
+	printf("last click\n");
+	static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->print_rectangle();
+	LAST_BUTTON = button;
+	MOUSE_DOWN = false;
+}
+
+void BuildState::mouseDownHandler()
 {
 	InGameState *currState = global::stateManager->currentState;
-
+	
 	// IF frist click
-	if(!MOUSE_DOWN)
+	if(counter == 0)
 	{
+		printf("second point (drag)\n");		
 		// draw 2D rectangle ground surface or top of existing building
-		if(button == GLUT_RIGHT_BUTTON)
+		if(LAST_BUTTON == GLUT_RIGHT_BUTTON)
 		{
-			firstPoint.setx(io::mouse_x);
-			firstPoint.sety(io::mouse_y);
-		}
-		// push / pull rectangles
-		else if(button == GLUT_LEFT_BUTTON)
-		{
+			// record point
 			Point click;
 			click.set(Point(io::mouse_x, io::mouse_y));
-         Face temp_face;
-			// IF point is inside of a rectangle
-			for(int i = 0; i < currState->objects.size(); i++)
-			{
-            // always take the rectangle with the higher min(it's the TOP one)
-            temp_face = static_cast<CustomObject*>(currState->objects[i])->check_click(click);
-            if(temp_face != NOTHING)
-            {
-					// IF there isn't a different potential face
-					if(intersection == NOTHING)
-               {
-                  intersection = temp_face;
-                  rect_element = i;
-               }   
-               // IF old face has a smaller min.y change rect_element
-               else if(static_cast<CustomObject*>(currState->objects[rect_element])->get_min_y() < static_cast<CustomObject*>(currState->objects[i])->get_min_y())
-                  rect_element = i;
-            }
-			}
-			BuildStateGlobals::mouse_click.set(click);
-			last.setx(io::mouse_x);
-			last.sety(io::mouse_y);
-
-         // IF in DELETE_MODE
-         if(DELETE_MODE)
-         {
-            if(rect_element != -1)
-            {
-               // ERASE element rect_element
-               currState->objects.erase( currState->objects.begin() + rect_element);
-            }
-         }
+			click.adjustPointForBlocksize(blocksize);
+			// push_back new CustomObject
+			currState->objects.push_back( new CustomObject( currState->objects.size(), 0, CUSTOM_BLOCK, firstPoint, Point(io::mouse_x, io::mouse_y) ) );
+			printf("added rectangle\n");
 		}
+		// push / pull rectangles
+		else if(LAST_BUTTON == GLUT_LEFT_BUTTON)
+		{
+
+		}
+		counter++;
 	}
-	// ELSE handle camera movement
+	// ELSE not the first click
 	else
 	{
+		if(LAST_BUTTON == GLUT_RIGHT_BUTTON)
+		{			
+			Point click;
+			click.set(Point(io::mouse_x, io::mouse_y));
+			click.adjustPointForBlocksize(blocksize);
+			printf("counter %d\n", counter);	
+			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_min(firstPoint);
+			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_x(click.getx());
+			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_z(click.getz());
+			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_y(static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->get_min_y());
+			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->adjust_bases();		
+			counter++;
+		}
+		else if(LAST_BUTTON == GLUT_LEFT_BUTTON)
+		{
 
+		}
 	}
 }
 
-void BuildState::mouseUpHandler(int button)
+/*void BuildState::mouseUpHandler(int button)
 {
 	InGameState *currState = global::stateManager->currentState;
 	// IF frist registered up (after a click)
@@ -284,15 +304,7 @@ void BuildState::mouseUpHandler(int button)
 		{
 			Point click;
 			click.set(Point(io::mouse_x, io::mouse_y));
-			// adjust click for blocksize
-			if(click.getz() < 0)
-				click.setz( click.getz() - ((int)click.getz() % -blocksize) );
-			else
-				click.setz( click.getz() - ((int)click.getz() % blocksize) );			
-			if(click.getx() < 0)
-				click.setx( click.getx() - ((int)click.getx() % -blocksize) );
-			else
-				click.setx( click.getx() - ((int)click.getx() % blocksize) );
+			click.adjustPointForBlocksize(blocksize);
 			
 			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_min(firstPoint);
 			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_x(click.getx());
@@ -315,13 +327,14 @@ void BuildState::mouseUpHandler(int button)
 			rect_element = -1;
          intersection = NOTHING;
 		}
+		MOUSE_DOWN = false;
 	}
 	// ELSE handle camera movement
 	else
 	{
 
 	}
-}
+}*/
 
 // bump up all static_cast<CustomObject*>(objects on top of rect_index
 void BuildState::recursive_bump(int bottom, int delta_height)

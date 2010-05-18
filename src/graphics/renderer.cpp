@@ -18,6 +18,7 @@ Renderer::Renderer()
 void Renderer::init()
 {
   init_lights();
+  gfx::hud.console.registerCmd("matrices", Renderer::outputMatrices);
 }
 
 void Renderer::updateLookat()
@@ -100,6 +101,58 @@ void Renderer::draw()
   glUseProgram( 0 );  
   
   glPopMatrix();
+
+}
+
+void Renderer::outputMatrices(int argc, char* argv[])
+{
+	GLdouble modelview_matrix[16];
+	GLdouble projection_matrix[16];
+
+	glGetDoublev( GL_MODELVIEW_MATRIX, modelview_matrix );
+	glGetDoublev( GL_PROJECTION_MATRIX, projection_matrix );
+int i,j;
+printf("modelview:\n");	
+	for(i = 0; i < 4; i++)
+	{
+		for(j = 0; j < 4; j++)
+		{
+			printf("%f ", modelview_matrix[i * 4 + j]);
+		}		
+		printf("\n");
+	}
+	printf("\nprojection:\n");	
+	for(i = 0; i < 4; i++)
+	{
+		for(j = 0; j < 4; j++)
+		{
+			printf("%f ", projection_matrix[i * 4 + j]);
+		}
+		printf("\n");
+	}
+}
+
+void Renderer::getMatrices(GLdouble **mvMatrix, GLdouble **pMatrix, GLint **vMatrix)
+{
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(global::camera.fov,
+        global::width / (float)global::height,
+        global::camera.near_plane,
+        global::camera.far_plane);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+  // update camera
+  updateLookat();
+
+	//GLdouble modelview_matrix[16];
+	//GLdouble projection_matrix[16];
+
+	glGetDoublev( GL_MODELVIEW_MATRIX, *mvMatrix );
+	glGetDoublev( GL_PROJECTION_MATRIX, *pMatrix );
+	glGetIntegerv( GL_VIEWPORT, *vMatrix );
+
 }
 
 void Renderer::reshape(int w, int h) {

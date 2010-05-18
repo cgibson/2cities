@@ -10,8 +10,8 @@
 #include <stdlib.h>
 
 #include "InGameState.h"
-#include "BuildState.h"
-#include "CarnageState.h"
+//#include "BuildState.h"
+//#include "CarnageState.h"
 #include "Preferences.h"
 #include "../system/enum.h"
 

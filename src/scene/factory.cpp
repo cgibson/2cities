@@ -55,6 +55,10 @@ void ObjectFactory::loadConfig(char* filename)
   tmp = Blueprint(DUMMY_SPHERE, 1.0f, BLUE_MAT, SMALL_SPHERE, Vector(1, 0, 0));
   blueprints[DUMMY_SPHERE] = tmp;
   io::register_key_down(ObjectFactory::makeBlock);
+  
+  // dummy block
+  tmp = Blueprint(CUSTOM_BLOCK, 1.0f, GREEN_MAT, SMALL_CUBE, Vector(1.0f, 1.0f, 1.0f));
+  blueprints[CUSTOM_BLOCK] = tmp;
 }
 
 

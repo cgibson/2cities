@@ -23,10 +23,8 @@ void CustomObject::set_min(Point newmin)
 
 void CustomObject::print_rectangle()
 {
-	printf("---\nmin:\n");
-	min.str();
-	printf("max:\n");
-	max.str();
+	printf("---\nmin: %s\n", min.str());
+	printf("max: %s\n", max.str());
 }
 
 // returns distance from point to plane (specified face)
@@ -284,6 +282,10 @@ void CustomObject::draw_rectangle3D()
 }
 
 void CustomObject::draw() {
+
+   Blueprint blueprint = global::factory->getBlueprint(type);
+
+	gfx::materials[blueprint.getMaterial()].applyMaterial(gfx::cur_shader, "frontMat");
 
 	// IF height = 0, THEN draw square at y = 0
 	if(min.gety() == max.gety())

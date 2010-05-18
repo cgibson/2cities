@@ -12,7 +12,7 @@ void WorldObject::draw() {
 	Quaternion ori = getOrientation();
 	Blueprint blueprint = global::factory->getBlueprint(type);
 
-	gfx::materials[blueprint.getMaterial()].applyMaterial(gfx::cur_shader, "frontMat");
+	gfx::materials[YELLOW_MAT].applyMaterial(gfx::cur_shader, "frontMat");
 	
 	Vector size = blueprint.getSize();
 

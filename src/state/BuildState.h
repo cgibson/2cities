@@ -13,6 +13,7 @@ namespace BuildStateGlobals
 {
 	extern bool DELETE_MODE;
 	extern bool MOUSE_DOWN;
+	extern int LAST_BUTTON;
 	extern int blocksize, rect_element, counter;
 	extern Face intersection;
 	extern Point firstPoint, last, mouse_click;
@@ -29,8 +30,10 @@ class BuildState : public InGameState
        void updateInput(long milli_time);
 
 		static void keyDownHandler(int key, bool special);
-		static void mouseDownHandler(int button);
-		static void mouseUpHandler(int button);
+		static void mouseDownToggle(int button);
+		static void mouseUpToggle(int button);
+
+		void mouseDownHandler();
 
 		void recursive_bump(int bottom, int delta_height);
 		void blockalize_face(int index, Face f, bool pull);
@@ -39,7 +42,7 @@ class BuildState : public InGameState
 		void recursive_push(Face f, int bottom);
 		void adjust_face(int index, Face f, Point mouse_pos, bool block, bool pull);
 		void new_push_pull(Point mouse_pos);
-
+		Point adjustPointForBlocksize(Point click);
 
        virtual enum E_STATE stateType() { return BUILD_STATE; }
 };

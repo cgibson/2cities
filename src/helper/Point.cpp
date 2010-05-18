@@ -12,18 +12,57 @@ Point::Point(GLdouble clicked_x, GLdouble clicked_y)
 	GLint viewport[4];
 	GLdouble modelview_matrix[16];
 	GLdouble projection_matrix[16];
+
+   GLdouble *mvMatrix = (GLdouble*)modelview_matrix;
+   GLdouble *pMatrix = (GLdouble*)projection_matrix;
+   GLint *vMatrix = (GLint*)viewport;
+
 	GLfloat winX, winY, winZ;
 	GLdouble posX, posY, posZ;
 
-	glGetDoublev( GL_MODELVIEW_MATRIX, modelview_matrix );
-	glGetDoublev( GL_PROJECTION_MATRIX, projection_matrix );
-	glGetIntegerv( GL_VIEWPORT, viewport );
+	//glGetDoublev( GL_MODELVIEW_MATRIX, modelview_matrix );
+	//glGetDoublev( GL_PROJECTION_MATRIX, projection_matrix );
+	
+   gfx::renderer.getMatrices(&mvMatrix, &pMatrix, &vMatrix);
+
+   //glGetIntegerv( GL_VIEWPORT, viewport );
 
 	winX = (float)clicked_x;
 	winY = (float)viewport[3] - (float)clicked_y;
 	glReadPixels( clicked_x, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
 
 	gluUnProject( winX, winY, winZ, modelview_matrix, projection_matrix, viewport, &posX, &posY, &posZ);
+	
+	printf("winX = %f, winY = %f, winZ = %f\n", winX, winY, winZ);
+	int i, j;	
+	printf("modelview:\n");	
+	for(i = 0; i < 16; i++)
+	{
+		for(j = 0; j < 4; j++)
+		{
+			printf("%f ", modelview_matrix[i]);
+			i++;		
+		}		
+		printf("\n");
+	}
+	printf("\nprojection:\n");	
+	for(i = 0; i < 16; i++)
+	{
+		for(j = 0; j < 4; j++)
+		{
+			printf("%f ", projection_matrix[i]);
+			i++;		
+		}
+		printf("\n");
+	}
+	printf("\n");
+   printf("viewport:\n");
+   for(j = 0; j < 4; j++)
+	{
+		printf("%d ", viewport[j]);
+		i++;		
+	}	
+   printf("\n");
 
 	p_x = posX;
 	p_y = posY;
@@ -49,6 +88,19 @@ Point::Point()
   p_x = 0;
   p_y = 0;
   p_z = 0;
+}
+
+void Point::adjustPointForBlocksize(int blocksize)
+{
+	// adjust click for blocksize
+	if(p_z < 0)
+		p_z = ( p_z - ((int)p_z % -blocksize) );
+	else
+		p_z = ( p_z - ((int)p_z % blocksize) );			
+	if(p_x < 0)
+		p_x = ( p_x - ((int)p_x % -blocksize) );
+	else
+		p_x = ( p_x - ((int)p_x % blocksize) );
 }
 
 char* Point::str( void ) {

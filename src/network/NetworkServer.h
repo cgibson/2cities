@@ -19,14 +19,6 @@
 using namespace global;
 using namespace enumeration;
 
-#ifndef MAX_SEND_PACKETS_PER_CYCLE
-	#define MAX_SEND_PACKETS_PER_CYCLE 50
-#endif
-
-#ifndef MAX_RECV_PACKETS_PER_CYCLE
-	//#define MAX_RECV_PACKETS_PER_CYCLE 15
-#endif
-
 class NetworkServer : public NetworkSystem {
 protected:
 	Physics physicsEngine;

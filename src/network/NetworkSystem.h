@@ -44,6 +44,9 @@ protected:
 	void updateObjectLocal(WorldObject *obj);
 	void updateObjectVector(vector<WorldObject *> *objVec, WorldObject *objPtr);
 
+	void removeObjectLocal(unsigned int worldObjectID);
+	void removeObjectVector(vector<WorldObject *> *objVec, unsigned int worldObjectID);
+
 	int SendPacket(NetworkPacket  pktPtr, ting::UDPSocket *socket, ting::IPAddress  destIP);
 	int RecvPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ting::IPAddress *srcIP);
 

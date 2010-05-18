@@ -60,7 +60,7 @@ void NetworkManager::consoleCmds(int argc, char *argv[]) {
 #ifdef CLIENT
 	if(!strcmp(argv[0],"loadlevel") || !strcmp(argv[0],"ll")) {
 		if (argc != 2) {
-			gfx::hud.console.error("Usage: %s <level> (default: resource/test2.lvl)... Loading Default", argv[0]);
+			gfx::hud.console.info("Usage: %s <level>. Loading Default: resource/test2.lvl", argv[0]);
 			networkManager->network->loadLevel("resources/test2.lvl");
 		}
 		else {
@@ -91,15 +91,9 @@ void NetworkManager::consoleCmds(int argc, char *argv[]) {
 		return;
 	}
 
-	// TODO DEBUG REMOVE
-	if(!strcmp(argv[0],"cl")) {
-		networkManager->network->connectServer("127.0.0.1", 5060);
-		return;
-	}
-
-	if(!strcmp(argv[0],"connect")) {
+	if(!strcmp(argv[0],"connect") || !strcmp(argv[0],"cl")) {
 		int results = 0;
-		if (!strcmp(argv[1],"local")) {
+		if (!strcmp(argv[1],"local") || !strcmp(argv[0],"cl")) {
 			results = networkManager->network->connectServer("127.0.0.1", 5060);
 		}
 		else if (argc != 3) {

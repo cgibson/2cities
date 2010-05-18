@@ -15,7 +15,7 @@
 #include "../helper/Vector.h"
 
 #define ANGLE_SPEED 2
-#define MOUSE_SPEED 1
+#define MOUSE_SPEED 0.75f
 #define DIST_SPEED 10
 #define PI 3.1415
 #define DIST 30
@@ -50,6 +50,17 @@ void CarnageState::update(long milli_time) {
 
 void CarnageState::updateInput(long milli_time) {
 #ifdef CLIENT
+   // TODO REMOVE DEMO CODE
+   if(io::keys['1']) {
+	  io::keys['1'] = false;
+      networkManager->network->loadLevel("resources/2base.lvl");
+   }
+   if(io::keys['2']) {
+	  io::keys['2'] = false;
+      networkManager->network->loadLevel("resources/test2.lvl");
+   }
+   // TODO END DEMO CODE
+
    // General Keyboard Layout
    if(io::keys[27]) {
       exit(0);
@@ -72,7 +83,7 @@ void CarnageState::updateInput(long milli_time) {
    }
    if(deltaLocTurn || deltaLocTilt) {
 	   camera.phiMaxAngle = M_PI-0.2;
-	   camera.phiMinAngle = 0.0f;
+	   camera.phiMinAngle = 0.15f;
 	   camera.eye = camera.orbitNode(Vector(0,0,0), camera.eye, deltaLocTurn, deltaLocTilt);
    }
 
@@ -114,7 +125,7 @@ void CarnageState::updateInput(long milli_time) {
 	  // uniqueID creation & addObject(WorldObject)
 	  static int newObjID = 10000;
 	  WorldObject newObj = WorldObject(newObjID++,0,enumeration::DUMMY_SPHERE);
-	  newObj.setPosition(camera.eye);
+	  newObj.setPosition(camera.eye - Vector( 0.0f, 1.0f, 0.0f));
 	  newObj.setVelocity(dir * 50);
 	  networkManager->network->addObject(newObj);
 

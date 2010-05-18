@@ -49,6 +49,30 @@ void NetworkSystem::updatePktData(long elapsed) {
 	}
 }
 
+/* Method to take a WorldObject* and update/add it to the main vector (based on ID field)
+ *
+ * Passed Object Pointer must remain alive past function call and shouldn't be deleted
+ * until object in later updates OR gameState changes.
+ *
+ * NOTE: Currently implementation is VERY inefficient **
+ * TODO Improve efficiency
+ */
+void NetworkSystem::removeObjectVector(vector<WorldObject *> *objVec, unsigned int worldObjectID) {
+	int i=0;
+	// Find Location in main Object vector
+	while (i < objVec->size() && (*objVec)[i]->getID() != worldObjectID) { i++; }
+
+	// if found, erase entry
+	if (i < objVec->size()) {
+		objVec->erase(objVec->begin()+i);
+	}
+}
+
+void NetworkSystem::removeObjectLocal(unsigned int worldObjectID) {
+	std::vector<WorldObject *> *currObjects = &(global::stateManager->currentState->objects);
+	removeObjectVector(currObjects, worldObjectID);
+}
+
 /* Creates Buffer required for send, sends packet, and cleans up
  */
 int NetworkSystem::SendPacket(NetworkPacket  pkt, ting::UDPSocket *socket, ting::IPAddress  destIP_P) {

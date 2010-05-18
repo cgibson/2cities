@@ -64,13 +64,15 @@ bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 }
 
 void NetworkClient::disconnectServer() {
-	unsigned char msg[] = "";
-	NetworkPacket pkt(DISCONNECT, msg, sizeof(msg));
-	printf("Disconnecting!");
-	SendPacket(pkt, &socket, serverIP);
+	if(isConnected) {
+		unsigned char msg[] = "";
+		NetworkPacket pkt(DISCONNECT, msg, sizeof(msg));
+		printf("Disconnecting!");
+		SendPacket(pkt, &socket, serverIP);
 
-	socket.Close();
-	isConnected = false;
+		socket.Close();
+		isConnected = false;
+	}
 }
 
 void NetworkClient::update(long milli_time) {
@@ -81,29 +83,33 @@ void NetworkClient::update(long milli_time) {
 	int pktsRecv = 0;
 
 	// Check for Waiting Network Data
-	while(isConnected && waitSet->WaitWithTimeout(0) && pktsRecv < MAX_RECV_PACKETS_PER_CYCLE) {
+	while(isConnected && waitSet->WaitWithTimeout(0) && pktsRecv < SERVER_RECV_MAX_PACKETS_PER_CYCLE) {
 		RecvPacket(&pkt, &socket, &sourceIP);
-		if(pkt.header.type == OBJECT_SEND) {
-			updateObjectLocal(new WorldObject(*(WorldObject*)(pkt.data)));
-		}
 		if(pkt.header.type == OBJECT_BATCHSEND) {
-			WorldObject objBatch[10];
-			int objBatchSize = readBatchPacket(&pkt, objBatch, 10);
+			WorldObject objBatch[OBJECT_BATCHSEND_SIZE];
+			int objBatchSize = readBatchPacket(&pkt, objBatch, (int)OBJECT_BATCHSEND_SIZE);
 			for(int i=0; i<objBatchSize; i++)
 				updateObjectLocal(new WorldObject(objBatch[i]));
+		}
+		else if(pkt.header.type == OBJECT_KILL) {
+			removeObjectLocal(*(unsigned int*)(pkt.data));
+		}
+		else if(pkt.header.type == OBJECT_SEND) {
+			updateObjectLocal(new WorldObject(*(WorldObject*)(pkt.data)));
 		}
 		else {
 			printf("Received an unknown packet type!\n");
 		}
 		pktsRecv++;
 	}
-//	printf("Received %i packets\n", pktsRecv);
 }
 
 void NetworkClient::sendMsg(char * msgStr) {
-	NetworkPacket tmpPkt(TEXT_MSG, (unsigned char *)msgStr, strlen(msgStr)+1);
-	SendPacket(tmpPkt, &socket, serverIP);
-	printf("Sent TextMsg.\n");
+	if(isConnected) {
+		NetworkPacket tmpPkt(TEXT_MSG, (unsigned char *)msgStr, strlen(msgStr)+1);
+		SendPacket(tmpPkt, &socket, serverIP);
+		printf("Sent TextMsg.\n");
+	}
 }
 
 void NetworkClient::addObject(WorldObject newObj) {
@@ -120,10 +126,12 @@ void NetworkClient::addObject(WorldObject newObj) {
 }
 
 void NetworkClient::loadLevel(const char * file) {
-	// Clear GameState objects
-	global::stateManager->currentState->objects.clear();
+	if(isConnected) {
+		// Clear GameState objects
+		global::stateManager->currentState->objects.clear();
 
-	NetworkPacket tmpPkt(LEVEL_LOAD, (unsigned char *)file, strlen(file)+1);
-	SendPacket(tmpPkt, &socket, serverIP);
-	printf("Sent LoadLevel Request.\n");
+		NetworkPacket tmpPkt(LEVEL_LOAD, (unsigned char *)file, strlen(file)+1);
+		SendPacket(tmpPkt, &socket, serverIP);
+		printf("Sent LoadLevel Request.\n");
+	}
 }

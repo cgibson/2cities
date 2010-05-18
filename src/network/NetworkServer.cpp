@@ -134,7 +134,7 @@ void NetworkServer::networkOutgoing() {
 	try {
 		// Send up to MAX_PACKETS_PER_CYCLE Packets
 		const int objsSize = _serverObjs.size();
-		const int sendSize = min(MAX_SEND_PACKETS_PER_CYCLE*10, objsSize);
+		const int sendSize = min(objsSize, (int)(SERVER_SEND_MAX_PACKETS_PER_CYCLE * OBJECT_BATCHSEND_SIZE));
 		if (sendSize > 0 && (_players.size() > 0 || _dedicatedServer == false)) {
 			int currObj = _sendObjNext;
 			while(currObj < _sendObjNext + sendSize) {
@@ -143,17 +143,17 @@ void NetworkServer::networkOutgoing() {
 					updateObjectLocal(new WorldObject(*_serverObjs[(currObj+o)%objsSize]));
 
 				// Build Batch Packet
-				WorldObject objGroup[10];
-				for(int o=0; o<10; o++)
+				WorldObject objGroup[OBJECT_BATCHSEND_SIZE];
+				for(int o=0; o<OBJECT_BATCHSEND_SIZE; o++)
 					objGroup[o] = *_serverObjs[(currObj+o)%objsSize];
 				NetworkPacket pkt;
-				buildBatchPacket(&pkt, objGroup, 10);
+				buildBatchPacket(&pkt, objGroup, OBJECT_BATCHSEND_SIZE);
 
 				// Send to each _players
 				for(int p=0; p<_players.size(); p++) {
 					SendPacket(pkt, &(_players[p]->socket), _players[p]->ip);
 				}
-				currObj += 10;
+				currObj += OBJECT_BATCHSEND_SIZE;
 			}
 
 			if(objsSize == 0)
@@ -172,17 +172,32 @@ void NetworkServer::update(long milli_time) {
 	// Update Physics Engine
 	static int physicsDelay = 0;
 	if(physicsDelay <= 0) {
-		physicsEngine.update(20 - physicsDelay);
-		physicsDelay = 20;
+		physicsEngine.update(SERVER_PHYSICS_UPDATE_RATE - physicsDelay);
+		physicsDelay = SERVER_PHYSICS_UPDATE_RATE;
 	}
 	else {
 		physicsDelay -= milli_time;
 	}
 
-	// UPDATE LOCAL DATA
+	// UPDATE LOCAL DATA (and remove items fallen off world)
 	std::vector<WorldObject> PhysEngObjs = physicsEngine.getWorldObjects();
 	for(int i=0; i < PhysEngObjs.size(); i++) {
-		updateObjectVector(&_serverObjs,new WorldObject(PhysEngObjs[i]));
+		if(PhysEngObjs[i].getPosition().y() < 0) {
+			unsigned int removeID = PhysEngObjs[i].getID();
+			// Local Removal
+			physicsEngine.removeWorldObject(removeID);
+			removeObjectVector(&_serverObjs,removeID);
+			removeObjectLocal(removeID);
+
+			// Send to Clients
+			NetworkPacket pkt(OBJECT_KILL, (unsigned char *)&removeID, sizeof(unsigned int));
+			for(int p=0; p<_players.size(); p++) {
+				SendPacket(pkt, &(_players[p]->socket), _players[p]->ip);
+			}
+		}
+		else {
+			updateObjectVector(&_serverObjs,new WorldObject(PhysEngObjs[i]));
+		}
 	}
 
 	// TODO UPDATE DELTAs

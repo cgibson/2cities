@@ -60,8 +60,8 @@ void NetworkManager::consoleCmds(int argc, char *argv[]) {
 #ifdef CLIENT
 	if(!strcmp(argv[0],"loadlevel") || !strcmp(argv[0],"ll")) {
 		if (argc != 2) {
-			gfx::hud.console.error("Usage: %s <level> (default: resource/tier.lvl)... Loading Default", argv[0]);
-			networkManager->network->loadLevel("resources/tier.lvl");
+			gfx::hud.console.error("Usage: %s <level> (default: resource/test2.lvl)... Loading Default", argv[0]);
+			networkManager->network->loadLevel("resources/test2.lvl");
 		}
 		else {
 			networkManager->network->loadLevel(argv[1]);

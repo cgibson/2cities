@@ -9,15 +9,17 @@
 
 using namespace enumeration;
 
-class BuildState: public InGameState
+namespace BuildStateGlobals
 {
-	// global variables
-	bool DELETE_MODE;
-	bool MOUSE_DOWN;
-	int blocksize;
-	int rect_element;
-	Face intersection;
-    
+	extern bool DELETE_MODE;
+	extern bool MOUSE_DOWN;
+	extern int blocksize, rect_element, counter;
+	extern Face intersection;
+	extern Point firstPoint, last, mouse_click;
+}
+
+class BuildState : public InGameState
+{
 	public:
 	   BuildState();
        virtual ~BuildState();
@@ -25,9 +27,10 @@ class BuildState: public InGameState
        void initialize();
        void update(long milli_time);
        void updateInput(long milli_time);
-		 void handleMouseInput();
-		 void handleKeyInput();
-       //void updateCamera();
+
+		static void keyDownHandler(int key, bool special);
+		static void mouseDownHandler(int button);
+		static void mouseUpHandler(int button);
 
 		void recursive_bump(int bottom, int delta_height);
 		void blockalize_face(int index, Face f, bool pull);

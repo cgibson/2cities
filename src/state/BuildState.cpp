@@ -17,6 +17,15 @@
 #include "../graphics/graphics.h"
 #include "../scene/CustomObject.h"
 
+namespace BuildStateGlobals
+{
+	bool DELETE_MODE;
+	bool MOUSE_DOWN;
+	int blocksize, rect_element, counter;
+	Face intersection;
+	Point firstPoint, last, mouse_click;
+}
+
 #define ANGLE_SPEED 2
 #define MOUSE_SPEED 1
 #define STRAFE_SPEED 20
@@ -25,12 +34,34 @@
 
 using namespace io;
 using namespace global;
+using namespace BuildStateGlobals;
 
 BuildState::BuildState() {
    initialize();
 }
 
 BuildState::~BuildState() {}
+
+void BuildState::initialize() {
+	DELETE_MODE = false;
+	MOUSE_DOWN = false;
+    // i/o initializtion not done in the state
+    // anymore, it's done globally at app launch
+    // we just capture the mouse
+    //io::capture_mouse();
+   io::release_mouse();
+   camera.eye = Vector( 0.0f, 30.0f, 30.0f);
+   camera.lookAt = Vector( 0.0f, 0.0f, 0.0f);
+
+	io::register_mouse_down(BuildState::mouseDownHandler);
+	io::register_mouse_up(BuildState::mouseUpHandler);
+	io::register_key_down(BuildState::keyDownHandler);
+
+	// make a simple CustomObject and add it to static_cast<CustomObject*>(objects vector
+	// (unsigned int newid, unsigned int newplayerid, ObjectType newtype, Point newmax, Point newmin)
+	//CustomObject co = new CustomObject(0, 0, CUSTOM_BLOCK, Point(25, 0, 25), Point(-25, 25, -25));
+	objects.push_back(new CustomObject(0, 0, CUSTOM_BLOCK, Point(25, 0, 25), Point(-25, 25, -25)));
+}
 
 void BuildState::update(long milli_time) {
    updateInput(milli_time);
@@ -43,10 +74,13 @@ void BuildState::updateInput(long milli_time) {
 	}
 
    if(io::keys['f']) {
-	   if (io::captured) {
-		   io::release_mouse();
-	   } else {
-		   io::capture_mouse();
+	   if (io::captured)
+		{
+			io::release_mouse();
+	   }
+		else
+		{
+			io::capture_mouse();
 	   }
    }
 
@@ -108,19 +142,185 @@ void BuildState::updateInput(long milli_time) {
 
 }
 
-void BuildState::initialize() {
-    // i/o initializtion not done in the state
-    // anymore, it's done globally at app launch
-    // we just capture the mouse
-    //io::capture_mouse();
-   io::release_mouse();
-   camera.eye = Vector( 0.0f, 30.0f, 30.0f);
-   camera.lookAt = Vector( 0.0f, 0.0f, 0.0f);
+void BuildState::keyDownHandler(int key, bool special)
+{
+	/*// General Keyboard Layout
+	if(key == 27) {
+		exit(0);
+	}
 
-	// make a simple CustomObject and add it to static_cast<CustomObject*>(objects vector
-	// (unsigned int newid, unsigned int newplayerid, ObjectType newtype, Point newmax, Point newmin)
-	//CustomObject co = new CustomObject(0, 0, DUMMY_BLOCK, );
-	//static_cast<CustomObject*>(objects.push_back(new );
+   if(key == 'f') {
+	   if (io::captured) {
+		   io::release_mouse();
+	   } else {
+		   io::capture_mouse();
+	   }
+   }
+
+   // Strafe Controls
+   float deltaFwd  = 0;
+   float deltaSide = 0;
+   float deltaUp   = 0;
+   if(key == 'w') {
+	   deltaFwd += STRAFE_SPEED * (milli_time / 1000.0f);
+   }
+   if(key == 's') {
+	   deltaFwd -= STRAFE_SPEED * (milli_time / 1000.0f);
+   }
+   if(key == 'a') {
+	   deltaSide += STRAFE_SPEED * (milli_time / 1000.0f);
+   }
+   if(key == 'd') {
+	   deltaSide -= STRAFE_SPEED * (milli_time / 1000.0f);
+   }
+   if(key == ' ') {
+	   deltaUp += STRAFE_SPEED * (milli_time / 1000.0f);
+   }
+   if(key == 'c') {
+	   deltaUp -= STRAFE_SPEED * (milli_time / 1000.0f);
+   }
+   if(deltaFwd || deltaSide || deltaUp) {
+	   camera.strafe(deltaFwd, deltaSide, deltaUp);
+   }
+
+   // Freelook Controls
+   float deltaCamTilt = 0;
+   float deltaCamTurn = 0;
+
+	// only update the view if the mouse is captured
+	if (io::captured)
+	{
+		deltaCamTurn =  io::mouse_x * MOUSE_SPEED * (milli_time / 1000.0f);
+		deltaCamTilt = -io::mouse_y * MOUSE_SPEED * (milli_time / 1000.0f);
+	}
+   if(io::special_keys[GLUT_KEY_UP]) {
+	   deltaCamTilt += ANGLE_SPEED * (milli_time / 1000.0f);
+   }
+   if(io::special_keys[GLUT_KEY_DOWN]) {
+	   deltaCamTilt -= ANGLE_SPEED * (milli_time / 1000.0f);
+   }
+   if(io::special_keys[GLUT_KEY_LEFT]) {
+	   deltaCamTurn -= ANGLE_SPEED * (milli_time / 1000.0f);
+   }
+   if(io::special_keys[GLUT_KEY_RIGHT]) {
+	   deltaCamTurn += ANGLE_SPEED * (milli_time / 1000.0f);
+   }
+   if(deltaCamTurn || deltaCamTilt) {
+	   //printf("deltaCamTurn=%4.6f deltaCamTilt=%4.6f\n", deltaCamTurn, deltaCamTilt);
+	   camera.inverted = 1;
+	   camera.phiMaxAngle = M_PI;
+	   camera.phiMinAngle =-M_PI;
+	   camera.rotateView(deltaCamTurn, deltaCamTilt);
+   }*/
+}
+
+void BuildState::mouseDownHandler(int button)
+{
+	InGameState *currState = global::stateManager->currentState;
+
+	// IF frist click
+	if(!MOUSE_DOWN)
+	{
+		// draw 2D rectangle ground surface or top of existing building
+		if(button == GLUT_RIGHT_BUTTON)
+		{
+			firstPoint.setx(io::mouse_x);
+			firstPoint.sety(io::mouse_y);
+		}
+		// push / pull rectangles
+		else if(button == GLUT_LEFT_BUTTON)
+		{
+			Point click;
+			click.set(Point(io::mouse_x, io::mouse_y));
+         Face temp_face;
+			// IF point is inside of a rectangle
+			for(int i = 0; i < currState->objects.size(); i++)
+			{
+            // always take the rectangle with the higher min(it's the TOP one)
+            temp_face = static_cast<CustomObject*>(currState->objects[i])->check_click(click);
+            if(temp_face != NOTHING)
+            {
+					// IF there isn't a different potential face
+					if(intersection == NOTHING)
+               {
+                  intersection = temp_face;
+                  rect_element = i;
+               }   
+               // IF old face has a smaller min.y change rect_element
+               else if(static_cast<CustomObject*>(currState->objects[rect_element])->get_min_y() < static_cast<CustomObject*>(currState->objects[i])->get_min_y())
+                  rect_element = i;
+            }
+			}
+			BuildStateGlobals::mouse_click.set(click);
+			last.setx(io::mouse_x);
+			last.sety(io::mouse_y);
+
+         // IF in DELETE_MODE
+         if(DELETE_MODE)
+         {
+            if(rect_element != -1)
+            {
+               // ERASE element rect_element
+               currState->objects.erase( currState->objects.begin() + rect_element);
+            }
+         }
+		}
+	}
+	// ELSE handle camera movement
+	else
+	{
+
+	}
+}
+
+void BuildState::mouseUpHandler(int button)
+{
+	InGameState *currState = global::stateManager->currentState;
+	// IF frist registered up (after a click)
+	if(MOUSE_DOWN)
+	{
+		// draw 2D rectangle ground surface or top of existing building
+		if(button == GLUT_RIGHT_BUTTON)
+		{
+			Point click;
+			click.set(Point(io::mouse_x, io::mouse_y));
+			// adjust click for blocksize
+			if(click.getz() < 0)
+				click.setz( click.getz() - ((int)click.getz() % -blocksize) );
+			else
+				click.setz( click.getz() - ((int)click.getz() % blocksize) );			
+			if(click.getx() < 0)
+				click.setx( click.getx() - ((int)click.getx() % -blocksize) );
+			else
+				click.setx( click.getx() - ((int)click.getx() % blocksize) );
+			
+			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_min(firstPoint);
+			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_x(click.getx());
+			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_z(click.getz());
+			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_y(static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->get_min_y());
+			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->adjust_bases();
+
+			firstPoint.setx(-1);
+			firstPoint.sety(-1);
+			counter = 0;
+
+			if(currState->objects.size() != 0)
+				static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->print_rectangle();
+		}
+		// push / pull rectangles
+		else if(button == GLUT_LEFT_BUTTON)
+		{
+			if(rect_element != -1)			
+				static_cast<CustomObject*>(currState->objects[rect_element])->print_rectangle();			
+			rect_element = -1;
+         intersection = NOTHING;
+		}
+	}
+	// ELSE handle camera movement
+	else
+	{
+
+	}
 }
 
 // bump up all static_cast<CustomObject*>(objects on top of rect_index

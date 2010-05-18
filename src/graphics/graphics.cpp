@@ -13,6 +13,7 @@ namespace gfx{
   Material* materials;
   
   GLint shSimple;
+  GLint shForceBlock;
   
   GLint cur_shader;
   
@@ -51,7 +52,7 @@ namespace gfx{
     GLfloat shininess[1];
     
     ambient[0] = 0.1; ambient[1] = 0.1; ambient[2] = 0.1; ambient[3] = 1.0;
-    diffuse[0] = 0.9; diffuse[1] = 0.9; diffuse[2] = 0.9; diffuse[3] = 1.0;
+    diffuse[0] = 0.4; diffuse[1] = 0.4; diffuse[2] = 0.4; diffuse[3] = 1.0;
     specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
     shininess[0] = 100.0;
     materials[WHITE_MAT] = Material(ambient, diffuse, specular, shininess);
@@ -109,6 +110,7 @@ namespace gfx{
     bool success = true;
     getGLversion();
     success &= installShader( "resources/shaders/simpleShade", &shSimple );
+    success &= installShader( "resources/shaders/forceblock", &shForceBlock );
     
     if(!success)
     {

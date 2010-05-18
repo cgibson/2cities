@@ -83,12 +83,15 @@ void Renderer::draw()
 
   //TODO: Remove END
   
+  
+  int loc;
   InGameState *curstate = global::stateManager->currentState;
   
   if(curstate->objects.size() > 0)
   {
 	  ObjectType lastType, curType;
-	  curType = lastType = curstate->objects[0]->getType();
+	  lastType = WARPED_CUBE;
+	  curType = curstate->objects[0]->getType();
 	  Blueprint blueprint = global::factory->getBlueprint(curType);	
 	  Material curMat = gfx::materials[blueprint.getMaterial()];
 	  
@@ -99,12 +102,33 @@ void Renderer::draw()
 		curType = curstate->objects[i]->getType();
 		if(curType != lastType)
 		{
+			switch(curType)
+			{
+				case DUMMY_BLOCK:
+					gfx::useShader(gfx::shForceBlock);
+					
+					break;
+				case DUMMY_SPHERE:
+				default:
+					gfx::useShader(gfx::shSimple);
+					break;
+			}
 			//printf("DIFFERENCE!\n");
 			lastType = curType;
 			blueprint = global::factory->getBlueprint(curType);	
 			curMat = gfx::materials[blueprint.getMaterial()];
 			curMat.applyMaterial(gfx::cur_shader, ""); 
 		}
+		loc = glGetUniformLocation(gfx::shForceBlock, "force");
+		Vector force = curstate->objects[i]->getForce();
+		float forceResult = force.x() * 40.0f;
+		float strength = force.y() * 2.0;
+		//printf("strength: %f\n", strength);
+		glUniform1f(loc, forceResult);
+		loc = glGetUniformLocation(gfx::shForceBlock, "edge_strength");
+		glUniform1f(loc, 0.2 + strength);
+		
+		
 		curstate->objects[i]->draw();
 	  }
 	}

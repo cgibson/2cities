@@ -21,7 +21,7 @@ namespace global
   
   Camera camera;
   
-  float fill_color[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+  float fill_color[4] = {0.05f, 0.05f, 0.05f, 0.05f};
 
   int fps;
   int pbs_recv;

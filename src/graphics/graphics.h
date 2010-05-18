@@ -29,6 +29,7 @@ namespace gfx{
   extern Material* materials;
   
   extern GLint shSimple;          // simple shader
+  extern GLint shForceBlock;
   
   extern bool draw_wireframe;
   

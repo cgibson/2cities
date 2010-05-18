@@ -35,7 +35,7 @@ bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 
 	// Wait for reply response for 1.5 second (1500 ms)
 	if(!waitSet->WaitWithTimeout(1500)) {
-		printf("...Connection Timed Out!\n");
+		printf("Connection Timed Out!\n");
 		isConnected = false;
 		socket.Close();
 		return false;
@@ -49,12 +49,13 @@ bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 			serverIP.port = sourceIP.port;
 			_playerID = *(int*)(pkt.data);
 			_currObjID = _playerID * 10000;
-			printf("...Connected as Player %i!\n", _playerID);
+
+			printf("Connected as Player %i!\n", _playerID);
 			isConnected = true;
 			return true;
 		}
 		else {
-			printf("... Connection Issue!\n");
+			printf("Connection Issue!\n");
 			isConnected = false;
 			socket.Close();
 			return false;

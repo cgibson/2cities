@@ -47,7 +47,11 @@ public:
 	int getPlayerID() { return _playerID; };
 
 	virtual bool connectServer(const char * ip, unsigned int port) { return false; };
-	virtual void disconnectServer() { };
+	virtual void disconnectServer() {};
+
+	virtual void dedicatedServer(bool toggle) {};
+	virtual bool dedicatedServer(void) { return false; };
+
 	virtual void sendMsg(char * msgStr) {};
 
 	// Add new object to scene

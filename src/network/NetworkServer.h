@@ -42,6 +42,11 @@ protected:
 	unsigned int _sendObjNext;
 	unsigned int _playerIDNext;
 
+	void networkIncoming();
+	void networkIncomingGeneral();
+	void networkIncomingPlayers(int p);
+	void networkOutgoing();
+
 public:
 	NetworkServer();
 	~NetworkServer();

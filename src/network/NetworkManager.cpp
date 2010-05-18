@@ -28,7 +28,10 @@ void NetworkManager::initialize() {
 	gfx::hud.console.registerCmd("msg", NetworkManager::consoleCmds);
 	gfx::hud.console.registerCmd("disconnect", NetworkManager::consoleCmds);
 	gfx::hud.console.registerCmd("loadlevel", NetworkManager::consoleCmds);
-	gfx::hud.console.registerCmd("cl", NetworkManager::consoleCmds); // TODO DEBUG REMOVE
+
+	// TODO DEBUG REMOVE SHORTCUTS
+	gfx::hud.console.registerCmd("ll", NetworkManager::consoleCmds);
+	gfx::hud.console.registerCmd("cl", NetworkManager::consoleCmds);
 #endif
 }
 
@@ -55,12 +58,7 @@ void NetworkManager::changeNetworkInterface(E_NetworkInterface networkType) {
 
 void NetworkManager::consoleCmds(int argc, char *argv[]) {
 #ifdef CLIENT
-	// TODO DEBUG REMOVE
-	if(!strcmp(argv[0],"cl")) {
-		networkManager->network->connectServer("127.0.0.1", 5060);
-	}
-
-	if(!strcmp(argv[0],"loadlevel")) {
+	if(!strcmp(argv[0],"loadlevel") || !strcmp(argv[0],"ll")) {
 		if (argc != 2) {
 			gfx::hud.console.error("Usage: %s <level> (default: resource/test.lvl)... Loading Default", argv[0]);
 			networkManager->network->loadLevel("resources/test.lvl");
@@ -73,23 +71,30 @@ void NetworkManager::consoleCmds(int argc, char *argv[]) {
 	if(!strcmp(argv[0],"msg")) {
 		int totalSize = 0;
 		for(int i=1;i<argc;i++)
-			totalSize += strlen(argv[i]) + 1;
+			totalSize += strlen(argv[i]) + 1; // +1 for space and later \0
 
 		char msg[totalSize+1];
 		int currPos = 0;
 		for(int i=1;i<argc;i++) {
 			strcpy(msg+currPos, argv[i]);
 			currPos += strlen(argv[i]);
-			msg[currPos] = ' ';
-			currPos++;
+			msg[currPos++] = ' ';
 		}
 		msg[currPos-1] = '\0';
 		printf("Sent> '%s'\n",msg);
 		networkManager->network->sendMsg(msg);
+		return;
 	}
 
 	if(!strcmp(argv[0],"disconnect")) {
+		networkManager->network->disconnectServer();
+		return;
+	}
 
+	// TODO DEBUG REMOVE
+	if(!strcmp(argv[0],"cl")) {
+		networkManager->network->connectServer("127.0.0.1", 5060);
+		return;
 	}
 
 	if(!strcmp(argv[0],"connect")) {

@@ -32,88 +32,106 @@ NetworkServer::~NetworkServer() {
 
 void NetworkServer::initialize() {}
 
-void NetworkServer::update(long milli_time) {
-	// Update Physics Engine
-	physicsEngine.update(milli_time);
-
-	// UPDATE LOCAL DATA
-	std::vector<WorldObject> PhysEngObjs = physicsEngine.getWorldObjects();
-	for(int i=0; i < PhysEngObjs.size(); i++) {
-		updateObjectVector(&_serverObjs,new WorldObject(PhysEngObjs[i]));
-	}
-
-	// TODO UPDATE DELTAs
-
-	// Incoming Network Section
+void NetworkServer::networkIncoming() {
 	try {
 		ting::IPAddress ip;
 		NetworkPacket pkt;
 
 		// Check for incoming items
 		if(_waitSet->WaitWithTimeout(0)) {
-			printf("-> Packet waiting on a socket!\n");
-
 			if(_incomingSock.CanRead()) {
-				RecvPacket(&pkt, &_incomingSock, &ip);
-
-				if(pkt.header.type == Network::CONN_REQ) {
-					printf("Client is requesting to connect!\n");
-
-					// Create new player and add to players
-					Player *currPlayer = new Player;
-					currPlayer->ID = _playerIDNext++;
-					_players.push_back(currPlayer);
-
-					// Add Socket/IP to currPlayer
-					currPlayer->socket.Open();
-					currPlayer->ip = ting::IPAddress(ip.host, ip.port);
-					currPlayer->ip.host = 16777343;	// TODO Remove Local Host
-
-					// Add Socket to _waitSet
-					_waitSet->Add(&(currPlayer->socket), ting::Waitable::READ);
-
-					// Send reply so they have new UDP port
-					int msg = currPlayer->ID;
-
-					printf("Sending Connection Reply...\n");
-					NetworkPacket tmpPkt(CONN_REPLY, (unsigned char*)&msg, sizeof(int));
-					SendPacket(tmpPkt, &(currPlayer->socket), currPlayer->ip);
-				}
-				else {
-					printf("Received an unexpected packet on the server!");
-				}
+				networkIncomingGeneral();
 			}
 
-			// check each _players[i]->socket->CanRead();
+			// Check each player socket for data (allows up to 10 packets to be accepted)
 			for(int p=0; p<_players.size(); p++) {
 				int pktsRecv = 0;
 				while (_players[p]->socket.CanRead() && pktsRecv++ < 10) {
-					RecvPacket(&pkt, &(_players[p]->socket), &ip);
-					if(pkt.header.type == OBJECT_SEND) {
-						addObjectPhys(*(WorldObject*)(pkt.data));
-					}
-					else if (pkt.header.type == DISCONNECT) {
-						printf("Player #%i is Disconnecting!\n", _players[p]->ID);
-						_players.erase(_players.begin()+p);
-						exit(1);
-					}
-					else if (pkt.header.type == LEVEL_LOAD) {
-						printf("LEVEL_LOAD: %s\n", (char *)pkt.data);
-						loadLevel((char *)pkt.data);
-					}
-					else if (pkt.header.type == TEXT_MSG) {
-						printf("MSG: %s\n", (char *)pkt.data);
-					}
-					else {
-						printf("Received an unknown packet type!\n");
-					}
+					networkIncomingPlayers(p);
 				}
 			}
 		}
 	} catch(ting::Socket::Exc &e) {
 		std::cout << "Network error: " << e.What() << std::endl;
 	}
+}
 
+void NetworkServer::networkIncomingGeneral() {
+	try {
+		ting::IPAddress ip;
+		NetworkPacket pkt;
+
+		RecvPacket(&pkt, &_incomingSock, &ip);
+
+		if(pkt.header.type == Network::CONN_REQ) {
+			printf("Client is requesting to connect!\n");
+
+			// Create new player and add to players
+			Player *currPlayer = new Player;
+			currPlayer->ID = _playerIDNext++;
+			_players.push_back(currPlayer);
+
+			// Add Socket/IP to currPlayer
+			currPlayer->socket.Open();
+			currPlayer->ip = ting::IPAddress(ip.host, ip.port);
+			currPlayer->ip.host = 16777343;	// TODO Remove Local Host
+
+			// Add Socket to _waitSet
+			_waitSet->Add(&(currPlayer->socket), ting::Waitable::READ);
+
+			// Send reply so they have new UDP port
+			int msg = currPlayer->ID;
+
+			printf("Sending Connection Reply...\n");
+			NetworkPacket tmpPkt(CONN_REPLY, (unsigned char*)&msg, sizeof(int));
+			SendPacket(tmpPkt, &(currPlayer->socket), currPlayer->ip);
+		}
+		else {
+			printf("Received an unexpected packet on the server!");
+		}
+	} catch(ting::Socket::Exc &e) {
+		std::cout << "Network error: " << e.What() << std::endl;
+	}
+}
+
+void NetworkServer::networkIncomingPlayers(int p) {
+	try {
+		ting::IPAddress ip;
+		NetworkPacket pkt;
+		RecvPacket(&pkt, &(_players[p]->socket), &ip);
+
+		switch (pkt.header.type) {
+		case OBJECT_SEND :
+			addObjectPhys(*(WorldObject*)(pkt.data));
+			break;
+		case STATUS_CHG :
+			printf("STATUS_CHG\n");
+			break;
+		case DISCONNECT :
+			printf("Player #%i is Disconnecting!\n", _players[p]->ID);
+			_waitSet->Remove(&_players[p]->socket);
+			_players[p]->socket.Close();
+			_players.erase(_players.begin()+p);
+			exit(1);
+			break;
+		case LEVEL_LOAD :
+			printf("LEVEL_LOAD: %s\n", (char *)pkt.data);
+			loadLevel((char *)pkt.data);
+			break;
+		case TEXT_MSG :
+			printf("MSG: %s\n", (char *)pkt.data);
+			break;
+		case UNKNOWN :
+		default :
+			printf("No Rule for Packet Received!\n");
+			break;
+		}
+	} catch(ting::Socket::Exc &e) {
+		std::cout << "Network error: " << e.What() << std::endl;
+	}
+}
+
+void NetworkServer::networkOutgoing() {
 	// Outgoing Network Section
 	try {
 		// Send up to MAX_PACKETS_PER_CYCLE Packets
@@ -140,7 +158,22 @@ void NetworkServer::update(long milli_time) {
 	} catch(ting::Socket::Exc &e){
 		std::cout << "Network error: " << e.What() << std::endl;
 	}
+}
 
+void NetworkServer::update(long milli_time) {
+	// Update Physics Engine
+	physicsEngine.update(milli_time);
+
+	// UPDATE LOCAL DATA
+	std::vector<WorldObject> PhysEngObjs = physicsEngine.getWorldObjects();
+	for(int i=0; i < PhysEngObjs.size(); i++) {
+		updateObjectVector(&_serverObjs,new WorldObject(PhysEngObjs[i]));
+	}
+
+	// TODO UPDATE DELTAs
+
+	networkIncoming();
+	networkOutgoing();
 }
 
 void NetworkServer::addObject(WorldObject newObj) {

@@ -208,7 +208,7 @@ void CustomObject::draw_rectangle2D()
 	bool higherRect = false;
 	int plus = 0;
 	//printf("print 2D min.gety() = %d\n", min.gety());
-   if(min.gety() > 0)
+   if(min.gety() <= 0)
 	{
 		higherRect = true;
 		plus += 1;

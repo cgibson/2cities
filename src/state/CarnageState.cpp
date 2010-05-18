@@ -39,8 +39,6 @@ void CarnageState::initialize() {
    camera.eye = Vector( 0.0f, 30.0f, 30.0f);
    camera.lookAt = Vector( 0.0f, 0.0f, 0.0f);
 #endif
-
-   //networkManager->network->loadLevel("resources/test.lvl");
 }
 
 void CarnageState::update(long milli_time) {
@@ -56,9 +54,7 @@ void CarnageState::updateInput(long milli_time) {
    if(io::keys[27]) {
       exit(0);
    }
-   if(io::keys['l']) {
-	   networkManager->network->loadLevel("resources/test.lvl");
-   }
+
    // Orbit Controls
    float deltaLocTilt = 0;
    float deltaLocTurn = 0;

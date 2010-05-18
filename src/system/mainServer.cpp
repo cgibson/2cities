@@ -48,14 +48,14 @@ int main(int argc, char** argv) {
 
 	unsigned long timePrev = clock();
 	unsigned long timeCurr;
-	unsigned int elasped = 0;
+	unsigned int elapsed = 0;
 	while(1) {
 		sleepMS(1);
 		timeCurr = clock();
-		elasped = (timeCurr - timePrev)/1000;
+		elapsed = (timeCurr - timePrev)/1000;
 		timePrev = timeCurr;
-		networkManager->network->update(elasped);
-		//printf("newLine %i\n", elasped);
+		networkManager->network->update(elapsed);
+		//printf("newLine %i\n", elapsed);
 	}
 
 

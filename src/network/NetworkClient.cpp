@@ -34,7 +34,7 @@ bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 	SendPacket(tmpPkt, &socket, serverIP);
 
 	// Wait for reply response for 1.5 second (1500 ms)
-	if(!waitSet->WaitWithTimeout(1500)) {
+	if(!waitSet->WaitWithTimeout(3000)) {
 		printf("Connection Timed Out!\n");
 		isConnected = false;
 		socket.Close();

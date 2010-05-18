@@ -73,8 +73,15 @@ void NetworkServer::networkIncomingGeneral() {
 
 			// Add Socket/IP to currPlayer
 			currPlayer->socket.Open();
-			currPlayer->ip = ting::IPAddress(ip.host, ip.port);
-			currPlayer->ip.host = 16777343;	// TODO Remove Local Host
+			currPlayer->ip = ting::IPAddress(ip.host>>24, (ip.host<<8)>>24, (ip.host<<16)>>24, (ip.host<<24)>>24, ip.port);
+			//currPlayer->ip = ip;
+			//currPlayer->ip.host = 16777343;	// TODO Remove Local Host
+
+			// DEBUG
+			//printf("ip.host = %i CPs->ip.host = %i ting::IPAddress('192.168.5.76',0).host=%i\n", ip.host, currPlayer->ip.host, ting::IPAddress("192.168.5.76",0).host);
+			//printf("ip.host = %i.%i.%i.%i\n", ip.host>>24, (ip.host<<8)>>24, (ip.host<<16)>>24, (ip.host<<24)>>24);
+			//printf("ip.host = %i\n", .host);
+
 
 			// Add Socket to _waitSet
 			_waitSet->Add(&(currPlayer->socket), ting::Waitable::READ);

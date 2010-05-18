@@ -44,7 +44,7 @@ namespace Network {
 	public:
 		NetworkPacketHeader header;
 		unsigned char data[2000];
-		unsigned int   dataSize;
+		unsigned int  dataSize;
 
 		NetworkPacket() {
 			dataSize = 0;

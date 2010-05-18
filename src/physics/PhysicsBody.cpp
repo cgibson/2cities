@@ -8,6 +8,7 @@ btScalar PhysicsBody::getMass(ObjectType type)
 }
 
 PhysicsBody::PhysicsBody(WorldObject worldObject):
+void
 btRigidBody(getCI(worldObject))
 {
   wo = worldObject;
@@ -19,13 +20,17 @@ btRigidBody(getCI(worldObject))
   // set position
   trans.setIdentity();
   trans.setOrigin(VtobtV3(pos));
-  btQuaternion quat;
-  if (ori.getAngle() < -0.1 || ori.getAngle() > 0.1)
+  btQuaternion quat = trans.getRotation();
+  if (ori.getAngle() < -0.001 || ori.getAngle() > 0.001)
     quat.setRotation(VtobtV3(ori.getAxis()), btScalar(ori.getAngle()));
   trans.setRotation(quat);
   setCenterOfMassTransform(trans);
   // set velocity
   setLinearVelocity(VtobtV3(vel));
+//  btScalar linearDamping = getLinearDamping();
+//  btScalar angularDamping = getAngularDamping();
+//  printf("ld = %f, ad = %f\n", linearDamping, angularDamping);
+//  setDamping(linearDamping * 100, angularDamping * 100);
   body = (btRigidBody *)(this);
 }
 
@@ -74,15 +79,17 @@ bool PhysicsBody::update()
   Vector oldPos = wo.getPosition();
   Vector newPos = btV3toV(body->getCenterOfMassPosition());
   wo.setPosition(newPos);
-  wo.setVelocity(btV3toV(body->getLinearVelocity()));
+  wo.setVelocity(btV3toV(body->getLinearInterpolationVelocity()));
   Quaternion quat;
   btQuaternion btq = body->getOrientation();
+//  btTransform trans = body->getCenterOfMassTransform();
+//  btQuaternion btq = trans.getRotation();
   quat.setAxis(btV3toV(btq.getAxis()));
   quat.setAngle(btq.getAngle() * 180 / 3.14159 );
   wo.setOrientation(quat);
   Vector force = getForce();
   wo.setForce(force);
-  wo.setTimeStamp(time(NULL));
+  wo.setTimeStamp(global::elapsed_ms());
   return (newPos - oldPos).mag() > epsilon;
 }
 

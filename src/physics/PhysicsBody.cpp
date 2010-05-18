@@ -46,22 +46,26 @@ btRigidBody::btRigidBodyConstructionInfo PhysicsBody::getCI(WorldObject worldObj
   return ci;
 }
 
+float PhysicsBody::boundForce(float in)
+{
+  float bound = 100;
+  if (in < -bound)
+    return -bound;
+  if (in > bound)
+    return bound;
+  return in;
+}
+
 Vector PhysicsBody::getForce()
 {
   // everything has a default energy of 10
-  Vector result = Vector(0,0,10);
-  float linear = btV3toV(body->getLinearVelocity()).mag();
-  float linearFactor = 0.2;
-  float angular = btV3toV(body->getAngularVelocity()).mag();
-  float angularFactor = 5.0;
-  result = result + (Vector(1,0,0) * linearFactor * linear * linear);
-  result = result + (Vector(0,1,0) * angularFactor * angular * angular);
+  float linear = boundForce(btV3toV(body->getLinearVelocity()).mag());
+  float angular = boundForce(btV3toV(body->getAngularVelocity()).mag());
+  float force = boundForce(75);
 //  printf("linear = %f\n", linear);
 //  printf("angular = %f\n", angular);
-//  printf("result.mag() = %f\n", result.mag());
-  if (result.mag() > 100.0)
-    result = Vector(0,0,100);
-  return result;
+//  printf("force = %f\n", force);
+  return Vector(linear, angular, force);
 }
 
 bool PhysicsBody::update()

@@ -192,7 +192,9 @@ int Physics::loadFromFile(const char * fileName)
   // the file load instruction.
   /////////////////////////////////////////////////////////////////////////////
   int i = 0;
+#ifdef DEBUG
   printf("Loading file: \"%s\"\n", fileName);
+#endif
   WorldObject *newObj;
   for (vector<Vector>::iterator it = toPlace.begin(); it < toPlace.end();
       it++)
@@ -202,7 +204,7 @@ int Physics::loadFromFile(const char * fileName)
     newObj = new WorldObject(i++, 0, enumeration::DUMMY_BLOCK);
     newObj->setPosition(*it);
     addWorldObject(*newObj);
-    printf("adding object: %d\n", i);
+//    printf("adding object: %d\n", i);
   }
   return 1;
 }

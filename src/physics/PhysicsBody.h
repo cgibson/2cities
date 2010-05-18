@@ -20,6 +20,7 @@ class PhysicsBody : public btRigidBody
     static btCollisionShape * small_cube;
     ObjectType type;
     float forceScale;
+    float boundForce(float);
   public:
     static btScalar getMass(ObjectType type);
     static Vector btV3toV(btVector3 in) 

@@ -25,7 +25,7 @@ void ObjectFactory::makeBlock(int key, bool special)
 {
   if ((key == 'b' || key == 'B') && !special)
   {
-    int floorSize = 3;
+    int floorSize = 5;
     int blockNumberBase = 20000;
     static int blockNumber;
     int i, j;

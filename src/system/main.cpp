@@ -102,6 +102,7 @@ int main(int argc, char** argv)
 		if (strcmp(argv[i], "-build") == 0)
 		{
 			beginState = BUILD_STATE;
+			gfx::draw_axis = true;
 		}
 		else if (strcmp(argv[i], "-fullscreen") == 0)
 		{

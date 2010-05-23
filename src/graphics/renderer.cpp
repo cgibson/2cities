@@ -46,13 +46,85 @@ void Renderer::draw()
   do_lights();
 
   glPushMatrix();
+  
+    //TODO: Remove BEGIN
+  
+  glUseProgram( 0 );
+  
+  glDisable(GL_DEPTH_TEST);
+  glColor3f(0,0,0);
+  glBegin(GL_QUADS);
+    glNormal3f(0,1,0);
+    glVertex3f(-500, 0, -500);
+    glVertex3f(-500, 0,  500);
+    glVertex3f( 500, 0,  500);
+    glVertex3f( 500, 0, -500);
+  glEnd();
+  glEnable(GL_DEPTH_TEST);
+  
+  
+  if(gfx::draw_axis)
+  {
+	  glDisable(GL_LIGHTING);
+	  glDisable(GL_DEPTH_TEST);
+	  glBegin(GL_LINES);
+	  glColor3f(1,0,1);
+	  glVertex3f(0,0,0);
+	  glVertex3f(4,0,0);
+	  
+	  glColor3f(1,1,0);
+	  glVertex3f(0,0,0);
+	  glVertex3f(0,4,0);
+	  
+	  glColor3f(0,1,0);
+	  glVertex3f(0,0,0);
+	  glVertex3f(0,0,4);
+	  glEnd();
+	  glEnable(GL_DEPTH_TEST);
+	  glEnable(GL_LIGHTING);
+  }
+
+  //TODO: Remove END
+  
+  int loc;
 
   //gfx::useShader(gfx::shSimple);
-  gfx::useShader(gfx::shSimple);
-  //TODO: Remove BEGIN
-
-  gfx::materials[WHITE_MAT].applyMaterial(gfx::cur_shader, "material");
-
+  switch(global::stateManager->currentState->stateType())
+  {
+	case BUILD_STATE:
+	
+		gfx::useShader(gfx::shBuildGrid);
+		
+		gfx::materials[GRID].applyMaterial(gfx::shBuildGrid, "material");
+		
+	    loc = glGetUniformLocation(gfx::shBuildGrid, "grid_diffuse");
+		glUniform4fv(loc, 1, gfx::materials[GRID_DIFFUSE].diffuse);
+		
+	    loc = glGetUniformLocation(gfx::shBuildGrid, "grid_size");
+		glUniform1f(loc, 1.0f);
+		
+		loc = glGetUniformLocation(gfx::shBuildGrid, "line_pct");
+		glUniform1f(loc, 0.03f);
+		break;
+	case CARNAGE_STATE: default:
+		//gfx::materials[WHITE_MAT].applyMaterial(gfx::cur_shader, "material");
+		//gfx::useShader(gfx::shSimple);
+		
+		gfx::useShader(gfx::shBuildGrid);
+		
+		gfx::materials[GRID].applyMaterial(gfx::shBuildGrid, "material");
+		
+	    loc = glGetUniformLocation(gfx::shBuildGrid, "grid_diffuse");
+		glUniform4fv(loc, 1, gfx::materials[GRID_DIFFUSE].diffuse);
+		
+	    loc = glGetUniformLocation(gfx::shBuildGrid, "grid_size");
+		glUniform1f(loc, 1.0f);
+		
+		loc = glGetUniformLocation(gfx::shBuildGrid, "line_pct");
+		glUniform1f(loc, 0.03f);
+		break;
+  }
+  
   glBegin(GL_QUADS);
     glNormal3f(0,1,0);
     glVertex3f(-100, 0, -100);
@@ -61,10 +133,6 @@ void Renderer::draw()
     glVertex3f( 100, 0, -100);
   glEnd();
 
-  //TODO: Remove END
-
-
-  int loc;
   InGameState *curstate = global::stateManager->currentState;
 
   if(curstate->objects.size() > 0)

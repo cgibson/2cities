@@ -10,9 +10,12 @@ namespace gfx{
   Hud hud;
   bool draw_wireframe;
   
+  bool draw_axis;
+  
   Material* materials;
   
   GLint shSimple;
+  GLint shBuildGrid;
   GLint shForceBlock;
   
   GLint cur_shader;
@@ -74,6 +77,18 @@ namespace gfx{
     specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
     shininess[0] = 100.0;
     materials[GREEN_MAT] = Material(ambient, diffuse, specular, shininess);
+
+    ambient[0] = 0.05; ambient[1] = 0.05; ambient[2] = 0.05; ambient[3] = 1.0;
+    diffuse[0] = 0.0; diffuse[1] = 0.0; diffuse[2] = 0.0; diffuse[3] = 1.0;
+    specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
+    shininess[0] = 100.0;
+    materials[GRID] = Material(ambient, diffuse, specular, shininess);
+    
+    ambient[0] = 0.6; ambient[1] = 0.6; ambient[2] = 0.6; ambient[3] = 1.0;
+    diffuse[0] = 0.95; diffuse[1] = 0.95; diffuse[2] = 0.95; diffuse[3] = 1.0;
+    specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
+    shininess[0] = 100.0;
+    materials[GRID_DIFFUSE] = Material(ambient, diffuse, specular, shininess);
   }
 
   void init()
@@ -84,6 +99,7 @@ namespace gfx{
     glutReshapeFunc(reshape);
     
     draw_wireframe = false;
+    draw_axis = false;
     
     renderer.init();
 
@@ -110,6 +126,7 @@ namespace gfx{
     bool success = true;
     getGLversion();
     success &= installShader( "resources/shaders/simpleShade", &shSimple );
+    success &= installShader( "resources/shaders/buildGrid", &shBuildGrid );
     success &= installShader( "resources/shaders/forceblock", &shForceBlock );
     
     if(!success)

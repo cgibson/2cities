@@ -12,7 +12,7 @@
 
 #include "../system/global.h"
 #include "../system/io.h"
-#include "../helper/camera.h"
+#include "../graphics/freelookcamera.h"
 #include "../helper/Vector.h"
 #include "../graphics/graphics.h"
 #include "../scene/CustomObject.h"
@@ -49,13 +49,14 @@ void BuildState::initialize() {
 	counter = 0;
 	blocksize = 10;
 	firstPoint = Point();
-    // i/o initializtion not done in the state
-    // anymore, it's done globally at app launch
-    // we just capture the mouse
-    //io::capture_mouse();
-   io::release_mouse();
-   camera.eye = Vector( 0.0f, 30.0f, 30.0f);
-   camera.lookAt = Vector( 0.0f, 0.0f, 0.0f);
+
+	// create the camera
+	if (global::camera != NULL) delete global::camera;
+	global::camera = new FreelookCamera();
+	global::camera->init(Vector(30.0, 30.0, 30.0), Vector(0.0, 5.0, 0.0));
+
+	// mouse should be free to click
+	io::release_mouse();
 
 	io::register_mouse_down(BuildState::mouseDownToggle);
 	io::register_mouse_up(BuildState::mouseUpToggle);
@@ -91,63 +92,6 @@ void BuildState::updateInput(long milli_time) {
 			io::capture_mouse();
 	   }
    }
-
-   // Strafe Controls
-   float deltaFwd  = 0;
-   float deltaSide = 0;
-   float deltaUp   = 0;
-   if(io::keys['w']) {
-	   deltaFwd += STRAFE_SPEED * (milli_time / 1000.0f);
-   }
-   if(io::keys['s']) {
-	   deltaFwd -= STRAFE_SPEED * (milli_time / 1000.0f);
-   }
-   if(io::keys['a']) {
-	   deltaSide += STRAFE_SPEED * (milli_time / 1000.0f);
-   }
-   if(io::keys['d']) {
-	   deltaSide -= STRAFE_SPEED * (milli_time / 1000.0f);
-   }
-   if(io::keys[' ']) {
-	   deltaUp += STRAFE_SPEED * (milli_time / 1000.0f);
-   }
-   if(io::keys['c']) {
-	   deltaUp -= STRAFE_SPEED * (milli_time / 1000.0f);
-   }
-   if(deltaFwd || deltaSide || deltaUp) {
-	   camera.strafe(deltaFwd, deltaSide, deltaUp);
-   }
-
-   // Freelook Controls
-   float deltaCamTilt = 0;
-   float deltaCamTurn = 0;
-
-	// only update the view if the mouse is captured
-	if (io::captured)
-	{
-		deltaCamTurn =  io::mouse_x * MOUSE_SPEED * (milli_time / 1000.0f);
-		deltaCamTilt = -io::mouse_y * MOUSE_SPEED * (milli_time / 1000.0f);
-	}
-   if(io::special_keys[GLUT_KEY_UP]) {
-	   deltaCamTilt += ANGLE_SPEED * (milli_time / 1000.0f);
-   }
-   if(io::special_keys[GLUT_KEY_DOWN]) {
-	   deltaCamTilt -= ANGLE_SPEED * (milli_time / 1000.0f);
-   }
-   if(io::special_keys[GLUT_KEY_LEFT]) {
-	   deltaCamTurn -= ANGLE_SPEED * (milli_time / 1000.0f);
-   }
-   if(io::special_keys[GLUT_KEY_RIGHT]) {
-	   deltaCamTurn += ANGLE_SPEED * (milli_time / 1000.0f);
-   }
-   if(deltaCamTurn || deltaCamTilt) {
-	   //printf("deltaCamTurn=%4.6f deltaCamTilt=%4.6f\n", deltaCamTurn, deltaCamTilt);
-	   camera.inverted = 1;
-	   camera.phiMaxAngle = M_PI;
-	   camera.phiMinAngle =-M_PI;
-	   camera.rotateView(deltaCamTurn, deltaCamTilt);
-   }
-
 }
 
 void BuildState::keyDownHandler(int key, bool special)
@@ -163,69 +107,13 @@ void BuildState::keyDownHandler(int key, bool special)
 	   } else {
 		   io::capture_mouse();
 	   }
-   }
-
-   // Strafe Controls
-   float deltaFwd  = 0;
-   float deltaSide = 0;
-   float deltaUp   = 0;
-   if(key == 'w') {
-	   deltaFwd += STRAFE_SPEED * (milli_time / 1000.0f);
-   }
-   if(key == 's') {
-	   deltaFwd -= STRAFE_SPEED * (milli_time / 1000.0f);
-   }
-   if(key == 'a') {
-	   deltaSide += STRAFE_SPEED * (milli_time / 1000.0f);
-   }
-   if(key == 'd') {
-	   deltaSide -= STRAFE_SPEED * (milli_time / 1000.0f);
-   }
-   if(key == ' ') {
-	   deltaUp += STRAFE_SPEED * (milli_time / 1000.0f);
-   }
-   if(key == 'c') {
-	   deltaUp -= STRAFE_SPEED * (milli_time / 1000.0f);
-   }
-   if(deltaFwd || deltaSide || deltaUp) {
-	   camera.strafe(deltaFwd, deltaSide, deltaUp);
-   }
-
-   // Freelook Controls
-   float deltaCamTilt = 0;
-   float deltaCamTurn = 0;
-
-	// only update the view if the mouse is captured
-	if (io::captured)
-	{
-		deltaCamTurn =  io::mouse_x * MOUSE_SPEED * (milli_time / 1000.0f);
-		deltaCamTilt = -io::mouse_y * MOUSE_SPEED * (milli_time / 1000.0f);
-	}
-   if(io::special_keys[GLUT_KEY_UP]) {
-	   deltaCamTilt += ANGLE_SPEED * (milli_time / 1000.0f);
-   }
-   if(io::special_keys[GLUT_KEY_DOWN]) {
-	   deltaCamTilt -= ANGLE_SPEED * (milli_time / 1000.0f);
-   }
-   if(io::special_keys[GLUT_KEY_LEFT]) {
-	   deltaCamTurn -= ANGLE_SPEED * (milli_time / 1000.0f);
-   }
-   if(io::special_keys[GLUT_KEY_RIGHT]) {
-	   deltaCamTurn += ANGLE_SPEED * (milli_time / 1000.0f);
-   }
-   if(deltaCamTurn || deltaCamTilt) {
-	   //printf("deltaCamTurn=%4.6f deltaCamTilt=%4.6f\n", deltaCamTurn, deltaCamTilt);
-	   camera.inverted = 1;
-	   camera.phiMaxAngle = M_PI;
-	   camera.phiMinAngle =-M_PI;
-	   camera.rotateView(deltaCamTurn, deltaCamTilt);
    }*/
 }
 
 // called only on the first click down
 void BuildState::mouseDownToggle(int button)
 {
-	printf("first click io::mouse_x %d io::mouse_y %d\n", io::mouse_x, io::mouse_y);	
+	printf("first click io::mouse_x %d io::mouse_y %d\n", io::mouse_x, io::mouse_y);
 	LAST_BUTTON = button;
 	MOUSE_DOWN = true;
 	firstPoint.set(Point(io::mouse_x, io::mouse_y));
@@ -237,7 +125,7 @@ void BuildState::mouseDownToggle(int button)
 // called only on the first mouse up
 void BuildState::mouseUpToggle(int button)
 {
-	InGameState *currState = global::stateManager->currentState;	
+	InGameState *currState = global::stateManager->currentState;
 	printf("last click\n");
 	static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->print_rectangle();
 	LAST_BUTTON = button;
@@ -248,11 +136,11 @@ void BuildState::mouseUpToggle(int button)
 void BuildState::mouseDownHandler()
 {
 	InGameState *currState = global::stateManager->currentState;
-	
+
 	// IF frist click
 	if(counter == 0)
 	{
-		printf("second point (drag)\n");		
+		printf("second point (drag)\n");
 		// draw 2D rectangle ground surface or top of existing building
 		if(LAST_BUTTON == GLUT_RIGHT_BUTTON)
 		{
@@ -276,11 +164,11 @@ void BuildState::mouseDownHandler()
 	else
 	{
 		if(LAST_BUTTON == GLUT_RIGHT_BUTTON)
-		{			
+		{
 			Point click;
 			click.set(Point(io::mouse_x, io::mouse_y));
 			click.adjustPointForBlocksize(blocksize);
-			printf("counter %d\n", counter);	
+			printf("counter %d\n", counter);
 			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_min(firstPoint);
 			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_x(click.getx());
 			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_z(click.getz());
@@ -309,7 +197,7 @@ void BuildState::mouseDownHandler()
 			Point click;
 			click.set(Point(io::mouse_x, io::mouse_y));
 			click.adjustPointForBlocksize(blocksize);
-			
+
 			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_min(firstPoint);
 			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_x(click.getx());
 			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_z(click.getz());
@@ -326,8 +214,8 @@ void BuildState::mouseDownHandler()
 		// push / pull rectangles
 		else if(button == GLUT_LEFT_BUTTON)
 		{
-			if(rect_element != -1)			
-				static_cast<CustomObject*>(currState->objects[rect_element])->print_rectangle();			
+			if(rect_element != -1)
+				static_cast<CustomObject*>(currState->objects[rect_element])->print_rectangle();
 			rect_element = -1;
          intersection = NOTHING;
 		}
@@ -381,24 +269,24 @@ void BuildState::blockalize_face(int index, Face f, bool pull)
 			static_cast<CustomObject*>(objects[index])->set_max_x(static_cast<CustomObject*>(objects[index])->get_max_x() - ( (static_cast<CustomObject*>(objects[index])->get_max_x() - static_cast<CustomObject*>(objects[index])->get_min_x()) % blocksize));
 		else
 			static_cast<CustomObject*>(objects[index])->set_max_x(static_cast<CustomObject*>(objects[index])->get_max_x() + (blocksize - ( (static_cast<CustomObject*>(objects[index])->get_max_x() - static_cast<CustomObject*>(objects[index])->get_min_x()) % blocksize)));
-	}	
+	}
 	else if(f == FACE2)
 	{
-		if(pull)		
+		if(pull)
 			static_cast<CustomObject*>(objects[index])->set_max_z(static_cast<CustomObject*>(objects[index])->get_max_z() - ( (static_cast<CustomObject*>(objects[index])->get_max_z() - static_cast<CustomObject*>(objects[index])->get_min_z()) % blocksize));
 		else
 			static_cast<CustomObject*>(objects[index])->set_max_z(static_cast<CustomObject*>(objects[index])->get_max_z() + (blocksize - ( (static_cast<CustomObject*>(objects[index])->get_max_z() - static_cast<CustomObject*>(objects[index])->get_min_z()) % blocksize)));
-	}	
+	}
 	else if(f == FACE3)
-	{	
-		if(pull)		
+	{
+		if(pull)
 			static_cast<CustomObject*>(objects[index])->set_min_x(static_cast<CustomObject*>(objects[index])->get_min_x() + ( (static_cast<CustomObject*>(objects[index])->get_max_x() - static_cast<CustomObject*>(objects[index])->get_min_x()) % blocksize));
 		else
 			static_cast<CustomObject*>(objects[index])->set_min_x(static_cast<CustomObject*>(objects[index])->get_min_x() - (blocksize - ( (static_cast<CustomObject*>(objects[index])->get_max_x() - static_cast<CustomObject*>(objects[index])->get_min_x()) % blocksize)));
-	}	
+	}
 	else if(f == FACE4)
-	{	
-		if(pull)		
+	{
+		if(pull)
 			static_cast<CustomObject*>(objects[index])->set_min_z(static_cast<CustomObject*>(objects[index])->get_min_z() + ( (static_cast<CustomObject*>(objects[index])->get_max_z() - static_cast<CustomObject*>(objects[index])->get_min_z()) % blocksize));
 		else
 			static_cast<CustomObject*>(objects[index])->set_min_z(static_cast<CustomObject*>(objects[index])->get_min_z() - (blocksize - ( (static_cast<CustomObject*>(objects[index])->get_max_z() - static_cast<CustomObject*>(objects[index])->get_min_z()) % blocksize)));
@@ -409,12 +297,12 @@ void BuildState::blockalize_face(int index, Face f, bool pull)
 bool BuildState::inPullPath(int reMax, int reMin, int iMax, int iMin)
 {
    // IF reMax OR reMin is INSIDE OF iMax AND iMin
-   if(reMax < iMax && reMax > iMin || 
+   if(reMax < iMax && reMax > iMin ||
       reMin < iMax && reMin > iMin)
    {
       return true;
    }
-   
+
    // IF iMax OR iMin is INSIDE OF reMax AND reMin
    if(iMax < reMax && iMax > reMin ||
       iMin < reMax && iMin > reMin)
@@ -440,7 +328,7 @@ void BuildState::check_pull(int index, Face f)
 		   	{
 					// check if i is not on the same "level" as index
 					if(static_cast<CustomObject*>(objects[i])->get_min_y() == static_cast<CustomObject*>(objects[index])->get_min_y())
-					{			  		
+					{
 						// check if i is in the path of rect_element
 				   	if( inPullPath(static_cast<CustomObject*>(objects[index])->get_max_z(), static_cast<CustomObject*>(objects[index])->get_min_z(), static_cast<CustomObject*>(objects[i])->get_max_z(), static_cast<CustomObject*>(objects[i])->get_min_z()) )
 					   {
@@ -467,7 +355,7 @@ void BuildState::check_pull(int index, Face f)
 				if( static_cast<CustomObject*>(objects[index])->get_min_z() < static_cast<CustomObject*>(objects[i])->get_min_z() && static_cast<CustomObject*>(objects[index])->get_max_z() > static_cast<CustomObject*>(objects[i])->get_min_z() )
 				{
 					if(static_cast<CustomObject*>(objects[i])->get_min_y() == static_cast<CustomObject*>(objects[index])->get_min_y())
-					{						
+					{
 						if( inPullPath(static_cast<CustomObject*>(objects[index])->get_max_x(), static_cast<CustomObject*>(objects[index])->get_min_x(), static_cast<CustomObject*>(objects[i])->get_max_x(), static_cast<CustomObject*>(objects[i])->get_min_x()) )
 							static_cast<CustomObject*>(objects[index])->set_max_z(static_cast<CustomObject*>(objects[i])->get_min_z());
 					}
@@ -481,7 +369,7 @@ void BuildState::check_pull(int index, Face f)
 							static_cast<CustomObject*>(objects[index])->set_max_z(static_cast<CustomObject*>(objects[i])->get_max_z());
 					}
 				}
-			}			
+			}
 			else if(f == FACE3)
 			{
 				if( static_cast<CustomObject*>(objects[index])->get_max_x() > static_cast<CustomObject*>(objects[i])->get_max_x() && static_cast<CustomObject*>(objects[index])->get_min_x() < static_cast<CustomObject*>(objects[i])->get_max_x() )
@@ -500,14 +388,14 @@ void BuildState::check_pull(int index, Face f)
 						if(static_cast<CustomObject*>(objects[index])->get_min_x() < static_cast<CustomObject*>(objects[i])->get_min_x())
 							static_cast<CustomObject*>(objects[index])->set_min_x(static_cast<CustomObject*>(objects[i])->get_min_x());
 					}
-				}				
+				}
 			}
 			else if(f == FACE4)
 			{
 				if( static_cast<CustomObject*>(objects[index])->get_max_z() > static_cast<CustomObject*>(objects[i])->get_max_z() && static_cast<CustomObject*>(objects[index])->get_min_z() < static_cast<CustomObject*>(objects[i])->get_max_z() )
 				{
 					if(static_cast<CustomObject*>(objects[i])->get_min_y() == static_cast<CustomObject*>(objects[index])->get_min_y())
-					{					
+					{
 						if( inPullPath(static_cast<CustomObject*>(objects[index])->get_max_x(), static_cast<CustomObject*>(objects[index])->get_min_x(), static_cast<CustomObject*>(objects[i])->get_max_x(), static_cast<CustomObject*>(objects[i])->get_min_x()) )
 							static_cast<CustomObject*>(objects[index])->set_min_z(static_cast<CustomObject*>(objects[i])->get_max_z());
 					}
@@ -533,7 +421,7 @@ void BuildState::recursive_push(Face f, int bottom)
 	{
 		// exclude self
       if(top != bottom)
-      {         
+      {
 			// IF i.get_min_y() == rect_element.get_max_y()
          if( static_cast<CustomObject*>(objects[top])->get_min_y() == static_cast<CustomObject*>(objects[bottom])->get_max_y() )
          {
@@ -541,7 +429,7 @@ void BuildState::recursive_push(Face f, int bottom)
             if(static_cast<CustomObject*>(objects[bottom])->semiEncapsulates(f, (static_cast<CustomObject*>(objects[top])->get_max()), (static_cast<CustomObject*>(objects[top])->get_min())))
             {
 					if(static_cast<CustomObject*>(objects[top])->distance2Face(f, static_cast<CustomObject*>(objects[bottom])->whichPoint(f)) < 0)
-					{					
+					{
 						adjust_face(top, f, static_cast<CustomObject*>(objects[bottom])->whichPoint(f), false, false);
 						recursive_push(f, top);
 					}
@@ -571,7 +459,7 @@ void BuildState::adjust_face(int index, Face f, Point mouse_pos, bool block, boo
 			}
 		}
 		// IF the max is not less than the min
-		else 
+		else
 		{
 			// IF the caller wants this rectangle to be adjusted to blocksize
 			if(block)
@@ -582,9 +470,9 @@ void BuildState::adjust_face(int index, Face f, Point mouse_pos, bool block, boo
 			else
 				check_pull(index, f);
 		}
-	}	
+	}
 	else if(f == FACE2)
-	{	
+	{
 		static_cast<CustomObject*>(objects[index])->set_max_z(mouse_pos.getz());
 		if(static_cast<CustomObject*>(objects[index])->get_max_z() <= static_cast<CustomObject*>(objects[index])->get_min_z())
 		{
@@ -595,7 +483,7 @@ void BuildState::adjust_face(int index, Face f, Point mouse_pos, bool block, boo
          	intersection = NOTHING;
 			}
 		}
-		else 
+		else
 		{
 			if(block)
 				blockalize_face(index, f, pull);
@@ -606,7 +494,7 @@ void BuildState::adjust_face(int index, Face f, Point mouse_pos, bool block, boo
 		}
 	}
 	else if(f == FACE3)
-	{		
+	{
 		static_cast<CustomObject*>(objects[index])->set_min_x(mouse_pos.getx());
 		if(static_cast<CustomObject*>(objects[index])->get_min_x() >= static_cast<CustomObject*>(objects[index])->get_max_x())
 		{
@@ -617,7 +505,7 @@ void BuildState::adjust_face(int index, Face f, Point mouse_pos, bool block, boo
          	intersection = NOTHING;
 			}
 		}
-		else 
+		else
 		{
 			if(block)
 				blockalize_face(index, f, pull);
@@ -626,7 +514,7 @@ void BuildState::adjust_face(int index, Face f, Point mouse_pos, bool block, boo
 			else
 				check_pull(index, f);
 		}
-	}	
+	}
 	else if(f == FACE4)
 	{
 		static_cast<CustomObject*>(objects[index])->set_min_z(mouse_pos.getz());
@@ -639,7 +527,7 @@ void BuildState::adjust_face(int index, Face f, Point mouse_pos, bool block, boo
          	intersection = NOTHING;
 			}
 		}
-		else 
+		else
 		{
 			if(block)
 				blockalize_face(index, f, pull);
@@ -671,7 +559,7 @@ void BuildState::new_push_pull(Point mouse_pos)
 
 	// see if mouse_pos passes blocksize thresh hold
 	if(abs(static_cast<CustomObject*>(objects[rect_element])->distance2Face(intersection, mouse_pos)) > blocksize)
-	{	
+	{
 		// IF PUSH
 		if(static_cast<CustomObject*>(objects[rect_element])->distance2Face(intersection, mouse_pos) < 0)
 			adjust_face(rect_element, intersection, mouse_pos, true, false);

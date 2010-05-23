@@ -17,13 +17,25 @@ release:
 debug-client:
 	./build debug client
 
+client-debug:
+	./build debug client
+
 debug-server:
+	./build debug server
+
+server-debug:
 	./build debug server
 
 release-client:
 	./build release client
 
+client-release:
+	./build release client
+
 release-server:
+	./build release server
+
+server-release:
 	./build release server
 
 clean:

@@ -27,7 +27,7 @@ namespace io
         glutMotionFunc(mouse_motion);
         glutPassiveMotionFunc(mouse_motion);
         glutEntryFunc(mouse_window);
-        
+
         // we need to initialize our mouse button states, lest
         // we be bitten by their default values!
         mouse_buttons[GLUT_LEFT_BUTTON] = GLUT_UP;
@@ -72,7 +72,7 @@ namespace io
 
         key_down_handlers.push_back(handler);
     }
-    
+
     void unregister_key_down(key_func handler)
     {
         // search for the function pointer
@@ -231,7 +231,7 @@ namespace io
     void key_up(unsigned char key, int x, int y)
     {
         keys[key] = false;
-        
+
         // fire off all handlers for key up events
         for (int i = 0; i < (int)key_up_handlers.size(); i++)
         {
@@ -253,14 +253,14 @@ namespace io
     void special_key_up(int key, int x, int y)
     {
         special_keys[key] = false;
-        
+
         // fire off all handlers for key up events
         for (int i = 0; i < (int)key_up_handlers.size(); i++)
         {
             key_up_handlers[i](key, true);
         }
     }
-  
+
     void mouse_click(int button, int state, int x, int y)
     {
         mouse_buttons[button] = state;

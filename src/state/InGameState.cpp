@@ -13,7 +13,7 @@
 
 #include "../system/global.h"
 #include "../system/io.h"
-#include "../helper/camera.h"
+#include "../graphics/camera.h"
 #include "../helper/Vector.h"
 
 #define ANGLE_SPEED 2
@@ -41,8 +41,8 @@ void InGameState::initialize() {
     // we just capture the mouse
     io::capture_mouse();
 
-   camera.eye = Vector( 0.0f, 30.0f, 30.0f);
-   camera.lookAt = Vector( 0.0f, 0.0f, 0.0f);
+   //camera.eye = Vector( 0.0f, 30.0f, 30.0f);
+   //camera.lookAt = Vector( 0.0f, 0.0f, 0.0f);
 #endif
 }
 
@@ -90,7 +90,7 @@ void InGameState::updateInput(long milli_time) {
 	   deltaUp -= STRAFE_SPEED * (milli_time / 1000.0f);
    }
    if(deltaFwd || deltaSide || deltaUp) {
-	   camera.strafe(deltaFwd, deltaSide, deltaUp);
+	   //camera.strafe(deltaFwd, deltaSide, deltaUp);
    }
 
    // Freelook Controls
@@ -117,10 +117,10 @@ void InGameState::updateInput(long milli_time) {
    }
    if(deltaCamTurn || deltaCamTilt) {
 	   //printf("deltaCamTurn=%4.6f deltaCamTilt=%4.6f\n", deltaCamTurn, deltaCamTilt);
-	   camera.inverted = 1;
-	   camera.phiMaxAngle = M_PI;
-	   camera.phiMinAngle =-M_PI;
-	   camera.rotateView(deltaCamTurn, deltaCamTilt);
+	   //camera.inverted = 1;
+	   //camera.phiMaxAngle = M_PI;
+	   //camera.phiMinAngle =-M_PI;
+	   //camera.rotateView(deltaCamTurn, deltaCamTilt);
    }
 #endif
 }

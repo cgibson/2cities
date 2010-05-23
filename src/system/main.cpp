@@ -28,6 +28,7 @@ void updateLoop()
 
     // update all modules
     io::update(elapsed);
+    if (global::camera != NULL) global::camera->update(elapsed);
     gfx::update(elapsed);
     global::stateManager->currentState->update(elapsed);
     global::networkManager->network->update(elapsed);
@@ -59,13 +60,13 @@ void initState()
 
 void initialize()
 {
-  
+
   global::width = 1024;
   global::height = 768;
   global::fullscreen = false;
   global::app_title = (char*)malloc(sizeof(char) * 80);
   sprintf(global::app_title, "2Cities : The Game");
- 
+
   // initialize SDL (timer and sound in the future)
   if (SDL_Init(SDL_INIT_TIMER) < 0)
   {
@@ -75,17 +76,17 @@ void initialize()
   atexit(SDL_Quit);
 
   gl::init();
-  
+
   // initialization of all other modules
   io::init();
   gfx::init();
-  
+
   initState();
 
   global::networkManager->initialize();
 
   glutIdleFunc(updateLoop);
-  
+
   glutMainLoop();
 }
 

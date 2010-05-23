@@ -14,6 +14,7 @@
 
 #include "../helper/Vector.h"
 #include "../system/global.h"
+#include "camera.h"
 #include "../helper/FBOHelper.h"
 #include "Material.h"
 #include "Lighting.h"
@@ -33,12 +34,10 @@ private:
   void update_view();
   void init_lights();
   void do_lights();
-  void updateLookat();
-  static void outputMatrices(int argc, char* argv[]);
   bool initFBO();
-  
+
   Vector eye, lookAt;
-  
+
   Lighting light;
 };
 

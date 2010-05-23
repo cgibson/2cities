@@ -46,6 +46,7 @@ client_srcs = {
     "state/CarnageState.cpp",
     "state/InGameState.cpp",
     "state/StateManager.cpp",
+    "system/gl_helper.cpp",
     "system/global.cpp",
     "system/io.cpp",
     "system/main.cpp"
@@ -84,6 +85,7 @@ server_srcs = {
     "state/CarnageState.cpp",
     "state/InGameState.cpp",
     "state/StateManager.cpp",
+    "system/gl_helper.cpp",
     "system/global.cpp",
     "system/io.cpp",
     "system/mainServer.cpp",

@@ -63,7 +63,6 @@ void initialize()
 
   global::width = 1024;
   global::height = 768;
-  global::fullscreen = false;
   global::app_title = (char*)malloc(sizeof(char) * 80);
   sprintf(global::app_title, "2Cities : The Game");
 
@@ -95,16 +94,21 @@ void initialize()
  */
 int main(int argc, char** argv)
 {
+	beginState = CARNAGE_STATE;
+	global::fullscreen = false;
 
-  if(argc == 2)
-  {
-    if(!strcmp(argv[1], "-build"))
-    {
-      beginState=BUILD_STATE;
-    }
-  }else{
-    beginState=CARNAGE_STATE;
-  }
+	for (int i = 0; i < argc; i++)
+	{
+		if (strcmp(argv[i], "-build") == 0)
+		{
+			beginState = BUILD_STATE;
+		}
+		else if (strcmp(argv[i], "-fullscreen") == 0)
+		{
+			global::fullscreen = true;
+		}
+	}
+
   glutInit(&argc, argv);
   initialize();
   return 0;

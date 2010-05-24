@@ -21,6 +21,7 @@
 using namespace enumeration;
 
 namespace gfx{
+  extern int ObjTypeSortIndex;
 
   extern Renderer renderer;
   extern ModelHandler modelHandler;

@@ -33,10 +33,11 @@ void updateLoop()
     global::stateManager->currentState->update(elapsed);
     global::networkManager->network->update(elapsed);
 
-    InGameState *curstate = global::stateManager->currentState;
-    for(int i = 0; i < (int)curstate->objects.size(); i++)
+    vector<WorldObject *> objList = global::stateManager->currentState->objects.getVector();
+    vector<WorldObject *>::iterator objIt;
+    for(objIt = objList.begin(); objIt != objList.end(); objIt++)
     {
-      curstate->objects[i]->update(elapsed);
+      (*objIt)->update(elapsed);
     }
 
     // update the fps counter (every quarter second)

@@ -5,6 +5,7 @@
 
 #include "BuildState.h"
 #include "CarnageState.h"
+#include "../system/global.h"
 
 using namespace enumeration;
 

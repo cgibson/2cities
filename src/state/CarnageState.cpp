@@ -60,6 +60,7 @@ void CarnageState::updateInput(long milli_time) {
 
    // General Keyboard Layout
    if(io::keys[27]) {
+	  networkManager->network->disconnectServer();
       exit(0);
    }
 

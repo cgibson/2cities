@@ -139,15 +139,17 @@ void Renderer::draw()
   {
 	  ObjectType lastType, curType;
 	  lastType = WARPED_CUBE;
-	  curType = curstate->objects[0]->getType();
+	  curType = DUMMY_BLOCK;
 	  Blueprint blueprint = global::factory->getBlueprint(curType);
 	  Material curMat = gfx::materials[blueprint.getMaterial()];
 
 	  curMat.applyMaterial(gfx::cur_shader, "");
 	  //printf("SOMETHING HERE\n");
-	  for(int i = 0; i < (int)curstate->objects.size(); i++)
+	  list<WorldObject *>::iterator objIt;
+	  list<WorldObject *> objList = curstate->objects.getList();
+	  for(objIt = objList.begin(); objIt != objList.end(); objIt++)
 	  {
-		curType = curstate->objects[i]->getType();
+		curType = (*objIt)->getType();
 		if(curType != lastType)
 		{
 			switch(curType)
@@ -168,7 +170,7 @@ void Renderer::draw()
 			curMat.applyMaterial(gfx::cur_shader, "");
 		}
 		loc = glGetUniformLocation(gfx::shForceBlock, "force");
-		Vector force = curstate->objects[i]->getForce();
+		Vector force = (*objIt)->getForce();
 		float forceResult = force.x() * 40.0f;
 		float strength = force.y() * 2.0;
 		//printf("strength: %f\n", strength);
@@ -177,7 +179,7 @@ void Renderer::draw()
 		glUniform1f(loc, 0.2 + strength);
 
 
-		curstate->objects[i]->draw();
+		(*objIt)->draw();
 	  }
 	}
 

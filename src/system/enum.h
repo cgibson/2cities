@@ -24,11 +24,11 @@ namespace enumeration {
 
   // Used by Server to decide whether to load into PhysicsEngine or not
   // NONE   : No Physics Simulation Needed for Object
-  // DYNAMIC: Physics Simulation object (currently needed in PhysicsEngine)
   // STATIC : Physics Simulation object (not currently needed in PhysicsEngine)
-  //          (Not currently  used. Will be an optimization feature for later)
+  // DYNAMIC: Physics Simulation object (currently needed in PhysicsEngine)
+  // NOTE... Currently not used. Will be an optimization feature for later
   typedef enum E_PHYSICS {
-    NONE, DYNAMIC, STATIC
+    NONE, STATIC, DYNAMIC
   } PhysicsState;
 
   // Used by BuildState to determine which face the user has selected

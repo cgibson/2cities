@@ -5,6 +5,11 @@
 
 namespace gfx{
 
+  bool WorldObjectPtr_Sort_Type(WorldObject * objPtr1, WorldObject * objPtr2) {
+	  return(objPtr1->getType() < objPtr2->getType());
+  }
+  int ObjTypeSortIndex = -1;
+
   Renderer renderer;
   ModelHandler modelHandler = ModelHandler();
   Hud hud;
@@ -100,6 +105,8 @@ namespace gfx{
     
     draw_wireframe = false;
     draw_axis = false;
+
+    ObjTypeSortIndex = global::stateManager->currentState->objects.addSorter(WorldObjectPtr_Sort_Type);
     
     renderer.init();
 

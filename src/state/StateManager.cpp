@@ -46,6 +46,9 @@ void StateManager::changeCurrentState(enum E_STATE newState)
         break;
     }
     //delete oldInGameState;
+#ifdef CLIENT
+    gfx::ObjTypeSortIndex = global::stateManager->currentState->objects.addSorter(gfx::WorldObjectPtr_Sort_Type);
+#endif
 }
 
 /**

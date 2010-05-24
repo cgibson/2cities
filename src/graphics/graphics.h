@@ -21,6 +21,7 @@
 using namespace enumeration;
 
 namespace gfx{
+  extern bool WorldObjectPtr_Sort_Type(WorldObject * objPtr1, WorldObject * objPtr2);
   extern int ObjTypeSortIndex;
 
   extern Renderer renderer;

@@ -146,7 +146,9 @@ void Renderer::draw()
 	  curMat.applyMaterial(gfx::cur_shader, "");
 	  //printf("SOMETHING HERE\n");
 	  list<WorldObject *>::iterator objIt;
-	  list<WorldObject *> objList = curstate->objects.getList();
+//	  list<WorldObject *> objList = curstate->objects.getList();
+	  list<WorldObject *> objList = curstate->objects[gfx::ObjTypeSortIndex];
+
 	  for(objIt = objList.begin(); objIt != objList.end(); objIt++)
 	  {
 		curType = (*objIt)->getType();

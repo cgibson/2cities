@@ -20,7 +20,7 @@ template <class T>
 class MultiSortedMap {
 private:
 	map<int, T> DataMap;       // Used for key/value lookup
-	int SortSize;
+	unsigned int SortSize;
 
 	T lastUpdated;
 
@@ -28,7 +28,7 @@ private:
 	MultiSortedMap_SortList<T> SortLists[MULTISORTEDMAP_SIZE];
 
 public:
-	MultiSortedMap(int SortedListsSize = MULTISORTEDMAP_SIZE);
+	MultiSortedMap(unsigned int SortedListsSize = MULTISORTEDMAP_SIZE);
 	~MultiSortedMap();
 
 	int  addSorter(bool ( *newFunc ) ( T, T ));
@@ -83,9 +83,11 @@ public:
  *  MAIN DATA STRUCTURE FUNCTIONS
  **********************************/
 template <class T>
-inline MultiSortedMap<T>::MultiSortedMap(int SortedListsSize) {
+inline MultiSortedMap<T>::MultiSortedMap(unsigned int SortedListsSize) {
 	SortSize = MULTISORTEDMAP_SIZE;
 	// SorterList takes care of its defaults
+
+	printf("MultiSortedMap Created\n");
 }
 
 template <class T>
@@ -95,8 +97,9 @@ template <class T>
 inline int MultiSortedMap<T>::addSorter(bool ( *newFunc ) ( T, T )) {
 	// find first open sorter location
 	int i=0;
-	while(SortLists[i].SorterFunc != NULL && i < SortSize) i++;
+	while(i < SortSize && SortLists[i].SorterFunc != NULL) i++;
 
+//	printf("SortSize is %i and stopped at index %i\n",SortSize, i);
 	// check if no more room
 	if(i == SortSize)
 		return -1;
@@ -104,6 +107,7 @@ inline int MultiSortedMap<T>::addSorter(bool ( *newFunc ) ( T, T )) {
 	SortLists[i].SorterFunc = newFunc;
 	SortLists[i].dataPtr = &DataMap;
 
+	printf("Added New SorterFunc %i\n", i);
 	return i;
 }
 
@@ -237,7 +241,21 @@ inline list<T> MultiSortedMap<T>::getList() {
 
 template <class T>
 inline list<T> MultiSortedMap<T>::operator[](int SortListIndex) {
-	return SortLists[SortListIndex].getList();
+//	printf("Attempting to retrieve list %i!\n", SortListIndex);
+	if(SortListIndex < 0 || SortListIndex >= SortSize) {
+		printf("SortListIndex out of bounds! Returning Default List!\n");
+		exit(0);
+		return getList();
+	}
+	else if(SortLists[SortListIndex].SorterFunc == NULL) {
+		printf("No SorterFunc in place! Returning Default List!\n");
+		exit(0);
+		return getList();
+	}
+	else {
+//		printf("Calling/Returning SortListIndex's getList!\n");
+		return SortLists[SortListIndex].getList();
+	}
 }
 
 /***********************************
@@ -298,7 +316,7 @@ inline void MultiSortedMap_SortList<T>::removeObject(int objKey) {
 template <class T>
 inline void MultiSortedMap_SortList<T>::clear() {
 	DataIndex.clear();
-	SorterFunc = NULL;
+//	SorterFunc = NULL;
 }
 
 template <class T>
@@ -308,7 +326,7 @@ inline list<T> MultiSortedMap_SortList<T>::getList() {
 	// Add objects to a list
 	list<int>::iterator it;
 	for(it=DataIndex.begin(); it != DataIndex.end(); it++) {
-		//printf("item => %i => %f\n", *it, (*dataPtr)[*it]);
+//		printf("item => %i => %f\n", *it, (*dataPtr)[*it]);
 		objList.push_back((*dataPtr)[(*it)]);
 	}
 

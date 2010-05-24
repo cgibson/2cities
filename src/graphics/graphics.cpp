@@ -106,8 +106,6 @@ namespace gfx{
     draw_wireframe = false;
     draw_axis = false;
 
-    ObjTypeSortIndex = global::stateManager->currentState->objects.addSorter(WorldObjectPtr_Sort_Type);
-    
     renderer.init();
 
     hud.init();

@@ -15,7 +15,8 @@ namespace BuildStateGlobals
 	extern bool MOUSE_DOWN;
 	extern int LAST_BUTTON;
 	extern int blocksize, rect_element, counter;
-	extern Face intersection;
+	extern Face pp_face;
+	extern int pp_index;
 	extern Point firstPoint, last, mouse_click;
 }
 
@@ -44,6 +45,8 @@ class BuildState : public InGameState
 		void new_push_pull(Point mouse_pos);
 		Point adjustPointForBlocksize(Point click);
 		void placeY(int rect_index, int below_index);
+		void evaluateClick(Point click);
+		void get_pp_plane();
 
        virtual enum E_STATE stateType() { return BUILD_STATE; }
 };

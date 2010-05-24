@@ -22,8 +22,8 @@ namespace BuildStateGlobals
 	bool DELETE_MODE;
 	bool MOUSE_DOWN;
 	int LAST_BUTTON;
-	int blocksize, rect_element, counter;
-	Face intersection;
+	int blocksize, pp_index, counter;
+	Face pp_face;
 	Point firstPoint, last, mouse_click;
 }
 
@@ -47,7 +47,9 @@ void BuildState::initialize() {
 	DELETE_MODE = false;
 	MOUSE_DOWN = false;
 	counter = 0;
-	blocksize = 10;
+	blocksize = 5;
+	pp_index = -1;
+	pp_face = NOTHING;
 	firstPoint = Point();
 
 	// create the camera
@@ -67,7 +69,7 @@ void BuildState::initialize() {
 	// make a simple CustomObject and add it to static_cast<CustomObject*>(objects vector
 	// (unsigned int newid, unsigned int newplayerid, ObjectType newtype, Point newmax, Point newmin)
 	//CustomObject co = new CustomObject(0, 0, CUSTOM_BLOCK, Point(25, 0, 25), Point(-25, 25, -25));
-	objects.push_back(new CustomObject(0, 0, CUSTOM_BLOCK, Point(25, 0, 25), Point(-25, 25, -25)));
+	objects.push_back(new CustomObject(0, 0, CUSTOM_BLOCK, Point(5, 10, 5), Point(-5, 0, -5)));
 }
 
 void BuildState::update(long milli_time) {
@@ -115,125 +117,195 @@ void BuildState::keyDownHandler(int key, bool special)
 // called only on the first click down
 void BuildState::mouseDownToggle(int button)
 {
-	printf("first click io::mouse_x %d io::mouse_y %d\n", io::mouse_x, io::mouse_y);
 	LAST_BUTTON = button;
 	MOUSE_DOWN = true;
 	firstPoint.set(Point(io::mouse_x, io::mouse_y));
-	printf("firstPoint.x %f firstPoint.y %f firstPoint.z %f\n", firstPoint.getx(), firstPoint.gety(), firstPoint.getz());
-	firstPoint.adjustPointForBlocksize(blocksize);
-	printf("firstPoint.x %f firstPoint.y %f firstPoint.z %f\n", firstPoint.getx(), firstPoint.gety(), firstPoint.getz());
+	//printf("***\nfristPoint: %s\n", firstPoint.str());
 }
 
 // called only on the first mouse up
 void BuildState::mouseUpToggle(int button)
 {
 	InGameState *currState = global::stateManager->currentState;
-	printf("last click\n");
-	static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->print_rectangle();
+	//printf("last click\n");
+	if(button == GLUT_RIGHT_BUTTON)
+		static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->print_rectangle();
 	LAST_BUTTON = button;
 	MOUSE_DOWN = false;
 	counter = 0;
+	pp_face = NOTHING;
+	pp_index = -1;
 }
 
 void BuildState::mouseDownHandler()
 {
 	InGameState *currState = global::stateManager->currentState;
 
-	// IF frist click
+	// IF firstPoint hasn't been evaluated yet
 	if(counter == 0)
+		// check if firstPoint intersects with any existing rectangles
+		evaluateClick(firstPoint);
+
+	// IF right click
+	if(LAST_BUTTON == GLUT_RIGHT_BUTTON)
 	{
-		printf("second point (drag)\n");
-		// draw 2D rectangle ground surface or top of existing building
-		if(LAST_BUTTON == GLUT_RIGHT_BUTTON)
+		// IF first click
+		if(counter == 0)
 		{
+			// blockalize first point
+			firstPoint.adjustPointForBlocksize(blocksize);			
+			
 			// record point
 			Point click;
 			click.set(Point(io::mouse_x, io::mouse_y));
 			click.adjustPointForBlocksize(blocksize);
 			// push_back new CustomObject
 			currState->objects.push_back( new CustomObject( currState->objects.size(), 0, CUSTOM_BLOCK, firstPoint, Point(io::mouse_x, io::mouse_y) ) );
-			placeY(currState->objects.size() - 1, -1);
-			printf("added rectangle\n");
+			placeY(currState->objects.size() - 1, pp_index);
 		}
-		// push / pull rectangles
-		else if(LAST_BUTTON == GLUT_LEFT_BUTTON)
+		// IF not first click
+		else
 		{
-
+			Point click;
+			click.set(Point(io::mouse_x, io::mouse_y));
+			click.adjustPointForBlocksize(blocksize);
+			//printf("counter %d\n", counter);	
+			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_min(firstPoint);
+			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_x(click.getx());
+			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_z(click.getz());
+			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_y(static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->get_min_y());
+			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->adjust_bases();
+			placeY(currState->objects.size() - 1, -1);
+			//static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->print_rectangle();
 		}
 		counter++;
 	}
-	// ELSE not the first click
-	else
+	// IF left click
+	else if(LAST_BUTTON == GLUT_LEFT_BUTTON)
 	{
-		if(LAST_BUTTON == GLUT_RIGHT_BUTTON)
+		// IF mouse has been left clicked on an existing rectangle
+		if(pp_index != -1)
 		{
-			Point click;
-			click.set(Point(io::mouse_x, io::mouse_y));
-			click.adjustPointForBlocksize(blocksize);
-			printf("counter %d\n", counter);
-			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_min(firstPoint);
-			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_x(click.getx());
-			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_z(click.getz());
-			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_y(static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->get_min_y());
-			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->adjust_bases();
-			placeY(currState->objects.size() - 1, -1);
-			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->print_rectangle();
-			counter++;
+			// get push/pull plane
+			printf("get pp planes!\n");
+			get_pp_plane();			
+			new_push_pull(Point(io::mouse_x, io::mouse_y));
 		}
-		else if(LAST_BUTTON == GLUT_LEFT_BUTTON)
-		{
+		counter++;
+	}
+	
+}
 
-		}
+// given the current location of the mouse and the pp_face 
+// determines the plane that gluUnproject samples against
+void BuildState::get_pp_plane()
+{
+	// Vertical	pushPull
+	if(pp_face == TOP)
+	{
+		// obtain a plane perpendicular to the view vector
+		float offsetSize = 10;
+		Vector v = global::camera->viewVec() * -1;
+		Vector offset = global::camera->strafeVec();//Vector.crossProduct(v, Vector(0,1,0));
+		offset.y(1);
+		offset = offset * offsetSize;
+		
+		Point p;
+		p.set(Point(io::mouse_x, io::mouse_y));
+		
+		glBegin(GL_QUADS);
+		
+			glVertex3f(p.getx() + offset.x(), p.gety() + offset.y(), p.getz() + offset.z());
+			glVertex3f(p.getx() - offset.x(), p.gety() + offset.y(), p.getz() - offset.z());
+			glVertex3f(p.getx() - offset.x(), p.gety() - offset.y(), p.getz() - offset.z());
+			glVertex3f(p.getx() + offset.x(), p.gety() - offset.y(), p.getz() + offset.z());
+		
+		glEnd();
+		printf("get_pp_planes end!\n");
+	}
+	// Horizontal pushPull
+	else if(pp_face != NOTHING)
+	{
+		float offset = 50;
+		Point p;
+		p.set(Point(io::mouse_x, io::mouse_y));
+
+		glBegin(GL_QUADS);
+		
+			glVertex3f(p.getx() + offset, p.gety(), p.getz() + offset);
+			glVertex3f(p.getx() - offset, p.gety(), p.getz() - offset);
+			glVertex3f(p.getx() - offset, p.gety(), p.getz() - offset);
+			glVertex3f(p.getx() + offset, p.gety(), p.getz() + offset);
+		
+		glEnd();
 	}
 }
 
-/*void BuildState::mouseUpHandler(int button)
+/*void draw_pushPullPlanes()
 {
-	InGameState *currState = global::stateManager->currentState;
-	// IF frist registered up (after a click)
-	if(MOUSE_DOWN)
+	int i, sections = 40;
+	GLfloat twoPi = 2.0 * 3.14159;
+	glBegin(GL_TRIANGLE_FAN);
+	glColor3f(1, 1, 1);
+	if(intersection == TOP)
 	{
-		// draw 2D rectangle ground surface or top of existing building
-		if(button == GLUT_RIGHT_BUTTON)
-		{
-			Point click;
-			click.set(Point(io::mouse_x, io::mouse_y));
-			click.adjustPointForBlocksize(blocksize);
-
-			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_min(firstPoint);
-			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_x(click.getx());
-			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_z(click.getz());
-			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->set_max_y(static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->get_min_y());
-			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->adjust_bases();
-
-			firstPoint.setx(-1);
-			firstPoint.sety(-1);
-			counter = 0;
-
-			if(currState->objects.size() != 0)
-				static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->print_rectangle();
-		}
-		// push / pull rectangles
-		else if(button == GLUT_LEFT_BUTTON)
-		{
-			if(rect_element != -1)
-				static_cast<CustomObject*>(currState->objects[rect_element])->print_rectangle();
-			rect_element = -1;
-         intersection = NOTHING;
-		}
-		MOUSE_DOWN = false;
+		// x fan
+		glVertex3f(mouse_click.x, 0, 0);
+		for(i = 0; i <= sections; i++)
+			glVertex3f(mouse_click.x, 3 * city_radius * cos(i * twoPi / sections), 3 * city_radius * sin(i * twoPi / sections));
+		glEnd();
+		// z fan
+		glBegin(GL_TRIANGLE_FAN);
+		glVertex3f(0, 0, mouse_click.z);
+		for(i = 0; i <= sections; i++)
+			glVertex3f(3 * city_radius * cos(i * twoPi / sections), 3 * city_radius * sin(i * twoPi / sections), mouse_click.z);
 	}
-	// ELSE handle camera movement
 	else
 	{
-
+		glVertex3f(0, mouse_click.y, 0);
+		for(i = 0; i <= sections; i++)
+			glVertex3f(3 * city_radius * cos(i * twoPi / sections), mouse_click.y, 3 * city_radius * sin(i * twoPi / sections));
 	}
+	glEnd();
 }*/
+
+// determines if a mouse click intersects with an existing rectangle
+// if it does, it sets global variables pp_index (the index of the rectangle it intersects with)
+// and pp_face (the face of the rectangle it intersects with)
+void BuildState::evaluateClick(Point click)
+{
+	InGameState *currState = global::stateManager->currentState;
+	int i = 0;	
+	//printf("-------\n");
+	// FOR all objects
+	while (i < currState->objects.size() && pp_face == NOTHING)
+	{
+		pp_face = static_cast<CustomObject*>(objects[i])->check_click(click);
+		if(pp_face != NOTHING)
+			pp_index = i;
+		i++;
+	}
+	
+	/*if(pp_face == NOTHING)
+		printf("clicked nothing, currState->objects.size() = %d\n", currState->objects.size());
+	else
+		printf("clicked rectangle %d's face %d\n", pp_index, pp_face);*/
+}
 
 void BuildState::placeY(int rect_index, int below_index)
 {
-	static_cast<CustomObject*>(objects[rect_index])->set_min_y(0);
-	static_cast<CustomObject*>(objects[rect_index])->set_max_y(0);
+	// IF rect_index is on top of another rectangle
+	if(below_index != -1)
+	{
+		static_cast<CustomObject*>(objects[rect_index])->set_min_y(static_cast<CustomObject*>(objects[rect_index])->get_max_y());
+		static_cast<CustomObject*>(objects[rect_index])->set_max_y(static_cast<CustomObject*>(objects[rect_index])->get_max_y());
+	}
+	// IF rect_index is on the ground plane
+	else
+	{
+		static_cast<CustomObject*>(objects[rect_index])->set_min_y(0);
+		static_cast<CustomObject*>(objects[rect_index])->set_max_y(0);
+	}
 }
 
 // bump up all static_cast<CustomObject*>(objects on top of rect_index
@@ -246,10 +318,10 @@ void BuildState::recursive_bump(int bottom, int delta_height)
       // exclude self
       if(top != bottom)
       {
-         // IF i.get_min_y() == rect_element.get_max_y() (old_height)
+         // IF i.get_min_y() == pp_index.get_max_y() (old_height)
          if( static_cast<CustomObject*>(objects[top])->set_min_y( (static_cast<CustomObject*>(objects[bottom])->get_max_y() - delta_height) ) )
          {
-            // IF rect_element encapsulates i
+            // IF pp_index encapsulates i
             if(static_cast<CustomObject*>(objects[bottom])->encapsulates((static_cast<CustomObject*>(objects[top])->get_max()), (static_cast<CustomObject*>(objects[top])->get_min())))
             {
                // add the difference in heights to i
@@ -295,7 +367,7 @@ void BuildState::blockalize_face(int index, Face f, bool pull)
 	}
 }
 
-// re is the rect_element(the rect i'm moving), i is the rectangle being compared to re
+// re is the pp_index(the rect i'm moving), i is the rectangle being compared to re
 bool BuildState::inPullPath(int reMax, int reMin, int iMax, int iMin)
 {
    // IF reMax OR reMin is INSIDE OF iMax AND iMin
@@ -325,13 +397,13 @@ void BuildState::check_pull(int index, Face f)
 		{
 			if(f == FACE1)
 			{
-				// IF i is "in front of" rect_element AND rect_element "passes" another rectangle
+				// IF i is "in front of" pp_index AND pp_index "passes" another rectangle
 	   		if( static_cast<CustomObject*>(objects[index])->get_min_x() < static_cast<CustomObject*>(objects[i])->get_min_x() && static_cast<CustomObject*>(objects[index])->get_max_x() > static_cast<CustomObject*>(objects[i])->get_min_x() )
 		   	{
 					// check if i is not on the same "level" as index
 					if(static_cast<CustomObject*>(objects[i])->get_min_y() == static_cast<CustomObject*>(objects[index])->get_min_y())
 					{
-						// check if i is in the path of rect_element
+						// check if i is in the path of pp_index
 				   	if( inPullPath(static_cast<CustomObject*>(objects[index])->get_max_z(), static_cast<CustomObject*>(objects[index])->get_min_z(), static_cast<CustomObject*>(objects[i])->get_max_z(), static_cast<CustomObject*>(objects[i])->get_min_z()) )
 					   {
 						   // set pull extent to collision rectangle's face
@@ -424,10 +496,10 @@ void BuildState::recursive_push(Face f, int bottom)
 		// exclude self
       if(top != bottom)
       {
-			// IF i.get_min_y() == rect_element.get_max_y()
+			// IF i.get_min_y() == pp_index.get_max_y()
          if( static_cast<CustomObject*>(objects[top])->get_min_y() == static_cast<CustomObject*>(objects[bottom])->get_max_y() )
          {
-				// IF rect_element encapsulates i ON THREE SIDES
+				// IF pp_index encapsulates i ON THREE SIDES
             if(static_cast<CustomObject*>(objects[bottom])->semiEncapsulates(f, (static_cast<CustomObject*>(objects[top])->get_max()), (static_cast<CustomObject*>(objects[top])->get_min())))
             {
 					if(static_cast<CustomObject*>(objects[top])->distance2Face(f, static_cast<CustomObject*>(objects[bottom])->whichPoint(f)) < 0)
@@ -453,11 +525,11 @@ void BuildState::adjust_face(int index, Face f, Point mouse_pos, bool block, boo
 			// remove the rectangle
 			objects.erase( objects.begin() + index);
 			// IF this rectangle is the one that was initially selected from mouse()
-			if(index == rect_element)
+			if(index == pp_index)
 			{
 				// restore initial state
-				rect_element = -1;
-         	intersection = NOTHING;
+				pp_index = -1;
+         	pp_face = NOTHING;
 			}
 		}
 		// IF the max is not less than the min
@@ -479,10 +551,10 @@ void BuildState::adjust_face(int index, Face f, Point mouse_pos, bool block, boo
 		if(static_cast<CustomObject*>(objects[index])->get_max_z() <= static_cast<CustomObject*>(objects[index])->get_min_z())
 		{
 			objects.erase(objects.begin() + index);
-			if(index == rect_element)
+			if(index == pp_index)
 			{
-				rect_element = -1;
-         	intersection = NOTHING;
+				pp_index = -1;
+         	pp_face = NOTHING;
 			}
 		}
 		else
@@ -501,10 +573,10 @@ void BuildState::adjust_face(int index, Face f, Point mouse_pos, bool block, boo
 		if(static_cast<CustomObject*>(objects[index])->get_min_x() >= static_cast<CustomObject*>(objects[index])->get_max_x())
 		{
 			objects.erase(objects.begin() + index);
-			if(index == rect_element)
+			if(index == pp_index)
 			{
-				rect_element = -1;
-         	intersection = NOTHING;
+				pp_index = -1;
+         	pp_face = NOTHING;
 			}
 		}
 		else
@@ -523,10 +595,10 @@ void BuildState::adjust_face(int index, Face f, Point mouse_pos, bool block, boo
 		if(static_cast<CustomObject*>(objects[index])->get_min_z() >= static_cast<CustomObject*>(objects[index])->get_max_z())
 		{
 			objects.erase(objects.begin() + index);
-			if(index == rect_element)
+			if(index == pp_index)
 			{
-				rect_element = -1;
-         	intersection = NOTHING;
+				pp_index = -1;
+         	pp_face = NOTHING;
 			}
 		}
 		else
@@ -543,31 +615,31 @@ void BuildState::adjust_face(int index, Face f, Point mouse_pos, bool block, boo
 
 void BuildState::new_push_pull(Point mouse_pos)
 {
-	if(intersection == TOP)
+	if(pp_face == TOP)
    {
       // move static_cast<CustomObject*>(objects on top of this rectangle too
       // record old height
-      int old_height = static_cast<CustomObject*>(objects[rect_element])->get_max_y();
+      int old_height = static_cast<CustomObject*>(objects[pp_index])->get_max_y();
       // update height
-      static_cast<CustomObject*>(objects[rect_element])->set_max_y(mouse_pos.gety());
+      static_cast<CustomObject*>(objects[pp_index])->set_max_y(mouse_pos.gety());
 		// get_max_y() cannot be < get_min_y()
-      if(static_cast<CustomObject*>(objects[rect_element])->get_max_y() < static_cast<CustomObject*>(objects[rect_element])->get_min_y())
-         static_cast<CustomObject*>(objects[rect_element])->set_max_y(static_cast<CustomObject*>(objects[rect_element])->get_min_y());
+      if(static_cast<CustomObject*>(objects[pp_index])->get_max_y() < static_cast<CustomObject*>(objects[pp_index])->get_min_y())
+         static_cast<CustomObject*>(objects[pp_index])->set_max_y(static_cast<CustomObject*>(objects[pp_index])->get_min_y());
 		// adjust for blocksize
-		static_cast<CustomObject*>(objects[rect_element])->set_max_y(static_cast<CustomObject*>(objects[rect_element])->get_max_y() - (static_cast<CustomObject*>(objects[rect_element])->get_max_y() % blocksize));
-		if(old_height != static_cast<CustomObject*>(objects[rect_element])->get_max_y())
-			recursive_bump(rect_element, static_cast<CustomObject*>(objects[rect_element])->get_max_y() - old_height);
+		static_cast<CustomObject*>(objects[pp_index])->set_max_y(static_cast<CustomObject*>(objects[pp_index])->get_max_y() - (static_cast<CustomObject*>(objects[pp_index])->get_max_y() % blocksize));
+		if(old_height != static_cast<CustomObject*>(objects[pp_index])->get_max_y())
+			recursive_bump(pp_index, static_cast<CustomObject*>(objects[pp_index])->get_max_y() - old_height);
    }
 
 	// see if mouse_pos passes blocksize thresh hold
-	if(abs(static_cast<CustomObject*>(objects[rect_element])->distance2Face(intersection, mouse_pos)) > blocksize)
+	if(abs(static_cast<CustomObject*>(objects[pp_index])->distance2Face(pp_face, mouse_pos)) > blocksize)
 	{
 		// IF PUSH
-		if(static_cast<CustomObject*>(objects[rect_element])->distance2Face(intersection, mouse_pos) < 0)
-			adjust_face(rect_element, intersection, mouse_pos, true, false);
+		if(static_cast<CustomObject*>(objects[pp_index])->distance2Face(pp_face, mouse_pos) < 0)
+			adjust_face(pp_index, pp_face, mouse_pos, true, false);
 
 		// IF PULL
 		else
-			adjust_face(rect_element, intersection, mouse_pos, true, true);
+			adjust_face(pp_index, pp_face, mouse_pos, true, true);
 	}
 }

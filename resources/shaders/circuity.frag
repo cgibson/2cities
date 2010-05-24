@@ -3,11 +3,8 @@ uniform float amb_contrib;
 uniform float diff_contrib;
 
 // texture samplers
-uniform sampler2D circuit1_tex;
-uniform sampler2D circuit2_tex;
-uniform sampler2D circuit3_tex;
-uniform sampler2D circuit4_tex;
 uniform sampler2D sweeper_tex;
+uniform sampler2D circuit_tex;
 
 // time and random offset inputs
 uniform float time;
@@ -61,10 +58,14 @@ void main()
     vec4 sweep_down = texture2D(sweeper_tex, sweep_down_coord);
    
     // get circuit samples
-    vec4 circuit1 = texture2D(circuit1_tex, gl_TexCoord[0].st);
-    vec4 circuit2 = texture2D(circuit2_tex, gl_TexCoord[0].st);
-    vec4 circuit3 = texture2D(circuit3_tex, gl_TexCoord[0].st);
-    vec4 circuit4 = texture2D(circuit4_tex, gl_TexCoord[0].st);
+    vec2 circuit1_coords = vec2(gl_TexCoord[0].s / 2.0, (gl_TexCoord[0].t / 2.0) + 0.5);
+    vec4 circuit1 = texture2D(circuit_tex, circuit1_coords);
+    vec2 circuit2_coords = vec2((gl_TexCoord[0].s / 2.0) + 0.5, (gl_TexCoord[0].t / 2.0) + 0.5);
+    vec4 circuit2 = texture2D(circuit_tex, circuit2_coords);
+    vec2 circuit3_coords = vec2(gl_TexCoord[0].s / 2.0, gl_TexCoord[0].t / 2.0);
+    vec4 circuit3 = texture2D(circuit_tex, circuit3_coords);
+    vec2 circuit4_coords = vec2((gl_TexCoord[0].s / 2.0) + 0.5, gl_TexCoord[0].t / 2.0);
+    vec4 circuit4 = texture2D(circuit_tex, circuit4_coords);
    
     // combine each layer (sweeper * alpha map * phong)
     vec4 layer1 = sweep_right * circuit1 * phong;
@@ -73,8 +74,8 @@ void main()
     vec4 layer4 = sweep_down * circuit4 * phong;
    
     // edge highlights
-    vec2 edge_amt = vec2(16.0 * pow((gl_TexCoord[0].s - 0.5) / width, 4.0),
-                         16.0 * pow((gl_TexCoord[0].t - 0.5) / height, 4.0));
+    vec2 edge_amt = vec2(256.0 * pow(abs((gl_TexCoord[0].s - 0.5)) / width, 8.0),
+                         256.0 * pow(abs((gl_TexCoord[0].t - 0.5)) / height, 8.0));
     vec4 edge = edge_strength * (((edge_amt.s + edge_amt.t) / 2.0) * vec4(1.0, 1.0, 1.0, 1.0));
    
     // final composition

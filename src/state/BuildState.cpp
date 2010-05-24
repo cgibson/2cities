@@ -12,7 +12,7 @@
 
 #include "../system/global.h"
 #include "../system/io.h"
-#include "../graphics/freelookcamera.h"
+#include "../graphics/orbitalcamera.h"
 #include "../helper/Vector.h"
 #include "../graphics/graphics.h"
 #include "../scene/CustomObject.h"
@@ -52,8 +52,10 @@ void BuildState::initialize() {
 
 	// create the camera
 	if (global::camera != NULL) delete global::camera;
-	global::camera = new FreelookCamera();
+	global::camera = new OrbitalCamera();
 	global::camera->init(Vector(30.0, 30.0, 30.0), Vector(0.0, 5.0, 0.0));
+	OrbitalCamera *cam = static_cast<OrbitalCamera *>(global::camera);
+	cam->shiftCaptureMode(true);
 
 	// mouse should be free to click
 	io::release_mouse();

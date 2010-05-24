@@ -24,6 +24,8 @@ public:
 	// property accessors
 	Vector center() const { return _center; }
 	void center(Vector center) { _center = center; }
+	bool shiftCaptureMode() const { return _shiftCaptureMode; }
+	void shiftCaptureMode(bool shiftCaptureMode) { _shiftCaptureMode = shiftCaptureMode; }
 
 	// create orbital basis vectors to refer to the eye position and center point
 	Vector orbitViewVec();
@@ -35,9 +37,11 @@ private:
 	bool _down;
 	bool _left;
 	bool _right;
+	bool _shift;
 	float _theta;
 	float _phi;
 	Vector _center;
+	bool _shiftCaptureMode;
 
 	static const float MAX_PITCH_DISP;
 	static const float MAX_YAW_DISP;

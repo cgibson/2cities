@@ -14,7 +14,8 @@ const float OrbitalCamera::CENTER_BLEED = 0.985;
 OrbitalCamera::OrbitalCamera()
 	: Camera()
 {
-	_up = _down = _left = _right = false;
+	_up = _down = _left = _right = _shift = false;
+	_shiftCaptureMode = false;
 }
 
 OrbitalCamera::~OrbitalCamera()
@@ -45,9 +46,6 @@ void OrbitalCamera::init()
 
 void OrbitalCamera::update(int ms)
 {
-	// don't update if not captured
-	if (!io::captured) return;
-
 	float lift_amt = 0.0;
 	float strafe_amt = 0.0;
 
@@ -87,8 +85,11 @@ void OrbitalCamera::update(int ms)
 	}
 
 	// adjust the theta/phi displacements from the camera values (based on mouse input)
-	_theta += io::mouse_x * _sensitivity;
-	_phi -= io::mouse_y * _sensitivity;
+	if (io::captured)
+	{
+		_theta += io::mouse_x * _sensitivity;
+		_phi -= io::mouse_y * _sensitivity;
+	}
 
 	// clamp the max displacements
 	_phi = (_phi > MAX_PITCH_DISP) ? MAX_PITCH_DISP : _phi;
@@ -133,6 +134,14 @@ void OrbitalCamera::keyDown(int key, bool special)
 				_right = true;
 				break;
 
+			case ' ':
+				if (_shiftCaptureMode)
+				{
+					if (!_shift) io::capture_mouse();
+					_shift = true;
+				}
+				break;
+
 			default:
 				break;
 		}
@@ -159,6 +168,14 @@ void OrbitalCamera::keyUp(int key, bool special)
 
 			case 'd':
 				_right = false;
+				break;
+
+			case ' ':
+				if (_shiftCaptureMode)
+				{
+					if (_shift) io::release_mouse();
+					_shift = false;
+				}
 				break;
 
 			default:

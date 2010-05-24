@@ -102,12 +102,16 @@ int CustomObject::compute_volume()
 // it returns the face that it intercets or -1 if it does not intercet a face
 Face CustomObject::check_click(Point click)
 {
-   // IF the point is inside of a face, return that face
+	//printf("checking click: %s\n", click.str());
+	//printf("against rectangle: ");
+	//print_rectangle();
+	// IF the point is inside of a face, return that face
    Face intercetion = NOTHING;
    // check TOP - xz plane, max.gety()
    if(fabs(click.gety() - max.gety()) < 1)
    {
-      if(click.getz() > min.getz() && click.getz() < max.getz())
+		//printf("checking top\n");      
+		if(click.getz() > min.getz() && click.getz() < max.getz())
       {
          if(click.getx() > min.getx() && click.getx() < max.getx())
          {
@@ -120,10 +124,13 @@ Face CustomObject::check_click(Point click)
    // check FACE1 - zy plane, max.getx()
    if(fabs(click.getx() - max.getx()) < 1)
    {
-      if(click.getz() > min.getz() && click.getz() < max.getz())
+		//printf("checking FACE1\n");      
+		if(click.getz() > min.getz() && click.getz() < max.getz())
       {
-         if(click.gety() > min.gety() && click.gety() < max.gety())
+         //printf("within z bounds\n");
+			if(click.gety() > min.gety() && click.gety() < max.gety())
          {
+				//printf("within y bounds\n");
             intercetion = FACE1;
             return intercetion;
          }
@@ -227,7 +234,7 @@ void CustomObject::draw_rectangle3D()
 {
 	// draw TOP
 	glBegin(GL_POLYGON);
-	//glColor3f(color.red, color.green, color.blue);
+	glNormal3f(0,1,0);
 	glVertex3f(max.getx(), max.gety(), max.getz());
 	glVertex3f(min.getx(), max.gety(), max.getz());
 	glVertex3f(min.getx(), max.gety(), min.getz());
@@ -236,7 +243,7 @@ void CustomObject::draw_rectangle3D()
 
 	// draw BOTTOM
 	glBegin(GL_POLYGON);
-	//glColor3f(color.red, color.green, color.blue);
+	glNormal3f(0,1,0);
 	glVertex3f(max.getx(), min.gety(), max.getz());
 	glVertex3f(min.getx(), min.gety(), max.getz());
 	glVertex3f(min.getx(), min.gety(), min.getz());
@@ -245,7 +252,7 @@ void CustomObject::draw_rectangle3D()
 
 	// draw side 1
 	glBegin(GL_POLYGON);
-	//glColor3f(color.red, color.green, color.blue);
+	glNormal3f(1,0,0);	
 	glVertex3f(max.getx(), min.gety(), max.getz());
 	glVertex3f(max.getx(), max.gety(), max.getz());
 	glVertex3f(max.getx(), max.gety(), min.getz());
@@ -254,7 +261,7 @@ void CustomObject::draw_rectangle3D()
 
 	// draw side 2
 	glBegin(GL_POLYGON);
-	//glColor3f(color.red, color.green, color.blue);
+	glNormal3f(0,0,1);
 	glVertex3f(min.getx(), min.gety(), max.getz());
 	glVertex3f(min.getx(), max.gety(), max.getz());
 	glVertex3f(max.getx(), max.gety(), max.getz());
@@ -263,7 +270,7 @@ void CustomObject::draw_rectangle3D()
 
 	// draw side 3
 	glBegin(GL_POLYGON);
-	//glColor3f(color.red, color.green, color.blue);
+	glNormal3f(1,0,0);
 	glVertex3f(min.getx(), min.gety(), min.getz());
 	glVertex3f(min.getx(), max.gety(), min.getz());
 	glVertex3f(min.getx(), max.gety(), max.getz());
@@ -272,7 +279,7 @@ void CustomObject::draw_rectangle3D()
 	
 	// draw side 4
 	glBegin(GL_POLYGON);
-	//glColor3f(color.red, color.green, color.blue);
+	glNormal3f(0,0,1);
 	glVertex3f(max.getx(), min.gety(), min.getz());
 	glVertex3f(max.getx(), max.gety(), min.getz());
 	glVertex3f(min.getx(), max.gety(), min.getz());

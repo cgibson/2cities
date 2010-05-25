@@ -19,6 +19,36 @@
 using namespace global;
 using namespace enumeration;
 
+class NetworkObjectState {
+public:
+	WorldObject *objPtr;
+
+	// Initial Details
+	Vector initPos;
+
+	// Delta Details
+	int    lastUpdate;
+	Vector lastPos;
+
+	// Priority (to be reduced each send down to zero)
+	int    priority;
+
+	NetworkObjectState() {
+		objPtr     = NULL;
+		lastUpdate = 0;
+		lastPos    = Vector(0,0,0);
+		initPos    = Vector(0,0,0);
+	}
+
+	NetworkObjectState(WorldObject * newObj, int initPriority = 2) {
+		objPtr     = newObj;
+		initPos    = newObj->getPosition();
+		lastPos    = initPos;
+		lastUpdate = newObj->getTimeStamp();
+		priority   = initPriority;
+	}
+};
+
 class NetworkServer : public NetworkSystem {
 protected:
 	Physics physicsEngine;

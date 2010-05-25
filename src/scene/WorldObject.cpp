@@ -32,6 +32,7 @@ void WorldObject::draw() {
 
 void WorldObject::update(int elapsedTime) {
 
+	/*
 	Vector pos = getPosition();
 	Vector vel = getVelocity();
 	Vector grav = Vector(0,-10,0);
@@ -44,10 +45,11 @@ void WorldObject::update(int elapsedTime) {
 	pos = pos + (vel * (elapsedTime/1000.0f));
 
 	//printf("vel.mag=%f\n",vel.mag());
-	if(abs(vel.mag()) > 4.0) {
-		setPosition(pos);
-		setVelocity(vel);
+	if(vel.mag() > (20.0*elapsedTime/1000.0f)) {
+		//setPosition(pos);
+		//setVelocity(vel);
 	}
+	*/
 }
 
 void WorldObject::think(int elapsedTime) {

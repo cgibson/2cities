@@ -30,7 +30,7 @@ using namespace global;
 using namespace enumeration;
 
 #include "Network.h"
-using namespace Network;
+using namespace net;
 
 class NetworkSystem {
 protected:

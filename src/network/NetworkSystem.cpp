@@ -31,8 +31,8 @@ void NetworkSystem::updateObjectVector(vector<WorldObject *> *objVec, WorldObjec
  * until object in later updates OR gameState changes.
  */
 void NetworkSystem::updateObjectLocal(WorldObject *objPtr) {
-	WorldObject *oldObj = global::stateManager->currentState->objects.update(objPtr->getID(),objPtr);
-	delete oldObj;
+	std::vector<WorldObject *> *currObjects = &(global::stateManager->currentState->objects);
+	updateObjectVector(currObjects, objPtr);
 }
 
 void NetworkSystem::updatePktData(long elapsed) {
@@ -69,8 +69,8 @@ void NetworkSystem::removeObjectVector(vector<WorldObject *> *objVec, unsigned i
 }
 
 void NetworkSystem::removeObjectLocal(unsigned int worldObjectID) {
-	WorldObject *oldObj = global::stateManager->currentState->objects.remove(worldObjectID);
-	delete oldObj;
+	std::vector<WorldObject *> *currObjects = &(global::stateManager->currentState->objects);
+	removeObjectVector(currObjects, worldObjectID);
 }
 
 /* Creates Buffer required for send, sends packet, and cleans up

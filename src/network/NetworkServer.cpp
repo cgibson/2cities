@@ -63,7 +63,7 @@ void NetworkServer::networkIncomingGeneral() {
 
 		RecvPacket(&pkt, &_incomingSock, &ip);
 
-		if(pkt.header.type == Network::CONN_REQ) {
+		if(pkt.header.type == net::CONN_REQ) {
 			printf("Client is requesting to connect!\n");
 
 			// Create new player and add to players

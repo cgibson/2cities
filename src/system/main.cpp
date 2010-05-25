@@ -33,9 +33,9 @@ void updateLoop()
     global::stateManager->currentState->update(elapsed);
     global::networkManager->network->update(elapsed);
 
-    vector<WorldObject *> objList = global::stateManager->currentState->objects.getVector();
+    vector<WorldObject *> *objList = &global::stateManager->currentState->objects;
     vector<WorldObject *>::iterator objIt;
-    for(objIt = objList.begin(); objIt != objList.end(); objIt++)
+    for(objIt = objList->begin(); objIt != objList->end(); ++objIt)
     {
       (*objIt)->update(elapsed);
     }

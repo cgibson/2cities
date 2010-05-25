@@ -11,7 +11,7 @@
 #include "../../include/ting/WaitSet.hpp"
 
 #include "NetworkSystem.h"
-using namespace Network;
+using namespace net;
 
 #include "../system/global.h"
 #include "../system/enum.h"

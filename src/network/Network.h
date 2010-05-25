@@ -18,12 +18,7 @@
 	#define PRINTINFO(x) printf(x);
 #endif
 
-#include "../system/global.h"
-#include "../system/enum.h"
-using namespace global;
-using namespace enumeration;
-
-namespace Network {
+namespace net{
 	enum N_PacketType {
 		UNKNOWN,
 		CONN_REQ, CONN_REPLY, DISCONNECT,
@@ -32,20 +27,24 @@ namespace Network {
 		OBJECT_KILL, OBJECT_REQ, OBJECT_SEND, OBJECT_BATCHSEND
 	};
 
-	const unsigned int OBJECT_BATCHSEND_SIZE = 10;
+	extern const unsigned int OBJECT_BATCHSEND_SIZE;
 
-	const unsigned int CLIENT_SEND_MAX_PACKETS_PER_CYCLE = 30;
-	const unsigned int CLIENT_RECV_MAX_PACKETS_PER_CYCLE = 15;
+	extern const unsigned int CLIENT_SEND_MAX_PACKETS_PER_CYCLE;
+	extern const unsigned int CLIENT_RECV_MAX_PACKETS_PER_CYCLE;
 
-	const unsigned int SERVER_SEND_MAX_PACKETS_PER_CYCLE = 50;
-	const unsigned int SERVER_RECV_MAX_PACKETS_PER_CYCLE = 15;
+	extern const unsigned int SERVER_SEND_MAX_PACKETS_PER_CYCLE;
+	extern const unsigned int SERVER_RECV_MAX_PACKETS_PER_CYCLE;
 
-	const unsigned int SERVER_PHYSICS_UPDATE_RATE = 15;
+	extern const unsigned int SERVER_PHYSICS_UPDATE_RATE;
+
+	// To be used in the MultiSortedMap structure
+	extern int ObjSortIndex;
+	extern bool NetworkPriority_Sort_Velocity(WorldObject *objPtr1, WorldObject *objPtr2);
+	extern int timeElapsed;
 
 	// A separate class to make the header distinct
-	class NetworkPacketHeader {
-	public:
-		Network::N_PacketType type;
+	struct NetworkPacketHeader {
+		net::N_PacketType type;
 	};
 
 	class NetworkPacket {
@@ -54,72 +53,14 @@ namespace Network {
 		unsigned char data[2000];
 		unsigned int  dataSize;
 
-		NetworkPacket() {
-			dataSize = 0;
-			//data = NULL;
-			header.type = UNKNOWN;
-		}
+		NetworkPacket();
+		NetworkPacket(ting::Buffer<unsigned char> *buf, unsigned int recvSize);
+		NetworkPacket(N_PacketType newType, unsigned char *newData, unsigned int newDataSize);
+		~NetworkPacket() {};
 
-		NetworkPacket(ting::Buffer<unsigned char> *buf, unsigned int recvSize) {
-			dataSize = recvSize - sizeof(NetworkPacketHeader);
-			//data = new unsigned char[dataSize];
-			memcpy(&header, buf->Buf(), sizeof(NetworkPacketHeader));
-			memcpy(data, buf->Buf() + sizeof(NetworkPacketHeader), dataSize);
-		}
+		NetworkPacket operator=( const NetworkPacket& pkt);
 
-		NetworkPacket(N_PacketType newType, unsigned char *newData, unsigned int newDataSize) {
-			dataSize = newDataSize;
-			//data = new unsigned char[dataSize];
-			header.type = newType;
-			memcpy(data, newData, dataSize);
-		}
-
-		~NetworkPacket() {
-			//delete [] data;
-		}
-
-		NetworkPacket operator=( const NetworkPacket& pkt) {
-			this->header.type = pkt.header.type;
-			this->dataSize = pkt.dataSize;
-
-			//this->data = new unsigned char[this->dataSize];
-			memcpy(this->data, pkt.data, this->dataSize);
-			return(*this );
-		}
-
-		void display() {
-			printf("PacketDisplay> ");
-			switch (header.type) {
-			case CONN_REQ :
-				printf("CONN_REQ\n");
-				break;
-			case CONN_REPLY :
-				printf("CONN_REPLY: playerID=%i\n", *(int*)(data));
-				break;
-			case DISCONNECT :
-				printf("DISCONNECT\n");
-				break;
-			case TEXT_MSG :
-				printf("TEXT_MSG: %s\n", data);
-				break;
-			case OBJECT_REQ :
-				printf("OBJECT_REQ: objectID=%i\n", *(int*)(data));
-				break;
-			case OBJECT_SEND :
-				printf("OBJECT_SEND: objectID=%i\n", ((WorldObject*)data)->getID());
-				break;
-			case OBJECT_BATCHSEND :
-				printf("OBJECT_BATCHSEND: IDs... ");
-				// TODO print objects included in batch.
-				for(int i=0; i<10; i++)
-					printf("%i ",((WorldObject*)data + i)->getID());
-				printf("\n");
-				break;
-			default:
-				printf("No Print Rule for Header Type! EMUM=%i\n",(int)(header.type));
-				break;
-			}
-		}
+		void display();
 	};
 }
 

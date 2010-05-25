@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <vector>
 
-#include "../helper/MultiSortedMap.h"
 #include "../scene/WorldObject.h"
 #include "../system/enum.h"
 using namespace enumeration;
@@ -13,7 +12,7 @@ using namespace std;
 class InGameState
 {
     public:
-       MultiSortedMap<WorldObject *> objects;
+       vector<WorldObject *> objects;
 
        InGameState();
        virtual ~InGameState();

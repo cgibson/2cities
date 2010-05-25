@@ -31,6 +31,7 @@ void CarnageState::initialize() {
     // anymore, it's done globally at app launch
     // we just capture the mouse
     io::capture_mouse();
+    ammo_recharge = 0;
 
    // initialize our camera (orbital)
    if (global::camera != NULL) delete global::camera;
@@ -69,7 +70,6 @@ void CarnageState::updateInput(long milli_time) {
    if((io::keys[' '] || io::mouse_buttons[MOUSE_LEFT] == GLUT_DOWN) && ammo_recharge <= 0) {
 	  //Vector dir = (camera.eye-camera.lookAt) * -1;
 	  //dir.norm();
-
 	  // uniqueID creation & addObject(WorldObject)
 	  static int newObjID = 10000;
 	  WorldObject newObj = WorldObject(newObjID++,0,enumeration::DUMMY_SPHERE);

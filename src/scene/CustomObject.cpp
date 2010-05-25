@@ -290,10 +290,11 @@ void CustomObject::draw_rectangle3D()
 
 void CustomObject::draw() {
 
+/*
    Blueprint blueprint = global::factory->getBlueprint(type);
 
 	gfx::materials[blueprint.getMaterial()].applyMaterial(gfx::cur_shader, "frontMat");
-
+*/
 	// IF height = 0, THEN draw square at y = 0
 	if(min.gety() == max.gety())
 		draw_rectangle2D();

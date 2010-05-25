@@ -1,4 +1,5 @@
 #include "Material.h"
+#include "../graphics/graphics.h"
 
 Material::Material(GLfloat in_ambient[4], GLfloat in_diffuse[4], GLfloat in_specular[4], GLfloat in_shininess[1])
 {
@@ -14,7 +15,7 @@ Material::Material(GLfloat in_ambient[4], GLfloat in_diffuse[4], GLfloat in_spec
 
 void Material::applyMaterial(GLint program, const char *uniform)
 {
-  glUseProgram(program);
+  gfx::useShader( program );
   int loc = glGetUniformLocation(program, "material_ambient");
   glUniform4fv(loc, 1, ambient);
   loc = glGetUniformLocation(program, "material_diffuse");
@@ -23,6 +24,8 @@ void Material::applyMaterial(GLint program, const char *uniform)
   glUniform4fv(loc, 1, specular);
   loc = glGetUniformLocation(program, "material_shininess");
   glUniform1f(loc, shininess);
+  
+  gfx::useShader( gfx::cur_shader );
 }
 
 void Material::applyMaterial(int program, int location) {

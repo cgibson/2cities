@@ -13,6 +13,7 @@
 #include "../system/io.h"
 #include "../graphics/orbitalcamera.h"
 #include "../helper/Vector.h"
+#include "../scene/CustomObject.h"
 
 #define RECHARGE_TIME 200
 

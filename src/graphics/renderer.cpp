@@ -3,6 +3,8 @@
 #include "../system/enum.h"
 
 #include "../network/NetworkPrivate.h"
+#include "../scene/CustomObject.h"
+#include "../state/BuildState.h"
 
 using namespace enumeration;
 
@@ -42,6 +44,8 @@ void Renderer::draw()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
+  //gfx::useShader( 0 );
+  
   // update lights
   do_lights();
 
@@ -49,7 +53,7 @@ void Renderer::draw()
   
     //TODO: Remove BEGIN
   
-  glUseProgram( 0 );
+  gfx::useShader( 0 );
   
   glDisable(GL_DEPTH_TEST);
   glColor3f(0,0,0);
@@ -62,6 +66,7 @@ void Renderer::draw()
   glEnd();
   glEnable(GL_DEPTH_TEST);
   
+  gfx::useShader( 0 );
   
   if(gfx::draw_axis)
   {
@@ -89,9 +94,9 @@ void Renderer::draw()
   int loc;
 
   //gfx::useShader(gfx::shSimple);
-  switch(global::stateManager->currentState->stateType())
-  {
-	case BUILD_STATE:
+  //switch(global::stateManager->currentState->stateType())
+  //{
+	//case BUILD_STATE:
 	
 		gfx::useShader(gfx::shBuildGrid);
 		
@@ -105,12 +110,12 @@ void Renderer::draw()
 		
 		loc = glGetUniformLocation(gfx::shBuildGrid, "line_pct");
 		glUniform1f(loc, 0.03f);
-		break;
-	case CARNAGE_STATE: default:
+	//	break;
+	//case CARNAGE_STATE: default:
 		//gfx::materials[WHITE_MAT].applyMaterial(gfx::cur_shader, "material");
 		//gfx::useShader(gfx::shSimple);
 		
-		gfx::useShader(gfx::shBuildGrid);
+	/*	gfx::useShader(gfx::shBuildGrid);
 		
 		gfx::materials[GRID].applyMaterial(gfx::shBuildGrid, "material");
 		
@@ -122,10 +127,13 @@ void Renderer::draw()
 		
 		loc = glGetUniformLocation(gfx::shBuildGrid, "line_pct");
 		glUniform1f(loc, 0.03f);
-		break;
-  }
+		break;*/
+  //}
+  
+  //printf("WTF IS THIS? %d\n", gfx::cur_shader);
   
   glBegin(GL_QUADS);
+    glColor4f(1,1,1,1);
     glNormal3f(0,1,0);
     glVertex3f(-100, 0, -100);
     glVertex3f(-100, 0,  100);
@@ -135,8 +143,36 @@ void Renderer::draw()
 
   InGameState *curstate = global::stateManager->currentState;
 
+  if(curstate->stateType() == BUILD_STATE)
+  {
+	gfx::useShader( 0 );
+	
+	BuildState *bs = (BuildState*)curstate;
+	if(BuildStateGlobals::renderPlane)
+	{
+		Vector offset = BuildStateGlobals::planeNormal.cross(Vector(0,1,0));
+		offset = offset + Vector(0,1,0);
+		offset = offset * BuildStateGlobals::planeSize;
+		Vector p = BuildStateGlobals::planeLocation;
+		glDisable(GL_LIGHTING);
+		glBegin(GL_QUADS);
+		    glColor4f(1,1,0,1);
+			glVertex3f(p.x() + offset.x(), p.y() + offset.y(), p.z() + offset.z());
+			glVertex3f(p.x() - offset.x(), p.y() + offset.y(), p.z() - offset.z());
+			glVertex3f(p.x() - offset.x(), p.y() - offset.y(), p.z() - offset.z());
+			glVertex3f(p.x() + offset.x(), p.y() - offset.y(), p.z() + offset.z());
+		glEnd();
+		glEnable(GL_LIGHTING);
+	}
+  }
+
+  float forceResult,strength;
+  Vector force;
+  bool changed;
+
   if(curstate->objects.size() > 0)
   {
+	  changed = false;
 	  ObjectType lastType, curType;
 	  lastType = WARPED_CUBE;
 	  curType = DUMMY_BLOCK;
@@ -152,40 +188,64 @@ void Renderer::draw()
 	  for(objIt = objList.begin(); objIt != objList.end(); objIt++)
 	  {
 		curType = (*objIt)->getType();
-		if(curType != lastType)
+		if(curType != lastType || !changed)
 		{
+			changed = true;
+			lastType = curType;
 			switch(curType)
 			{
 				case DUMMY_BLOCK:
 					gfx::useShader(gfx::shForceBlock);
-
 					break;
 				case DUMMY_SPHERE:
-				default:
 					gfx::useShader(gfx::shSimple);
+					blueprint = global::factory->getBlueprint(curType);
+					curMat = gfx::materials[blueprint.getMaterial()];
+					curMat.applyMaterial(gfx::cur_shader, "");
+					break;
+				default:
+					//gfx::useShader(gfx::shForceBlock);
+					//printf("BEFORE: %d\n", gfx::cur_shader);
+					gfx::useShader(gfx::shSimple);
+					//printf("AFTER: %d\n", gfx::cur_shader);
+					blueprint = global::factory->getBlueprint(curType);
+					curMat = gfx::materials[blueprint.getMaterial()];
+					curMat.applyMaterial(gfx::cur_shader, "");
+
 					break;
 			}
 			//printf("DIFFERENCE!\n");
-			lastType = curType;
+		}		
+
+        if(curType == DUMMY_BLOCK)
+        {
+			
+			
 			blueprint = global::factory->getBlueprint(curType);
 			curMat = gfx::materials[blueprint.getMaterial()];
 			curMat.applyMaterial(gfx::cur_shader, "");
+			
+			loc = glGetUniformLocation(gfx::shForceBlock, "force");
+			
+			force = (*objIt)->getForce();
+			forceResult = force.x() * 40.0f;
+			strength = force.y() * 2.0;
+			glUniform1f(loc, forceResult);
+			loc = glGetUniformLocation(gfx::shForceBlock, "edge_strength");
+			glUniform1f(loc, 0.2 + strength);
 		}
-		loc = glGetUniformLocation(gfx::shForceBlock, "force");
-		Vector force = (*objIt)->getForce();
-		float forceResult = force.x() * 40.0f;
-		float strength = force.y() * 2.0;
-		//printf("strength: %f\n", strength);
-		glUniform1f(loc, forceResult);
-		loc = glGetUniformLocation(gfx::shForceBlock, "edge_strength");
-		glUniform1f(loc, 0.2 + strength);
-
 
 		(*objIt)->draw();
+                    glUseProgram(0);
 	  }
-	}
+	}else{
+			//curstate->objects.push_back(new  WorldObject(0,0,DUMMY_SPHERE));
+			//curstate->objects.push_back(new CustomObject(0, 0, CUSTOM_BLOCK, Point(5, 10, 5), Point(-5, 0, -5)));
+		}
 
-  glUseProgram( 0 );
+  //gfx::useShader( 0 );
+
+  glUseProgram(0);
 
   glPopMatrix();
 

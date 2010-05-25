@@ -18,6 +18,11 @@ namespace BuildStateGlobals
 	extern Face pp_face;
 	extern int pp_index;
 	extern Point firstPoint, last, mouse_click;
+	
+	extern bool renderPlane;
+	extern Vector planeNormal;
+	extern Vector planeLocation;
+	extern float planeSize;
 }
 
 class BuildState : public InGameState

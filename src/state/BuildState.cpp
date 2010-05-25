@@ -25,6 +25,11 @@ namespace BuildStateGlobals
 	int blocksize, pp_index, counter;
 	Face pp_face;
 	Point firstPoint, last, mouse_click;
+	
+	bool renderPlane = true;
+	Vector planeNormal = Vector(1,0,0);
+	Vector planeLocation = Vector(0,5,0);
+	float planeSize = 10;
 }
 
 #define ANGLE_SPEED 2

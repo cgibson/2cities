@@ -1,4 +1,5 @@
 #include "Lighting.h"
+#include "../graphics/graphics.h"
 
 LightData lights[MAX_LIGHTS];
 
@@ -38,13 +39,14 @@ void Lighting::setLightPos(GLfloat x, GLfloat y, GLfloat z)
     
 void Lighting::doLighting(GLint program, const char *uniform)
 {
-  glUseProgram(program);
+  gfx::useShader( program );
   int loc = glGetUniformLocation(program, "light_position");
   glUniform3fv(loc, 1, position);
   loc = glGetUniformLocation(program, "light_diffuse");
   glUniform4fv(loc, 1, diffuse);
   loc = glGetUniformLocation(program, "light_ambient");
   glUniform4fv(loc, 1, ambient);
+  gfx::useShader( gfx::cur_shader );
 }
     
 void Lighting::doLighting(GLint program, int location) {

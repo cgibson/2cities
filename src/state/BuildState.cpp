@@ -26,7 +26,7 @@ namespace BuildStateGlobals
 	Face pp_face;
 	Point firstPoint, last, mouse_click;
 	
-	bool renderPlane = true;
+	bool renderPlane = false;
 	Vector planeNormal = Vector(1,0,0);
 	Vector planeLocation = Vector(0,5,0);
 	float planeSize = 10;
@@ -69,7 +69,7 @@ void BuildState::initialize() {
 
 	io::register_mouse_down(BuildState::mouseDownToggle);
 	io::register_mouse_up(BuildState::mouseUpToggle);
-	io::register_key_down(BuildState::keyDownHandler);
+	//io::register_key_down(BuildState::keyDownHandler);
 
 	// make a simple CustomObject and add it to static_cast<CustomObject*>(objects vector
 	// (unsigned int newid, unsigned int newplayerid, ObjectType newtype, Point newmax, Point newmin)
@@ -103,22 +103,6 @@ void BuildState::updateInput(long milli_time) {
    }
 }
 
-void BuildState::keyDownHandler(int key, bool special)
-{
-	/*// General Keyboard Layout
-	if(key == 27) {
-		exit(0);
-	}
-
-   if(key == 'f') {
-	   if (io::captured) {
-		   io::release_mouse();
-	   } else {
-		   io::capture_mouse();
-	   }
-   }*/
-}
-
 // called only on the first click down
 void BuildState::mouseDownToggle(int button)
 {
@@ -140,6 +124,7 @@ void BuildState::mouseUpToggle(int button)
 	counter = 0;
 	pp_face = NOTHING;
 	pp_index = -1;
+	renderPlane = false;
 }
 
 void BuildState::mouseDownHandler()
@@ -193,7 +178,6 @@ void BuildState::mouseDownHandler()
 		if(pp_index != -1)
 		{
 			// get push/pull plane
-			printf("get pp planes!\n");
 			get_pp_plane();			
 			new_push_pull(Point(io::mouse_x, io::mouse_y));
 		}
@@ -209,71 +193,23 @@ void BuildState::get_pp_plane()
 	// Vertical	pushPull
 	if(pp_face == TOP)
 	{
-		// obtain a plane perpendicular to the view vector
-		float offsetSize = 10;
-		Vector v = global::camera->viewVec() * -1;
-		Vector offset = global::camera->strafeVec();//Vector.crossProduct(v, Vector(0,1,0));
-		offset.y(1);
-		offset = offset * offsetSize;
-		
-		Point p;
-		p.set(Point(io::mouse_x, io::mouse_y));
-		
-		glBegin(GL_QUADS);
-		
-			glVertex3f(p.getx() + offset.x(), p.gety() + offset.y(), p.getz() + offset.z());
-			glVertex3f(p.getx() - offset.x(), p.gety() + offset.y(), p.getz() - offset.z());
-			glVertex3f(p.getx() - offset.x(), p.gety() - offset.y(), p.getz() - offset.z());
-			glVertex3f(p.getx() + offset.x(), p.gety() - offset.y(), p.getz() + offset.z());
-		
-		glEnd();
-		printf("get_pp_planes end!\n");
+		renderPlane = true;
+		planeNormal = global::camera->viewVec() * -1;
+		Vector planeLoc = Vector(firstPoint.getx(), firstPoint.gety(), firstPoint.getz());
+		planeLocation = planeLoc;
+		planeSize = 100;
 	}
 	// Horizontal pushPull
 	else if(pp_face != NOTHING)
 	{
-		float offset = 50;
-		Point p;
-		p.set(Point(io::mouse_x, io::mouse_y));
-
-		glBegin(GL_QUADS);
-		
-			glVertex3f(p.getx() + offset, p.gety(), p.getz() + offset);
-			glVertex3f(p.getx() - offset, p.gety(), p.getz() - offset);
-			glVertex3f(p.getx() - offset, p.gety(), p.getz() - offset);
-			glVertex3f(p.getx() + offset, p.gety(), p.getz() + offset);
-		
-		glEnd();
+		renderPlane = true;
+		Vector v = Vector(0,1,0);
+		planeNormal = 	v;
+		v = Vector(firstPoint.getx(), firstPoint.gety(), firstPoint.getz());
+		planeLocation = v;
+		planeSize = 100;		
 	}
 }
-
-/*void draw_pushPullPlanes()
-{
-	int i, sections = 40;
-	GLfloat twoPi = 2.0 * 3.14159;
-	glBegin(GL_TRIANGLE_FAN);
-	glColor3f(1, 1, 1);
-	if(intersection == TOP)
-	{
-		// x fan
-		glVertex3f(mouse_click.x, 0, 0);
-		for(i = 0; i <= sections; i++)
-			glVertex3f(mouse_click.x, 3 * city_radius * cos(i * twoPi / sections), 3 * city_radius * sin(i * twoPi / sections));
-		glEnd();
-		// z fan
-		glBegin(GL_TRIANGLE_FAN);
-		glVertex3f(0, 0, mouse_click.z);
-		for(i = 0; i <= sections; i++)
-			glVertex3f(3 * city_radius * cos(i * twoPi / sections), 3 * city_radius * sin(i * twoPi / sections), mouse_click.z);
-	}
-	else
-	{
-		glVertex3f(0, mouse_click.y, 0);
-		for(i = 0; i <= sections; i++)
-			glVertex3f(3 * city_radius * cos(i * twoPi / sections), mouse_click.y, 3 * city_radius * sin(i * twoPi / sections));
-	}
-	glEnd();
-}*/
 
 // determines if a mouse click intersects with an existing rectangle
 // if it does, it sets global variables pp_index (the index of the rectangle it intersects with)

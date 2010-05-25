@@ -25,7 +25,7 @@ namespace BuildStateGlobals
 	int blocksize, pp_index, counter;
 	Face pp_face;
 	Point firstPoint, last, mouse_click;
-
+	
 	bool renderPlane = false;
 	Vector planeNormal = Vector(1,0,0);
 	Vector planeLocation = Vector(0,5,0);
@@ -109,7 +109,9 @@ void BuildState::mouseDownToggle(int button)
 	LAST_BUTTON = button;
 	MOUSE_DOWN = true;
 	firstPoint.set(Point(io::mouse_x, io::mouse_y));
-	//printf("***\nfristPoint: %s\n", firstPoint.str());
+	printf("***\nfristPoint: %s\n", firstPoint.str());
+	//firstPoint.round();
+	printf("***\nfristPoint: %s\n", firstPoint.str());
 }
 
 // called only on the first mouse up
@@ -150,8 +152,9 @@ void BuildState::mouseDownHandler()
 			click.set(Point(io::mouse_x, io::mouse_y));
 			click.adjustPointForBlocksize(blocksize);
 			// push_back new CustomObject
-			currState->objects.push_back( new CustomObject( currState->objects.size(), 0, CUSTOM_BLOCK, firstPoint, Point(io::mouse_x, io::mouse_y) ) );
-			placeY(currState->objects.size() - 1, pp_index);
+			int objID = currState->objects.size();
+			currState->objects.push_back(new CustomObject(objID , 0, CUSTOM_BLOCK, firstPoint, Point(io::mouse_x, io::mouse_y) ) );
+			placeY(objID, pp_index);
 		}
 		// IF not first click
 		else
@@ -221,7 +224,7 @@ void BuildState::evaluateClick(Point click)
 	// FOR all objects
 	while (i < currState->objects.size() && pp_face == NOTHING)
 	{
-		pp_face = static_cast<CustomObject*>(objects[i])->check_click(click);
+		pp_face = static_cast<CustomObject*>(currState->objects[i])->check_click(click);
 		if(pp_face != NOTHING)
 			pp_index = i;
 		i++;
@@ -556,7 +559,7 @@ void BuildState::adjust_face(int index, Face f, Point mouse_pos, bool block, boo
 
 void BuildState::new_push_pull(Point mouse_pos)
 {
-	if(pp_face == TOP)
+   if(pp_face == TOP)
    {
       // move static_cast<CustomObject*>(objects on top of this rectangle too
       // record old height
@@ -568,8 +571,8 @@ void BuildState::new_push_pull(Point mouse_pos)
          static_cast<CustomObject*>(objects[pp_index])->set_max_y(static_cast<CustomObject*>(objects[pp_index])->get_min_y());
 		// adjust for blocksize
 		static_cast<CustomObject*>(objects[pp_index])->set_max_y(static_cast<CustomObject*>(objects[pp_index])->get_max_y() - (static_cast<CustomObject*>(objects[pp_index])->get_max_y() % blocksize));
-		if(old_height != static_cast<CustomObject*>(objects[pp_index])->get_max_y())
-			recursive_bump(pp_index, static_cast<CustomObject*>(objects[pp_index])->get_max_y() - old_height);
+		//if(old_height != static_cast<CustomObject*>(objects[pp_index])->get_max_y())
+			//recursive_bump(pp_index, static_cast<CustomObject*>(objects[pp_index])->get_max_y() - old_height);
    }
 
 	// see if mouse_pos passes blocksize thresh hold

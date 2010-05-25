@@ -19,6 +19,7 @@
 #include "Material.h"
 #include "Lighting.h"
 #include "../state/CarnageState.h"
+#include "skybox.h"
 
 using namespace std;
 
@@ -26,10 +27,12 @@ class Renderer{
 public:
   Renderer();
   void init();
+  void update(int elapsed);
   void draw();
   void draw_scene();
   void reshape(int w, int h);
   void getMatrices(GLdouble **mvMatrix, GLdouble **pMatrix, GLint **vMatrix);
+
 private:
   void update_view();
   void init_lights();
@@ -39,6 +42,8 @@ private:
   Vector eye, lookAt;
 
   Lighting light;
+
+  Skybox skybox;
 };
 
 #endif

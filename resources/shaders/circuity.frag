@@ -13,10 +13,6 @@ uniform float rand_offset;
 // edge settings
 uniform float edge_strength;
 
-// building dimensions (for edge glow)
-uniform float width;
-uniform float height;
-
 // passed in from vertex shader
 varying vec3 view_vec;
 varying vec3 light_vec;
@@ -24,6 +20,7 @@ varying vec3 normal_vec;
 
 void main()
 {
+	
     // normalize all our vectors
     vec3 view = normalize(view_vec);
     vec3 light = normalize(light_vec);
@@ -38,6 +35,7 @@ void main()
     vec4 ambient = amb_contrib * vec4(1.0, 1.0, 1.0, 1.0);
     vec4 diffuse = diff_contrib * n_dot_l * vec4(1.0, 1.0, 1.0, 1.0);
     vec4 phong = ambient + diffuse;
+    phong.a = 1.0; // reset alpha
    
     // get sweeper texture coords
     vec2 sweep_right_coord = gl_TexCoord[0].st;
@@ -68,19 +66,20 @@ void main()
     vec4 circuit4 = texture2D(circuit_tex, circuit4_coords);
    
     // combine each layer (sweeper * alpha map * phong)
-    vec4 layer1 = sweep_right * circuit1 * phong;
-    vec4 layer2 = sweep_up * circuit2 * phong;
-    vec4 layer3 = sweep_left * circuit3 * phong;
-    vec4 layer4 = sweep_down * circuit4 * phong;
-   
+    vec4 layer1 = sweep_right * circuit1 * phong * 0.5;
+    vec4 layer2 = sweep_up * circuit2 * phong * 0.5;
+    vec4 layer3 = sweep_left * circuit3 * phong * 0.5;
+    vec4 layer4 = sweep_down * circuit4 * phong * 0.5;
+	   
     // edge highlights
-    vec2 edge_amt = vec2(256.0 * pow(abs((gl_TexCoord[0].s - 0.5)) / width, 8.0),
-                         256.0 * pow(abs((gl_TexCoord[0].t - 0.5)) / height, 8.0));
-    vec4 edge = edge_strength * (((edge_amt.s + edge_amt.t) / 2.0) * vec4(1.0, 1.0, 1.0, 1.0));
+    vec2 edge_amt = vec2(256.0 * pow(abs((gl_TexCoord[0].s - 0.5)), 8.0),
+                         256.0 * pow(abs((gl_TexCoord[0].t - 0.5)), 8.0));
+    vec4 edge = clamp(edge_strength, 0.0, 1.0) * (((edge_amt.s + edge_amt.t) / 2.0) * vec4(1.0, 1.0, 1.0, 1.0));
    
     // final composition
     vec4 final = layer1 + layer2 + layer3 + layer4 + edge;
-   
+    final.a = 1.0;
+
     // set the fragment color
     gl_FragColor = final;
 }

@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
 
-    tex = texldr::loadBMP("../../resources/textures/circuit1layer1.bmp");
+    tex = texldr::loadBMP("../../resources/textures/circuit.bmp");
 
     glutMainLoop();
 

@@ -27,24 +27,25 @@ namespace gfx{
   extern Renderer renderer;
   extern ModelHandler modelHandler;
   extern Hud hud;
-    
+
   extern Material* materials;
-  
+
   extern GLint shSimple;          // simple shader
   extern GLint shBuildGrid;
   extern GLint shForceBlock;
-  
+  extern GLint shCircuity;
+
   extern bool draw_wireframe;
   extern bool draw_axis;
-  
+
   extern GLint cur_shader;
-  
+
   void useShader(GLint program);
   void display();
   void reshape(int w, int h);
   void init();
   void update(int elapsed);
-  
+
   bool installShader( string filename, int *shaderID );
   bool loadShaders();
 

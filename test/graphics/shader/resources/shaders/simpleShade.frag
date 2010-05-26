@@ -20,7 +20,7 @@ void main (void)
     vec4 Ispec = vec4(0);
     float NdotL = max(0.0, dot(N,L));
 
-    vec4 diffuse = gl_FrontMaterial.diffuse * gl_FrontLightProduct[0].diffuse;
+    vec4 diffuse = gl_Color;
     
     vec4 Iamb = max(gl_FrontLightProduct[0].ambient, gl_FrontMaterial.ambient);
     

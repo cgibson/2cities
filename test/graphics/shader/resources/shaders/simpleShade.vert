@@ -7,6 +7,8 @@ void main(void)
     N = normalize(gl_NormalMatrix * gl_Normal);
     gl_ClipVertex = gl_ModelViewMatrix * gl_Vertex;
     
+    gl_FrontColor = gl_Color;  
+    
     gl_Position = ftransform();
     gl_TexCoord[0] = gl_MultiTexCoord0;
 }

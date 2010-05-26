@@ -53,6 +53,7 @@ void drawGround( void )
 {
   float groundTexSize = GROUND_WIDTH / GROUND_TEX_SIZE;
 
+	glColor4f(0.1,0.1,0.1,1);
   // floor
   glNormal3f(0.0f, 1.0f, 0.0f);
   glBegin(GL_POLYGON);
@@ -75,11 +76,13 @@ void drawSphere( void )
 {
   glPushMatrix();
   glTranslatef(0,1,0);
+	glColor4f(1,1,0,1);
   glutSolidSphere(2, 20, 20);
   glPopMatrix();
   
   glPushMatrix();
   glTranslatef(4,0,0);
+	glColor4f(0,0,0,1);
   glutSolidSphere(2, 20, 20);
   glPopMatrix();
 }
@@ -87,6 +90,7 @@ void drawSphere( void )
 void drawScreen( void )
 {
   glBegin(GL_QUADS);
+		glColor4f(1,1,1,1);
     glTexCoord2f(0,0);
     glVertex3f(-1.0, -1.0, -1);
     glTexCoord2f(1,0);

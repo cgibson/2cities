@@ -16,15 +16,18 @@ NetworkClient::NetworkClient() : NetworkSystem() {
 }
 
 NetworkClient::~NetworkClient() {
-	disconnectServer();
+	//disconnectServer();
 	closeSockets();
 }
 
 void NetworkClient::closeSockets() {
 	disconnectServer();
 
-	socket.Close();
-	PRINTINFO("Client Socket Closed\n");
+	if(socket.IsValid()) {
+		waitSet->Remove(&socket);
+		socket.Close();
+		PRINTINFO("Client Socket Closed\n");
+	}
 }
 
 void NetworkClient::initialize() {}
@@ -35,9 +38,13 @@ bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 	if(socket.IsNotValid()) {
 		socket.Open();
 	}
+	// TODO check if already connected.
 
 	unsigned char msg[] = "";
 	NetworkPacket tmpPkt(CONN_REQ, msg, sizeof(msg));
+
+	int lagCalc_StartTime, lagCalc_EndTime, lagCalc_Delta;
+	lagCalc_StartTime = global::elapsed_ms();
 	printf("Sending Connection Request...");
 	SendPacket(tmpPkt, &socket, serverIP);
 
@@ -45,30 +52,36 @@ bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 	if(!waitSet->WaitWithTimeout(3000)) {
 		printf("Connection Timed Out!\n");
 		isConnected = false;
-		socket.Close();
-		return false;
 	}
 	else {
 		ting::IPAddress sourceIP;
 		NetworkPacket pkt;
 		RecvPacket(&pkt, &socket, &sourceIP);
+		lagCalc_EndTime = global::elapsed_ms();
 
 		if(pkt.header.type == CONN_REPLY) {
 			serverIP.port = sourceIP.port;
 			_playerID = *(int*)(pkt.data);
 			_currObjID = _playerID * 10000;
 
-			printf("Connected as Player %i!\n", _playerID);
+			lagCalc_Delta = (lagCalc_EndTime - lagCalc_StartTime)/2;
+			printf("Connected as Player %i with %i ms client/server delay!\n", _playerID, lagCalc_Delta);
+
+			NetworkPacket tmpPkt(LAG_RESULT, (unsigned char *)&lagCalc_Delta, sizeof(lagCalc_Delta));
+			SendPacket(tmpPkt, &socket, serverIP);
+
 			isConnected = true;
-			return true;
 		}
 		else {
 			printf("Connection Issue!\n");
 			isConnected = false;
-			socket.Close();
-			return false;
 		}
 	}
+
+//	if(!isConnected)
+//		socket.Close();
+
+	return isConnected;
 }
 
 void NetworkClient::disconnectServer() {
@@ -78,9 +91,37 @@ void NetworkClient::disconnectServer() {
 		printf("Disconnecting!");
 		SendPacket(pkt, &socket, serverIP);
 
-		socket.Close();
 		isConnected = false;
 	}
+}
+
+int NetworkClient::checkLag(ting::UDPSocket *socket, ting::IPAddress ip) {
+	if(socket->IsNotValid()) {
+		socket->Open();
+	}
+
+	int msg = 0;
+	NetworkPacket tmpPkt(LAG_REQ, (unsigned char *)&msg, sizeof(msg));
+
+	int lagCalc_Delta = -1;
+	int lagCalc_EndTime;
+	int lagCalc_StartTime = global::elapsed_ms();
+	SendPacket(tmpPkt, socket, ip);
+
+	// Wait for reply response for 1 second
+	if(waitSet->WaitWithTimeout(1000)) {
+		NetworkPacket pkt;
+		RecvPacket(&pkt, socket, &ip);
+		lagCalc_EndTime = global::elapsed_ms();
+
+		if(pkt.header.type == LAG_REPLY) {
+			lagCalc_Delta = (lagCalc_EndTime - lagCalc_StartTime)/2;
+			NetworkPacket tmpPkt(LAG_RESULT, (unsigned char *)&lagCalc_Delta, sizeof(int));
+			SendPacket(tmpPkt, socket, ip);
+		}
+	}
+
+	return lagCalc_Delta;
 }
 
 void NetworkClient::update(long milli_time) {

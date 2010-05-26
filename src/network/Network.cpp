@@ -14,6 +14,8 @@ namespace net{
 
 	const unsigned int SERVER_PHYSICS_UPDATE_RATE = 10;
 
+	const unsigned int SERVER_PORT_DEFAULT = 5060;
+
 	NetworkPacket::NetworkPacket() {
 			dataSize = 0;
 			//data = NULL;

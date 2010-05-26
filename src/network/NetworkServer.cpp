@@ -20,7 +20,7 @@ bool NetworkPrioritySort(NetworkObjectState objSt1, NetworkObjectState objSt2) {
 NetworkServer::NetworkServer() {
 	PRINTINFO("Network Initializing...");
 	ting::SocketLib socketsLib;
-	_incomingSock.Open(5060);
+	_incomingSock.Open(net::SERVER_PORT_DEFAULT);
 
 	_waitSet = new ting::WaitSet(10);
 	_waitSet->Add(&_incomingSock, ting::Waitable::READ);
@@ -58,6 +58,11 @@ void NetworkServer::closeSockets() {
 }
 
 void NetworkServer::initialize() {}
+
+int  NetworkServer::checkLag(ting::UDPSocket *socket, ting::IPAddress ip) {
+	// TODO ADD CODE
+	return -1;
+}
 
 void NetworkServer::networkIncoming() {
 	try {
@@ -125,10 +130,18 @@ void NetworkServer::networkIncomingPlayers(int p) {
 		ting::IPAddress ip;
 		NetworkPacket pkt;
 		RecvPacket(&pkt, &(_players[p]->socket), &ip);
+		WorldObject tmpObj;
 
 		switch (pkt.header.type) {
 		case OBJECT_SEND :
-			addObjectPhys(*(WorldObject*)(pkt.data));
+			tmpObj = *(WorldObject*)(pkt.data);
+			tmpObj.update(1);
+			addObjectPhys(tmpObj);
+			//addObjectPhys(*(WorldObject*)(pkt.data));
+			break;
+		case LAG_RESULT :
+			_players[p]->lagDelay = *(int*)(pkt.data);
+			printf("Player #%i has updated lagDelay to %i!\n", _players[p]->ID,  _players[p]->lagDelay);
 			break;
 		case STATUS_CHG :
 			printf("STATUS_CHG\n");
@@ -201,8 +214,8 @@ void NetworkServer::update(long milli_time) {
 	// Update Physics Engine
 	static int physicsDelay = 0;
 	if(physicsDelay <= 0) {
-		physicsEngine.update(SERVER_PHYSICS_UPDATE_RATE - physicsDelay);
-		physicsDelay = SERVER_PHYSICS_UPDATE_RATE;
+		physicsEngine.update(net::SERVER_PHYSICS_UPDATE_RATE - physicsDelay);
+		physicsDelay = net::SERVER_PHYSICS_UPDATE_RATE;
 
 		// UPDATE LOCAL DATA (and remove items fallen off world)
 		std::vector<WorldObject> PhysEngObjs = physicsEngine.getWorldObjects();
@@ -243,8 +256,6 @@ void NetworkServer::addObject(WorldObject newObj) {
 }
 
 void NetworkServer::addObjectPhys(WorldObject &newObj) {
-	// TODO add adjustment for client/server delay
-	// TODO .update(delay_ms) for delay time
 	newObj.setTimeStamp(global::elapsed_ms());
 	
 	// Add ObjectState to Tracker

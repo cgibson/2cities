@@ -74,6 +74,9 @@ public:
 
 	virtual bool connectServer(const char * ip, unsigned int port) { return false; };
 	virtual void disconnectServer() {};
+
+	virtual int  checkLag(ting::UDPSocket *socket, ting::IPAddress ip) { return 0; };
+
 	virtual PlayerColor getPlayerColor() { return (PlayerColor)_playerID; };
 
 	virtual void dedicatedServer(bool toggle) {};

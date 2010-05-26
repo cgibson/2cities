@@ -22,6 +22,7 @@ namespace net{
 	enum N_PacketType {
 		UNKNOWN,
 		CONN_REQ, CONN_REPLY, DISCONNECT,
+		LAG_REQ, LAG_REPLY, LAG_RESULT,
 		STATUS_REQ, STATUS_REPLY, STATUS_CHG,
 		LEVEL_LOAD, LEVEL_CLEAR, TEXT_MSG,
 		OBJECT_KILL, OBJECT_REQ, OBJECT_SEND, OBJECT_BATCHSEND
@@ -34,6 +35,7 @@ namespace net{
 
 	extern const unsigned int SERVER_SEND_MAX_PACKETS_PER_CYCLE;
 	extern const unsigned int SERVER_RECV_MAX_PACKETS_PER_CYCLE;
+	extern const unsigned int SERVER_PORT_DEFAULT;
 
 	extern const unsigned int SERVER_PHYSICS_UPDATE_RATE;
 

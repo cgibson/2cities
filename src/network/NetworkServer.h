@@ -74,10 +74,10 @@ public:
 	~NetworkServer();
 	void closeSockets();
 
+	int  checkLag(ting::UDPSocket *socket, ting::IPAddress ip);
+
 	void initialize();
 	void update(long milli_time);
-
-	//PlayerColor getPlayerColor() { return (PlayerColor)_playerID; };
 
 	void dedicatedServer(bool toggle) {	_dedicatedServer = toggle; }
 	bool dedicatedServer(void) { return _dedicatedServer; }

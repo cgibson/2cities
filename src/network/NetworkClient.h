@@ -40,6 +40,8 @@ public:
 
 	bool connectServer(const char * ip, unsigned int port);
 	void disconnectServer();
+	int  checkLag(ting::UDPSocket *socket, ting::IPAddress ip);
+
 	void sendMsg(char * msgStr);
 
 	// Add new object to scene

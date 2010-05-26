@@ -13,11 +13,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "../helper/Vector.h"
 
 class ModelHandler { // AKA Badass class
 public:
   ModelHandler();
   void drawShadedCube(float size);
+  void drawPlane(Vector p, Vector n, float size);
   void initialize();
 private:
   GLuint genShadedCubeDL();

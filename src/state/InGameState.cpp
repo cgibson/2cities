@@ -29,7 +29,7 @@ InGameState::InGameState() {
    theta = 3.0 * PI / 4.0f;
    distance = DIST;
    phi = PI / 5.0f;
-   initialize();
+   //initialize();
 }
 
 InGameState::~InGameState() {}

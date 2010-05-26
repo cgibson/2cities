@@ -43,7 +43,7 @@ using namespace global;
 using namespace BuildStateGlobals;
 
 BuildState::BuildState() {
-   initialize();
+   //initialize();
 }
 
 BuildState::~BuildState() {}

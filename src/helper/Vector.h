@@ -1,6 +1,8 @@
 #ifndef _VECTOR_H_
 #define _VECTOR_H_
 
+#define FLOAT_EPSILON 0.000001f
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -48,6 +50,16 @@ public:
   Vector mult( const Vector& v )
   {
      return Vector( p_x * v.p_x, p_y * v.p_y, p_z * v.p_z);
+  }
+  
+  bool operator==( const Vector& v )
+  {
+    return ((p_x < (v.p_x + FLOAT_EPSILON)) &&
+            (p_x > (v.p_x - FLOAT_EPSILON)) &&
+            (p_y < (v.p_x + FLOAT_EPSILON)) &&
+            (p_y > (v.p_x - FLOAT_EPSILON)) &&
+            (p_z < (v.p_x + FLOAT_EPSILON)) &&
+            (p_z > (v.p_x - FLOAT_EPSILON)));
   }
     
 //  friend ostream& operator<<( ostream&, const Vector& );

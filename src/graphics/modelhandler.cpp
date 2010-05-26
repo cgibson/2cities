@@ -12,6 +12,48 @@ void ModelHandler::drawShadedCube(float size)
 	glPopMatrix();
 }
 
+void ModelHandler::drawPlane(Vector n, Vector p, float size)
+{
+  Vector offset;
+  bool horizontal = false;
+  if(n == Vector(0,1,0))
+  {
+    horizontal = true;
+    offset = Vector(1,0,1);
+  }
+  else
+  {
+    offset = n.cross(Vector(0,1,0));
+    offset = offset + Vector(0,1,0);
+  }
+    
+  offset = offset * size;
+  
+  glDisable(GL_LIGHTING);
+  glEnable(GL_BLEND);
+  if(horizontal)
+  {
+    glBegin(GL_QUADS);
+      glColor4f(0,0,1,0.1);
+      glVertex3f(p.x() + offset.x(), p.y()+5, p.z() + offset.z());
+      glVertex3f(p.x() + offset.x(), p.y()+5, p.z() - offset.z());
+      glVertex3f(p.x() - offset.x(), p.y()+5, p.z() - offset.z());
+      glVertex3f(p.x() - offset.x(), p.y()+5, p.z() + offset.z());
+    glEnd();
+
+  }else{
+    glBegin(GL_QUADS);
+      glColor4f(0,0,1,0.1);
+      glVertex3f(p.x() + offset.x(), p.y() + offset.y(), p.z() + offset.z());
+      glVertex3f(p.x() - offset.x(), p.y() + offset.y(), p.z() - offset.z());
+      glVertex3f(p.x() - offset.x(), p.y() - offset.y(), p.z() - offset.z());
+      glVertex3f(p.x() + offset.x(), p.y() - offset.y(), p.z() + offset.z());
+    glEnd();
+  }
+  glDisable(GL_BLEND);
+  glEnable(GL_LIGHTING);
+}
+
 void ModelHandler::initialize()
 {
 	shadedCubeList = genShadedCubeDL();

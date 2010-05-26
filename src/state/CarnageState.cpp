@@ -20,7 +20,7 @@
 using namespace global;
 
 CarnageState::CarnageState() {
-	initialize();
+	//initialize();
 }
 
 CarnageState::~CarnageState() {}

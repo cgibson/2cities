@@ -102,7 +102,7 @@ void Renderer::draw()
 	if (global::stateManager->currentState->stateType() == CARNAGE_STATE)
 	{
 		gfx::useShader(gfx::shCircuity);
-		//skybox.draw(light.position[0], light.position[1], light.position[2]);
+		skybox.draw(light.position[0], light.position[1], light.position[2]);
 	}
 
   //gfx::useShader(gfx::shSimple);
@@ -154,29 +154,6 @@ void Renderer::draw()
   glEnd();
 
   InGameState *curstate = global::stateManager->currentState;
-
-  if(curstate->stateType() == BUILD_STATE)
-  {
-	gfx::useShader( 0 );
-
-	//BuildState *bs = (BuildState*)curstate;
-	if(BuildStateGlobals::renderPlane)
-	{
-		Vector offset = BuildStateGlobals::planeNormal.cross(Vector(0,1,0));
-		offset = offset + Vector(0,1,0);
-		offset = offset * BuildStateGlobals::planeSize;
-		Vector p = BuildStateGlobals::planeLocation;
-		glDisable(GL_LIGHTING);
-		glBegin(GL_QUADS);
-		    glColor4f(1,1,0,1);
-			glVertex3f(p.x() + offset.x(), p.y() + offset.y(), p.z() + offset.z());
-			glVertex3f(p.x() - offset.x(), p.y() + offset.y(), p.z() - offset.z());
-			glVertex3f(p.x() - offset.x(), p.y() - offset.y(), p.z() - offset.z());
-			glVertex3f(p.x() + offset.x(), p.y() - offset.y(), p.z() + offset.z());
-		glEnd();
-		glEnable(GL_LIGHTING);
-	}
-  }
 
   float forceResult,strength;
   Vector force;
@@ -256,6 +233,23 @@ void Renderer::draw()
 
   //gfx::useShader( 0 );
 
+  glUseProgram(0);
+  
+  
+  if(curstate->stateType() == BUILD_STATE)
+  {
+    //gfx::useShader( 0 );
+
+    BuildState *bs = (BuildState*)curstate;
+    if(BuildStateGlobals::renderPlane)
+    {
+      gfx::modelHandler.drawPlane(
+                          BuildStateGlobals::planeNormal, 
+                          BuildStateGlobals::planeLocation, 
+                          BuildStateGlobals::planeSize);
+    }
+  }
+  
   glUseProgram(0);
 
   glPopMatrix();

@@ -63,7 +63,8 @@ void Physics::update(int timeChange)
   vector<WorldObject> newWorldObjects(temp.size(), WorldObject());
   if (timeChange)
     world->stepSimulation(btScalar(timeChange / 1000.0), 10);
-  int i, result;
+  unsigned int i;
+  int result;
   for (i = 0; i < temp.size(); i++)
   {
 		result = temp[i]->update();
@@ -89,7 +90,7 @@ void Physics::update(int timeChange)
 
 int Physics::isUniqueID(int id)
 {
-  int i;
+  unsigned int i;
   int result = 1;
   for (i = 0; result && i < worldObjects.size(); i++)
   {
@@ -143,7 +144,7 @@ void Physics::emptyWorld()
 bool Physics::removeWorldObject(int id)
 {
   bool removed = false;
-  for (int i = 0; !removed && i < physicsBodies.size(); i++)
+  for (unsigned int i = 0; !removed && i < physicsBodies.size(); i++)
   {
     if (physicsBodies[i]->getID() == id)
     {

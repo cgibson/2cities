@@ -54,12 +54,12 @@ class CustomObject : public WorldObject
 		  int get_min_y(){return min.gety();}
 		  int get_min_z(){return min.getz();}
 
-		  int set_max_x(int x){max.setx(x);}
-		  int set_max_y(int y){max.sety(y);}
-		  int set_max_z(int z){max.setz(z);}
-		  int set_min_x(int x){min.setx(x);}
-		  int set_min_y(int y){min.sety(y);}
-		  int set_min_z(int z){min.setz(z);}
+		  void set_max_x(int x){max.setx(x);}
+		  void set_max_y(int y){max.sety(y);}
+		  void set_max_z(int z){max.setz(z);}
+		  void set_min_x(int x){min.setx(x);}
+		  void set_min_y(int y){min.sety(y);}
+		  void set_min_z(int z){min.setz(z);}
 
 		  Point get_max(){return Point(get_max_x(), get_max_y(), get_max_z());}
 		  Point get_min(){return Point(get_min_x(), get_min_y(), get_min_z());}

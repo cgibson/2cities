@@ -57,6 +57,8 @@ Point CustomObject::whichPoint(Face f)
 		return max;
 	else if(f == FACE3 || f == FACE4)
 		return min;
+	else
+		return min;
 }
 
 // returns true if the rectangle is inside our rect (excluding Face f)

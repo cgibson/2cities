@@ -12,14 +12,7 @@ namespace net{
 	const unsigned int SERVER_SEND_MAX_PACKETS_PER_CYCLE = 50;
 	const unsigned int SERVER_RECV_MAX_PACKETS_PER_CYCLE = 15;
 
-	const unsigned int SERVER_PHYSICS_UPDATE_RATE = 1;
-
-	// To be used in the MultiSortedMap structure
-	int ObjSortIndex = -1;
-	bool NetworkPriority_Sort_Velocity(WorldObject *objPtr1, WorldObject *objPtr2) {
-		return (objPtr1->getVelocity().mag() < objPtr2->getVelocity().mag());
-	}
-	int timeElapsed = 1;
+	const unsigned int SERVER_PHYSICS_UPDATE_RATE = 10;
 
 	NetworkPacket::NetworkPacket() {
 			dataSize = 0;

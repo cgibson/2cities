@@ -9,7 +9,7 @@
  * TODO Improve efficiency
  */
 void NetworkSystem::updateObjectVector(vector<WorldObject *> *objVec, WorldObject *objPtr) {
-	int i=0;
+	unsigned int i=0;
 	// Find Location in main Object vector
 	while (i < objVec->size() && (*objVec)[i]->getID() != objPtr->getID()) { i++; }
 
@@ -58,7 +58,7 @@ void NetworkSystem::updatePktData(long elapsed) {
  * TODO Improve efficiency
  */
 void NetworkSystem::removeObjectVector(vector<WorldObject *> *objVec, unsigned int worldObjectID) {
-	int i=0;
+	unsigned int i=0;
 	// Find Location in main Object vector
 	while (i < objVec->size() && (*objVec)[i]->getID() != worldObjectID) { i++; }
 
@@ -105,7 +105,7 @@ int NetworkSystem::RecvPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ti
 	ting::u8 strPtr[2000];
 	ting::Buffer<ting::u8> buf(strPtr, sizeof(strPtr));
 
-	int recvSize = socket->Recv(buf, *srcIP_P);
+	unsigned int recvSize = socket->Recv(buf, *srcIP_P);
 	_pktCountRecv++;
 
 	// Check if packet can possibly be valid
@@ -125,7 +125,7 @@ void NetworkSystem::buildBatchPacket(NetworkPacket *pkt, WorldObject objs[], uns
 		return;
 	}
 
-	for(int o=0; o<size; o++) {
+	for(unsigned int o=0; o<size; o++) {
 		memcpy(pkt->data + o*sizeof(WorldObject), &(objs[o]), sizeof(WorldObject));
 	}
 	pkt->header.type = OBJECT_BATCHSEND;

@@ -1,5 +1,22 @@
 #include "NetworkServer.h"
 
+bool NetworkPrioritySort(NetworkObjectState objSt1, NetworkObjectState objSt2) {
+	if(objSt1.priority != objSt2.priority)
+		return (objSt1.priority > objSt2.priority);
+
+	double obj1Vel = objSt1.objPtr->getVelocity().mag();
+	double obj2Vel = objSt2.objPtr->getVelocity().mag();
+	if(abs(obj1Vel - obj2Vel) > 0.5f) //(5*net::timeElapsed/1000.0f))
+		return (obj1Vel > obj2Vel);
+
+	double obj1PosDelta = (objSt1.objPtr->getPosition() - objSt1.lastPos).mag();
+	double obj2PosDelta = (objSt2.objPtr->getPosition() - objSt2.lastPos).mag();
+	if(abs(obj1PosDelta - obj2PosDelta) > 0.5f) //(5*net::timeElapsed/1000.0f))
+		return (obj1PosDelta > obj2PosDelta);
+
+	return (objSt1.lastUpdate < objSt2.lastUpdate);
+}
+
 NetworkServer::NetworkServer() {
 	PRINTINFO("Network Initializing...");
 	ting::SocketLib socketsLib;
@@ -44,7 +61,7 @@ void NetworkServer::networkIncoming() {
 			}
 
 			// Check each player socket for data (allows up to 10 packets to be accepted)
-			for(int p=0; p<_players.size(); p++) {
+			for(unsigned int p=0; p<_players.size(); p++) {
 				int pktsRecv = 0;
 				while (_players[p]->socket.CanRead() && pktsRecv++ < 10) {
 					networkIncomingPlayers(p);
@@ -136,7 +153,7 @@ void NetworkServer::networkOutgoing() {
 		const int objsSize = _serverObjs.size();
 		const int sendSize = min(objsSize, (int)(SERVER_SEND_MAX_PACKETS_PER_CYCLE * OBJECT_BATCHSEND_SIZE));
 		if (sendSize > 0 && (_players.size() > 0 || _dedicatedServer == false)) {
-			int currObj = _sendObjNext;
+			unsigned int currObj = _sendObjNext;
 			while(currObj < _sendObjNext + sendSize) {
 				// Update Locally
 				for(int o=0; o<10; o++)
@@ -144,13 +161,13 @@ void NetworkServer::networkOutgoing() {
 
 				// Build Batch Packet
 				WorldObject objGroup[OBJECT_BATCHSEND_SIZE];
-				for(int o=0; o<OBJECT_BATCHSEND_SIZE; o++)
+				for(unsigned int o=0; o<OBJECT_BATCHSEND_SIZE; o++)
 					objGroup[o] = *_serverObjs[(currObj+o)%objsSize];
 				NetworkPacket pkt;
 				buildBatchPacket(&pkt, objGroup, OBJECT_BATCHSEND_SIZE);
 
 				// Send to each _players
-				for(int p=0; p<_players.size(); p++) {
+				for(unsigned int p=0; p<_players.size(); p++) {
 					SendPacket(pkt, &(_players[p]->socket), _players[p]->ip);
 				}
 				currObj += OBJECT_BATCHSEND_SIZE;
@@ -169,53 +186,60 @@ void NetworkServer::networkOutgoing() {
 void NetworkServer::update(long milli_time) {
 	updatePktData(milli_time);
 
+	networkIncoming();
+
 	// Update Physics Engine
 	static int physicsDelay = 0;
 	if(physicsDelay <= 0) {
 		physicsEngine.update(SERVER_PHYSICS_UPDATE_RATE - physicsDelay);
 		physicsDelay = SERVER_PHYSICS_UPDATE_RATE;
+
+		// UPDATE LOCAL DATA (and remove items fallen off world)
+		std::vector<WorldObject> PhysEngObjs = physicsEngine.getWorldObjects();
+		for(unsigned int i=0; i < PhysEngObjs.size(); i++) {
+			if(PhysEngObjs[i].getPosition().y() < 0) {
+				unsigned int removeID = PhysEngObjs[i].getID();
+				// Local Removal
+				physicsEngine.removeWorldObject(removeID);
+				removeObjectVector(&_serverObjs,removeID);
+				removeObjectLocal(removeID);
+
+				// Send to Clients
+				NetworkPacket pkt(OBJECT_KILL, (unsigned char *)&removeID, sizeof(unsigned int));
+				for(unsigned int p=0; p<_players.size(); p++) {
+					SendPacket(pkt, &(_players[p]->socket), _players[p]->ip);
+				}
+			}
+			else {
+				updateObjectVector(&_serverObjs,new WorldObject(PhysEngObjs[i]));
+			}
+		}
 	}
 	else {
 		physicsDelay -= milli_time;
 	}
 
-	// UPDATE LOCAL DATA (and remove items fallen off world)
-	std::vector<WorldObject> PhysEngObjs = physicsEngine.getWorldObjects();
-	for(int i=0; i < PhysEngObjs.size(); i++) {
-		if(PhysEngObjs[i].getPosition().y() < 0) {
-			unsigned int removeID = PhysEngObjs[i].getID();
-			// Local Removal
-			physicsEngine.removeWorldObject(removeID);
-			removeObjectVector(&_serverObjs,removeID);
-			removeObjectLocal(removeID);
-
-			// Send to Clients
-			NetworkPacket pkt(OBJECT_KILL, (unsigned char *)&removeID, sizeof(unsigned int));
-			for(int p=0; p<_players.size(); p++) {
-				SendPacket(pkt, &(_players[p]->socket), _players[p]->ip);
-			}
-		}
-		else {
-			updateObjectVector(&_serverObjs,new WorldObject(PhysEngObjs[i]));
-		}
-	}
-
-	// TODO UPDATE DELTAs
-
-	networkIncoming();
 	networkOutgoing();
 }
 
 void NetworkServer::addObject(WorldObject newObj) {
 	newObj.setID(_currObjID++);
 	newObj.setPlayerID(_playerID);
+	
 	addObjectPhys(newObj);
 
 	// Add to local system for interpolation
 	updateObjectLocal(new WorldObject(newObj));
 }
 
-void NetworkServer::addObjectPhys(WorldObject newObj) {
+void NetworkServer::addObjectPhys(WorldObject &newObj) {
+	// TODO add adjustment for client/server delay
+	// TODO .update(delay_ms) for delay time
+	newObj.setTimeStamp(global::elapsed_ms());
+	
+	// Add ObjectState to Tracker
+	NetworkObjectState newObjState(new WorldObject(newObj), 4);
+	
 	physicsEngine.addWorldObject(newObj);
 }
 
@@ -227,7 +251,7 @@ void NetworkServer::loadLevel(const char * file) {
 	// Send to Clients
 	char msg[] = "";
 	NetworkPacket pkt(LEVEL_CLEAR, (unsigned char *)&msg, sizeof(msg));
-	for(int p=0; p<_players.size(); p++) {
+	for(unsigned int p=0; p<_players.size(); p++) {
 		SendPacket(pkt, &(_players[p]->socket), _players[p]->ip);
 	}
 	// Load level (which will clear PhysicsEngine objects)

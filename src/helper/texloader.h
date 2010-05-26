@@ -17,8 +17,8 @@ namespace texldr
     GLuint loadBMP(const char *filename);
 
     // don't call these, internal use only
-    static unsigned int getuint(FILE *fp);
-    static unsigned short getushort(FILE *fp);
+    //static unsigned int getuint(FILE *fp);
+    //static unsigned short getushort(FILE *fp);
 }
 
 #endif

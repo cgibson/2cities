@@ -159,7 +159,7 @@ void Renderer::draw()
   {
 	gfx::useShader( 0 );
 
-	BuildState *bs = (BuildState*)curstate;
+	//BuildState *bs = (BuildState*)curstate;
 	if(BuildStateGlobals::renderPlane)
 	{
 		Vector offset = BuildStateGlobals::planeNormal.cross(Vector(0,1,0));

@@ -256,14 +256,14 @@ void BuildState::placeY(int rect_index, int below_index)
 void BuildState::recursive_bump(int bottom, int delta_height)
 {
    // loop over all static_cast<CustomObject*>(objects
-   int top;
+   unsigned int top;
    for(top = 0; top < objects.size(); top++)
    {
       // exclude self
       if(top != bottom)
       {
          // IF i.get_min_y() == pp_index.get_max_y() (old_height)
-         if( static_cast<CustomObject*>(objects[top])->set_min_y( (static_cast<CustomObject*>(objects[bottom])->get_max_y() - delta_height) ) )
+         if( static_cast<CustomObject*>(objects[top])->get_min_y() == (static_cast<CustomObject*>(objects[bottom])->get_max_y() - delta_height) )
          {
             // IF pp_index encapsulates i
             if(static_cast<CustomObject*>(objects[bottom])->encapsulates((static_cast<CustomObject*>(objects[top])->get_max()), (static_cast<CustomObject*>(objects[top])->get_min())))

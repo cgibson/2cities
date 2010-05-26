@@ -80,7 +80,7 @@ void NetworkClient::update(long milli_time) {
 
 	ting::IPAddress sourceIP;
 	NetworkPacket pkt;
-	int pktsRecv = 0;
+	unsigned int pktsRecv = 0;
 
 	// Check for Waiting Network Data
 	while(isConnected && waitSet->WaitWithTimeout(0) && pktsRecv < SERVER_RECV_MAX_PACKETS_PER_CYCLE) {

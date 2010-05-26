@@ -37,11 +37,6 @@ namespace net{
 
 	extern const unsigned int SERVER_PHYSICS_UPDATE_RATE;
 
-	// To be used in the MultiSortedMap structure
-	extern int ObjSortIndex;
-	extern bool NetworkPriority_Sort_Velocity(WorldObject *objPtr1, WorldObject *objPtr2);
-	extern int timeElapsed;
-
 	// A separate class to make the header distinct
 	struct NetworkPacketHeader {
 		net::N_PacketType type;

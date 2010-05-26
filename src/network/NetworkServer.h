@@ -81,7 +81,7 @@ public:
 
 	// Add new object to scene
 	void addObject(WorldObject newObj);
-	void addObjectPhys(WorldObject newObj);
+	void addObjectPhys(WorldObject &newObj);
 
 	void reqUpdateObj(unsigned int objID) {};
 

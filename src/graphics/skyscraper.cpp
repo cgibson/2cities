@@ -41,7 +41,7 @@ void Skyscraper::init()
 
 	// shorthand because it makes things easier
 	float b = _width / 2.0;
-	float w = _width;
+	//float w = _width;
 	float h = _height;
 	float s = 1.0;
 	float t = 1.0;

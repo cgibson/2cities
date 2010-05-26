@@ -64,7 +64,9 @@ defines.release = {
 -- compiler options
 cxxflags = {}
 cxxflags.debug = {
-    "g"
+    "g",
+    "pg",
+    "Wall"
 }
 cxxflags.release = {
     "O3"
@@ -258,7 +260,8 @@ if mode == "debug" and (build == "client" or build == "both") then
 
     -- linker stage
     f:write("\nall: $(OBJS)\n")
-    f:write("\t$(CXX) $(LDFLAGS) $(OBJS) $(LIBS) -o $(BIN)\n")
+    f:write("\t$(CXX) -pg $(LDFLAGS) $(OBJS) $(LIBS) -o $(BIN)\n")
+    -- f:write("\t$(CXX) $(LDFLAGS) $(OBJS) $(LIBS) -o $(BIN)\n")
 
     -- compiler stage
     for i, file in ipairs(client_srcs) do
@@ -369,7 +372,8 @@ if mode == "debug" and (build == "server" or build == "both") then
 
     -- linker stage
     f:write("\nall: $(OBJS)\n")
-    f:write("\t$(CXX) $(LDFLAGS) $(OBJS) $(LIBS) -o $(BIN)\n")
+    f:write("\t$(CXX) -pg $(LDFLAGS) $(OBJS) $(LIBS) -o $(BIN)\n")
+    -- f:write("\t$(CXX) $(LDFLAGS) $(OBJS) $(LIBS) -o $(BIN)\n")
 
     -- compiler stage
     for i, file in ipairs(server_srcs) do

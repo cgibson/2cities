@@ -2,6 +2,9 @@
 
 namespace texldr
 {
+    static unsigned int getuint(FILE *fp);
+    static unsigned short getushort(FILE *fp);
+
     GLuint loadBMP(const char *filename)
     {
         // generate texture id
@@ -59,7 +62,7 @@ namespace texldr
         }
 
         // swap the color byte order (BGR -> RGB)
-        for (int i = 0; i < size; i += 3)
+        for (unsigned int i = 0; i < size; i += 3)
         {
             unsigned char temp = data[i];
             data[i] = data[i + 2];

@@ -32,7 +32,7 @@ StateManager::StateManager()
  */
 void StateManager::changeCurrentState(enum E_STATE newState)
 {
-    InGameState *oldInGameState = global::stateManager->currentState;
+    //InGameState *oldInGameState = global::stateManager->currentState;
     switch(newState)
     {
     case BUILD_STATE:

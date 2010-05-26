@@ -95,12 +95,12 @@ void Renderer::draw()
   //TODO: Remove END
 
   
-/*
+
 	if (global::stateManager->currentState->stateType() == CARNAGE_STATE)
 	{
 		skybox.draw(light.position[0], light.position[1], light.position[2]);
 	}
-  */
+  
   int loc;
 
   gfx::gridShader.enable();

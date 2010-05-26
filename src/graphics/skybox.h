@@ -31,6 +31,8 @@ private:
 	std::vector<Skyscraper *> _buildings;
 	GLuint _circuit_tex;
 	GLuint _sweeper_tex;
+	GLuint _cloud_tex;
+	GLuint _skyline_alpha;
 	float _time;
 
 	bool aabbCollides(Vector box1min, Vector box1max, Vector box2min, Vector box2max);
@@ -42,6 +44,9 @@ private:
 	static const int BLDG_MAX_WIDTH;
 	static const int BLDG_MIN_HEIGHT;
 	static const int BLDG_MAX_HEIGHT;
+	static const float SKY_SIZE;
+	static const float SKY_HEIGHT;
+	static const float SKY_WALL_OFFSET;
 };
 
 #endif

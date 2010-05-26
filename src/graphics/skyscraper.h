@@ -20,7 +20,6 @@ public:
     ~Skyscraper();
 
     void init();
-    void update(float time);
     void draw();
 
     // property accessors
@@ -36,7 +35,6 @@ private:
 	Vector _center;
 	Vector _aabbMin;
 	Vector _aabbMax;
-	float _time;
 	float _rand_offset;
 	GLuint _displayList;
 

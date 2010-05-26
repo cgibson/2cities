@@ -5,13 +5,16 @@
 #define DEG2RAD(x) ((x) * M_PI / 180.0)
 #define RAD2DEG(x) ((x) * 180.0 / M_PI)
 
-const float Skybox::CITY_MIN_RADIUS = 75.0;
-const float Skybox::CITY_MAX_RADIUS = 100.0;
-const int Skybox::NUM_BUILDINGS = 75;
+const float Skybox::CITY_MIN_RADIUS = 80.0;
+const float Skybox::CITY_MAX_RADIUS = 125.0;
+const int Skybox::NUM_BUILDINGS = 150;
 const int Skybox::BLDG_MIN_WIDTH = 4;
 const int Skybox::BLDG_MAX_WIDTH = 12;
 const int Skybox::BLDG_MIN_HEIGHT = 10;
 const int Skybox::BLDG_MAX_HEIGHT = 20;
+const float Skybox::SKY_SIZE = 1000.0;
+const float Skybox::SKY_HEIGHT = 75.0;
+const float Skybox::SKY_WALL_OFFSET = 700.0;
 
 Skybox::Skybox()
 {
@@ -30,6 +33,8 @@ void Skybox::init()
 	// load necessary textures
 	_circuit_tex = texldr::loadBMP("resources/textures/circuit.bmp");
 	_sweeper_tex = texldr::loadBMP("resources/textures/sweeper.bmp");
+	_cloud_tex = texldr::loadBMP("resources/textures/clouds.bmp");
+	_skyline_alpha = texldr::loadBMP("resources/textures/skylinealpha.bmp");
 
 	// randomize the madness!
 	srand48(time(NULL));
@@ -88,36 +93,114 @@ void Skybox::update(int ms)
 {
 	// update our time accumulator
 	_time += ms / 1000.0;
-
-	// call all skyscraper updates
-	for (int i = 0; i < NUM_BUILDINGS; i++)
-	{
-		_buildings[i]->update(_time);
-	}
 }
 
 void Skybox::draw(float light_x, float light_y, float light_z) // hackalicious!
 {
-	// bind circuit and sweeper textures to units 0 and 1 respectively
+	// bind texture units for the textures we're going to use
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _circuit_tex);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, _sweeper_tex);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, _cloud_tex);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, _skyline_alpha);
+
+	// switch to sky shader
+	gfx::useShader(gfx::shSky);
+
+	// set fixed uniforms
+	int loc = glGetUniformLocation(gfx::shSky, "cloud_tex");
+	glUniform1i(loc, 2); // tex unit 2
+	loc = glGetUniformLocation(gfx::shSky, "time");
+	glUniform1f(loc, _time);
+
+	// draw the sky plane
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0, 0.0);
+		glVertex3f(-SKY_SIZE / 2.0, SKY_HEIGHT, -SKY_SIZE / 2.0);
+		glTexCoord2f(4.0, 0.0);
+		glVertex3f(SKY_SIZE / 2.0, SKY_HEIGHT, -SKY_SIZE / 2.0);
+		glTexCoord2f(4.0, 4.0);
+		glVertex3f(SKY_SIZE / 2.0, SKY_HEIGHT, SKY_SIZE / 2.0);
+		glTexCoord2f(0.0, 4.0);
+		glVertex3f(-SKY_SIZE / 2.0, SKY_HEIGHT, SKY_SIZE / 2.0);
+	glEnd();
+
+	// switch to the distant shader
+	gfx::useShader(gfx::shDistant);
+	
+	// set fixed uniforms
+	loc = glGetUniformLocation(gfx::shDistant, "circuit_tex");
+	glUniform1i(loc, 0); // tex unit 0
+	loc = glGetUniformLocation(gfx::shDistant, "sweeper_tex");
+	glUniform1i(loc, 1); // tex unit 1
+	loc = glGetUniformLocation(gfx::shDistant, "skyline_alpha");
+	glUniform1i(loc, 3); // tex unit 3
+	loc = glGetUniformLocation(gfx::shDistant, "time");
+	glUniform1f(loc, _time);
+	
+	// draw the wall planes
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0, 0.0);
+		glVertex3f(-(SKY_SIZE - SKY_WALL_OFFSET) / 2.0, 0.0, -(SKY_SIZE - SKY_WALL_OFFSET) / 2.0);
+		glTexCoord2f(4.0, 0.0);
+		glVertex3f((SKY_SIZE - SKY_WALL_OFFSET) / 2.0, 0.0, -(SKY_SIZE - SKY_WALL_OFFSET) / 2.0);
+		glTexCoord2f(4.0, 1.0);
+		glVertex3f((SKY_SIZE - SKY_WALL_OFFSET) / 2.0, SKY_HEIGHT, -(SKY_SIZE - SKY_WALL_OFFSET) / 2.0);
+		glTexCoord2f(0.0, 1.0);
+		glVertex3f(-(SKY_SIZE - SKY_WALL_OFFSET) / 2.0, SKY_HEIGHT, -(SKY_SIZE - SKY_WALL_OFFSET) / 2.0);
+	glEnd();
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0, 0.0);
+		glVertex3f(-(SKY_SIZE - SKY_WALL_OFFSET) / 2.0, 0.0, (SKY_SIZE - SKY_WALL_OFFSET) / 2.0);
+		glTexCoord2f(4.0, 0.0);
+		glVertex3f((SKY_SIZE - SKY_WALL_OFFSET) / 2.0, 0.0, (SKY_SIZE - SKY_WALL_OFFSET) / 2.0);
+		glTexCoord2f(4.0, 1.0);
+		glVertex3f((SKY_SIZE - SKY_WALL_OFFSET) / 2.0, SKY_HEIGHT, (SKY_SIZE - SKY_WALL_OFFSET) / 2.0);
+		glTexCoord2f(0.0, 1.0);
+		glVertex3f(-(SKY_SIZE - SKY_WALL_OFFSET) / 2.0, SKY_HEIGHT, (SKY_SIZE - SKY_WALL_OFFSET) / 2.0);
+	glEnd();
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0, 0.0);
+		glVertex3f((SKY_SIZE - SKY_WALL_OFFSET) / 2.0, 0.0, -(SKY_SIZE - SKY_WALL_OFFSET) / 2.0);
+		glTexCoord2f(4.0, 0.0);
+		glVertex3f((SKY_SIZE - SKY_WALL_OFFSET) / 2.0, 0.0, (SKY_SIZE - SKY_WALL_OFFSET) / 2.0);
+		glTexCoord2f(4.0, 1.0);
+		glVertex3f((SKY_SIZE - SKY_WALL_OFFSET) / 2.0, SKY_HEIGHT, (SKY_SIZE - SKY_WALL_OFFSET) / 2.0);
+		glTexCoord2f(0.0, 1.0);
+		glVertex3f((SKY_SIZE - SKY_WALL_OFFSET) / 2.0, SKY_HEIGHT, -(SKY_SIZE - SKY_WALL_OFFSET) / 2.0);
+	glEnd();
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0, 0.0);
+		glVertex3f(-(SKY_SIZE - SKY_WALL_OFFSET) / 2.0, 0.0, -(SKY_SIZE - SKY_WALL_OFFSET) / 2.0);
+		glTexCoord2f(4.0, 0.0);
+		glVertex3f(-(SKY_SIZE - SKY_WALL_OFFSET) / 2.0, 0.0, (SKY_SIZE - SKY_WALL_OFFSET) / 2.0);
+		glTexCoord2f(4.0, 1.0);
+		glVertex3f(-(SKY_SIZE - SKY_WALL_OFFSET) / 2.0, SKY_HEIGHT, (SKY_SIZE - SKY_WALL_OFFSET) / 2.0);
+		glTexCoord2f(0.0, 1.0);
+		glVertex3f(-(SKY_SIZE - SKY_WALL_OFFSET) / 2.0, SKY_HEIGHT, -(SKY_SIZE - SKY_WALL_OFFSET) / 2.0);
+	glEnd();
+	
+
+	// switch to the skyscraper shader
+	gfx::useShader(gfx::shSkyscraper);	
 
 	// set fixed uniforms for all buildings
-	int loc = glGetUniformLocation(gfx::shCircuity, "circuit_tex");
-	glUniform1i(loc, 0); // tex unit 0
-	loc = glGetUniformLocation(gfx::shCircuity, "sweeper_tex");
-	glUniform1i(loc, 1); // tex unit 1
-	loc = glGetUniformLocation(gfx::shCircuity, "amb_contrib");
-	glUniform1f(loc, 0.3);
-	loc = glGetUniformLocation(gfx::shCircuity, "diff_contrib");
-	glUniform1f(loc, 0.7);
-	loc = glGetUniformLocation(gfx::shCircuity, "edge_strength");
+	loc = glGetUniformLocation(gfx::shSkyscraper, "amb_contrib");
 	glUniform1f(loc, 0.2);
-	loc = glGetUniformLocation(gfx::shCircuity, "light_pos");
+	loc = glGetUniformLocation(gfx::shSkyscraper, "diff_contrib");
+	glUniform1f(loc, 0.8);
+	loc = glGetUniformLocation(gfx::shSkyscraper, "min_glow");
+	glUniform1f(loc, 0.2);
+	loc = glGetUniformLocation(gfx::shSkyscraper, "max_glow");
+	glUniform1f(loc, 1.0);
+	loc = glGetUniformLocation(gfx::shSkyscraper, "time");
+	glUniform1f(loc, _time);
+	loc = glGetUniformLocation(gfx::shSkyscraper, "light_pos");
 	glUniform3f(loc, light_x, light_y, light_z);
-	loc = glGetUniformLocation(gfx::shCircuity, "eye_pos");
+	loc = glGetUniformLocation(gfx::shSkyscraper, "eye_pos");
 	glUniform3f(loc, global::camera->position().x(), global::camera->position().y(), global::camera->position().z());
 
 	// draw all skyscrapers

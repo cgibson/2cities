@@ -11,7 +11,6 @@ Skyscraper::Skyscraper(int width, int height, Vector center, float offset)
 	_width = width;
 	_height = height;
 	_center = center;
-	_time = 0.0;
 	_rand_offset = offset;
 
 	// compute the aabb for this skyscraper
@@ -111,17 +110,10 @@ void Skyscraper::init()
 	glEndList();
 }
 
-void Skyscraper::update(float time)
-{
-	_time = time;
-}
-
 void Skyscraper::draw()
 {
 	// set shader uniforms
-	int loc = glGetUniformLocation(gfx::shCircuity, "time");
-	glUniform1f(loc, _time);
-	loc = glGetUniformLocation(gfx::shCircuity, "rand_offset");
+	int loc = glGetUniformLocation(gfx::shSkyscraper, "rand_offset");
 	glUniform1f(loc, _rand_offset);
 
 	glPushMatrix();

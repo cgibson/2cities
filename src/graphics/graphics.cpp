@@ -22,7 +22,9 @@ namespace gfx{
   GLint shSimple;
   GLint shBuildGrid;
   GLint shForceBlock;
-  GLint shCircuity;
+  GLint shSkyscraper;
+  GLint shSky;
+  GLint shDistant;
 
   GLint cur_shader;
 
@@ -135,7 +137,9 @@ namespace gfx{
     success &= installShader( "resources/shaders/simpleShade", &shSimple );
     success &= installShader( "resources/shaders/buildGrid", &shBuildGrid );
     success &= installShader( "resources/shaders/forceblock", &shForceBlock );
-    success &= installShader( "resources/shaders/circuity", &shCircuity );
+    success &= installShader( "resources/shaders/skyscraper", &shSkyscraper );
+    success &= installShader( "resources/shaders/sky", &shSky );
+    success &= installShader( "resources/shaders/distant", &shDistant );
 
     if(!success)
     {

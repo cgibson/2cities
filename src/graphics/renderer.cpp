@@ -101,7 +101,6 @@ void Renderer::draw()
 
 	if (global::stateManager->currentState->stateType() == CARNAGE_STATE)
 	{
-		gfx::useShader(gfx::shCircuity);
 		skybox.draw(light.position[0], light.position[1], light.position[2]);
 	}
 

@@ -33,7 +33,9 @@ namespace gfx{
   extern GLint shSimple;          // simple shader
   extern GLint shBuildGrid;
   extern GLint shForceBlock;
-  extern GLint shCircuity;
+  extern GLint shSkyscraper;
+  extern GLint shSky;
+  extern GLint shDistant;
 
   extern bool draw_wireframe;
   extern bool draw_axis;

@@ -33,7 +33,7 @@ Point::Point(GLdouble clicked_x, GLdouble clicked_y)
 
 	gluUnProject( winX, winY, winZ, modelview_matrix, projection_matrix, viewport, &posX, &posY, &posZ);
 	
-	printf("winX = %f, winY = %f, winZ = %f\n", winX, winY, winZ);
+	/*printf("winX = %f, winY = %f, winZ = %f\n", winX, winY, winZ);
 	int i, j;	
 	printf("modelview:\n");	
 	for(i = 0; i < 16; i++)
@@ -62,7 +62,7 @@ Point::Point(GLdouble clicked_x, GLdouble clicked_y)
 		printf("%d ", viewport[j]);
 		i++;		
 	}	
-   printf("\n");
+   printf("\n");*/
 
 	p_x = posX;
 	p_y = posY;
@@ -88,6 +88,34 @@ Point::Point()
   p_x = 0;
   p_y = 0;
   p_z = 0;
+}
+
+double Point::roundDouble(double p)
+{
+	if(p > 0)
+	{
+		if((p - (int)p) < 0.5)
+			return floor(p);
+		else 
+			return ceil(p);
+	}
+	else
+	{
+		if(fabs((p - (int)p)) < 0.5)
+			return ceil(p);
+		else 
+			return floor(p);
+	}
+}
+
+void Point::round()
+{
+	// round x
+	p_x = roundDouble(p_x);
+	// round y
+	p_y = roundDouble(p_y);
+	// round z 
+	p_z = roundDouble(p_z);
 }
 
 void Point::adjustPointForBlocksize(int blocksize)

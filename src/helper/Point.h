@@ -30,7 +30,10 @@ public:
   void setz(GLdouble z){p_z = z;}
 	  
   void set(Point p){p_x = p.p_x;p_y = p.p_y;p_z = p.p_z;}
-  char *str();
+  void round();
+  double roundDouble(double p);
+	
+	char *str();
   
 	void adjustPointForBlocksize(int blocksize);
 

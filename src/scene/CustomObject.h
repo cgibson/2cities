@@ -77,6 +77,7 @@ class CustomObject : public WorldObject
 		  int distance2Face(Face f, Point pt);
 		  Point whichPoint(Face f);
 		  bool semiEncapsulates(Face f, Point max_testpt, Point min_testpt);
+		  void orientRect(Point p1, Point p2);
 };
 
 #endif

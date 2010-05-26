@@ -7,6 +7,13 @@
  * CustomObject
  */
 
+void CustomObject::update(int elapsedTime)
+{
+}
+void CustomObject::think(int elapsedTime)
+{
+}
+
 void CustomObject::set_max(Point newmax)
 {
 	set_max_x(newmax.getx());
@@ -211,16 +218,37 @@ void CustomObject::adjust_bases()
 	}
 }
 
+// p1 and p2 are two points on the ground that represent a 2D rectangle
+void CustomObject::orientRect(Point p1, Point p2)
+{
+	// set x	
+	max.setx(p1.getx());
+	min.setx(p2.getx());
+	if(p2.getx() > max.getx())
+	{
+		max.setx(p2.getx());
+		min.setx(p1.getx());
+	}
+	
+	// set z
+	max.setz(p1.getz());
+	min.setz(p2.getz());
+	if(p2.getz() > max.getz())
+	{
+		max.setz(p2.getz());
+		min.setz(p1.getz());
+	}
+}
 
 void CustomObject::draw_rectangle2D()
 {		
 	bool higherRect = false;
-	int plus = 0;
+	double plus = 0;
 	//printf("print 2D min.gety() = %d\n", min.gety());
    if(min.gety() <= 0)
 	{
 		higherRect = true;
-		plus += 1;
+		plus += 0.1;
 	}
 
 	glBegin(GL_POLYGON);
@@ -303,25 +331,4 @@ void CustomObject::draw() {
 	// ELSE, THEN draw rectangle
 	else
 		draw_rectangle3D();
-}
-
-void CustomObject::update(int elapsedTime) {
-	//Vector pos = getPosition();
-	//Vector vel = getVelocity();
-	//Vector acc = getForce();
-	//vel = vel + (acc * (elapsedTime/1000.0f));
-	//pos = pos + (vel * (elapsedTime/1000.0f));
-
-	/*if(pos.gety() > 0) {
-		setPosition(pos);
-		setVelocity(vel);
-	}
-	else {
-		setPosition(Vector(pos.getx(),0,pos.getz()));
-		setVelocity(Vector(0,0,0));
-	}*/
-}
-
-void CustomObject::think(int elapsedTime) {
-
 }

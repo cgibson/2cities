@@ -1,5 +1,6 @@
+// not used in the vertex shader
 uniform float force;
-uniform float edge_strength;
+uniform float shock;
 
 void main()
 {

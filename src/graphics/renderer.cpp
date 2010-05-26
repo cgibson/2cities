@@ -239,11 +239,11 @@ void Renderer::draw()
 			loc = glGetUniformLocation(gfx::shForceBlock, "force");
 
 			force = (*objIt)->getForce();
-			forceResult = force.x() * 40.0f;
-			strength = force.y() * 2.0;
+			forceResult = force.x();
+			strength = force.y() * 4.0;
 			glUniform1f(loc, forceResult);
-			loc = glGetUniformLocation(gfx::shForceBlock, "edge_strength");
-			glUniform1f(loc, 0.2 + strength);
+			loc = glGetUniformLocation(gfx::shForceBlock, "shock");
+			glUniform1f(loc, strength);
 		}
 
 		(*objIt)->draw();

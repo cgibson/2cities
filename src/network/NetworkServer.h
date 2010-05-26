@@ -72,9 +72,12 @@ protected:
 public:
 	NetworkServer();
 	~NetworkServer();
+	void closeSockets();
 
 	void initialize();
 	void update(long milli_time);
+
+	//PlayerColor getPlayerColor() { return (PlayerColor)_playerID; };
 
 	void dedicatedServer(bool toggle) {	_dedicatedServer = toggle; }
 	bool dedicatedServer(void) { return _dedicatedServer; }

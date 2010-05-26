@@ -37,6 +37,7 @@ void NetworkManager::initialize() {
 
 void NetworkManager::changeNetworkInterface(E_NetworkInterface networkType) {
 	NetworkSystem *oldNetwork = network;
+	network->closeSockets();
 
 	switch (networkType) {
 #ifdef CLIENT

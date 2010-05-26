@@ -17,6 +17,14 @@ NetworkClient::NetworkClient() : NetworkSystem() {
 
 NetworkClient::~NetworkClient() {
 	disconnectServer();
+	closeSockets();
+}
+
+void NetworkClient::closeSockets() {
+	disconnectServer();
+
+	socket.Close();
+	PRINTINFO("Client Socket Closed\n");
 }
 
 void NetworkClient::initialize() {}

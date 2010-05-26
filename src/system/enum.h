@@ -49,6 +49,10 @@ namespace enumeration {
   typedef enum E_NetworkInterface {
 	  N_PRIVATE, N_CLIENT, N_SERVER
   } NetworkInterface;
+
+  typedef enum E_PlayerColor {
+	  PLAYER_SPECTATOR, PLAYER_BLUE, PLAYER_RED, PLAYER_GREEN, PLAYER_YELLOW
+  } PlayerColor;
 }
 
 #endif

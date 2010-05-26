@@ -44,7 +44,17 @@ NetworkServer::NetworkServer() {
 }
 
 NetworkServer::~NetworkServer() {
+	closeSockets();
+}
+
+void NetworkServer::closeSockets() {
 	_incomingSock.Close();
+	PRINTINFO("Main Server Port Closed\n");
+
+	for(unsigned int p=0; p<_players.size(); p++) {
+		_players[p]->socket.Close();
+	}
+	PRINTINFO("Player Ports Closed\n");
 }
 
 void NetworkServer::initialize() {}

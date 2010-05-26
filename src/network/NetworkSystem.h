@@ -58,8 +58,13 @@ public:
 		_pktCountRecv = 0;
 		_pktCountSent = 0;
 		_pktPeriod = 0;
+
+		_playerID = 0;
 	}
-	~NetworkSystem() {};
+	~NetworkSystem() {
+		closeSockets();
+	};
+	virtual void closeSockets() {};
 
 	virtual void initialize() {};
 	virtual void update(long elapsed) {};
@@ -69,6 +74,7 @@ public:
 
 	virtual bool connectServer(const char * ip, unsigned int port) { return false; };
 	virtual void disconnectServer() {};
+	virtual PlayerColor getPlayerColor() { return (PlayerColor)_playerID; };
 
 	virtual void dedicatedServer(bool toggle) {};
 	virtual bool dedicatedServer(void) { return false; };

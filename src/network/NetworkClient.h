@@ -33,18 +33,19 @@ protected:
 public:
 	NetworkClient();
 	~NetworkClient();
+	void closeSockets();
 
-	virtual void initialize();
-	virtual void update(long milli_time);
+	void initialize();
+	void update(long milli_time);
 
-	virtual bool connectServer(const char * ip, unsigned int port);
-	virtual void disconnectServer();
-	virtual void sendMsg(char * msgStr);
+	bool connectServer(const char * ip, unsigned int port);
+	void disconnectServer();
+	void sendMsg(char * msgStr);
 
 	// Add new object to scene
-	virtual void addObject(WorldObject newObj);
+	void addObject(WorldObject newObj);
 
-	virtual void reqUpdateObj(unsigned int objID) {};
+	void reqUpdateObj(unsigned int objID) {};
 
 	// Load a stored lvl
 	void loadLevel(const char * file);

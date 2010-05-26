@@ -20,6 +20,7 @@
 #include "Lighting.h"
 #include "../state/CarnageState.h"
 #include "skybox.h"
+#include "shader.h"
 
 using namespace std;
 
@@ -36,7 +37,7 @@ public:
 private:
   void update_view();
   void init_lights();
-  void do_lights();
+  void do_lights(Shader sh);
   bool initFBO();
 
   Vector eye, lookAt;

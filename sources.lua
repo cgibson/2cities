@@ -12,6 +12,8 @@
 
 client_srcs = {
     "graphics/hud.cpp",
+    "graphics/shader.cpp",
+    "graphics/tex.cpp",
     "graphics/console.cpp",
     "graphics/graphics.cpp",
     "graphics/renderer.cpp",
@@ -57,6 +59,8 @@ client_srcs = {
 
 server_srcs = {
     "graphics/hud.cpp",
+    "graphics/shader.cpp",
+    "graphics/tex.cpp",
     "graphics/console.cpp",
     "graphics/graphics.cpp",
     "graphics/renderer.cpp",

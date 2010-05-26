@@ -24,9 +24,9 @@ void Renderer::update(int elapsed)
 	skybox.update(elapsed);
 }
 
-void Renderer::do_lights()
+void Renderer::do_lights(Shader sh)
 {
-  light.doLighting(gfx::cur_shader, "light");
+  light.doLighting(sh, "light");
 }
 
 void Renderer::init_lights()
@@ -50,16 +50,16 @@ void Renderer::draw()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-  //gfx::useShader( 0 );
-
   // update lights
-  do_lights();
+  do_lights(gfx::simpleShader);
+  do_lights(gfx::gridShader);
+  do_lights(gfx::forceBlockShader);
 
   glPushMatrix();
 
-    //TODO: Remove BEGIN
+  shader::reset();
 
-  gfx::useShader( 0 );
+    //TODO: Remove BEGIN
 
   glDisable(GL_DEPTH_TEST);
   glColor3f(0,0,0);
@@ -71,8 +71,6 @@ void Renderer::draw()
     glVertex3f( 500, 0, -500);
   glEnd();
   glEnable(GL_DEPTH_TEST);
-
-  gfx::useShader( 0 );
 
   if(gfx::draw_axis)
   {
@@ -94,54 +92,29 @@ void Renderer::draw()
 	  glEnable(GL_DEPTH_TEST);
 	  glEnable(GL_LIGHTING);
   }
-
   //TODO: Remove END
 
-  int loc;
+  
 
 	if (global::stateManager->currentState->stateType() == CARNAGE_STATE)
 	{
 		skybox.draw(light.position[0], light.position[1], light.position[2]);
 	}
+  
+  int loc;
 
-  //gfx::useShader(gfx::shSimple);
-  //switch(global::stateManager->currentState->stateType())
-  //{
-	//case BUILD_STATE:
+  gfx::gridShader.enable();
 
-		gfx::useShader(gfx::shBuildGrid);
+  gfx::materials[GRID].applyMaterial(gfx::gridShader, "material");
 
-		gfx::materials[GRID].applyMaterial(gfx::shBuildGrid, "material");
+  loc = glGetUniformLocation(gfx::gridShader.getProgram(), "grid_diffuse");
+  glUniform4fv(loc, 1, gfx::materials[GRID_DIFFUSE].diffuse);
 
-	    loc = glGetUniformLocation(gfx::shBuildGrid, "grid_diffuse");
-		glUniform4fv(loc, 1, gfx::materials[GRID_DIFFUSE].diffuse);
+  loc = glGetUniformLocation(gfx::gridShader.getProgram(), "grid_size");
+  glUniform1f(loc, 1.0f);
 
-	    loc = glGetUniformLocation(gfx::shBuildGrid, "grid_size");
-		glUniform1f(loc, 1.0f);
-
-		loc = glGetUniformLocation(gfx::shBuildGrid, "line_pct");
-		glUniform1f(loc, 0.03f);
-	//	break;
-	//case CARNAGE_STATE: default:
-		//gfx::materials[WHITE_MAT].applyMaterial(gfx::cur_shader, "material");
-		//gfx::useShader(gfx::shSimple);
-
-	/*	gfx::useShader(gfx::shBuildGrid);
-
-		gfx::materials[GRID].applyMaterial(gfx::shBuildGrid, "material");
-
-	    loc = glGetUniformLocation(gfx::shBuildGrid, "grid_diffuse");
-		glUniform4fv(loc, 1, gfx::materials[GRID_DIFFUSE].diffuse);
-
-	    loc = glGetUniformLocation(gfx::shBuildGrid, "grid_size");
-		glUniform1f(loc, 1.0f);
-
-		loc = glGetUniformLocation(gfx::shBuildGrid, "line_pct");
-		glUniform1f(loc, 0.03f);
-		break;*/
-  //}
-
-  //printf("WTF IS THIS? %d\n", gfx::cur_shader);
+  loc = glGetUniformLocation(gfx::gridShader.getProgram(), "line_pct");
+  glUniform1f(loc, 0.03f);
 
   glBegin(GL_QUADS);
     glColor4f(1,1,1,1);
@@ -151,6 +124,8 @@ void Renderer::draw()
     glVertex3f( 100, 0,  100);
     glVertex3f( 100, 0, -100);
   glEnd();
+  
+  shader::reset();
 
   InGameState *curstate = global::stateManager->currentState;
 
@@ -164,82 +139,74 @@ void Renderer::draw()
 	  ObjectType lastType, curType;
 	  lastType = WARPED_CUBE;
 	  curType = DUMMY_BLOCK;
-	  Blueprint blueprint = global::factory->getBlueprint(curType);
-	  Material curMat = gfx::materials[blueprint.getMaterial()];
+	  Blueprint blueprint;// = global::factory->getBlueprint(curType);
+	  Material curMat; // = gfx::materials[blueprint.getMaterial()];
 
-	  curMat.applyMaterial(gfx::cur_shader, "");
-	  //printf("SOMETHING HERE\n");
 	  vector<WorldObject *>::iterator objIt;
 	  vector<WorldObject *> *objList = &curstate->objects;
 
 	  for(objIt = objList->begin(); objIt != objList->end(); objIt++)
 	  {
-		curType = (*objIt)->getType();
-		if(curType != lastType || !changed)
-		{
-			changed = true;
-			lastType = curType;
-			switch(curType)
-			{
-				case DUMMY_BLOCK:
-					gfx::useShader(gfx::shForceBlock);
-					break;
-				case DUMMY_SPHERE:
-					gfx::useShader(gfx::shSimple);
-					blueprint = global::factory->getBlueprint(curType);
-					curMat = gfx::materials[blueprint.getMaterial()];
-					curMat.applyMaterial(gfx::cur_shader, "");
-					break;
-				default:
-					//gfx::useShader(gfx::shForceBlock);
-					//printf("BEFORE: %d\n", gfx::cur_shader);
-					gfx::useShader(gfx::shSimple);
-					//printf("AFTER: %d\n", gfx::cur_shader);
-					blueprint = global::factory->getBlueprint(curType);
-					curMat = gfx::materials[blueprint.getMaterial()];
-					curMat.applyMaterial(gfx::cur_shader, "");
-
-					break;
-			}
-			//printf("DIFFERENCE!\n");
-		}
-
-        if(curType == DUMMY_BLOCK)
+      curType = (*objIt)->getType();
+      if(curType != lastType || !changed)
+      {
+        changed = true;
+        lastType = curType;
+        blueprint = global::factory->getBlueprint(curType);
+        curMat = gfx::materials[blueprint.getMaterial()];
+        curMat.applyMaterial(gfx::simpleShader, "");
+        switch(curType)
         {
+          case DUMMY_BLOCK:
+            gfx::forceBlockShader.enable();
+            break;
+          case DUMMY_SPHERE:
+            gfx::simpleShader.enable();
+            blueprint = global::factory->getBlueprint(curType);
+            curMat = gfx::materials[blueprint.getMaterial()];
+            curMat.applyMaterial(gfx::simpleShader, "");
+            break;
+          default:
+            //gfx::useShader(gfx::shForceBlock);
+            //printf("BEFORE: %d\n", shader::current_shader);
+            gfx::simpleShader.enable();
+            //printf("AFTER: %d\n", shader::current_shader);
+            blueprint = global::factory->getBlueprint(curType);
+            curMat = gfx::materials[blueprint.getMaterial()];
+            curMat.applyMaterial(gfx::simpleShader, "");
 
+            break;
+        }
+      }
+      
+      if(curType == DUMMY_BLOCK)
+      {
+        blueprint = global::factory->getBlueprint(curType);
+        curMat = gfx::materials[blueprint.getMaterial()];
+        curMat.applyMaterial(gfx::forceBlockShader, "");
 
-			blueprint = global::factory->getBlueprint(curType);
-			curMat = gfx::materials[blueprint.getMaterial()];
-			curMat.applyMaterial(gfx::cur_shader, "");
+        loc = glGetUniformLocation(gfx::forceBlockShader.getProgram(), "force");
 
-			loc = glGetUniformLocation(gfx::shForceBlock, "force");
+        force = (*objIt)->getForce();
+        forceResult = force.x();
+        strength = force.y() * 4.0;
+        glUniform1f(loc, forceResult);
+        loc = glGetUniformLocation(gfx::forceBlockShader.getProgram(), "shock");
+        glUniform1f(loc, strength);
+      }
 
-			force = (*objIt)->getForce();
-			forceResult = force.x();
-			strength = force.y() * 4.0;
-			glUniform1f(loc, forceResult);
-			loc = glGetUniformLocation(gfx::shForceBlock, "shock");
-			glUniform1f(loc, strength);
-		}
-
-		(*objIt)->draw();
-                    glUseProgram(0);
+      (*objIt)->draw();
 	  }
-	}else{
-			//curstate->objects.push_back(new  WorldObject(0,0,DUMMY_SPHERE));
-			//curstate->objects.push_back(new CustomObject(0, 0, CUSTOM_BLOCK, Point(5, 10, 5), Point(-5, 0, -5)));
-		}
+	}
 
-  //gfx::useShader( 0 );
-
-  glUseProgram(0);
+  shader::reset();
   
+  glUseProgram(0);
   
   if(curstate->stateType() == BUILD_STATE)
   {
-    //gfx::useShader( 0 );
 
-    BuildState *bs = (BuildState*)curstate;
+    //BuildState *bs = (BuildState*)curstate;
     if(BuildStateGlobals::renderPlane)
     {
       gfx::modelHandler.drawPlane(
@@ -248,8 +215,6 @@ void Renderer::draw()
                           BuildStateGlobals::planeSize);
     }
   }
-  
-  glUseProgram(0);
 
   glPopMatrix();
 

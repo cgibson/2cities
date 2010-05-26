@@ -17,6 +17,7 @@
 #include "../helper/Vector.h"
 #include "../system/global.h"
 #include "Lighting.h"
+#include "shader.h"
 
 class Skybox {
 public:

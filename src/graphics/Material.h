@@ -10,6 +10,8 @@
 #endif
 #include <stdio.h>
 
+#include "shader.h"
+
 class Material {
   public:
     GLfloat ambient[4];
@@ -19,9 +21,7 @@ class Material {
     
     Material(GLfloat in_ambient[4], GLfloat in_diffuse[4], GLfloat in_specular[4], GLfloat in_shininess[1]);
     
-    void applyMaterial(GLint program, const char *uniform);
-    
-    void applyMaterial(int program, int location);
+    void applyMaterial(Shader sh, const char *uniform);
     
     void interpolateFloats(GLfloat *list1, GLfloat *list2, 
                            GLfloat **ret, int count, float t);

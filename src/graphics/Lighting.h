@@ -11,6 +11,7 @@
 #include <stdio.h>
 
 #include "../helper/Vector.h"
+#include "shader.h"
 
 #define MAX_LIGHTS 3
  
@@ -30,8 +31,7 @@ class Lighting {
     GLfloat position[3];
     GLfloat diffuse[4];
     GLfloat ambient[4];
-    void doLighting(GLint program,int location);
-    void doLighting(GLint program, const char *uniform);
+    void doLighting(Shader sh, const char *uniform);
     void setLightPos(GLfloat x, GLfloat y, GLfloat z);
     void createLight(GLfloat x, GLfloat y, GLfloat z,
  		           GLfloat Dr, GLfloat Dg, GLfloat Db,

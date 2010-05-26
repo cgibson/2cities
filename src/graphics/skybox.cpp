@@ -108,12 +108,12 @@ void Skybox::draw(float light_x, float light_y, float light_z) // hackalicious!
 	glBindTexture(GL_TEXTURE_2D, _skyline_alpha);
 
 	// switch to sky shader
-	gfx::useShader(gfx::shSky);
+	gfx::skyShader.enable();
 
 	// set fixed uniforms
-	int loc = glGetUniformLocation(gfx::shSky, "cloud_tex");
+	int loc = glGetUniformLocation(gfx::skyShader.getProgram(), "cloud_tex");
 	glUniform1i(loc, 2); // tex unit 2
-	loc = glGetUniformLocation(gfx::shSky, "time");
+	loc = glGetUniformLocation(gfx::skyShader.getProgram(), "time");
 	glUniform1f(loc, _time);
 
 	// draw the sky plane
@@ -129,16 +129,15 @@ void Skybox::draw(float light_x, float light_y, float light_z) // hackalicious!
 	glEnd();
 
 	// switch to the distant shader
-	gfx::useShader(gfx::shDistant);
-	
+	gfx::distantShader.enable();	
 	// set fixed uniforms
-	loc = glGetUniformLocation(gfx::shDistant, "circuit_tex");
+	loc = glGetUniformLocation(gfx::distantShader.getProgram(), "circuit_tex");
 	glUniform1i(loc, 0); // tex unit 0
-	loc = glGetUniformLocation(gfx::shDistant, "sweeper_tex");
+	loc = glGetUniformLocation(gfx::distantShader.getProgram(), "sweeper_tex");
 	glUniform1i(loc, 1); // tex unit 1
-	loc = glGetUniformLocation(gfx::shDistant, "skyline_alpha");
+	loc = glGetUniformLocation(gfx::distantShader.getProgram(), "skyline_alpha");
 	glUniform1i(loc, 3); // tex unit 3
-	loc = glGetUniformLocation(gfx::shDistant, "time");
+	loc = glGetUniformLocation(gfx::distantShader.getProgram(), "time");
 	glUniform1f(loc, _time);
 	
 	// draw the wall planes
@@ -185,22 +184,22 @@ void Skybox::draw(float light_x, float light_y, float light_z) // hackalicious!
 	
 
 	// switch to the skyscraper shader
-	gfx::useShader(gfx::shSkyscraper);	
+	gfx::skyscraperShader.enable();	
 
 	// set fixed uniforms for all buildings
-	loc = glGetUniformLocation(gfx::shSkyscraper, "amb_contrib");
+	loc = glGetUniformLocation(gfx::skyscraperShader.getProgram(), "amb_contrib");
 	glUniform1f(loc, 0.2);
-	loc = glGetUniformLocation(gfx::shSkyscraper, "diff_contrib");
+	loc = glGetUniformLocation(gfx::skyscraperShader.getProgram(), "diff_contrib");
 	glUniform1f(loc, 0.8);
-	loc = glGetUniformLocation(gfx::shSkyscraper, "min_glow");
+	loc = glGetUniformLocation(gfx::skyscraperShader.getProgram(), "min_glow");
 	glUniform1f(loc, 0.2);
-	loc = glGetUniformLocation(gfx::shSkyscraper, "max_glow");
+	loc = glGetUniformLocation(gfx::skyscraperShader.getProgram(), "max_glow");
 	glUniform1f(loc, 1.0);
-	loc = glGetUniformLocation(gfx::shSkyscraper, "time");
+	loc = glGetUniformLocation(gfx::skyscraperShader.getProgram(), "time");
 	glUniform1f(loc, _time);
-	loc = glGetUniformLocation(gfx::shSkyscraper, "light_pos");
+	loc = glGetUniformLocation(gfx::skyscraperShader.getProgram(), "light_pos");
 	glUniform3f(loc, light_x, light_y, light_z);
-	loc = glGetUniformLocation(gfx::shSkyscraper, "eye_pos");
+	loc = glGetUniformLocation(gfx::skyscraperShader.getProgram(), "eye_pos");
 	glUniform3f(loc, global::camera->position().x(), global::camera->position().y(), global::camera->position().z());
 
 	// draw all skyscrapers

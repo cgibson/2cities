@@ -19,20 +19,12 @@ namespace gfx{
 
   Material* materials;
 
-  GLint shSimple;
-  GLint shBuildGrid;
-  GLint shForceBlock;
-  GLint shSkyscraper;
-  GLint shSky;
-  GLint shDistant;
-
-  GLint cur_shader;
-
-  void useShader(GLint program)
-  {
-    cur_shader = program;
-    glUseProgram(program);
-  }
+  DefaultShader simpleShader;
+  DefaultShader gridShader;
+  DefaultShader forceBlockShader;
+  DefaultShader skyscraperShader;
+  DefaultShader skyShader;
+  DefaultShader distantShader;
 
   void display()
   {
@@ -134,12 +126,13 @@ namespace gfx{
   {
     bool success = true;
     getGLversion();
-    success &= installShader( "resources/shaders/simpleShade", &shSimple );
-    success &= installShader( "resources/shaders/buildGrid", &shBuildGrid );
-    success &= installShader( "resources/shaders/forceblock", &shForceBlock );
-    success &= installShader( "resources/shaders/skyscraper", &shSkyscraper );
-    success &= installShader( "resources/shaders/sky", &shSky );
-    success &= installShader( "resources/shaders/distant", &shDistant );
+    
+    simpleShader.load("resources/shaders/simpleShade");
+    gridShader.load("resources/shaders/buildGrid");
+    forceBlockShader.load("resources/shaders/forceblock");
+    skyscraperShader.load("resources/shaders/skyscraper");
+    skyShader.load("resources/shaders/sky");
+    distantShader.load("resources/shaders/distant");
 
     if(!success)
     {

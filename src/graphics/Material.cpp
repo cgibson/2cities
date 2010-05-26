@@ -13,23 +13,18 @@ Material::Material(GLfloat in_ambient[4], GLfloat in_diffuse[4], GLfloat in_spec
   shininess = in_shininess[0];
 }
 
-void Material::applyMaterial(GLint program, const char *uniform)
+void Material::applyMaterial(Shader sh, const char *uniform)
 {
-  gfx::useShader( program );
-  int loc = glGetUniformLocation(program, "material_ambient");
+  GLint old = shader::current_shader;
+  int loc = glGetUniformLocation(sh.getProgram(), "material_ambient");
   glUniform4fv(loc, 1, ambient);
-  loc = glGetUniformLocation(program, "material_diffuse");
+  loc = glGetUniformLocation(sh.getProgram(), "material_diffuse");
   glUniform4fv(loc, 1, diffuse);
-  loc = glGetUniformLocation(program, "material_specular");
+  loc = glGetUniformLocation(sh.getProgram(), "material_specular");
   glUniform4fv(loc, 1, specular);
-  loc = glGetUniformLocation(program, "material_shininess");
+  loc = glGetUniformLocation(sh.getProgram(), "material_shininess");
   glUniform1f(loc, shininess);
-  
-  gfx::useShader( gfx::cur_shader );
-}
-
-void Material::applyMaterial(int program, int location) {
-  //glUniform4fv(location, 4, const_cast<GLfloat*>(data));
+  shader::setProgram(old);
 }
 
 void Material::interpolateFloats(GLfloat *list1, GLfloat *list2, 

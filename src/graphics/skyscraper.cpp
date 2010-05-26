@@ -113,7 +113,7 @@ void Skyscraper::init()
 void Skyscraper::draw()
 {
 	// set shader uniforms
-	int loc = glGetUniformLocation(gfx::shSkyscraper, "rand_offset");
+	int loc = glGetUniformLocation(gfx::skyscraperShader.getProgram(), "rand_offset");
 	glUniform1f(loc, _rand_offset);
 
 	glPushMatrix();

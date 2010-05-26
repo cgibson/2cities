@@ -37,20 +37,16 @@ void Lighting::setLightPos(GLfloat x, GLfloat y, GLfloat z)
   position[2] = z;
 }
     
-void Lighting::doLighting(GLint program, const char *uniform)
+void Lighting::doLighting(Shader sh, const char *uniform)
 {
-  gfx::useShader( program );
-  int loc = glGetUniformLocation(program, "light_position");
+  GLint old = shader::current_shader;
+  sh.enable();
+  int loc = glGetUniformLocation(sh.getProgram(), "light_position");
   glUniform3fv(loc, 1, position);
-  loc = glGetUniformLocation(program, "light_diffuse");
+  loc = glGetUniformLocation(sh.getProgram(), "light_diffuse");
   glUniform4fv(loc, 1, diffuse);
-  loc = glGetUniformLocation(program, "light_ambient");
+  loc = glGetUniformLocation(sh.getProgram(), "light_ambient");
   glUniform4fv(loc, 1, ambient);
-  gfx::useShader( gfx::cur_shader );
-}
-    
-void Lighting::doLighting(GLint program, int location) {
-
-  //glUniform3fv(location, 3, const_cast<GLfloat*>(data));
+  shader::setProgram(old);
 }
 

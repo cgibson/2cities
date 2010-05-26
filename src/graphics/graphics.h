@@ -17,6 +17,7 @@
 #include "../system/io.h"
 #include "../helper/GLSL_helper.h"
 #include "../system/enum.h"
+#include "shader.h"
 
 using namespace enumeration;
 
@@ -30,19 +31,16 @@ namespace gfx{
 
   extern Material* materials;
 
-  extern GLint shSimple;          // simple shader
-  extern GLint shBuildGrid;
-  extern GLint shForceBlock;
-  extern GLint shSkyscraper;
-  extern GLint shSky;
-  extern GLint shDistant;
+  extern DefaultShader simpleShader;
+  extern DefaultShader gridShader;
+  extern DefaultShader forceBlockShader;
+  extern DefaultShader skyscraperShader;
+  extern DefaultShader skyShader;
+  extern DefaultShader distantShader;
 
   extern bool draw_wireframe;
   extern bool draw_axis;
 
-  extern GLint cur_shader;
-
-  void useShader(GLint program);
   void display();
   void reshape(int w, int h);
   void init();

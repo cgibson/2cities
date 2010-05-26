@@ -35,10 +35,10 @@ void ModelHandler::drawPlane(Vector n, Vector p, float size)
   {
     glBegin(GL_QUADS);
       glColor4f(0,0,1,0.1);
-      glVertex3f(p.x() + offset.x(), p.y()+5, p.z() + offset.z());
-      glVertex3f(p.x() + offset.x(), p.y()+5, p.z() - offset.z());
-      glVertex3f(p.x() - offset.x(), p.y()+5, p.z() - offset.z());
-      glVertex3f(p.x() - offset.x(), p.y()+5, p.z() + offset.z());
+      glVertex3f(p.x() + offset.x(), p.y(), p.z() + offset.z());
+      glVertex3f(p.x() + offset.x(), p.y(), p.z() - offset.z());
+      glVertex3f(p.x() - offset.x(), p.y(), p.z() - offset.z());
+      glVertex3f(p.x() - offset.x(), p.y(), p.z() + offset.z());
     glEnd();
 
   }else{

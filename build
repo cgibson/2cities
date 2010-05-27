@@ -32,7 +32,8 @@ includes = {}
 includes.client = {
     "include/bullet",
     "include/freetype",
-    "include/lua"
+    "include/lua",
+    "include/SDL_mixer"
 }
 includes.server = {
     "include/bullet",
@@ -88,7 +89,8 @@ libs.client = {
     "libLinearMath.a",
     "libfreetype.a",
     "libz.a",
-    "liblua.a"
+    "liblua.a",
+    "libSDL_mixer.a"
 }
 libs.server = {
     "libBulletDynamics.a",
@@ -106,7 +108,8 @@ ldflags.client = {
     "GLU",
     "glut",
     "SDL",
-    "m"
+    "m",
+    "SDL_mixer"
 }
 ldflags.server = {
     "m",
@@ -260,7 +263,7 @@ if mode == "debug" and (build == "client" or build == "both") then
 
     -- linker stage
     f:write("\nall: $(OBJS)\n")
-    f:write("\t$(CXX) -pg $(LDFLAGS) $(OBJS) $(LIBS) -o $(BIN)\n")
+    f:write("\t$(CXX) -shared -pg $(LDFLAGS) $(OBJS) $(LIBS) -o $(BIN)\n")
     -- f:write("\t$(CXX) $(LDFLAGS) $(OBJS) $(LIBS) -o $(BIN)\n")
 
     -- compiler stage
@@ -484,7 +487,7 @@ if mode == "release" and (build == "client" or build == "both") then
 
     -- linker stage
     f:write("\nall: $(OBJS)\n")
-    f:write("\t$(CXX) $(LDFLAGS) $(OBJS) $(LIBS) -o $(BIN)\n")
+    f:write("\t$(CXX) -shared $(LDFLAGS) $(OBJS) $(LIBS) -o $(BIN)\n")
 
     -- compiler stage
     for i, file in ipairs(client_srcs) do

@@ -13,6 +13,7 @@
 #include "GL/gl.h"
 #include "GL/glext.h"
 #include "include/tex.h"
+#include <assert.h>
 
 /*
  * FBO Helper constructor
@@ -108,6 +109,11 @@ bool FBOHelper::init_fbo( int w, int h, bool useDepthBuffer )
   if( status != GL_FRAMEBUFFER_COMPLETE_EXT )
   {
     clear();
+    
+    GLenum err = glGetError();
+	  assert(err == GL_NO_ERROR);
+	  assert(status == GL_FRAMEBUFFER_COMPLETE_EXT);
+	  
     switch(status){
       case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
         printf("Error: FBO error - not all images are the same size\n"); break;
@@ -115,6 +121,7 @@ bool FBOHelper::init_fbo( int w, int h, bool useDepthBuffer )
         printf("Error: FBO error - no images attached to FBO\n"); break;
       case GL_FRAMEBUFFER_UNSUPPORTED_EXT:
         printf("Error: FBO error - internal format violates implementation-dependant restrictions\n"); break;
+      
     }
     return false;
   }

@@ -16,7 +16,8 @@ void ModelHandler::drawPlane(Vector n, Vector p, float size)
 {
   Vector offset;
   bool horizontal = false;
-  if(n == Vector(0,1,0))
+  if((n.x() < 0.000001 && n.x() > -0.000001) &&
+     (n.z() < 0.000001 && n.z() > -0.000001))
   {
     horizontal = true;
     offset = Vector(1,0,1);
@@ -33,6 +34,7 @@ void ModelHandler::drawPlane(Vector n, Vector p, float size)
   //glEnable(GL_BLEND);
   if(horizontal)
   {
+    printf("WHAT?! HORIZONTAL?!\n");
     glBegin(GL_QUADS);
       glColor4f(0,0,1,0.1);
       glVertex3f(p.x() + offset.x(), p.y(), p.z() + offset.z());

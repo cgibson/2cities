@@ -1,7 +1,7 @@
 #ifndef _VECTOR_H_
 #define _VECTOR_H_
 
-#define FLOAT_EPSILON 0.000001f
+#define FLOAT_EPSILON 0.0001f
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -52,7 +52,7 @@ public:
      return Vector( p_x * v.p_x, p_y * v.p_y, p_z * v.p_z);
   }
   
-  bool operator==( const Vector& v )
+  bool equals( const Vector& v )
   {
     return ((p_x < (v.p_x + FLOAT_EPSILON)) &&
             (p_x > (v.p_x - FLOAT_EPSILON)) &&

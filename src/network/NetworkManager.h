@@ -17,7 +17,13 @@ public:
 
 	void changeNetworkInterface(E_NetworkInterface networkType);
 
-	static void consoleCmds(int argc, char *argv[]);
+	static void consoleConnect(int argc, char *argv[]);
+	static void consoleDisconnect(int argc, char *argv[]);
+	static void consoleChangeInterface(int argc, char *argv[]);
+	static void consoleSendMsg(int argc, char *argv[]);
+	static void consoleChangeLevel(int argc, char *argv[]);
+
+	static void consoleNetworkTests(int argc, char *argv[]);
 };
 
 #include "NetworkSystem.h"

@@ -34,6 +34,7 @@ class WorldObject
     protected:
         unsigned int id;
         unsigned int playerid;
+        unsigned int bldgid;
         Vector position;
         Vector velocity;
         Vector force;
@@ -68,6 +69,9 @@ class WorldObject
         	this->physics = newObj.physics;
         	this->timestamp = newObj.timestamp;
         }
+        WorldObject(unsigned char *bufPtr) {
+        	fromBinStream(bufPtr);
+        }
         
         virtual void draw();
         virtual void update(int elapsedTime);
@@ -77,6 +81,8 @@ class WorldObject
 
         unsigned int getID() {return id;}
         unsigned int getPlayerID() {return playerid;}
+        unsigned int getBldgID() {return bldgid;}
+
         Vector getPosition() {return position;}
         Vector getVelocity() {return velocity;}
         Vector getForce() {return force;}
@@ -87,12 +93,17 @@ class WorldObject
 
         void setID(unsigned int newid) { id = newid; }
         void setPlayerID(unsigned int newplayerid) { playerid = newplayerid;}
+        void setBldgID(unsigned int newbldgid) { bldgid = newbldgid;}
+
         void setPosition(Vector newposition) {position = newposition;}
         void setVelocity(Vector newvelocity) {velocity = newvelocity;}
         void setForce(Vector newforce) {force = newforce;}
         void setOrientation(Quaternion neworientation) {orientation = neworientation;}
         void setPhysics(PhysicsState newphysics) {physics = newphysics;}
         void setTimeStamp(time_t newTimeStamp) {timestamp = (uint64_t)newTimeStamp;}
+
+        int makeBinStream(unsigned char *bufPtr);
+        int fromBinStream(unsigned char *bufPtr);
 };
 
 #endif

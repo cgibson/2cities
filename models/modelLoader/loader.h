@@ -39,7 +39,7 @@ namespace loader
     }
 
     //Reads in triangle data from a .obj file.
-    void readFile(char* filename)
+    void readFile(const char* filename)
     {
         model::totalfaces = 0;
         int lineNum = 1;

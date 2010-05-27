@@ -1,6 +1,7 @@
 #include "global.h"
 
 #include "../graphics/camera.h"
+//#include "../scene/ModelManager.h"
 #include "../network/NetworkManager.h"
 
 /*
@@ -11,6 +12,7 @@ namespace global
 {
   StateManager *stateManager = new StateManager(); // global state manager
   ObjectFactory *factory = new ObjectFactory();
+ // ModelManager *modelManager = new ModelManager();
   NetworkManager *networkManager = new NetworkManager();
 
   int width;  // window width

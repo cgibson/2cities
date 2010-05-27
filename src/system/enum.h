@@ -62,6 +62,10 @@ namespace enumeration {
   typedef enum E_PlayerColor {
 	  PLAYER_SPECTATOR, PLAYER_BLUE, PLAYER_RED, PLAYER_GREEN, PLAYER_YELLOW
   } PlayerColor;
+  
+  typedef enum E_ModelType {
+	  AMMO_DRILL_CONE
+  } ModelType;
 }
 
 #endif

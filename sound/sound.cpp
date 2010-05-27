@@ -31,6 +31,13 @@ int main(int argc, char *argv[])
 		cout << "Format is ./program <sound_file>" << endl;
 		exit(EXIT_FAILURE);
 	}
+
+	//Initialize SDL
+	if (SDL_Init(SDL_INIT_AUDIO) < 0)
+	{
+		cerr << Mix_GetError() << endl;
+		exit(EXIT_FAILURE);
+	}
 	//Initialize SDL_mixer
 	if (Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 4096) != 0)
 	{

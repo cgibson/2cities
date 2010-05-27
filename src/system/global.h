@@ -12,11 +12,13 @@ class Camera;
  * All values within global namespace will be available for everyone
  */
 class NetworkManager;
+//class ModelManager;
 
 namespace global
 {
   extern StateManager *stateManager; // global state manager
   extern ObjectFactory *factory;
+//  extern ModelManager *modelManager;
   extern NetworkManager *networkManager;
 
   extern int width;  // window width
@@ -39,5 +41,4 @@ namespace global
 }
 
 #include "../network/NetworkManager.h"
-
 #endif

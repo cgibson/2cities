@@ -41,6 +41,7 @@ namespace gfx{
   extern bool draw_wireframe;
   extern bool draw_axis;
 
+  void loadDefaultShaderValues();
   void display();
   void reshape(int w, int h);
   void init();

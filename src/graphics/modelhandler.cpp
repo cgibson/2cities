@@ -30,7 +30,7 @@ void ModelHandler::drawPlane(Vector n, Vector p, float size)
   offset = offset * size;
   
   glDisable(GL_LIGHTING);
-  glEnable(GL_BLEND);
+  //glEnable(GL_BLEND);
   if(horizontal)
   {
     glBegin(GL_QUADS);
@@ -50,7 +50,7 @@ void ModelHandler::drawPlane(Vector n, Vector p, float size)
       glVertex3f(p.x() + offset.x(), p.y() - offset.y(), p.z() + offset.z());
     glEnd();
   }
-  glDisable(GL_BLEND);
+  //glDisable(GL_BLEND);
   glEnable(GL_LIGHTING);
 }
 

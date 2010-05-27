@@ -1,34 +1,41 @@
+/*
+ * FBOHelper.h
+ *
+ * Useful helper class that aids in FrameBufferObject (FBO) creation,
+ * management, and use.  Allows for multiple target texture buffers
+ * (oftenly used for multi-pass renders.)
+ *
+ * Copyright(c) 2010 - Christopher Gibson
+ *
+ */
+
 #ifndef _FBO_HELPER_H_
 #define _FBO_HELPER_H_
 
-#ifdef _WIN32
-    #include <windows.h>
-    #include <winGL/glew.h>
-	#include <winGL/glut.h>
-#else
-	#include <GL/glut.h>
-#endif
-#include <stdio.h>
+#include "GL/gl.h"
 
 class FBOHelper
 {
 public:
   FBOHelper( void );
   
-  bool initialize( GLuint textureID, int w, int h, bool useTextureBuffer = true, bool useDepthBuffer = true, bool autoGenerateMipmaps = false);
+  bool initialize( int w, int h, int textureCount );
+  bool init_fbo( int w, int h, bool useDepthBuffer = true );
   bool generateShadowFBO( int w, int h );
   bool enable( void );
   bool disable( void );
   void clear( void );
   GLuint getDepthID() { return mDepthID; }
+  GLuint getFboID() { return mFboID; }
+  GLuint* getTextureIDs() { return mTextureIDs; }
 
 protected:
-  GLuint mFboID;
-  GLuint mDepthID;
-  GLuint mTexID;
-  int mWidth, mHeight;
-  bool mAutoGenerateMipmaps;
-  bool enabled;
+  GLuint mFboID;        // FBO ID
+  GLuint mDepthID;      // depth buffer ID
+  int mWidth, mHeight;  // width and height of buffers
+  bool enabled;         // whether or not the FBO is enabled
+  int mTextureCount;    // amount of textures built as render targets
+  GLuint* mTextureIDs;  // texture ids used as render targets
 };
 
 #endif

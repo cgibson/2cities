@@ -95,6 +95,7 @@ namespace gfx{
   {
     initMaterials();
     loadShaders();
+    loadDefaultShaderValues();
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
 
@@ -142,6 +143,25 @@ namespace gfx{
     return success;
   }
 
+  void loadDefaultShaderValues()
+  {
+    GLint old = shader::current_shader;
+    gridShader.enable();
+
+    materials[GRID].applyMaterial(gridShader, "material");
+
+    int loc = glGetUniformLocation(gridShader.getProgram(), "grid_diffuse");
+    glUniform4fv(loc, 1, materials[GRID_DIFFUSE].diffuse);
+
+    loc = glGetUniformLocation(gridShader.getProgram(), "grid_size");
+    glUniform1f(loc, 1.0f);
+
+    loc = glGetUniformLocation(gridShader.getProgram(), "line_pct");
+    glUniform1f(loc, 0.03f);
+    
+    shader::setProgram(old);
+    
+  }
 
   bool installShader( string filename, int *shaderID )
   {

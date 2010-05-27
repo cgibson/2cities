@@ -10,12 +10,23 @@ using namespace enumeration;
 
 Renderer::Renderer()
 {
+  
 	// no need to init camera here anymore, it knows how to initialize itself
+}
+
+bool Renderer::initFBO()
+{
+  fbo.initialize(global::width, global::height, 2);
 }
 
 void Renderer::init()
 {
   init_lights();
+  if(!initFBO())
+  {
+    printf("ERROR: fbo generation error.\n");
+    exit(-1);
+  }
   skybox.init();
 }
 
@@ -41,8 +52,15 @@ void Renderer::init_lights()
 
 void Renderer::draw()
 {
+  //fbo.enable();
+  drawDiffusePass();
+  //fbo.disable();
+  
+  
+}
 
-
+void Renderer::drawDiffusePass()
+{
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // project the camera (need to do this every frame since the 2D overlay wipes it)
@@ -104,17 +122,6 @@ void Renderer::draw()
   int loc;
 
   gfx::gridShader.enable();
-
-  gfx::materials[GRID].applyMaterial(gfx::gridShader, "material");
-
-  loc = glGetUniformLocation(gfx::gridShader.getProgram(), "grid_diffuse");
-  glUniform4fv(loc, 1, gfx::materials[GRID_DIFFUSE].diffuse);
-
-  loc = glGetUniformLocation(gfx::gridShader.getProgram(), "grid_size");
-  glUniform1f(loc, 1.0f);
-
-  loc = glGetUniformLocation(gfx::gridShader.getProgram(), "line_pct");
-  glUniform1f(loc, 0.03f);
 
   glBegin(GL_QUADS);
     glColor4f(1,1,1,1);

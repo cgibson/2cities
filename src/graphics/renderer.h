@@ -30,6 +30,8 @@ public:
   void init();
   void update(int elapsed);
   void draw();
+  void drawDiffusePass();
+  void drawBloomPass();
   void draw_scene();
   void reshape(int w, int h);
   void getMatrices(GLdouble **mvMatrix, GLdouble **pMatrix, GLint **vMatrix);
@@ -45,6 +47,8 @@ private:
   Lighting light;
 
   Skybox skybox;
+  
+  FBOHelper fbo;
 };
 
 #endif

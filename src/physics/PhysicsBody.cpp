@@ -102,7 +102,7 @@ bool PhysicsBody::drawnByBlackHoleAt(Vector loc, float strength,
 			return false;
 			setPosition(loc);
 			setVelocity(Vector(0,0,0));
-			body->setActivationState(ISLAND_SLEEPING);
+			//body->setActivationState(ISLAND_SLEEPING);
 		}
 		else
 		{

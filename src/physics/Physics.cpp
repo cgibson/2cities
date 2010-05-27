@@ -32,8 +32,8 @@ void Physics::initPhysics()
   world = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver,
            collConf);
   world->setGravity(btVector3(0,-10, 0));
-  btCollisionShape * ground = new btBoxShape(btVector3(btScalar(100.),
-          btScalar(GROUND_HEIGHT / 2.0), btScalar(100.)));
+  btCollisionShape * ground = new btBoxShape(btVector3(btScalar(40.),
+          btScalar(GROUND_HEIGHT / 2.0), btScalar(40.)));
 //  btCollisionShape * ground = new btStaticPlaneShape(btVector3(0,1,0), 50);
   btAlignedObjectArray<btCollisionShape *> collisionShapes;
   collisionShapes.push_back(ground);
@@ -120,7 +120,7 @@ void Physics::addWorldObject(WorldObject worldObject)
 
     if (worldObject.getVelocity().mag() < .01)
     {
-      newBody->setActivationState(ISLAND_SLEEPING);
+//      newBody->setActivationState(ISLAND_SLEEPING);
     }
     world->addRigidBody(newBody->getRigidBody());
     physicsBodies.push_back(newBody);
@@ -185,8 +185,9 @@ vector<Vector> Physics::fileToBlockLocations(const char * fileName)
 {
   vector<Vector> result;
   FILE * inFile = fopen(fileName, "r");
-  int blockSize, numRead, edge, i,
+  int blockSize, numRead, edge, inner, i,
       x1, y1, z1, x2, y2, z2, xi, yi, zi, xf, yf, zf;
+  float bs;
   Vector start, here, off121, off242, off515;
   Vector size121 = global::factory->getBlueprint(BLOCK_1_2_1).getSize();
   Vector size242 = global::factory->getBlueprint(BLOCK_2_4_2).getSize();
@@ -196,13 +197,14 @@ vector<Vector> Physics::fileToBlockLocations(const char * fileName)
   Vector oz;
   if ((numRead = fscanf(inFile, "blocksize: %d\n", &blockSize)) == 1)
   {
-    ox = Vector(blockSize - size121.x(), 0, 0);
+    bs = blockSize * 1.001;
+    ox = Vector(bs - size121.x(), 0, 0);
     oy = Vector(0, size121.y(), 0);
     oz = Vector(0, 0, blockSize - size121.z());
     off121 = size121 * 0.5;
     off242 = Vector(0, size242.y() / 2.0, 0);
     off515 = Vector(size515.x() * 0.5,
-                    blockSize - size515.y() * 0.5,
+                    bs - size515.y() * 0.5,
                     size515.z() * 0.5);
     WorldObject newObj;
     while ((numRead = fscanf(inFile, "%d %d %d %d %d %d\n",&x1, &y1, &z1,
@@ -225,12 +227,14 @@ vector<Vector> Physics::fileToBlockLocations(const char * fileName)
           for (zi = 0; zi < zf; zi++)
           {
             edge = 0;
-            here = start + Vector(xi, yi, zi) * blockSize;
+            inner = 1;
+            here = start + Vector(xi, yi, zi) * bs;
             if (xi == 0 || zi == 0)
             {
               InsertNewBlock(BLOCK_1_2_1, here + off121);
               InsertNewBlock(BLOCK_1_2_1, here + off121 + oy);
               edge = 1;
+              inner = 0;
             }
             if (xi == 0 || zi == zf - 1)
             {
@@ -249,7 +253,7 @@ vector<Vector> Physics::fileToBlockLocations(const char * fileName)
               InsertNewBlock(BLOCK_1_2_1, here + ox + off121 + oy);
             }
             if (edge == 1)
-              for (i = 1; i < blockSize; i++)
+              for (i = 1; i < blockSize - 1; i++)
               {
                 if (xi == 0)
                 {
@@ -285,7 +289,7 @@ vector<Vector> Physics::fileToBlockLocations(const char * fileName)
                     + Vector(i, 0, 0) + oz + oy + off121);
                 }
             }
-            else
+            if (inner == 1)
             {
                             printf("i\n\n");
 

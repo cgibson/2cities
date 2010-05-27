@@ -43,6 +43,10 @@ bool FBOHelper::initialize( int w, int h, int textureCount )
   glGenTextures( textureCount, mTextureIDs );
   
   bool r = init_fbo( w, h, true );
+  if(!r)
+  {
+    printf("Error: FBO failed to initialize.\n");
+  }
 
   // bind current FBO
   glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, mFboID );
@@ -51,8 +55,6 @@ bool FBOHelper::initialize( int w, int h, int textureCount )
   for( int i = 0; i < textureCount; i++ )
   {
     // generate new texture
-    printf("GENERATING TEXTURE %d -> %d\n", i, mTextureIDs[i]);
-    printf("WITH SIZES %d, %d\n", w, h );
     GenerateTexture( mTextureIDs[i], w, h );
     bufs[i] = GL_COLOR_ATTACHMENT0_EXT + i;
     
@@ -106,6 +108,14 @@ bool FBOHelper::init_fbo( int w, int h, bool useDepthBuffer )
   if( status != GL_FRAMEBUFFER_COMPLETE_EXT )
   {
     clear();
+    switch(status){
+      case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
+        printf("Error: FBO error - not all images are the same size\n"); break;
+      case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
+        printf("Error: FBO error - no images attached to FBO\n"); break;
+      case GL_FRAMEBUFFER_UNSUPPORTED_EXT:
+        printf("Error: FBO error - internal format violates implementation-dependant restrictions\n"); break;
+    }
     return false;
   }
   // return to normal

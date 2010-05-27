@@ -78,7 +78,7 @@ void Renderer::drawDiffusePass()
   shader::reset();
 
     //TODO: Remove BEGIN
-
+/*
   glDisable(GL_DEPTH_TEST);
   glColor3f(0,0,0);
   glBegin(GL_QUADS);
@@ -89,7 +89,7 @@ void Renderer::drawDiffusePass()
     glVertex3f( 500, 0, -500);
   glEnd();
   glEnable(GL_DEPTH_TEST);
-
+*/
   if(gfx::draw_axis)
   {
 	  glDisable(GL_LIGHTING);

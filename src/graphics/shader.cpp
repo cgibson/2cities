@@ -37,8 +37,8 @@ GLint Shader::getProgram()
 
 int Shader::compile(const GLchar *vert, const GLchar *frag)
 {
-  printf("VERTEX SHADER####################\n%s\n\n", vert);
-  printf("FRAGMNET SHADER##################\n%s\n\n", frag);
+  //printf("VERTEX SHADER####################\n%s\n\n", vert);
+  //printf("FRAGMNET SHADER##################\n%s\n\n", frag);
   GLuint VertVS, FragFS; //handles to shader object
 	GLint vCompiled, fCompiled, linked; //status of shader
 	

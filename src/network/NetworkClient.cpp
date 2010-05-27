@@ -16,12 +16,12 @@ NetworkClient::NetworkClient() : NetworkSystem() {
 }
 
 NetworkClient::~NetworkClient() {
-	//disconnectServer();
 	closeSockets();
 }
 
 void NetworkClient::closeSockets() {
-	disconnectServer();
+	if(isConnected)
+		disconnectServer();
 
 	if(socket.IsValid()) {
 		waitSet->Remove(&socket);
@@ -66,7 +66,6 @@ bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 
 			serverDelay = (lagCalc_EndTime - lagCalc_StartTime)/2;
 			serverTimeDelta = global::elapsed_ms() - (*((int*)(pkt.data)+1) + serverDelay);
-			//printf("Server time = %i\n",*((int*)(pkt.data)+1));
 
 			printf("Connected as Player %i with a %i ms server delay!\n", _playerID, serverDelay);
 
@@ -129,7 +128,7 @@ int NetworkClient::checkLag(ting::UDPSocket *socket, ting::IPAddress ip) {
 
 void NetworkClient::update(long milli_time) {
 	updatePktData(milli_time);
-	int currServerTime = global::elapsed_ms() - serverTimeDelta;
+	//int currServerTime = global::elapsed_ms() - serverTimeDelta;
 
 	ting::IPAddress sourceIP;
 	NetworkPacket pkt;
@@ -145,9 +144,9 @@ void NetworkClient::update(long milli_time) {
 				//updateObjectLocal(new WorldObject(objBatch[i]));
 
 				WorldObject *objPtr = new WorldObject(objBatch[i]);
-				int itemInterpAmount = currServerTime - objPtr->getTimeStamp();
-				printf("Update amount = %i\n", itemInterpAmount);
-				objPtr->update(itemInterpAmount);
+				//int itemInterpAmount = currServerTime - objPtr->getTimeStamp();
+				//printf("Update amount = %i\n", itemInterpAmount);
+				//objPtr->update(itemInterpAmount);
 				updateObjectLocal(objPtr);
 			}
 		}

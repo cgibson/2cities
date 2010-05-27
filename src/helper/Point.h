@@ -8,10 +8,14 @@
 #else
 	#include <GL/glut.h>
 #endif
+
+#ifdef CLIENT
+	#include "../graphics/graphics.h"
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "../graphics/graphics.h"
 
 class Point {
 private:

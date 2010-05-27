@@ -36,8 +36,8 @@ includes.client = {
 }
 includes.server = {
     "include/bullet",
-    "include/freetype", -- TODO: remove me
-    "include/lua" -- TODO: remove me
+--    "include/freetype"--, -- TODO: remove me
+--    "include/lua" -- TODO: remove me
 }
 
 -- preprocessor defines
@@ -50,9 +50,9 @@ defines.client = {
 }
 defines.server = {
     "SERVER",
-    "GL_GLEXT_PROTOTYPES", -- TODO: remove me
-    "OGLFT_NO_SOLID", -- TODO: remove me
-    "OGLFT_NO_QT" -- TODO: remove me
+    "GL_GLEXT_PROTOTYPES"--, -- TODO: remove me
+--    "OGLFT_NO_SOLID", -- TODO: remove me
+--    "OGLFT_NO_QT" -- TODO: remove me
 }
 defines.debug = {
     "DEBUG"
@@ -65,7 +65,7 @@ defines.release = {
 cxxflags = {}
 cxxflags.debug = {
     "g",
---    "pg",
+    "pg",
     "Wall"
 }
 cxxflags.release = {
@@ -260,8 +260,8 @@ if mode == "debug" and (build == "client" or build == "both") then
 
     -- linker stage
     f:write("\nall: $(OBJS)\n")
-    -- f:write("\t$(CXX) -pg $(LDFLAGS) $(OBJS) $(LIBS) -o $(BIN)\n")
-    f:write("\t$(CXX) $(LDFLAGS) $(OBJS) $(LIBS) -o $(BIN)\n")
+    f:write("\t$(CXX) -pg $(LDFLAGS) $(OBJS) $(LIBS) -o $(BIN)\n")
+    -- f:write("\t$(CXX) $(LDFLAGS) $(OBJS) $(LIBS) -o $(BIN)\n")
 
     -- compiler stage
     for i, file in ipairs(client_srcs) do
@@ -372,8 +372,8 @@ if mode == "debug" and (build == "server" or build == "both") then
 
     -- linker stage
     f:write("\nall: $(OBJS)\n")
-    -- f:write("\t$(CXX) -pg $(LDFLAGS) $(OBJS) $(LIBS) -o $(BIN)\n")
-    f:write("\t$(CXX) $(LDFLAGS) $(OBJS) $(LIBS) -o $(BIN)\n")
+    f:write("\t$(CXX) -pg $(LDFLAGS) $(OBJS) $(LIBS) -o $(BIN)\n")
+    ---f:write("\t$(CXX) $(LDFLAGS) $(OBJS) $(LIBS) -o $(BIN)\n")
 
     -- compiler stage
     for i, file in ipairs(server_srcs) do

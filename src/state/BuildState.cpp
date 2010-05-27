@@ -11,11 +11,15 @@
 #include "BuildState.h"
 
 #include "../system/global.h"
-#include "../system/io.h"
-#include "../graphics/orbitalcamera.h"
 #include "../helper/Vector.h"
-#include "../graphics/graphics.h"
 #include "../scene/CustomObject.h"
+#include "../system/io.h"
+
+#ifdef CLIENT
+	#include "../graphics/orbitalcamera.h"
+	#include "../graphics/graphics.h"
+#endif
+
 
 namespace BuildStateGlobals
 {
@@ -56,7 +60,7 @@ void BuildState::save_level(int argc, char *argv[])
 	ofstream myfile;
    myfile.open(argv[1]);
 	myfile << "blocksize: " << blocksize << endl;
-   for(int i = 0; i < currState->objects.size(); i++)
+   for(unsigned int i = 0; i < currState->objects.size(); i++)
    {
       // write rectangle's max and min to file
       myfile << (static_cast<CustomObject*>(currState->objects[i])->get_min_x()) << " " << 
@@ -69,7 +73,10 @@ void BuildState::save_level(int argc, char *argv[])
 }
 
 void BuildState::initialize() {
-  gfx::hud.console.registerCmd("save_level", BuildState::save_level);
+#ifdef CLIENT
+	gfx::hud.console.registerCmd("save_level", BuildState::save_level);
+#endif
+
 	DELETE_MODE = false;
 	MOUSE_DOWN = false;
 	counter = 0;
@@ -78,6 +85,7 @@ void BuildState::initialize() {
 	pp_face = NOTHING;
 	firstPoint = Point();
 
+#ifdef CLIENT
 	// create the camera
 	if (global::camera != NULL) delete global::camera;
 	global::camera = new OrbitalCamera();
@@ -91,7 +99,7 @@ void BuildState::initialize() {
 	io::register_mouse_down(BuildState::mouseDownToggle);
 	io::register_mouse_up(BuildState::mouseUpToggle);
 	//io::register_key_down(BuildState::keyDownHandler);
-
+#endif
 	// make a simple CustomObject and add it to static_cast<CustomObject*>(objects vector
 	// (unsigned int newid, unsigned int newplayerid, ObjectType newtype, Point newmax, Point newmin)
 	//CustomObject co = new CustomObject(0, 0, CUSTOM_BLOCK, Point(25, 0, 25), Point(-25, 25, -25));
@@ -187,7 +195,7 @@ void BuildState::mouseDownHandler()
 	// IF right click
 	if(VALID_CLICK && LAST_BUTTON == GLUT_RIGHT_BUTTON)
 	{
-		// IF first click
+		// IF first click--
 		if(counter == 0)
 		{
 			// 1. secondPoint = fp
@@ -251,7 +259,8 @@ void BuildState::mouseDownHandler()
 			checkRectBase(currState->objects.size() - 1);
 		}
 	}
-	// IF left click
+	// IF left click                 from src/state/BuildState.cpp:17:
+
 	else if(VALID_CLICK && LAST_BUTTON == GLUT_LEFT_BUTTON)
 	{
 		// IF mouse has been left clicked on an existing rectangle
@@ -325,7 +334,7 @@ void BuildState::checkRectBase(int index)
 	for(unsigned int i = 0; i < currState->objects.size(); i++)
 	{
 		// excluding self
-		if(i != index)
+		if((int)i != index)
 		{
 			// check first face
 			check_pull(index, f1, false);
@@ -340,6 +349,7 @@ void BuildState::checkRectBase(int index)
 // determines the plane that gluUnproject samples against
 void BuildState::get_pp_plane(Face f)
 {
+#ifdef CLIENT
 	// Vertical	pushPull
 	if(f == TOP)
 	{
@@ -360,6 +370,7 @@ void BuildState::get_pp_plane(Face f)
 		//printf("v: %s\n", planeLocation.str());
 		planeSize = 100;
 	}
+#endif
 }
 
 // determines if a mouse click intersects with an existing rectangle
@@ -409,7 +420,7 @@ void BuildState::recursive_bump(int bottom, int delta_height)
    for(top = 0; top < objects.size(); top++)
    {
       // exclude self
-      if(top != bottom)
+      if((int)top != bottom)
       {
          // IF i.get_min_y() == pp_index.get_max_y() (old_height)
          if( static_cast<CustomObject*>(objects[top])->get_min_y() == (static_cast<CustomObject*>(objects[bottom])->get_max_y() - delta_height) )
@@ -454,7 +465,7 @@ void BuildState::check_pull(int index, Face f, bool move)
 {
 	for(unsigned int i = 0; i < objects.size(); i++)
 	{
-		if(i != index)
+		if((int)i != index)
 		{
 			if(f == FACE1)
 			{
@@ -614,7 +625,7 @@ void BuildState::recursive_push(Face f, int bottom)
 	for(top = 0; top < objects.size(); top++)
 	{
 		// exclude self
-      if(top != bottom)
+      if((int)top != bottom)
       {
 			// IF i.get_min_y() == pp_index.get_max_y()
          if( static_cast<CustomObject*>(objects[top])->get_min_y() == static_cast<CustomObject*>(objects[bottom])->get_max_y() )

@@ -13,18 +13,20 @@ Point::Point(GLdouble clicked_x, GLdouble clicked_y)
 	GLdouble modelview_matrix[16];
 	GLdouble projection_matrix[16];
 
+#ifdef CLIENT
    GLdouble *mvMatrix = (GLdouble*)modelview_matrix;
    GLdouble *pMatrix = (GLdouble*)projection_matrix;
    GLint *vMatrix = (GLint*)viewport;
+#endif
 
 	GLfloat winX, winY, winZ;
 	GLdouble posX, posY, posZ;
 
 	//glGetDoublev( GL_MODELVIEW_MATRIX, modelview_matrix );
 	//glGetDoublev( GL_PROJECTION_MATRIX, projection_matrix );
-	
+#ifdef CLIENT
    gfx::renderer.getMatrices(&mvMatrix, &pMatrix, &vMatrix);
-
+#endif
    //glGetIntegerv( GL_VIEWPORT, viewport );
 
 	winX = (float)clicked_x;

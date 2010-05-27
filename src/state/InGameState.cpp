@@ -13,8 +13,11 @@
 
 #include "../system/global.h"
 #include "../system/io.h"
+
+#ifdef CLIENT
 #include "../graphics/camera.h"
 #include "../helper/Vector.h"
+#endif
 
 #define ANGLE_SPEED 2
 #define MOUSE_SPEED 1

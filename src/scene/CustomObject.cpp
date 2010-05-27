@@ -1,7 +1,10 @@
 #include "CustomObject.h"
 #include "../system/global.h"
-#include "../graphics/graphics.h"
 #include "stdio.h"
+
+#ifdef CLIENT
+	#include "../graphics/graphics.h"
+#endif
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
  * CustomObject

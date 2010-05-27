@@ -16,7 +16,7 @@ Renderer::Renderer()
 
 bool Renderer::initFBO()
 {
-  fbo.initialize(global::width, global::height, 2);
+  return fbo.initialize(global::width, global::height, 2);
 }
 
 void Renderer::init()
@@ -74,6 +74,11 @@ void Renderer::drawDiffusePass()
   do_lights(gfx::forceBlockShader);
 
   glPushMatrix();
+  
+	if (global::stateManager->currentState->stateType() == CARNAGE_STATE)
+	{
+		skybox.draw(light.position[0], light.position[1], light.position[2]);
+	}
 
   shader::reset();
 
@@ -90,34 +95,8 @@ void Renderer::drawDiffusePass()
   glEnd();
   glEnable(GL_DEPTH_TEST);
 */
-  if(gfx::draw_axis)
-  {
-	  glDisable(GL_LIGHTING);
-	  glDisable(GL_DEPTH_TEST);
-	  glBegin(GL_LINES);
-	  glColor3f(1,0,1);
-	  glVertex3f(0,0,0);
-	  glVertex3f(4,0,0);
-
-	  glColor3f(1,1,0);
-	  glVertex3f(0,0,0);
-	  glVertex3f(0,4,0);
-
-	  glColor3f(0,1,0);
-	  glVertex3f(0,0,0);
-	  glVertex3f(0,0,4);
-	  glEnd();
-	  glEnable(GL_DEPTH_TEST);
-	  glEnable(GL_LIGHTING);
-  }
   //TODO: Remove END
 
-  
-
-	if (global::stateManager->currentState->stateType() == CARNAGE_STATE)
-	{
-		skybox.draw(light.position[0], light.position[1], light.position[2]);
-	}
   
   int loc;
 
@@ -133,6 +112,32 @@ void Renderer::drawDiffusePass()
   glEnd();
   
   shader::reset();
+
+  //if(gfx::draw_axis && true)
+  //{
+    glEnable(GL_LINE_SMOOTH);
+
+
+	  glDisable(GL_LIGHTING);
+	  glDisable(GL_DEPTH_TEST);
+	  glBegin(GL_LINES);
+    glLineWidth(8.0);
+    glPointSize(8.0);
+	  glColor3f(1,0,1);
+	  glVertex3f(-2,0,0);
+	  glVertex3f(2,0,0);
+
+	  glColor3f(1,1,0);
+	  glVertex3f(0,-2,0);
+	  glVertex3f(0,2,0);
+
+	  glColor3f(0,1,0);
+	  glVertex3f(0,0,-2);
+	  glVertex3f(0,0,2);
+	  glEnd();
+	  glEnable(GL_DEPTH_TEST);
+	  glEnable(GL_LIGHTING);
+  //}
 
   InGameState *curstate = global::stateManager->currentState;
 

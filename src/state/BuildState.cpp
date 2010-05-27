@@ -49,7 +49,13 @@ BuildState::BuildState() {
 
 BuildState::~BuildState() {}
 
+void BuildState::save_level(int argc, char *argv[])
+{
+  
+}
+
 void BuildState::initialize() {
+  gfx::hud.console.registerCmd("save_level", BuildState::save_level);
 	DELETE_MODE = false;
 	MOUSE_DOWN = false;
 	counter = 0;

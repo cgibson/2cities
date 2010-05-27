@@ -38,6 +38,8 @@ class BuildState : public InGameState
 		static void keyDownHandler(int key, bool special);
 		static void mouseDownToggle(int button);
 		static void mouseUpToggle(int button);
+    static void save_level(int argc, char *argv[]);
+
 
 		void mouseDownHandler();
 

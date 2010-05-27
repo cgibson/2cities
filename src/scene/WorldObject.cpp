@@ -50,9 +50,9 @@ void WorldObject::update(int elapsedTime) {
 	Vector grav = Vector(0,-10,0);
 	float timeFrac = (elapsedTime/1000.0f);
 
-	if(vel.mag() > (20.0 * timeFrac)) {
-		if(pos.y() > 1 && abs(vel.y()) > 10.0f * timeFrac)
-			vel = vel + (grav * (elapsedTime/1000.0f));
+	if(getForce().x() > (70.0 * timeFrac)) {
+		if(pos.y() > 1 && abs(vel.y()) > 50.0f * timeFrac)
+			vel = vel + (grav * timeFrac);
 		else
 			vel.y(0.0f);
 
@@ -61,6 +61,23 @@ void WorldObject::update(int elapsedTime) {
 		setPosition(pos);
 		setVelocity(vel);
 	}
+}
+
+void WorldObject::interpolate(int elapsedTime) {
+	Vector pos = getPosition();
+	Vector vel = getVelocity();
+	Vector grav = Vector(0,-10,0);
+	float timeFrac = (elapsedTime/1000.0f);
+
+	if(pos.y() > 1)
+		vel = vel + (grav * timeFrac);
+	else
+		vel.y(0.0f);
+
+	pos = pos + (vel * timeFrac);
+
+	setPosition(pos);
+	setVelocity(vel);
 }
 
 void WorldObject::think(int elapsedTime) {

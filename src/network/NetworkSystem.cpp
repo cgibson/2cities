@@ -18,7 +18,7 @@ void NetworkSystem::updateObjectVector(vector<WorldObject *> *objVec, WorldObjec
 		objVec->push_back(objPtr);
 	}
 	// if found (and newer), replace pointer with newer one
-	else { // if(objPtr->getTimeStamp() > (*objVec)[i]->getTimeStamp()) {
+	else if(objPtr->getTimeStamp() > (*objVec)[i]->getTimeStamp()) {
 		WorldObject *oldObjPtr = (*objVec)[i];
 		(*objVec)[i] = objPtr;
 		delete oldObjPtr;

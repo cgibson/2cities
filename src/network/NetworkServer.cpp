@@ -60,7 +60,35 @@ void NetworkServer::closeSockets() {
 void NetworkServer::initialize() {}
 
 int  NetworkServer::checkLag(ting::UDPSocket *socket, ting::IPAddress ip) {
-	// TODO ADD CODE
+/*
+	try {
+		NetworkPacket pkt;
+
+		RecvPacket(&pkt, &_incomingSock, &ip);
+
+		if(pkt.header.type == net::LAG_REQ) {
+			// Add Socket/IP to currPlayer
+			socket->Open();
+			ip = ting::IPAddress(ip.host>>24, (ip.host<<8)>>24, (ip.host<<16)>>24, (ip.host<<24)>>24, ip.port);
+
+			// Add Socket to _waitSet
+			_waitSet->Add(&(currPlayer->socket), ting::Waitable::READ);
+
+			// Send reply so they have new UDP port, playerID, and serverClock
+			unsigned char msg[sizeof(int)];
+			int gameClock = global::elapsed_ms();
+			memcpy(msg, (unsigned char*)&gameClock, sizeof(int));
+
+			NetworkPacket tmpPkt(LAG_REPLY, msg, sizeof(int));
+			SendPacket(tmpPkt, &(currPlayer->socket), currPlayer->ip);
+		}
+		else {
+			printf("Received an unexpected packet on the server!");
+		}
+	} catch(ting::Socket::Exc &e) {
+		std::cout << "Network error: " << e.What() << std::endl;
+	}
+*/
 	return -1;
 }
 
@@ -134,20 +162,29 @@ void NetworkServer::networkIncomingPlayers(int p) {
 		ting::IPAddress ip;
 		NetworkPacket pkt;
 		RecvPacket(&pkt, &(_players[p]->socket), &ip);
+
 		WorldObject tmpObj;
+		int gameClock;
 
 		switch (pkt.header.type) {
 		case OBJECT_SEND :
 			//tmpObj.fromBinStream((pkt.data));
 			//tmpObj.print();
 			tmpObj = *(WorldObject*)(pkt.data);
-			//tmpObj.update(1);
+			tmpObj.interpolate(_players[p]->lagDelay);
 			addObjectPhys(tmpObj);
 			//addObjectPhys(*(WorldObject*)(pkt.data));
 			break;
+		case LAG_REQ :
+			gameClock = global::elapsed_ms();
+			pkt = NetworkPacket (LAG_REPLY, (unsigned char *)&gameClock, sizeof(int));
+			SendPacket(pkt, &(_players[p]->socket), _players[p]->ip);
+			break;
 		case LAG_RESULT :
 			_players[p]->lagDelay = *(int*)(pkt.data);
+#ifdef DEBUG
 			printf("Player #%i has updated lagDelay to %i!\n", _players[p]->ID,  _players[p]->lagDelay);
+#endif
 			break;
 		case STATUS_CHG :
 			printf("STATUS_CHG\n");

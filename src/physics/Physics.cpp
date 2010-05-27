@@ -185,6 +185,11 @@ vector<Vector> Physics::fileToBlockLocations(const char * fileName)
 {
   vector<Vector> result;
   FILE * inFile = fopen(fileName, "r");
+  if(inFile == NULL) {
+	  printf("level not found\n");
+	  return result;
+  }
+
   int blockSize, numRead, edge, inner, i,
       x1, y1, z1, x2, y2, z2, xi, yi, zi, xf, yf, zf;
   float bs;

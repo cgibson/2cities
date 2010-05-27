@@ -76,6 +76,7 @@ class WorldObject
         virtual void draw();
         virtual void update(int elapsedTime);
         virtual void think(int elapsedTime);
+        virtual void interpolate(int elapsedTime);
 
         virtual void print();
 

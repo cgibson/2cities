@@ -102,12 +102,10 @@ int NetworkClient::checkLag(ting::UDPSocket *socket, ting::IPAddress ip) {
 		socket->Open();
 	}
 
-	int msg = 0;
-	NetworkPacket tmpPkt(LAG_REQ, (unsigned char *)&msg, sizeof(msg));
-
 	int lagCalc_Delta = -1;
 	int lagCalc_EndTime;
 	int lagCalc_StartTime = global::elapsed_ms();
+	NetworkPacket tmpPkt(LAG_REQ, (unsigned char *)&lagCalc_StartTime, sizeof(int));
 	SendPacket(tmpPkt, socket, ip);
 
 	// Wait for reply response for 1 second
@@ -128,30 +126,53 @@ int NetworkClient::checkLag(ting::UDPSocket *socket, ting::IPAddress ip) {
 
 void NetworkClient::update(long milli_time) {
 	updatePktData(milli_time);
-	//int currServerTime = global::elapsed_ms() - serverTimeDelta;
+	int currServerTime = global::elapsed_ms() - serverTimeDelta;
 
 	ting::IPAddress sourceIP;
 	NetworkPacket pkt;
 	unsigned int pktsRecv = 0;
 
+	static int lagDelayUpdatePeriod = 1000;
+	if(isConnected) {
+		if(lagDelayUpdatePeriod < 0) {
+			lagCalc_StartTime = global::elapsed_ms();
+			NetworkPacket tmpPkt(LAG_REQ, (unsigned char *)&lagCalc_StartTime, sizeof(int));
+			SendPacket(tmpPkt, &socket, serverIP);
+			//serverDelay = checkLag(&socket, serverIP);
+			//printf("ServerDelay = %i\n",serverDelay);
+			lagDelayUpdatePeriod = 1000;
+		}
+		else {
+			lagDelayUpdatePeriod -= milli_time;
+		}
+	}
+
 	// Check for Waiting Network Data
 	while(isConnected && waitSet->WaitWithTimeout(0) && pktsRecv < SERVER_RECV_MAX_PACKETS_PER_CYCLE) {
 		RecvPacket(&pkt, &socket, &sourceIP);
+		int pktRecvTime = global::elapsed_ms();
+
 		if(pkt.header.type == OBJECT_BATCHSEND) {
 			WorldObject objBatch[OBJECT_BATCHSEND_SIZE];
 			int objBatchSize = readBatchPacket(&pkt, objBatch, (int)OBJECT_BATCHSEND_SIZE);
 			for(int i=0; i<objBatchSize; i++) {
-				//updateObjectLocal(new WorldObject(objBatch[i]));
-
 				WorldObject *objPtr = new WorldObject(objBatch[i]);
-				//int itemInterpAmount = currServerTime - objPtr->getTimeStamp();
+				int itemInterpAmount = currServerTime - objPtr->getTimeStamp();
 				//printf("Update amount = %i\n", itemInterpAmount);
-				//objPtr->update(itemInterpAmount);
+				objPtr->interpolate(itemInterpAmount);
 				updateObjectLocal(objPtr);
 			}
 		}
 		else if(pkt.header.type == OBJECT_KILL) {
 			removeObjectLocal(*(unsigned int*)(pkt.data));
+		}
+		else if(pkt.header.type == LAG_REPLY) {
+			serverDelay = (pktRecvTime - lagCalc_StartTime)/2;
+#ifdef DEBUG
+			printf("ServerDelay = %i\n",serverDelay);
+#endif
+			NetworkPacket tmpPkt(LAG_RESULT, (unsigned char *)&serverDelay, sizeof(int));
+			SendPacket(tmpPkt, &socket, serverIP);
 		}
 		else if(pkt.header.type == OBJECT_SEND) {
 			updateObjectLocal(new WorldObject(*(WorldObject*)(pkt.data)));

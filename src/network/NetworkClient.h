@@ -31,6 +31,7 @@ protected:
 	bool isConnected;
 	unsigned int serverDelay;
 	int serverTimeDelta;
+	int lagCalc_StartTime;
 
 public:
 	NetworkClient();

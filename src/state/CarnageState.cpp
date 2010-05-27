@@ -15,7 +15,7 @@
 #include "../helper/Vector.h"
 #include "../scene/CustomObject.h"
 
-#define RECHARGE_TIME 200
+#define RECHARGE_TIME 300
 
 using namespace global;
 

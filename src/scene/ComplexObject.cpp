@@ -7,9 +7,6 @@
 #endif
 #include "ComplexObject.h"
 #include "../system/global.h"
-#include "ModelManager.h"
-
-using namespace global;
 
 ComplexObject::ComplexObject(E_ModelType modelType)
 {

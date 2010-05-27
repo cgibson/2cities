@@ -49,8 +49,8 @@ defines.client = {
     "OGLFT_NO_QT"
 }
 defines.server = {
-    "SERVER",
-    "GL_GLEXT_PROTOTYPES"--, -- TODO: remove me
+    "SERVER"--,
+--    "GL_GLEXT_PROTOTYPES"--, -- TODO: remove me
 --    "OGLFT_NO_SOLID", -- TODO: remove me
 --    "OGLFT_NO_QT" -- TODO: remove me
 }

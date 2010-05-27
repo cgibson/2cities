@@ -11,14 +11,14 @@ class Camera;
 /*
  * All values within global namespace will be available for everyone
  */
+class ModelManager;
 class NetworkManager;
-//class ModelManager;
 
 namespace global
 {
-  extern StateManager *stateManager; // global state manager
-  extern ObjectFactory *factory;
-//  extern ModelManager *modelManager;
+  extern StateManager   *stateManager;
+  extern ObjectFactory  *factory;
+  extern ModelManager   *modelManager;
   extern NetworkManager *networkManager;
 
   extern int width;  // window width
@@ -40,5 +40,6 @@ namespace global
   int elapsed_ms();
 }
 
+#include "../scene/ModelManager.h"
 #include "../network/NetworkManager.h"
 #endif

@@ -1,8 +1,9 @@
 #include "global.h"
 
-#include "../graphics/camera.h"
-//#include "../scene/ModelManager.h"
-#include "../network/NetworkManager.h"
+#ifdef CLIENT
+	#include "../graphics/camera.h"
+	#include "../scene/ModelManager.h"
+#endif
 
 /*
  * All values within global namespace will be available for everyone
@@ -10,10 +11,12 @@
 
 namespace global
 {
-  StateManager *stateManager = new StateManager(); // global state manager
-  ObjectFactory *factory = new ObjectFactory();
- // ModelManager *modelManager = new ModelManager();
+  StateManager  *stateManager    = new StateManager();
+  ObjectFactory  *factory        = new ObjectFactory();
   NetworkManager *networkManager = new NetworkManager();
+#ifdef CLIENT
+  ModelManager   *modelManager   = new ModelManager();
+#endif
 
   int width;  // window width
   int height; // wondow height
@@ -22,7 +25,9 @@ namespace global
 
   bool fullscreen;  // whether or not the window is fullscreen
 
+#ifdef CLIENT
   Camera *camera = NULL;
+#endif
 
   float fill_color[4] = {0.05f, 0.05f, 0.05f, 0.05f};
 

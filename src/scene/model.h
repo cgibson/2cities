@@ -34,20 +34,20 @@ namespace mdl
     } Triangle;
 
     //stl vector to store all the triangles for the mesh
-    vector<Vector3 *> Vertices;
+    extern vector<Vector3 *> Vertices;
 
     //stl vector to store all the vertices in the mesh
-    vector<Vector3 *> Normals;
+    extern vector<Vector3 *> Normals;
 
     //vertex array
-    float *vertexarray;
+    extern float *vertexarray;
 
     //normal array (same size as vertex array)
-    float *normalarray;
+    extern float *normalarray;
 
-    float *colorarray;
+    extern float *colorarray;
 
-    int totalfaces;
+    extern int totalfaces;
 }
 
 #endif

@@ -63,7 +63,7 @@ void ObjectFactory::loadConfig(char* filename)
   setBlueprint(DUMMY_BLOCK, 1.0f, YELLOW_MAT, SMALL_CUBE, Vector(1.0f, 1.0f, 1.0f));
   
   // dummy sphere
-  setBlueprint(DUMMY_SPHERE, 10.0f, BLUE_MAT, SMALL_SPHERE, Vector(1.0f, 1.0f, 1.0f));
+  setBlueprint(DUMMY_SPHERE, 10.0f, BLUE_MAT, SMALL_SPHERE, Vector(0.5f, 0.5f, 0.5f));
   io::register_key_down(ObjectFactory::makeBlock);
   
   // dummy block
@@ -75,7 +75,7 @@ void ObjectFactory::loadConfig(char* filename)
   setBlueprint(DUMMY_CYLINDER, 1.0f, YELLOW_MAT, SMALL_CYLINDER, Vector(1.0f, 1.0f, 1.0f));
   setBlueprint(BLACK_HOLE, 10000.0f, YELLOW_MAT, SMALL_SPHERE, Vector(1.0f, 0.0f, 0.f));
   setBlueprint(BLOCK_1_2_1, 2.0f, YELLOW_MAT, BLOCK_1_2_1_SHAPE, Vector(1.0f, 2.0f, 1.0f));
-  setBlueprint(BLOCK_2_4_2, 16.0f, YELLOW_MAT, BLOCK_2_4_2_SHAPE, Vector(2.0f, 4.0f, 2.0f));
+  setBlueprint(BLOCK_2_4_2, 4.0f, YELLOW_MAT, BLOCK_2_4_2_SHAPE, Vector(1.0f, 4.0f, 1.0f));
   setBlueprint(BLOCK_5_1_5, 25.0f, YELLOW_MAT, BLOCK_5_1_5_SHAPE, Vector(5.0f, 1.0f, 5.0f));
 }
 

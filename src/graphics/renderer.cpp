@@ -172,7 +172,7 @@ void Renderer::drawDiffusePass()
           case DUMMY_BLOCK:
             gfx::forceBlockShader.enable();
             break;
-          case DUMMY_SPHERE:
+          case DUMMY_SPHERE: case CUSTOM_BLOCK:
             gfx::simpleShader.enable();
             blueprint = global::factory->getBlueprint(curType);
             curMat = gfx::materials[blueprint.getMaterial()];
@@ -181,17 +181,17 @@ void Renderer::drawDiffusePass()
           default:
             //gfx::useShader(gfx::shForceBlock);
             //printf("BEFORE: %d\n", shader::current_shader);
-            gfx::simpleShader.enable();
+            gfx::forceBlockShader.enable();
             //printf("AFTER: %d\n", shader::current_shader);
-            blueprint = global::factory->getBlueprint(curType);
+            /*blueprint = global::factory->getBlueprint(curType);
             curMat = gfx::materials[blueprint.getMaterial()];
-            curMat.applyMaterial(gfx::simpleShader, "");
+            curMat.applyMaterial(gfx::simpleShader, "");*/
 
             break;
         }
       }
       
-      if(curType == DUMMY_BLOCK)
+      if(curType != DUMMY_SPHERE)
       {
         blueprint = global::factory->getBlueprint(curType);
         curMat = gfx::materials[blueprint.getMaterial()];

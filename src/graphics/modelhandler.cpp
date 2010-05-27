@@ -34,7 +34,6 @@ void ModelHandler::drawPlane(Vector n, Vector p, float size)
   //glEnable(GL_BLEND);
   if(horizontal)
   {
-    printf("WHAT?! HORIZONTAL?!\n");
     glBegin(GL_QUADS);
       glColor4f(0,0,1,0.1);
       glVertex3f(p.x() + offset.x(), p.y(), p.z() + offset.z());

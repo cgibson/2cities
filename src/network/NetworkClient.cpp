@@ -43,7 +43,7 @@ bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 	unsigned char msg[] = "";
 	NetworkPacket tmpPkt(CONN_REQ, msg, sizeof(msg));
 
-	int lagCalc_StartTime, lagCalc_EndTime, lagCalc_Delta;
+	int lagCalc_StartTime, lagCalc_EndTime;
 	lagCalc_StartTime = global::elapsed_ms();
 	printf("Sending Connection Request...");
 	SendPacket(tmpPkt, &socket, serverIP);
@@ -64,10 +64,13 @@ bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 			_playerID = *(int*)(pkt.data);
 			_currObjID = _playerID * 10000;
 
-			lagCalc_Delta = (lagCalc_EndTime - lagCalc_StartTime)/2;
-			printf("Connected as Player %i with %i ms client/server delay!\n", _playerID, lagCalc_Delta);
+			serverDelay = (lagCalc_EndTime - lagCalc_StartTime)/2;
+			serverTimeDelta = global::elapsed_ms() - (*((int*)(pkt.data)+1) + serverDelay);
+			//printf("Server time = %i\n",*((int*)(pkt.data)+1));
 
-			NetworkPacket tmpPkt(LAG_RESULT, (unsigned char *)&lagCalc_Delta, sizeof(lagCalc_Delta));
+			printf("Connected as Player %i with a %i ms server delay!\n", _playerID, serverDelay);
+
+			NetworkPacket tmpPkt(LAG_RESULT, (unsigned char *)&serverDelay, sizeof(serverDelay));
 			SendPacket(tmpPkt, &socket, serverIP);
 
 			isConnected = true;
@@ -126,6 +129,7 @@ int NetworkClient::checkLag(ting::UDPSocket *socket, ting::IPAddress ip) {
 
 void NetworkClient::update(long milli_time) {
 	updatePktData(milli_time);
+	int currServerTime = global::elapsed_ms() - serverTimeDelta;
 
 	ting::IPAddress sourceIP;
 	NetworkPacket pkt;
@@ -137,8 +141,15 @@ void NetworkClient::update(long milli_time) {
 		if(pkt.header.type == OBJECT_BATCHSEND) {
 			WorldObject objBatch[OBJECT_BATCHSEND_SIZE];
 			int objBatchSize = readBatchPacket(&pkt, objBatch, (int)OBJECT_BATCHSEND_SIZE);
-			for(int i=0; i<objBatchSize; i++)
-				updateObjectLocal(new WorldObject(objBatch[i]));
+			for(int i=0; i<objBatchSize; i++) {
+				//updateObjectLocal(new WorldObject(objBatch[i]));
+
+				WorldObject *objPtr = new WorldObject(objBatch[i]);
+				int itemInterpAmount = currServerTime - objPtr->getTimeStamp();
+				printf("Update amount = %i\n", itemInterpAmount);
+				objPtr->update(itemInterpAmount);
+				updateObjectLocal(objPtr);
+			}
 		}
 		else if(pkt.header.type == OBJECT_KILL) {
 			removeObjectLocal(*(unsigned int*)(pkt.data));
@@ -169,6 +180,9 @@ void NetworkClient::addObject(WorldObject newObj) {
 	newObj.setPlayerID(_playerID);
 
 	if(isConnected) {
+		//unsigned char buf[140];
+		//int bufLen = newObj.makeBinStream(buf);
+		//NetworkPacket pkt(OBJECT_SEND, buf, bufLen);
 		NetworkPacket pkt(OBJECT_SEND, (unsigned char *)(&newObj), sizeof(WorldObject));
 		SendPacket(pkt, &socket, serverIP);
 	}

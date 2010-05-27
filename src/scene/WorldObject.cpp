@@ -34,16 +34,16 @@ void WorldObject::update(int elapsedTime) {
 	Vector pos = getPosition();
 	Vector vel = getVelocity();
 	Vector grav = Vector(0,-10,0);
+	float timeFrac = (elapsedTime/1000.0f);
 
-	if(pos.y() > 1 && abs(vel.y()) > 0.1f)
-		vel = vel + (grav * (elapsedTime/1000.0f));
-	else
-		vel.y(0.0f);
+	if(vel.mag() > (20.0 * timeFrac)) {
+		if(pos.y() > 1 && abs(vel.y()) > 10.0f * timeFrac)
+			vel = vel + (grav * (elapsedTime/1000.0f));
+		else
+			vel.y(0.0f);
 
-	pos = pos + (vel * (elapsedTime/1000.0f));
+		pos = pos + (vel * timeFrac);
 
-	//printf("vel.mag=%f\n",vel.mag());
-	if(vel.mag() > (20.0*elapsedTime/1000.0f)) {
 		setPosition(pos);
 		setVelocity(vel);
 	}
@@ -89,6 +89,9 @@ int WorldObject::makeBinStream(unsigned char *bufPtr) {
 	int currPos = 0;
 	int currISize;
 
+	currISize = sizeof(ObjectType);
+	memcpy(bufPtr + currPos, (void *)&type, currISize); currPos += currISize;
+
 	currISize = sizeof(unsigned int);
 	memcpy(bufPtr + currPos, (void *)&id       , currISize); currPos += currISize;
 	memcpy(bufPtr + currPos, (void *)&playerid , currISize); currPos += currISize;
@@ -115,9 +118,6 @@ int WorldObject::makeBinStream(unsigned char *bufPtr) {
 	tmpF = orientation.getJ(); memcpy(bufPtr + currPos, &tmpF, currISize); currPos += currISize;
 	tmpF = orientation.getK(); memcpy(bufPtr + currPos, &tmpF, currISize); currPos += currISize;
 
-	currISize = sizeof(ObjectType);
-	memcpy(bufPtr + currPos, (void *)&type, currISize); currPos += currISize;
-
 	currISize = sizeof(uint64_t);
 	memcpy(bufPtr + currPos, (void *)&timestamp, currISize); currPos += currISize;
 
@@ -126,6 +126,9 @@ int WorldObject::makeBinStream(unsigned char *bufPtr) {
 int WorldObject::fromBinStream(unsigned char *bufPtr) {
 	int currPos = 0;
 	int currISize;
+
+	currISize = sizeof(ObjectType);
+	memcpy((void *)&type, bufPtr + currPos, currISize); currPos += currISize;
 
 	currISize = sizeof(unsigned int);
 	memcpy((void *)&id       , bufPtr + currPos, currISize); currPos += currISize;
@@ -152,9 +155,6 @@ int WorldObject::fromBinStream(unsigned char *bufPtr) {
 	memcpy(&tmpF, bufPtr + currPos, currISize); tmpF = orientation.getI(); currPos += currISize;
 	memcpy(&tmpF, bufPtr + currPos, currISize); tmpF = orientation.getJ(); currPos += currISize;
 	memcpy(&tmpF, bufPtr + currPos, currISize); tmpF = orientation.getK(); currPos += currISize;
-
-	currISize = sizeof(ObjectType);
-	memcpy((void *)&type, bufPtr + currPos, currISize); currPos += currISize;
 
 	currISize = sizeof(uint64_t);
 	memcpy((void *)&timestamp, bufPtr + currPos, currISize); currPos += currISize;

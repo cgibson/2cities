@@ -29,6 +29,8 @@ protected:
 	ting::IPAddress serverIP;
 
 	bool isConnected;
+	unsigned int serverDelay;
+	int serverTimeDelta;
 
 public:
 	NetworkClient();

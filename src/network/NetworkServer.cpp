@@ -110,11 +110,15 @@ void NetworkServer::networkIncomingGeneral() {
 			// Add Socket to _waitSet
 			_waitSet->Add(&(currPlayer->socket), ting::Waitable::READ);
 
-			// Send reply so they have new UDP port
-			int msg = currPlayer->ID;
+			// Send reply so they have new UDP port, playerID, and serverClock
+			unsigned char msg[sizeof(int) * 2];
+			int playerID = currPlayer->ID;
+			memcpy(msg, (unsigned char*)&playerID, sizeof(int));
+			int gameClock = global::elapsed_ms();
+			memcpy(msg + sizeof(int), (unsigned char*)&gameClock, sizeof(int));
 
-			printf("Sending Connection Reply...\n");
-			NetworkPacket tmpPkt(CONN_REPLY, (unsigned char*)&msg, sizeof(int));
+			printf("Sending Connection Reply (gameClock = %i)...\n", gameClock);
+			NetworkPacket tmpPkt(CONN_REPLY, msg, sizeof(int)*2);
 			SendPacket(tmpPkt, &(currPlayer->socket), currPlayer->ip);
 		}
 		else {
@@ -134,8 +138,10 @@ void NetworkServer::networkIncomingPlayers(int p) {
 
 		switch (pkt.header.type) {
 		case OBJECT_SEND :
+			//tmpObj.fromBinStream((pkt.data));
+			//tmpObj.print();
 			tmpObj = *(WorldObject*)(pkt.data);
-			tmpObj.update(1);
+			//tmpObj.update(1);
 			addObjectPhys(tmpObj);
 			//addObjectPhys(*(WorldObject*)(pkt.data));
 			break;
@@ -158,6 +164,7 @@ void NetworkServer::networkIncomingPlayers(int p) {
 			break;
 		case TEXT_MSG :
 			printf("MSG: %s\n", (char *)pkt.data);
+			exit(0);
 			break;
 		case UNKNOWN :
 		default :

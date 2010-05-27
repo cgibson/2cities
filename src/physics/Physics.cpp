@@ -178,19 +178,32 @@ void Physics::InsertNewBlock(ObjectType type, Vector position)
   WorldObject * newObj = new WorldObject(nextBlockNumber++, 0, type);
   newObj->setPosition(position);
   addWorldObject(*newObj);
+  printf("Adding object at %s\n", position.str());
  }
 
 vector<Vector> Physics::fileToBlockLocations(const char * fileName)
 {
   vector<Vector> result;
   FILE * inFile = fopen(fileName, "r");
-  int blockSize, numRead, x1, y1, z1, x2, y2, z2, xi, yi, zi;
+  int blockSize, numRead, edge, i,
+      x1, y1, z1, x2, y2, z2, xi, yi, zi, xf, yf, zf;
+  Vector start, here, off121, off242, off515;
   Vector size121 = global::factory->getBlueprint(BLOCK_1_2_1).getSize();
   Vector size242 = global::factory->getBlueprint(BLOCK_2_4_2).getSize();
   Vector size515 = global::factory->getBlueprint(BLOCK_5_1_5).getSize();
+  Vector ox;
+  Vector oy;
+  Vector oz;
   if ((numRead = fscanf(inFile, "blocksize: %d\n", &blockSize)) == 1)
   {
-    float sz = 5.0 / blockSize;
+    ox = Vector(blockSize - size121.x(), 0, 0);
+    oy = Vector(0, size121.y(), 0);
+    oz = Vector(0, 0, blockSize - size121.z());
+    off121 = size121 * 0.5;
+    off242 = Vector(0, size242.y() / 2.0, 0);
+    off515 = Vector(size515.x() * 0.5,
+                    blockSize - size515.y() * 0.5,
+                    size515.z() * 0.5);
     WorldObject newObj;
     while ((numRead = fscanf(inFile, "%d %d %d %d %d %d\n",&x1, &y1, &z1,
             &x2, &y2, &z2)) == 6)
@@ -201,9 +214,145 @@ vector<Vector> Physics::fileToBlockLocations(const char * fileName)
                                     (float)yi / blockSize * BLDG_BLOCK_SIDE_LENGTH 
                                       + BLDG_BLOCK_SIDE_LENGTH / 2.0,
                                     (float)zi / blockSize * BLDG_BLOCK_SIDE_LENGTH));*/
+
     {
+      start = Vector(x1, y1, z1);
+      xf = (x2 - x1) / blockSize;
+      yf = (y2 - y1) / blockSize;
+      zf = (z2 - z1) / blockSize;
+      for (xi = 0; xi < xf; xi++)
+        for (yi = 0; yi < yf; yi++)
+          for (zi = 0; zi < zf; zi++)
+          {
+            edge = 0;
+            here = start + Vector(xi, yi, zi) * blockSize;
+            if (xi == 0 || zi == 0)
+            {
+              InsertNewBlock(BLOCK_1_2_1, here + off121);
+              InsertNewBlock(BLOCK_1_2_1, here + off121 + oy);
+              edge = 1;
+            }
+            if (xi == 0 || zi == zf - 1)
+            {
+              InsertNewBlock(BLOCK_1_2_1, here + oz + off121);
+              InsertNewBlock(BLOCK_1_2_1, here + oz + off121 + oy);
+            }
+            if (xi == xf - 1|| zi == zf - 1)
+            {
+              InsertNewBlock(BLOCK_1_2_1, here + ox + oz + off121);
+              InsertNewBlock(BLOCK_1_2_1, here + ox + oz + off121 + oy);
+              edge = 1;
+            }
+            if (xi == xf - 1|| zi == 0)
+            {
+              InsertNewBlock(BLOCK_1_2_1, here + ox + off121);
+              InsertNewBlock(BLOCK_1_2_1, here + ox + off121 + oy);
+            }
+            if (edge == 1)
+              for (i = 1; i < blockSize; i++)
+              {
+                if (xi == 0)
+                {
+              printf("e\n");
+                  InsertNewBlock(BLOCK_1_2_1, here 
+                    + Vector(0, 0, i) + off121);
+                  InsertNewBlock(BLOCK_1_2_1, here 
+                    + Vector(0, 0, i) + oy + off121);
+                }
+                if (zi == 0)
+                {
+              printf("f\n");
+                  InsertNewBlock(BLOCK_1_2_1, here
+                    + Vector(i, 0, 0) + off121);
+                  InsertNewBlock(BLOCK_1_2_1, here
+                    + Vector(i, 0, 0) + oy + off121);
+                }
+                if (xi == xf - 1)
+                {
+              printf("g\n");
+                  InsertNewBlock(BLOCK_1_2_1, here 
+                    + Vector(0, 0, i) + ox + off121);
+                  InsertNewBlock(BLOCK_1_2_1, here 
+                    + Vector(0, 0, i) + ox + oy + off121);
+                }
+                
+                if (zi == zf - 1)
+                {
+              printf("h\n");
+                  InsertNewBlock(BLOCK_1_2_1, here
+                    + Vector(i, 0, 0) + oz + off121);
+                  InsertNewBlock(BLOCK_1_2_1, here
+                    + Vector(i, 0, 0) + oz + oy + off121);
+                }
+            }
+            else
+            {
+                            printf("i\n\n");
+
+              InsertNewBlock(BLOCK_2_4_2, here + off242);
+            }
+              printf("j\n\n");
+            InsertNewBlock(BLOCK_5_1_5, here + off515);
+          }
+/*      for (xi = 0; xi <= xf; xi++)
+        for (yi = 0; yi < yf; yi++)
+          for (zi = 0; zi < zf; zi++)
+          {
+            if (xi == 0)
+            {
+          InsertNewBlock(BLOCK_1_2_1, start 
+            + (Vector(xi, yi, 0 + i) * blockSize) + Vector(0, 1, 0));
+            }
+            else if (xi == xf)
+            {
+            }
+          }*/
+/*      for (xi = 0; xi < xf; xi++)
+        for (yi = 0; yi < yf; yi++)
+        {
+          for (i = 0; i < 1; i += 1 / blockSize)
+          {
+          InsertNewBlock(BLOCK_1_2_1, start 
+            + (Vector(xi, yi, 0 + i) * blockSize) + Vector(0, 1, 0));
+          InsertNewBlock(BLOCK_1_2_1, start 
+            + (Vector(xi, yi, 0 + i) * blockSize) + Vector(0, 1, 0));
+          InsertNewBlock(BLOCK_1_2_1, start 
+            + (Vector(xi, yi, zf + i) * blockSize) + Vector(0, 3, 0));
+          InsertNewBlock(BLOCK_1_2_1, start 
+            + (Vector(xi, yi, zf + i) * blockSize) + Vector(0, 3, 0));
+          }
+        }
+      for (zi = 1; zi < zf - 1; zi++)
+        for (yi = 0; yi < yf; yi++)
+        {
+          for (i = 0; i < 1; i += 1 / blockSize)
+          {
+          InsertNewBlock(BLOCK_1_2_1, start
+            + (Vector(0 + i, yi, zi) * blockSize) + Vector(0, 1, 0));
+          InsertNewBlock(BLOCK_1_2_1, start
+            + (Vector(xf + i, yi, zi) * blockSize) + Vector(0, 1, 0));
+          InsertNewBlock(BLOCK_1_2_1, start
+            + (Vector(0 + i, yi, zi) * blockSize) + Vector(0, 3, 0));
+          InsertNewBlock(BLOCK_1_2_1, start
+            + (Vector(xf + i, yi, zi) * blockSize) + Vector(0, 3, 0));
+          }
+        }
+      for (xi = 0; xi < xf; xi++)
+        for (yi = 0; yi < yf; yi++)
+          for (zi = 0; zi < zf; zi++)
+          {
+            if (xi > 0 && zi > 0)
+            {
+              InsertNewBlock(BLOCK_2_4_2, start
+                + (Vector(xi, yi, zi) * blockSize) + Vector(-1, 2, -1));
+            }
+            InsertNewBlock(BLOCK_5_1_5, start
+              + (Vector(xi, yi, zi)) * blockSize + Vector(-2.5, 4.5, -2.5));
+          }
+*/            
+      
       // Tesselate the input values accordingly
-      for (xi = x1; xi < x2; xi += blockSize)
+/*      for (xi = x1; xi < x2; xi += blockSize)
         for (yi = y1; yi < y2; yi += blockSize)
         {
           InsertNewBlock(enumeration::BLOCK_1_2_1,
@@ -247,7 +396,8 @@ vector<Vector> Physics::fileToBlockLocations(const char * fileName)
                 (float)xi * sz * size242.x() - size242.x() * 0.5,
                 (float)yi * sz * size242.y() + size242.y() * 0.5,
                 (float)z1 * sz * size242.z() - size242.z() * 0.5));
-          }
+          }*/
+      
     }
     if (numRead != 0)
     {

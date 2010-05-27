@@ -15,7 +15,7 @@ namespace global
   ObjectFactory  *factory        = new ObjectFactory();
   NetworkManager *networkManager = new NetworkManager();
 #ifdef CLIENT
-  ModelManager   *modelManager   = new ModelManager();
+//  ModelManager   *modelManager   = new ModelManager();
 #endif
 
   int width;  // window width

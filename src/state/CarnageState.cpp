@@ -72,7 +72,7 @@ void CarnageState::updateInput(long milli_time) {
 	  //dir.norm();
 	  // uniqueID creation & addObject(WorldObject)
 	  static int newObjID = 10000;
-	  WorldObject newObj = WorldObject(newObjID++,0,enumeration::DUMMY_CONE);
+	  WorldObject newObj = WorldObject(newObjID++,0,enumeration::DUMMY_SPHERE);
 	  newObj.setPosition(camera->position() - Vector( 0.0f, 1.0f, 0.0f));
 	  //newObj.setVelocity(dir * 50);
 	  newObj.setVelocity(camera->viewVec() * 50);

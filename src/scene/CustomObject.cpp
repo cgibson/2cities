@@ -252,7 +252,7 @@ void CustomObject::draw_rectangle2D()
 	}
 
 	glBegin(GL_POLYGON);
-	//glColor3f(color.red, color.green, color.blue);
+	glNormal3f(0,1,0);
 	glVertex3f(min.getx(), plus + min.gety(), min.getz());
 	glVertex3f(max.getx(), min.gety() + plus, min.getz());
 	glVertex3f(max.getx(), max.gety() + plus, max.getz());

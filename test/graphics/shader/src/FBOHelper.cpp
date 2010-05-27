@@ -51,6 +51,8 @@ bool FBOHelper::initialize( int w, int h, int textureCount )
   for( int i = 0; i < textureCount; i++ )
   {
     // generate new texture
+    printf("GENERATING TEXTURE %d -> %d\n", i, mTextureIDs[i]);
+    printf("WITH SIZES %d, %d\n", w, h );
     GenerateTexture( mTextureIDs[i], w, h );
     bufs[i] = GL_COLOR_ATTACHMENT0_EXT + i;
     

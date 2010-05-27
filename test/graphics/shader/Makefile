@@ -1,5 +1,5 @@
 C = g++
-CCFLAGS = -g -lGL -lGLU -lglut -lm -DGL_GLEXT_PROTOTYPES -o5
+CCFLAGS = -g -Wall -lGL -lGLU -lglut -lm -DGL_GLEXT_PROTOTYPES -o5
 CCDEBUGFLAGS = -lGL -lGLU -lglut -g -lm -DGL_GLEXT_PROTOTYPES
 CCFLAGSBOOSt = -lboost_regex-mt
 OUTNAME = release

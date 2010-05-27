@@ -258,8 +258,10 @@ bool initScene()
 {
   initLights();
   initMaterials();
-  bloomFBOhelper.initialize( RENDER_WIDTH, RENDER_HEIGHT, 1 );
+  bloomFBOhelper = FBOHelper();
+  bool r = bloomFBOhelper.initialize( RENDER_WIDTH, RENDER_HEIGHT, 1 );
   bloomShader->setTextures(bloomFBOhelper.getTextureIDs(), 1);
+  return r;
 }
 
 /* LOADING FUNCTIONS - All functions that load resources
@@ -273,6 +275,7 @@ bool loadTexture( string filename, int textureID )
   glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
   glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
   glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+  return true;
 }
 
 /* Load all textures for the program */

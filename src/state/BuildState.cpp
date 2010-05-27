@@ -51,7 +51,21 @@ BuildState::~BuildState() {}
 
 void BuildState::save_level(int argc, char *argv[])
 {
-  
+	InGameState *currState = global::stateManager->currentState;
+
+	ofstream myfile;
+   myfile.open(argv[1]);
+	myfile << "blocksize: " << blocksize << endl;
+   for(int i = 0; i < currState->objects.size(); i++)
+   {
+      // write rectangle's max and min to file
+      myfile << (static_cast<CustomObject*>(currState->objects[i])->get_min_x()) << " " << 
+					 (static_cast<CustomObject*>(currState->objects[i])->get_min_y()) << " " << 
+					 (static_cast<CustomObject*>(currState->objects[i])->get_min_z()) << " " << 
+					 (static_cast<CustomObject*>(currState->objects[i])->get_max_x()) << " " << 
+					 (static_cast<CustomObject*>(currState->objects[i])->get_max_y()) << " " << 
+					 (static_cast<CustomObject*>(currState->objects[i])->get_max_z()) << endl;
+   }
 }
 
 void BuildState::initialize() {
@@ -343,7 +357,7 @@ void BuildState::get_pp_plane(Face f)
 		planeNormal = 	v;
 		v = Vector(firstPoint.getx(), firstPoint.gety(), firstPoint.getz());
 		planeLocation = v;
-		printf("v: %s\n", planeLocation.str());
+		//printf("v: %s\n", planeLocation.str());
 		planeSize = 100;
 	}
 }

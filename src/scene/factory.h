@@ -6,7 +6,7 @@
 #include <vector>
 #include "btBulletDynamicsCommon.h"
 
-#define MAX_OBJECT_TYPES 10
+#define MAX_OBJECT_TYPES 100
 
 using namespace enumeration;
 
@@ -22,6 +22,7 @@ private:
   {
     return btVector3(btScalar(in.x()), btScalar(in.y()), btScalar(in.z()));
   }
+  void setBlueprint(ObjectType, float, MaterialType, Shape, Vector);
 
   std::vector<btCollisionShape *> shapes;
   Blueprint* blueprints;

@@ -4,6 +4,7 @@
 ///////////////////////////////
 #include "../system/io.h"
 #include "../network/NetworkManager.h"
+#include "../scene/BlackHole.h"
 ///////////////////////////////
 
 ObjectFactory::ObjectFactory()
@@ -25,40 +26,57 @@ void ObjectFactory::makeBlock(int key, bool special)
 {
   if ((key == 'b' || key == 'B') && !special)
   {
+    printf("Making block(s)");
     int floorSize = 5;
     int blockNumberBase = 20000;
-    static int blockNumber;
     int i, j;
+    static int blockSetHeight;
     for (i = 0; i < floorSize; i++)
     {
       for (j = 0; j < floorSize; j++)
       {
-        WorldObject anObject = WorldObject(blockNumberBase + (blockNumber + i * floorSize + j), 0, enumeration::DUMMY_BLOCK);
-        anObject.setPosition(Vector(i - floorSize / 2.0,blockNumber + .5, j - floorSize / 2.0));
+//        WorldObject anObject = WorldObject(blockNumberBase + 
+          BlackHole anObject = BlackHole(blockNumberBase +
+          blockSetHeight * floorSize * floorSize + i * floorSize + j,
+          0, enumeration::DUMMY_CONE);
+        anObject.setPosition(Vector(i - floorSize / 2.0, blockSetHeight + .5, j - floorSize / 2.0));
         networkManager->network->addObject(anObject);
       }
     }
-    blockNumber++;
+    blockSetHeight++;
   }
+//  printf(" The world now contains %d objects.\n", networkManager->network->
 }
 ///////////////////////////////////
+
+void ObjectFactory::setBlueprint(ObjectType ot, float mass, MaterialType mt, Shape sh, Vector size)
+{
+  Blueprint tmp = Blueprint(ot, mass, mt, sh, size);
+  blueprints[ot] = tmp;
+}
 
 void ObjectFactory::loadConfig(char* filename)
 {
   Blueprint tmp;
   
   // dummy block
-  tmp = Blueprint(DUMMY_BLOCK, 1.0f, YELLOW_MAT, SMALL_CUBE, Vector(1.0f, 1.0f, 1.0f));
-  blueprints[DUMMY_BLOCK] = tmp;
+  setBlueprint(DUMMY_BLOCK, 1.0f, YELLOW_MAT, SMALL_CUBE, Vector(1.0f, 1.0f, 1.0f));
   
   // dummy sphere
-  tmp = Blueprint(DUMMY_SPHERE, 1.0f, BLUE_MAT, SMALL_SPHERE, Vector(1, 0, 0));
-  blueprints[DUMMY_SPHERE] = tmp;
+  setBlueprint(DUMMY_SPHERE, 1.0f, BLUE_MAT, SMALL_SPHERE, Vector(1, 0, 0));
   io::register_key_down(ObjectFactory::makeBlock);
   
   // dummy block
-  tmp = Blueprint(CUSTOM_BLOCK, 1.0f, GREEN_MAT, SMALL_CUBE, Vector(1.0f, 1.0f, 1.0f));
-  blueprints[CUSTOM_BLOCK] = tmp;
+  setBlueprint(CUSTOM_BLOCK, 1.0f, GREEN_MAT, SMALL_CUBE, Vector(1.0f, 1.0f, 1.0f));
+  
+  
+  setBlueprint(DUMMY_CONE, 1.0f, YELLOW_MAT, SMALL_CONE, Vector(1.0f, 0.0f, 1.0f));
+  
+  setBlueprint(DUMMY_CYLINDER, 1.0f, YELLOW_MAT, SMALL_CYLINDER, Vector(1.0f, 1.0f, 1.0f));
+  setBlueprint(BLACK_HOLE, 10000.0f, YELLOW_MAT, SMALL_SPHERE, Vector(1.0f, 0.0f, 0.f));
+  setBlueprint(BLOCK_1_2_1, 2.0f, YELLOW_MAT, BLOCK_1_2_1_SHAPE, Vector(1.0f, 2.0f, 1.0f));
+  setBlueprint(BLOCK_2_4_2, 16.0f, YELLOW_MAT, BLOCK_2_4_2_SHAPE, Vector(2.0f, 4.0f, 2.0f));
+  setBlueprint(BLOCK_5_1_5, 25.0f, YELLOW_MAT, BLOCK_5_1_5_SHAPE, Vector(5.0f, 1.0f, 5.0f));
 }
 
 
@@ -96,8 +114,18 @@ btCollisionShape * ObjectFactory::getShape(ObjectType type)
       btVector3 tv = VtobtV3(bp.getSize()) * .5;
       temp = new btBoxShape(tv);
     }
+    else if (sh == SMALL_CONE)
+    {
+      temp = new btConeShapeZ(bp.getSize().x(), bp.getSize().z());
+    }
+    else if (sh == SMALL_CYLINDER)
+    {
+      temp = new btCylinderShape(VtobtV3(bp.getSize()));
+    }
     else
     { // dummy shape value for uninitialized values.
+      printf("Unrecognized Shape request, object shape");
+      printf(" defaulted to something useless.\n");
       temp = new btSphereShape(btScalar(0));
     }
     shapes[type] = temp;

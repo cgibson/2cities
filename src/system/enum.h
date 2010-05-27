@@ -14,11 +14,17 @@ namespace enumeration {
         MEDIUM_SPHERE,
         LARGE_SPHERE,
         FRACTAL_BOMB_SHAPE,
+        BLACK_HOLE_SHAPE,
       SHAPE_SPHERE_MAX,
       SHAPE_BOX_MIN=SHAPE_SPHERE_MAX,
         SMALL_CUBE=SHAPE_BOX_MIN,
         WARPED_CUBE_SHAPE,
+        BLOCK_1_2_1_SHAPE,
+        BLOCK_2_4_2_SHAPE,
+        BLOCK_5_1_5_SHAPE,
       SHAPE_BOX_MAX,
+      SMALL_CYLINDER,
+      SMALL_CONE,
     SHAPE_MAX
   } Shape;
 
@@ -39,7 +45,10 @@ namespace enumeration {
   // Used by Network classes to determine which WorldObject to create/load
   // ENUM Will be passed from client->server when object creation requested
   typedef enum E_WorldObjType {
-      TYPE_MIN, DUMMY_BLOCK=TYPE_MIN, WARPED_CUBE, DUMMY_SPHERE, FRACTAL_BOMB, CUSTOM_BLOCK, TYPE_MAX
+      TYPE_MIN, DUMMY_BLOCK=TYPE_MIN, WARPED_CUBE,
+      BLOCK_1_2_1, BLOCK_2_4_2, BLOCK_5_1_5,
+      DUMMY_SPHERE, FRACTAL_BOMB, BLACK_HOLE,
+      DUMMY_CYLINDER, DUMMY_CONE, CUSTOM_BLOCK, TYPE_MAX
   } ObjectType;
 
   typedef enum E_MaterialType {

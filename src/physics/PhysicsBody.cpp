@@ -1,6 +1,5 @@
 #include "PhysicsBody.h"
 #include "../system/global.h"
-#include <time.h>
 
 btScalar PhysicsBody::getMass(ObjectType type)
 {
@@ -16,7 +15,7 @@ void PhysicsBody::setPosition(Vector in)
 
 void PhysicsBody::setVelocity(Vector in)
 {
-	
+	body->setLinearVelocity(VtobtV3(in));
 }
 
 PhysicsBody::PhysicsBody(WorldObject worldObject):
@@ -63,6 +62,8 @@ btRigidBody::btRigidBodyConstructionInfo PhysicsBody::getCI(WorldObject worldObj
 //  printf("Restitution was: %f,\t", ci.m_restitution);
   ci.m_friction = 0.75;
   ci.m_restitution = 0;
+  ci.m_linearDamping = btScalar(.1);
+  ci.m_angularDamping = btScalar(.1);
 //  printf("Friction is now: %f", ci.m_friction); 
 //  printf("Restitution is now: %f", ci.m_restitution); 
   return ci;

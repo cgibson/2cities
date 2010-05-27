@@ -47,12 +47,14 @@ void Physics::initPhysics()
   groundBody = new btRigidBody(grbInfo);
   world->addRigidBody(groundBody);
   groundBody->setActivationState(ISLAND_SLEEPING);
-  bldgShape = new btBoxShape(btVector3(BLDG_BLOCK_SIDE_LENGTH,
-                                       BLDG_BLOCK_SIDE_LENGTH,
-                                       BLDG_BLOCK_SIDE_LENGTH));
-  ammoShape = new btSphereShape(btScalar(AMMO_RADIUS));
-  collisionShapes.push_back(bldgShape);
-  collisionShapes.push_back(ammoShape);
+//  bldgShape = new btBoxShape(btVector3(BLDG_BLOCK_SIDE_LENGTH,
+//                                       BLDG_BLOCK_SIDE_LENGTH,
+//                                       BLDG_BLOCK_SIDE_LENGTH));
+//  ammoShape = new btSphereShape(btScalar(AMMO_RADIUS));
+//  collisionShapes.push_back(bldgShape);
+//  collisionShapes.push_back(ammoShape);
+  nextBlockNumber = 0;
+  world->setInternalTickCallback(&tickCallback);
 }
 
 void Physics::update(int timeChange)
@@ -94,13 +96,19 @@ int Physics::isUniqueID(int id)
   int result = 1;
   for (i = 0; result && i < worldObjects.size(); i++)
   {
-    if (worldObjects[i].getID() == id)
+    if (worldObjects[i].getID() == (unsigned int)id)
     {
       result = 0;
     }
   }
   return result;
 }
+
+void Physics::tickCallback(btDynamicsWorld *dWorld, btScalar timeChange)
+{
+  printf("The world just ticked by %f seconds!\n", timeChange);
+}
+
 
 void Physics::addWorldObject(WorldObject worldObject)
 {
@@ -139,6 +147,7 @@ void Physics::emptyWorld()
   {
     world->removeRigidBody(temp[i]);
   }
+  nextBlockNumber = 0;
 }
 
 bool Physics::removeWorldObject(int id)
@@ -164,22 +173,82 @@ vector<WorldObject> Physics::getWorldObjects()
   return worldObjects;
 }
 
+void Physics::InsertNewBlock(ObjectType type, Vector position)
+{
+  WorldObject * newObj = new WorldObject(nextBlockNumber++, 0, type);
+  newObj->setPosition(position);
+  addWorldObject(*newObj);
+ }
+
 vector<Vector> Physics::fileToBlockLocations(const char * fileName)
 {
   vector<Vector> result;
   FILE * inFile = fopen(fileName, "r");
   int blockSize, numRead, x1, y1, z1, x2, y2, z2, xi, yi, zi;
+  Vector size121 = global::factory->getBlueprint(BLOCK_1_2_1).getSize();
+  Vector size242 = global::factory->getBlueprint(BLOCK_2_4_2).getSize();
+  Vector size515 = global::factory->getBlueprint(BLOCK_5_1_5).getSize();
   if ((numRead = fscanf(inFile, "blocksize: %d\n", &blockSize)) == 1)
   {
+    float sz = 5.0 / blockSize;
+    WorldObject newObj;
     while ((numRead = fscanf(inFile, "%d %d %d %d %d %d\n",&x1, &y1, &z1,
             &x2, &y2, &z2)) == 6)
-      for (xi = x1; xi < x2; xi += blockSize)
+/*      for (xi = x1; xi < x2; xi += blockSize)
         for (yi = y1; yi < y2; yi += blockSize)
           for (zi = z1; zi < z2; zi += blockSize)
             result.push_back(Vector((float)xi / blockSize * BLDG_BLOCK_SIDE_LENGTH,
                                     (float)yi / blockSize * BLDG_BLOCK_SIDE_LENGTH 
                                       + BLDG_BLOCK_SIDE_LENGTH / 2.0,
-                                    (float)zi / blockSize * BLDG_BLOCK_SIDE_LENGTH));
+                                    (float)zi / blockSize * BLDG_BLOCK_SIDE_LENGTH));*/
+    {
+      // Tesselate the input values accordingly
+      for (xi = x1; xi < x2; xi += blockSize)
+        for (yi = y1; yi < y2; yi += blockSize)
+        {
+          InsertNewBlock(enumeration::BLOCK_1_2_1,
+            Vector(
+              (float)xi * sz * size121.x(),
+              (float)yi * sz * size121.y() + size121.y() * 0.5,
+              (float)z1 * sz * size121.z()));
+          InsertNewBlock(enumeration::BLOCK_1_2_1,
+            Vector(
+              (float)xi * sz * size121.x(),
+              (float)yi * sz * size121.y() + size121.y() * 0.5,
+              (float)z2 * sz * size121.z()));
+        }
+      for (zi = z1 + blockSize; zi < z2 - blockSize; zi += blockSize)
+        for (yi = y1; yi < y2; yi += blockSize)
+        {
+          InsertNewBlock(enumeration::BLOCK_1_2_1,
+            Vector(
+              (float)xi * sz * size121.x(),
+              (float)yi * sz * size121.y() + size121.y() * 0.5,
+              (float)z1 * sz * size121.z()));
+          InsertNewBlock(enumeration::BLOCK_1_2_1,
+            Vector(
+              (float)xi * sz * size121.x(),
+              (float)yi * sz * size121.y() + size121.y() * 0.5,
+              (float)z2 * sz * size121.z()));
+        }
+      for (xi = x1 + blockSize; xi < x2; xi += blockSize)
+        for (yi = y1; yi < y2; yi += blockSize)
+          for (zi = z1 + blockSize; zi < z2; zi += blockSize)
+          {
+            if (xi < x2 - blockSize && zi < z2 - blockSize)
+              InsertNewBlock(enumeration::BLOCK_2_4_2,
+                Vector(
+                  (float)xi * sz * size242.x(),
+                  (float)yi * sz * size242.y()
+                    + size242.y() * 0.5,
+                  (float)z1 * sz * size242.z()));
+            InsertNewBlock(enumeration::BLOCK_5_1_5,
+              Vector(
+                (float)xi * sz * size242.x() - size242.x() * 0.5,
+                (float)yi * sz * size242.y() + size242.y() * 0.5,
+                (float)z1 * sz * size242.z() - size242.z() * 0.5));
+          }
+    }
     if (numRead != 0)
     {
 //      printf("Unexpected data at end of file: ignored\n");
@@ -201,11 +270,10 @@ int Physics::loadFromFile(const char * fileName)
   // This call will need to change with any movement to the placement of
   // the file load instruction.
   /////////////////////////////////////////////////////////////////////////////
-  int i = 0;
 #ifdef DEBUG
-  printf("Loading file: \"%s\"\n", fileName);
+  printf("Loaded file: \"%s\"\n", fileName);
 #endif
-  WorldObject *newObj;
+/*  WorldObject *newObj;
   for (vector<Vector>::iterator it = toPlace.begin(); it < toPlace.end();
       it++)
   {
@@ -215,6 +283,7 @@ int Physics::loadFromFile(const char * fileName)
     newObj->setPosition(*it);
     addWorldObject(*newObj);
 //    printf("adding object: %d\n", i);
-  }
+
+  }*/
   return 1;
 }

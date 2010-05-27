@@ -1,6 +1,9 @@
 #include "WorldObject.h"
 #include "../system/global.h"
 #include "stdio.h"
+#include "../system/enum.h"
+
+using namespace enumeration;
 
 #ifdef CLIENT
 	#include "../graphics/graphics.h"
@@ -8,24 +11,35 @@
 
 void WorldObject::draw() {
 #ifdef CLIENT
-	Vector pos = getPosition();
-	Quaternion ori = getOrientation();
+//	Vector pos = getPosition();
+//	Quaternion ori = getOrientation();
 	
 	Blueprint blueprint = global::factory->getBlueprint(type);
 	Vector size = blueprint.getSize();
-
 	glPushMatrix();
-	glTranslatef(pos.x(), pos.y(), pos.z());
-	glRotatef(ori.getK(), ori.getH(), ori.getI(), ori.getJ());
-	switch(blueprint.getShape())
-	{
-		case SMALL_CUBE:
-			gfx::modelHandler.drawShadedCube(1);
-			break;
-		case SMALL_SPHERE: default:
-			glutSolidSphere(size.mag(),10,10);
-			break;
-	}
+    glTranslatef(position.x(), position.y(), position.z());
+    glRotatef(orientation.getK(), orientation.getH(),
+              orientation.getI(), orientation.getJ());
+    glScalef(size.x() * 2.0, size.y() * 2.0, size.z() * 2.0);
+    Shape sh = blueprint.getShape();
+    
+    if (sh >= SHAPE_BOX_MIN && sh < SHAPE_BOX_MAX)
+    {
+      gfx::modelHandler.drawShadedCube(1.0);
+    }
+    else if (sh <= SHAPE_SPHERE_MIN && sh < SHAPE_SPHERE_MAX)
+    {
+      glutSolidSphere(1.0, 10, 10);
+    }
+    else if (sh == SMALL_CONE)
+    {
+      glTranslatef(0, 0, -0.5);
+      glutSolidCone(1, 1, 10, 10);
+    }
+    else
+    {
+      printf("Unrecognized Shape value %d. Object unrendered\n", sh);
+    }
 	glPopMatrix();
 #endif
 }

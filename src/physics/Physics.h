@@ -21,6 +21,8 @@
 class Physics
 {
   private:
+    int nextBlockNumber;
+    void InsertNewBlock(ObjectType type, Vector position);
     void emptyWorld();
     btDiscreteDynamicsWorld * world;
     btSequentialImpulseConstraintSolver * solver;
@@ -36,8 +38,10 @@ class Physics
     int isUniqueID(int id);
 //    void emptyWorld();
   public:
-    btBoxShape * bldgShape;
-    btSphereShape * ammoShape;
+    static void tickCallback(btDynamicsWorld *dWorld,
+      btScalar timeChange);
+//    btBoxShape * bldgShape;
+//    btSphereShape * ammoShape;
     void addWorldObject(WorldObject newObject);
     std::vector<WorldObject> getWorldObjects();
     

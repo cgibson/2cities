@@ -72,11 +72,21 @@ void CarnageState::updateInput(long milli_time) {
 	  //dir.norm();
 	  // uniqueID creation & addObject(WorldObject)
 	  static int newObjID = 10000;
-	  WorldObject newObj = WorldObject(newObjID++,0,enumeration::DUMMY_SPHERE);
+	  WorldObject newObj = WorldObject(newObjID++,0,enumeration::DUMMY_CONE);
 	  newObj.setPosition(camera->position() - Vector( 0.0f, 1.0f, 0.0f));
 	  //newObj.setVelocity(dir * 50);
 	  newObj.setVelocity(camera->viewVec() * 50);
-	  networkManager->network->addObject(newObj);
+/*	  Vector strafe = camera->strafeVec();
+	  float angle = acos(Vector (0, 0, -1) * camera->viewVec()) * 180 / 3.14159;
+	  if (camera->liftVec() * Vector(0,1,0) < 0)
+	  {
+	    angle *= -1;
+	  }
+	  Quaternion quat;
+	  quat.setAxis(strafe);
+	  quat.setAngle(angle);
+	  newObj.setOrientation(quat);
+*/	  networkManager->network->addObject(newObj);
 
 	  ammo_recharge = RECHARGE_TIME;
    }

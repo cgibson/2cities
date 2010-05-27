@@ -245,7 +245,7 @@ void BuildState::mouseDownHandler()
 	// IF right and on building >> MOVE
 	else if(!VALID_CLICK && LAST_BUTTON == GLUT_RIGHT_BUTTON)
 	{
-		//get_pp_plane(FACE1);		
+		get_pp_plane(FACE1);		
 		Point click;
 		click.set(Point(io::mouse_x, io::mouse_y));
 		click.round();

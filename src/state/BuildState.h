@@ -44,15 +44,16 @@ class BuildState : public InGameState
 		void recursive_bump(int bottom, int delta_height);
 		void blockalize_face(int index, Face f, bool pull);
 		bool inPullPath(int reMax, int reMin, int iMax, int iMin);
-		void check_pull(int index, Face f);
+		void check_pull(int index, Face f, bool move);
 		void recursive_push(Face f, int bottom);
 		void adjust_face(int index, Face f, Point mouse_pos, bool pull);
 		void new_push_pull(Point mouse_pos);
 		Point adjustPointForBlocksize(Point click);
 		void placeY(int rect_index, int below_index);
 		void evaluateClick(Point click);
-		void get_pp_plane();
+		void get_pp_plane(Face f);
 		bool isValidClick(Point click, int button);
+		void checkRectBase(int index);
 
        virtual enum E_STATE stateType() { return BUILD_STATE; }
 };

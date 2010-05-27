@@ -166,5 +166,8 @@ void NetworkManager::consoleNetworkTests(int argc, char *argv[]) {
 			gfx::hud.console.info("Object Interpolation On");
 		}
 	}
+	if(!strcmp(argv[1],"s")) {
+		stateManager->switchToCarnage();
+	}
 #endif
 }

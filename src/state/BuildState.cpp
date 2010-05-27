@@ -53,12 +53,12 @@ BuildState::BuildState() {
 
 BuildState::~BuildState() {}
 
-void BuildState::save_level(int argc, char *argv[])
+void BuildState::save_level(const char * fileName)
 {
 	InGameState *currState = global::stateManager->currentState;
 
 	ofstream myfile;
-   myfile.open(argv[1]);
+   myfile.open(fileName);
 	myfile << "blocksize: " << blocksize << endl;
    for(unsigned int i = 0; i < currState->objects.size(); i++)
    {
@@ -70,6 +70,11 @@ void BuildState::save_level(int argc, char *argv[])
 					 (static_cast<CustomObject*>(currState->objects[i])->get_max_y()) << " " << 
 					 (static_cast<CustomObject*>(currState->objects[i])->get_max_z()) << endl;
    }
+}
+
+void BuildState::save_level(int argc, char *argv[])
+{
+	((BuildState *)global::stateManager->currentState)->save_level(argv[1]);
 }
 
 void BuildState::initialize() {

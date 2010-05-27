@@ -40,14 +40,23 @@ void StateManager::changeCurrentState(enum E_STATE newState)
         currentState->initialize();
         break;
     case CARNAGE_STATE:
-        currentState = new CarnageState();
-        currentState->initialize();
+		currentState = new CarnageState();
+		currentState->initialize();
         break;
 
     default:
         break;
     }
+    currentState->objects.empty();
     //delete oldInGameState;
+}
+
+void StateManager::switchToCarnage() {
+	if(currentState->stateType() == BUILD_STATE) {
+		((BuildState *)currentState)->save_level("InGameSwitch.lvl");
+		changeCurrentState(CARNAGE_STATE);
+		networkManager->network->loadLevel("InGameSwitch.lvl");
+	}
 }
 
 /**
@@ -58,9 +67,11 @@ void StateManager::initialize()
 #ifdef CLIENT
 	//FULL COMMANDS
 	gfx::hud.console.registerCmd("changestate", StateManager::stateConsoleCmds);
+	gfx::hud.console.registerCmd("ready", StateManager::stateConsoleCmds);
 
 	//SHORTCUTS
 	gfx::hud.console.registerCmd("cs", StateManager::stateConsoleCmds);
+	gfx::hud.console.registerCmd("r", StateManager::stateConsoleCmds);
 #endif
 }
 
@@ -96,6 +107,10 @@ void StateManager::stateConsoleCmds(int argc, char *argv[])
 			gfx::hud.console.error("Usage: %s <state>", argv[0]);
 			return;
 		}
+	}
+	if(!strcmp(argv[0], "ready") || !strcmp(argv[0], "r")) {
+		global::stateManager->switchToCarnage();
+		gfx::hud.console.info("changing to Carnage State from Building Level");
 	}
 #endif
 }

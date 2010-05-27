@@ -26,6 +26,8 @@ class StateManager
 	void initialize();
 	static void stateConsoleCmds(int argc, char *argv[]);
         void changeCurrentState(enum E_STATE newState);
+        void switchToCarnage();
+
         void setPreference(int prefID, int newPref);
         int getPreference(int prefID);
 };

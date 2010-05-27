@@ -156,5 +156,15 @@ void NetworkManager::consoleNetworkTests(int argc, char *argv[]) {
 		WorldObject testObj2(buf);
 		testObj2.print();
 	}
+	if(!strcmp(argv[1],"oi")) {
+		if(global::interpolateObjects) {
+			global::interpolateObjects = false;
+			gfx::hud.console.info("Object Interpolation Off");
+		}
+		else {
+			global::interpolateObjects = true;
+			gfx::hud.console.info("Object Interpolation On");
+		}
+	}
 #endif
 }

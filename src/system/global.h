@@ -35,6 +35,7 @@ namespace global
   extern int fps; // frames per second (not necessarily *live*)
   extern int pbs_recv;
   extern int pbs_sent;
+  extern bool interpolateObjects;
 
   // call this to get the number of milliseconds elapsed since the program started
   int elapsed_ms();

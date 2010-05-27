@@ -34,6 +34,7 @@ namespace global
   int fps;
   int pbs_recv;
   int pbs_sent;
+  bool interpolateObjects = false;
 
   int elapsed_ms()
   {

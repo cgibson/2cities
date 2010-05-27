@@ -63,14 +63,14 @@ void ObjectFactory::loadConfig(char* filename)
   setBlueprint(DUMMY_BLOCK, 1.0f, YELLOW_MAT, SMALL_CUBE, Vector(1.0f, 1.0f, 1.0f));
   
   // dummy sphere
-  setBlueprint(DUMMY_SPHERE, 1.0f, BLUE_MAT, SMALL_SPHERE, Vector(1, 0, 0));
+  setBlueprint(DUMMY_SPHERE, 1.0f, BLUE_MAT, SMALL_SPHERE, Vector(1.0f, 1.0f, 1.0f));
   io::register_key_down(ObjectFactory::makeBlock);
   
   // dummy block
   setBlueprint(CUSTOM_BLOCK, 1.0f, GREEN_MAT, SMALL_CUBE, Vector(1.0f, 1.0f, 1.0f));
   
   
-  setBlueprint(DUMMY_CONE, 1.0f, YELLOW_MAT, SMALL_CONE, Vector(1.0f, 0.0f, 1.0f));
+  setBlueprint(DUMMY_CONE, 1.0f, YELLOW_MAT, SMALL_CONE, Vector(1.0f, 1.0f, 1.0f));
   
   setBlueprint(DUMMY_CYLINDER, 1.0f, YELLOW_MAT, SMALL_CYLINDER, Vector(1.0f, 1.0f, 1.0f));
   setBlueprint(BLACK_HOLE, 10000.0f, YELLOW_MAT, SMALL_SPHERE, Vector(1.0f, 0.0f, 0.f));

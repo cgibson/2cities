@@ -106,7 +106,7 @@ int Physics::isUniqueID(int id)
 
 void Physics::tickCallback(btDynamicsWorld *dWorld, btScalar timeChange)
 {
-  printf("The world just ticked by %f seconds!\n", timeChange);
+//  printf("The world just ticked by %f seconds!\n", timeChange);
 }
 
 

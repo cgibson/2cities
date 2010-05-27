@@ -20,7 +20,7 @@ void WorldObject::draw() {
     glTranslatef(position.x(), position.y(), position.z());
     glRotatef(orientation.getK(), orientation.getH(),
               orientation.getI(), orientation.getJ());
-    glScalef(size.x() * 2.0, size.y() * 2.0, size.z() * 2.0);
+    glScalef(size.x(), size.y(), size.z());
     Shape sh = blueprint.getShape();
     
     if (sh >= SHAPE_BOX_MIN && sh < SHAPE_BOX_MAX)

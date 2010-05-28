@@ -92,7 +92,7 @@ int  NetworkServer::checkLag(ting::UDPSocket *socket, ting::IPAddress ip) {
 	return -1;
 }
 
-void NetworkServer::networkIncoming() {
+void NetworkServer::networkIncoming(long &elapsed) {
 	try {
 		ting::IPAddress ip;
 		NetworkPacket pkt;
@@ -100,14 +100,14 @@ void NetworkServer::networkIncoming() {
 		// Check for incoming items
 		if(_waitSet->WaitWithTimeout(0)) {
 			if(_incomingSock.CanRead()) {
-				networkIncomingGeneral();
+				networkIncomingGeneral(elapsed);
 			}
 
 			// Check each player socket for data (allows up to 10 packets to be accepted)
 			for(unsigned int p=0; p<_players.size(); p++) {
 				int pktsRecv = 0;
 				while (_players[p]->socket.CanRead() && pktsRecv++ < 10) {
-					networkIncomingPlayers(p);
+					networkIncomingPlayers(p, elapsed);
 				}
 			}
 		}
@@ -116,7 +116,7 @@ void NetworkServer::networkIncoming() {
 	}
 }
 
-void NetworkServer::networkIncomingGeneral() {
+void NetworkServer::networkIncomingGeneral(long &elapsed) {
 	try {
 		ting::IPAddress ip;
 		NetworkPacket pkt;
@@ -157,7 +157,7 @@ void NetworkServer::networkIncomingGeneral() {
 	}
 }
 
-void NetworkServer::networkIncomingPlayers(int p) {
+void NetworkServer::networkIncomingPlayers(int p,long &elapsed) {
 	try {
 		ting::IPAddress ip;
 		NetworkPacket pkt;
@@ -213,12 +213,12 @@ void NetworkServer::networkIncomingPlayers(int p) {
 	}
 }
 
-void NetworkServer::networkOutgoing() {
+void NetworkServer::networkOutgoing(long &elapsed) {
 	// Outgoing Network Section
 	try {
 		// Send up to MAX_PACKETS_PER_CYCLE Packets
 		const int objsSize = _serverObjs.size();
-		const int sendSize = min(objsSize, (int)(SERVER_SEND_MAX_PACKETS_PER_CYCLE * OBJECT_BATCHSEND_SIZE));
+		const int sendSize = min(objsSize, (int)(SERVER_SEND_MAX_PACKETS_PER_MS * elapsed * OBJECT_BATCHSEND_SIZE));
 		if (sendSize > 0 && (_players.size() > 0 || _dedicatedServer == false)) {
 			unsigned int currObj = _sendObjNext;
 			while(currObj < _sendObjNext + sendSize) {
@@ -250,21 +250,46 @@ void NetworkServer::networkOutgoing() {
 	}
 }
 
-void NetworkServer::update(long milli_time) {
-	updatePktData(milli_time);
+void NetworkServer::update(long elapsed) {
+#ifdef SERVER
+	static long lastClockTime = global::elapsed_ms();
+	long currClockTime;
+	if(_waitSet->WaitWithTimeout(1)) {
+#endif
+		networkIncoming(elapsed);
+#ifdef SERVER
+	}
+	else {
+		currClockTime = global::elapsed_ms();
+		if(currClockTime != lastClockTime) {
+			elapsed = currClockTime - lastClockTime;
+			lastClockTime = currClockTime;
+#endif
 
-	networkIncoming();
+	updatePktData(elapsed);
 
 	// Update Physics Engine
 	static int physicsDelay = 0;
 	if(physicsDelay <= 0) {
+#ifdef SERVER
+		printf("\015 elapsed(%4i) tx(%5i) rx(%5i) objs(%4i) | ",
+				(net::SERVER_PHYSICS_UPDATE_RATE - physicsDelay),
+				global::pbs_sent,
+				global::pbs_recv,
+				_serverObjs.size());
+		for(unsigned int p=0; p<_players.size(); p++) {
+			printf("P%i(%4i ms) ", _players[p]->ID, _players[p]->lagDelay);
+		}
+		printf("  ");
+		fflush(stdout);
+#endif
 		physicsEngine.update(net::SERVER_PHYSICS_UPDATE_RATE - physicsDelay);
 		physicsDelay = net::SERVER_PHYSICS_UPDATE_RATE;
 
 		// UPDATE LOCAL DATA (and remove items fallen off world)
 		std::vector<WorldObject> PhysEngObjs = physicsEngine.getWorldObjects();
 		for(unsigned int i=0; i < PhysEngObjs.size(); i++) {
-			if(PhysEngObjs[i].getPosition().y() < 0) {
+			if(PhysEngObjs[i].getPosition().y() < -10.0f) {
 				unsigned int removeID = PhysEngObjs[i].getID();
 				// Local Removal
 				physicsEngine.removeWorldObject(removeID);
@@ -283,10 +308,14 @@ void NetworkServer::update(long milli_time) {
 		}
 	}
 	else {
-		physicsDelay -= milli_time;
+		physicsDelay -= elapsed;
 	}
 
-	networkOutgoing();
+	networkOutgoing(elapsed);
+#ifdef SERVER
+		}
+	}
+#endif
 }
 
 void NetworkServer::addObject(WorldObject newObj) {

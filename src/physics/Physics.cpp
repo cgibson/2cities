@@ -178,7 +178,9 @@ void Physics::InsertNewBlock(ObjectType type, Vector position)
   WorldObject * newObj = new WorldObject(nextBlockNumber++, 0, type);
   newObj->setPosition(position);
   addWorldObject(*newObj);
+#ifdef DEBUG
   printf("Adding object at %s\n", position.str());
+#endif
  }
 
 vector<Vector> Physics::fileToBlockLocations(const char * fileName)
@@ -262,7 +264,9 @@ vector<Vector> Physics::fileToBlockLocations(const char * fileName)
               {
                 if (xi == 0)
                 {
+#ifdef DEBUG
               printf("e\n");
+#endif
                   InsertNewBlock(BLOCK_1_2_1, here 
                     + Vector(0, 0, i) + off121);
                   InsertNewBlock(BLOCK_1_2_1, here 
@@ -270,7 +274,9 @@ vector<Vector> Physics::fileToBlockLocations(const char * fileName)
                 }
                 if (zi == 0)
                 {
+#ifdef DEBUG
               printf("f\n");
+#endif
                   InsertNewBlock(BLOCK_1_2_1, here
                     + Vector(i, 0, 0) + off121);
                   InsertNewBlock(BLOCK_1_2_1, here
@@ -278,7 +284,9 @@ vector<Vector> Physics::fileToBlockLocations(const char * fileName)
                 }
                 if (xi == xf - 1)
                 {
+#ifdef DEBUG
               printf("g\n");
+#endif
                   InsertNewBlock(BLOCK_1_2_1, here 
                     + Vector(0, 0, i) + ox + off121);
                   InsertNewBlock(BLOCK_1_2_1, here 
@@ -287,7 +295,9 @@ vector<Vector> Physics::fileToBlockLocations(const char * fileName)
                 
                 if (zi == zf - 1)
                 {
+#ifdef DEBUG
               printf("h\n");
+#endif
                   InsertNewBlock(BLOCK_1_2_1, here
                     + Vector(i, 0, 0) + oz + off121);
                   InsertNewBlock(BLOCK_1_2_1, here
@@ -296,11 +306,15 @@ vector<Vector> Physics::fileToBlockLocations(const char * fileName)
             }
             if (inner == 1)
             {
+#ifdef DEBUG
                             printf("i\n\n");
+#endif
 
               InsertNewBlock(BLOCK_2_4_2, here + off242);
             }
+#ifdef DEBUG
               printf("j\n\n");
+#endif
             InsertNewBlock(BLOCK_5_1_5, here + off515);
           }
 /*      for (xi = 0; xi <= xf; xi++)

@@ -64,10 +64,10 @@ protected:
 	unsigned int _sendObjNext;
 	unsigned int _playerIDNext;
 
-	void networkIncoming();
-	void networkIncomingGeneral();
-	void networkIncomingPlayers(int p);
-	void networkOutgoing();
+	void networkIncoming(long &elapsed);
+	void networkIncomingGeneral(long &elapsed);
+	void networkIncomingPlayers(int p, long &elapsed);
+	void networkOutgoing(long &elapsed);
 
 public:
 	NetworkServer();

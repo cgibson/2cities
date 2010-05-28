@@ -23,18 +23,23 @@ NetworkManager::NetworkManager() {
 
 void NetworkManager::initialize() {
 #ifdef CLIENT
-	gfx::hud.console.registerCmd("cl",         NetworkManager::consoleConnect);
 	gfx::hud.console.registerCmd("connect",    NetworkManager::consoleConnect);
+	gfx::hud.console.registerCmd("cl",         NetworkManager::consoleConnect);
 	gfx::hud.console.registerCmd("disconnect", NetworkManager::consoleDisconnect);
 
 	gfx::hud.console.registerCmd("network",    NetworkManager::consoleChangeInterface);
 	gfx::hud.console.registerCmd("n",          NetworkManager::consoleChangeInterface);
+
 	gfx::hud.console.registerCmd("msg",        NetworkManager::consoleSendMsg);
 
 	gfx::hud.console.registerCmd("loadlevel",  NetworkManager::consoleChangeLevel);
 	gfx::hud.console.registerCmd("ll",         NetworkManager::consoleChangeLevel);
 
-	gfx::hud.console.registerCmd("NT",         NetworkManager::consoleNetworkTests);
+	gfx::hud.console.registerCmd("netrate",    NetworkManager::consoleNetworkRates);
+	gfx::hud.console.registerCmd("nr",         NetworkManager::consoleNetworkRates);
+
+	gfx::hud.console.registerCmd("nettest",    NetworkManager::consoleNetworkTests);
+	gfx::hud.console.registerCmd("nt",         NetworkManager::consoleNetworkTests);
 #endif
 }
 
@@ -140,6 +145,27 @@ void NetworkManager::consoleChangeInterface(int argc, char *argv[]) {
 		gfx::hud.console.error("Usage: %s <private | client | server>", argv[0]);
 		return;
 	}
+#endif
+}
+
+void NetworkManager::consoleNetworkRates(int argc, char *argv[]) {
+#ifdef CLIENT
+	if(argc != 3)
+		return;
+
+	if(!strcmp(argv[1],"physics")) {
+		net::SERVER_PHYSICS_UPDATE_RATE = atoi(argv[2]);
+		printf("SERVER PHYSICS RATE = %i\n", net::SERVER_PHYSICS_UPDATE_RATE);
+	}
+	else if(!strcmp(argv[1],"client_recv")) {
+		net::CLIENT_RECV_MAX_PACKETS_PER_CYCLE = atoi(argv[2]);
+		printf("CLIENT RECV MAX = %i\n", net::CLIENT_RECV_MAX_PACKETS_PER_CYCLE);
+	}
+	else if(!strcmp(argv[1],"server_recv")) {
+		net::SERVER_SEND_MAX_PACKETS_PER_MS = atoi(argv[2]);
+		printf("SERVER SEND MAX = %i\n", net::SERVER_SEND_MAX_PACKETS_PER_MS);
+	}
+	return;
 #endif
 }
 

@@ -30,14 +30,14 @@ namespace net{
 
 	extern const unsigned int OBJECT_BATCHSEND_SIZE;
 
-	extern const unsigned int CLIENT_SEND_MAX_PACKETS_PER_CYCLE;
-	extern const unsigned int CLIENT_RECV_MAX_PACKETS_PER_CYCLE;
+	extern unsigned int CLIENT_SEND_MAX_PACKETS_PER_CYCLE;
+	extern unsigned int CLIENT_RECV_MAX_PACKETS_PER_CYCLE;
 
-	extern const unsigned int SERVER_SEND_MAX_PACKETS_PER_CYCLE;
-	extern const unsigned int SERVER_RECV_MAX_PACKETS_PER_CYCLE;
+	extern unsigned int SERVER_SEND_MAX_PACKETS_PER_MS;
+	extern unsigned int SERVER_RECV_MAX_PACKETS_PER_CYCLE;
 	extern const unsigned int SERVER_PORT_DEFAULT;
 
-	extern const unsigned int SERVER_PHYSICS_UPDATE_RATE;
+	extern unsigned int SERVER_PHYSICS_UPDATE_RATE;
 
 	// A separate class to make the header distinct
 	struct NetworkPacketHeader {

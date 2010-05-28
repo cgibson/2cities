@@ -90,7 +90,7 @@ void NetworkClient::disconnectServer() {
 	if(isConnected) {
 		unsigned char msg[] = "";
 		NetworkPacket pkt(DISCONNECT, msg, sizeof(msg));
-		printf("Disconnecting!");
+		printf("Disconnecting!\n");
 		SendPacket(pkt, &socket, serverIP);
 
 		isConnected = false;

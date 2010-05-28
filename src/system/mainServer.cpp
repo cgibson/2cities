@@ -42,10 +42,11 @@ int main(int argc, char** argv) {
 	int timeCurr;
 	int elapsed = 0;
 	while(1) {
-		while((timePrev + 1) > (timeCurr = global::elapsed_ms()));
-		elapsed = (timeCurr - timePrev);
-		timePrev = timeCurr;
-		networkManager->network->update(elapsed);
+		//while((timePrev + 1) > (timeCurr = global::elapsed_ms()));
+		//elapsed = (timeCurr - timePrev);
+		//timePrev = timeCurr;
+		//networkManager->network->update(elapsed);
+		networkManager->network->update(-1);
 	}
 
 

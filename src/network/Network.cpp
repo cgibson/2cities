@@ -6,13 +6,13 @@ using namespace global;
 namespace net{
 	const unsigned int OBJECT_BATCHSEND_SIZE = 10;
 
-	const unsigned int CLIENT_SEND_MAX_PACKETS_PER_CYCLE = 10;
-	const unsigned int CLIENT_RECV_MAX_PACKETS_PER_CYCLE = 100;
+	unsigned int CLIENT_SEND_MAX_PACKETS_PER_CYCLE = 10;
+	unsigned int CLIENT_RECV_MAX_PACKETS_PER_CYCLE = 100;
 
-	const unsigned int SERVER_SEND_MAX_PACKETS_PER_CYCLE = 100;
-	const unsigned int SERVER_RECV_MAX_PACKETS_PER_CYCLE = 15;
+	unsigned int SERVER_SEND_MAX_PACKETS_PER_MS = 5;
+	unsigned int SERVER_RECV_MAX_PACKETS_PER_CYCLE = 15;
 
-	const unsigned int SERVER_PHYSICS_UPDATE_RATE = 5;
+	unsigned int SERVER_PHYSICS_UPDATE_RATE = 5;
 
 	const unsigned int SERVER_PORT_DEFAULT = 5060;
 

@@ -163,17 +163,11 @@ void NetworkServer::networkIncomingPlayers(int p,long &elapsed) {
 		NetworkPacket pkt;
 		RecvPacket(&pkt, &(_players[p]->socket), &ip);
 
-		WorldObject tmpObj;
 		int gameClock;
 
 		switch (pkt.header.type) {
 		case OBJECT_SEND :
-			//tmpObj.fromBinStream((pkt.data));
-			//tmpObj.print();
-			tmpObj = *(WorldObject*)(pkt.data);
-			tmpObj.interpolate(_players[p]->lagDelay);
-			addObjectPhys(tmpObj);
-			//addObjectPhys(*(WorldObject*)(pkt.data));
+			decodeObjectSend(pkt, _players[p]->lagDelay);
 			break;
 		case LAG_REQ :
 			gameClock = global::elapsed_ms();
@@ -227,11 +221,11 @@ void NetworkServer::networkOutgoing(long &elapsed) {
 					updateObjectLocal(new WorldObject(*_serverObjs[(currObj+o)%objsSize]));
 
 				// Build Batch Packet
-				WorldObject objGroup[OBJECT_BATCHSEND_SIZE];
+				WorldObject *objPtrGroup[OBJECT_BATCHSEND_SIZE];
 				for(unsigned int o=0; o<OBJECT_BATCHSEND_SIZE; o++)
-					objGroup[o] = *_serverObjs[(currObj+o)%objsSize];
+					objPtrGroup[o] = _serverObjs[(currObj+o)%objsSize];
 				NetworkPacket pkt;
-				buildBatchPacket(&pkt, objGroup, OBJECT_BATCHSEND_SIZE);
+				buildBatchPacket(&pkt, objPtrGroup, OBJECT_BATCHSEND_SIZE);
 
 				// Send to each _players
 				for(unsigned int p=0; p<_players.size(); p++) {
@@ -257,7 +251,7 @@ void NetworkServer::update(long elapsed) {
 	while(1) {
 		if(_waitSet->WaitWithTimeout(1)) {
 #endif
-		networkIncoming(elapsed);
+	networkIncoming(elapsed);
 #ifdef SERVER
 		}
 		else {
@@ -272,19 +266,23 @@ void NetworkServer::update(long elapsed) {
 	// Update Physics Engine
 	static int physicsDelay = 0;
 	if(physicsDelay <= 0) {
-#ifdef SERVER
-			printf("\015 elapsed(%4i) tx(%5i) rx(%5i) objs(%4i) | ",
-					(net::SERVER_PHYSICS_UPDATE_RATE - physicsDelay),
-					global::pbs_sent,
-					global::pbs_recv,
-					_serverObjs.size());
-			for(unsigned int p=0; p<_players.size(); p++) {
-				printf("P%i(%4i ms) ", _players[p]->ID, _players[p]->lagDelay);
-			}
-			printf("  ");
-			fflush(stdout);
-#endif
 		physicsEngine.update(net::SERVER_PHYSICS_UPDATE_RATE - physicsDelay);
+
+#ifdef SERVER
+		// Print Server Stats for Dedicated Server Only
+		printf("\015 LCycle(%4i) Phys(%4i) tx(%5i) rx(%5i) objs(%4i) | ",
+				(net::SERVER_PHYSICS_UPDATE_RATE - physicsDelay),
+				(global::elapsed_ms() - currClockTime),
+				global::pbs_sent,
+				global::pbs_recv,
+				_serverObjs.size());
+		for(unsigned int p=0; p<_players.size(); p++) {
+			printf("P%i(%4i ms) ", _players[p]->ID, _players[p]->lagDelay);
+		}
+		printf("  ");
+		fflush(stdout);
+#endif
+
 		physicsDelay = net::SERVER_PHYSICS_UPDATE_RATE;
 
 		// UPDATE LOCAL DATA (and remove items fallen off world)
@@ -320,23 +318,23 @@ void NetworkServer::update(long elapsed) {
 #endif
 }
 
-void NetworkServer::addObject(WorldObject newObj) {
-	newObj.setID(_currObjID++);
-	newObj.setPlayerID(_playerID);
+void NetworkServer::addObject(WorldObject *objPtr) {
+	objPtr->setID(_currObjID++);
+	objPtr->setPlayerID(_playerID);
 	
-	addObjectPhys(newObj);
+	addObjectPhys(objPtr);
 
 	// Add to local system for interpolation
-	updateObjectLocal(new WorldObject(newObj));
+	updateObjectLocal(objPtr);
 }
 
-void NetworkServer::addObjectPhys(WorldObject &newObj) {
-	newObj.setTimeStamp(global::elapsed_ms());
+void NetworkServer::addObjectPhys(WorldObject *objPtr) {
+	objPtr->setTimeStamp(global::elapsed_ms());
 	
-	// Add ObjectState to Tracker
-	NetworkObjectState newObjState(new WorldObject(newObj), 4);
+	// TODO Add ObjectState to Tracker
+	NetworkObjectState newObjState(objPtr, 4);
 	
-	physicsEngine.addWorldObject(newObj);
+	physicsEngine.addWorldObject(*objPtr);
 }
 
 void NetworkServer::loadLevel(const char * file) {

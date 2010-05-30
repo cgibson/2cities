@@ -152,16 +152,9 @@ void NetworkClient::update(long milli_time) {
 		RecvPacket(&pkt, &socket, &sourceIP);
 		int pktRecvTime = global::elapsed_ms();
 
-		if(pkt.header.type == OBJECT_BATCHSEND) {
-			WorldObject objBatch[OBJECT_BATCHSEND_SIZE];
-			int objBatchSize = readBatchPacket(&pkt, objBatch, (int)OBJECT_BATCHSEND_SIZE);
-			for(int i=0; i<objBatchSize; i++) {
-				WorldObject *objPtr = new WorldObject(objBatch[i]);
-				int itemInterpAmount = currServerTime - objPtr->getTimeStamp();
-				//printf("Update amount = %i\n", itemInterpAmount);
-				objPtr->interpolate(itemInterpAmount);
-				updateObjectLocal(objPtr);
-			}
+		if(pkt.header.type == OBJECT_BATCHSEND || pkt.header.type == OBJECT_SEND) {
+			// TODO timestamp based interpolation timing
+			decodeObjectSend(pkt, 0);
 		}
 		else if(pkt.header.type == OBJECT_KILL) {
 			removeObjectLocal(*(unsigned int*)(pkt.data));
@@ -173,9 +166,6 @@ void NetworkClient::update(long milli_time) {
 #endif
 			NetworkPacket tmpPkt(LAG_RESULT, (unsigned char *)&serverDelay, sizeof(int));
 			SendPacket(tmpPkt, &socket, serverIP);
-		}
-		else if(pkt.header.type == OBJECT_SEND) {
-			updateObjectLocal(new WorldObject(*(WorldObject*)(pkt.data)));
 		}
 		else if(pkt.header.type == LEVEL_CLEAR) {
 			global::stateManager->currentState->objects.clear();
@@ -195,20 +185,19 @@ void NetworkClient::sendMsg(char * msgStr) {
 	}
 }
 
-void NetworkClient::addObject(WorldObject newObj) {
-	newObj.setID(_currObjID++);
-	newObj.setPlayerID(_playerID);
+void NetworkClient::addObject(WorldObject *ObjPtr) {
+	ObjPtr->setID(_currObjID++);
+	ObjPtr->setPlayerID(_playerID);
 
 	if(isConnected) {
-		//unsigned char buf[140];
-		//int bufLen = newObj.makeBinStream(buf);
-		//NetworkPacket pkt(OBJECT_SEND, buf, bufLen);
-		NetworkPacket pkt(OBJECT_SEND, (unsigned char *)(&newObj), sizeof(WorldObject));
+		unsigned char buf[150];
+		int woSize = ObjPtr->makeBinStream(buf);
+		NetworkPacket pkt(OBJECT_SEND, buf, woSize);
 		SendPacket(pkt, &socket, serverIP);
 	}
 
 	// Add to local system for interpolation
-	updateObjectLocal(new WorldObject(newObj));
+	updateObjectLocal(ObjPtr);
 }
 
 void NetworkClient::loadLevel(const char * file) {

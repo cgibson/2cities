@@ -48,7 +48,8 @@ public:
 	void sendMsg(char * msgStr);
 
 	// Add new object to scene
-	void addObject(WorldObject newObj);
+	void addObject(WorldObject *newObj);
+	void addObjectPhys(WorldObject *ObjPtr) { updateObjectLocal(ObjPtr); }
 
 	void reqUpdateObj(unsigned int objID) {};
 

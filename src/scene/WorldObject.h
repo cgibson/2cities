@@ -39,7 +39,7 @@ class WorldObject
         Vector velocity;
         Vector force;
         Quaternion orientation;
-        ObjectType type; //SMALL_SPHERE, MEDIUM_SPHERE, LARGE_SPHERE, SMALL_CUBE, etc
+        ObjectType type;
         PhysicsState physics; //NONE, DYNAMIC, STATIC
         uint64_t timestamp;
 

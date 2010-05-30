@@ -50,8 +50,10 @@ protected:
 	int SendPacket(NetworkPacket  pktPtr, ting::UDPSocket *socket, ting::IPAddress  destIP);
 	int RecvPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ting::IPAddress *srcIP);
 
-	void buildBatchPacket(NetworkPacket *pkt, WorldObject objs[], unsigned int size);
+	void buildBatchPacket(NetworkPacket *pkt, WorldObject *objs[], unsigned int size);
 	int  readBatchPacket (NetworkPacket *pkt, WorldObject objs[], unsigned int size);
+
+	void decodeObjectSend(NetworkPacket &pkt, long interpValue);
 
 public:
 	NetworkSystem() {
@@ -84,8 +86,13 @@ public:
 
 	virtual void sendMsg(char * msgStr) {};
 
+	// TODO Depreciated since polymorphism requires ptr
+	virtual void addObject(WorldObject newObj) {
+		addObject(new WorldObject(newObj));
+	};
 	// Add new object to scene
-	virtual void addObject(WorldObject newObj) {};
+	virtual void addObject(WorldObject *objPtr) {};
+	virtual void addObjectPhys(WorldObject *objPtr) {};
 
 	// Load a stored lvl
 	virtual void loadLevel(const char * file) {};

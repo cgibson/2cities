@@ -83,8 +83,8 @@ public:
 	bool dedicatedServer(void) { return _dedicatedServer; }
 
 	// Add new object to scene
-	void addObject(WorldObject newObj);
-	void addObjectPhys(WorldObject &newObj);
+	void addObject(WorldObject *newObj);
+	void addObjectPhys(WorldObject *newObj);
 
 	void reqUpdateObj(unsigned int objID) {};
 

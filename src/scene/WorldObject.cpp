@@ -111,6 +111,7 @@ void WorldObject::print() {
    printf("***Object Details***\n");
    printf(" ID       : %i\n", id);
    printf(" PlayerID : %i\n", playerid);
+   printf(" BldgID   : %i\n", bldgid);
    printf(" position : %s\n", position.str());
    printf(" velocity : %s\n", velocity.str());
    printf(" force    : %s\n", force.str());
@@ -122,6 +123,7 @@ int WorldObject::makeBinStream(unsigned char *bufPtr) {
 	int currPos = 0;
 	int currISize;
 
+	// Always Required
 	currISize = sizeof(ObjectType);
 	memcpy(bufPtr + currPos, (void *)&type, currISize); currPos += currISize;
 
@@ -129,6 +131,9 @@ int WorldObject::makeBinStream(unsigned char *bufPtr) {
 	memcpy(bufPtr + currPos, (void *)&id       , currISize); currPos += currISize;
 	memcpy(bufPtr + currPos, (void *)&playerid , currISize); currPos += currISize;
 	memcpy(bufPtr + currPos, (void *)&bldgid   , currISize); currPos += currISize;
+
+	currISize = sizeof(uint64_t);
+	memcpy(bufPtr + currPos, (void *)&timestamp, currISize); currPos += currISize;
 
 	double tmpD;
 	currISize = sizeof(double);
@@ -151,8 +156,7 @@ int WorldObject::makeBinStream(unsigned char *bufPtr) {
 	tmpF = orientation.getJ(); memcpy(bufPtr + currPos, &tmpF, currISize); currPos += currISize;
 	tmpF = orientation.getK(); memcpy(bufPtr + currPos, &tmpF, currISize); currPos += currISize;
 
-	currISize = sizeof(uint64_t);
-	memcpy(bufPtr + currPos, (void *)&timestamp, currISize); currPos += currISize;
+	// Extra Items can be added here
 
 	return currPos;
 }
@@ -160,6 +164,7 @@ int WorldObject::fromBinStream(unsigned char *bufPtr) {
 	int currPos = 0;
 	int currISize;
 
+	// Always Required
 	currISize = sizeof(ObjectType);
 	memcpy((void *)&type, bufPtr + currPos, currISize); currPos += currISize;
 
@@ -168,29 +173,32 @@ int WorldObject::fromBinStream(unsigned char *bufPtr) {
 	memcpy((void *)&playerid , bufPtr + currPos, currISize); currPos += currISize;
 	memcpy((void *)&bldgid   , bufPtr + currPos, currISize); currPos += currISize;
 
-	double tmpD;
-	currISize = sizeof(double);
-	memcpy(&tmpD , bufPtr + currPos, currISize); tmpD = position.x(); currPos += currISize;
-	memcpy(&tmpD , bufPtr + currPos, currISize); tmpD = position.y(); currPos += currISize;
-	memcpy(&tmpD , bufPtr + currPos, currISize); tmpD = position.z(); currPos += currISize;
-
-	memcpy(&tmpD , bufPtr + currPos, currISize); tmpD = velocity.x(); currPos += currISize;
-	memcpy(&tmpD , bufPtr + currPos, currISize); tmpD = velocity.y(); currPos += currISize;
-	memcpy(&tmpD , bufPtr + currPos, currISize); tmpD = velocity.z(); currPos += currISize;
-
-	memcpy(&tmpD , bufPtr + currPos, currISize); tmpD = force.x(); currPos += currISize;
-	memcpy(&tmpD , bufPtr + currPos, currISize); tmpD = force.y(); currPos += currISize;
-	memcpy(&tmpD , bufPtr + currPos, currISize); tmpD = force.z(); currPos += currISize;
-
-	float tmpF;
-	currISize = sizeof(float);
-	memcpy(&tmpF, bufPtr + currPos, currISize); tmpF = orientation.getH(); currPos += currISize;
-	memcpy(&tmpF, bufPtr + currPos, currISize); tmpF = orientation.getI(); currPos += currISize;
-	memcpy(&tmpF, bufPtr + currPos, currISize); tmpF = orientation.getJ(); currPos += currISize;
-	memcpy(&tmpF, bufPtr + currPos, currISize); tmpF = orientation.getK(); currPos += currISize;
-
 	currISize = sizeof(uint64_t);
 	memcpy((void *)&timestamp, bufPtr + currPos, currISize); currPos += currISize;
+
+	double tmpD;
+	currISize = sizeof(double);
+	memcpy(&tmpD , bufPtr + currPos, currISize); position.x(tmpD); currPos += currISize;
+	memcpy(&tmpD , bufPtr + currPos, currISize); position.y(tmpD); currPos += currISize;
+	memcpy(&tmpD , bufPtr + currPos, currISize); position.z(tmpD); currPos += currISize;
+
+	memcpy(&tmpD , bufPtr + currPos, currISize); velocity.x(tmpD); currPos += currISize;
+	memcpy(&tmpD , bufPtr + currPos, currISize); velocity.y(tmpD); currPos += currISize;
+	memcpy(&tmpD , bufPtr + currPos, currISize); velocity.z(tmpD); currPos += currISize;
+
+	memcpy(&tmpD , bufPtr + currPos, currISize); force.x(tmpD); currPos += currISize;
+	memcpy(&tmpD , bufPtr + currPos, currISize); force.y(tmpD); currPos += currISize;
+	memcpy(&tmpD , bufPtr + currPos, currISize); force.z(tmpD); currPos += currISize;
+
+	float tmpF[4];
+	currISize = sizeof(float);
+	memcpy(&tmpF[0], bufPtr + currPos, currISize); currPos += currISize;
+	memcpy(&tmpF[1], bufPtr + currPos, currISize); currPos += currISize;
+	memcpy(&tmpF[2], bufPtr + currPos, currISize); currPos += currISize;
+	memcpy(&tmpF[3], bufPtr + currPos, currISize); currPos += currISize;
+	orientation = Quaternion(tmpF[0], tmpF[1], tmpF[2], tmpF[3]);
+
+	// Extra Items can be added here
 
 	return currPos;
 }

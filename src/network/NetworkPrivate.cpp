@@ -19,6 +19,14 @@ void NetworkPrivate::update(long milli_time) {
 
 	// Update Current Gamestate
 	std::vector<WorldObject> PhysEngObjs = physicsEngine.getWorldObjects();
+
+/*
+	std::vector<WorldObject *> PhysEngObjPtrs;
+	for(unsigned int i=0; i < PhysEngObjs.size(); i++) {
+		PhysEngObjPtrs.push_back(new WorldObject(PhysEngObjs[i]));
+	}
+	global::stateManager->currentState->objects.swap(PhysEngObjPtrs);
+*/
 	for(unsigned int i=0; i < PhysEngObjs.size(); i++) {
 		updateObjectLocal(new WorldObject(PhysEngObjs[i]));
 	}

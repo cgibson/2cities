@@ -70,12 +70,12 @@ void CarnageState::updateInput(long milli_time) {
    if((io::keys[' '] || io::mouse_buttons[MOUSE_LEFT] == GLUT_DOWN) && ammo_recharge <= 0) {
 	  //Vector dir = (camera.eye-camera.lookAt) * -1;
 	  //dir.norm();
-	  // uniqueID creation & addObject(WorldObject)
-	  static int newObjID = 10000;
-	  WorldObject newObj = WorldObject(newObjID++,0,enumeration::DUMMY_SPHERE);
-	  newObj.setPosition(camera->position() - Vector( 0.0f, 1.0f, 0.0f));
+	  // uniqueID creation & addObject(WorldObject *)
+	  static int newObjID = 10000; // TODO to be removed... network already does this now
+	  WorldObject *newObjPtr = new WorldObject(newObjID++,0,enumeration::DUMMY_SPHERE);
+	  newObjPtr->setPosition(camera->position() - Vector( 0.0f, 1.0f, 0.0f));
 	  //newObj.setVelocity(dir * 50);
-	  newObj.setVelocity(camera->viewVec() * 50);
+	  newObjPtr->setVelocity(camera->viewVec() * 50);
 /*	  Vector strafe = camera->strafeVec();
 	  float angle = acos(Vector (0, 0, -1) * camera->viewVec()) * 180 / 3.14159;
 	  if (camera->liftVec() * Vector(0,1,0) < 0)
@@ -86,7 +86,7 @@ void CarnageState::updateInput(long milli_time) {
 	  quat.setAxis(strafe);
 	  quat.setAngle(angle);
 	  newObj.setOrientation(quat);
-*/	  networkManager->network->addObject(newObj);
+*/	  networkManager->network->addObject(newObjPtr);
 
 	  ammo_recharge = RECHARGE_TIME;
    }

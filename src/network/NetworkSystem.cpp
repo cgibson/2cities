@@ -67,11 +67,11 @@ void NetworkSystem::updateObjectVector(vector<WorldObject *> *objVec, WorldObjec
 	// if found, replace pointer with newer one
 	else if((*objVec)[i]->getID() == objPtr->getID()) {
 		// Check if incoming packet is newer data
-		if (objPtr->getTimeStamp() > (*objVec)[i]->getTimeStamp()) {
+//		if (objPtr->getTimeStamp() > (*objVec)[i]->getTimeStamp()) {
 			WorldObject *oldObjPtr = (*objVec)[i];
 			(*objVec)[i] = objPtr;
 			delete oldObjPtr;
-		}
+//		}
 	}
 	// Else, not found (but at insert location)
 	else {
@@ -194,17 +194,18 @@ int NetworkSystem::RecvPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ti
 	return recvSize;
 }
 
-void NetworkSystem::buildBatchPacket(NetworkPacket *pkt, WorldObject objs[], unsigned int size) {
+void NetworkSystem::buildBatchPacket(NetworkPacket *pkt, WorldObject *objs[], unsigned int size) {
 	if (size * sizeof(WorldObject) > 1500) {
 		printf("buildBatchPacket trying to add too much!\n");
 		return;
 	}
 
+	int currPos = 0;
 	for(unsigned int o=0; o<size; o++) {
-		memcpy(pkt->data + o*sizeof(WorldObject), &(objs[o]), sizeof(WorldObject));
+		currPos += objs[o]->makeBinStream(pkt->data + currPos);
 	}
 	pkt->header.type = OBJECT_BATCHSEND;
-	pkt->dataSize = size * sizeof(WorldObject);
+	pkt->dataSize = currPos;
 }
 
 int NetworkSystem::readBatchPacket(NetworkPacket *pkt, WorldObject objs[], unsigned int size) {
@@ -222,4 +223,39 @@ int NetworkSystem::readBatchPacket(NetworkPacket *pkt, WorldObject objs[], unsig
 		memcpy(&(objs[o]), pkt->data + o*sizeof(WorldObject), sizeof(WorldObject));
 
 	return objCount;
+}
+
+
+void NetworkSystem::decodeObjectSend(NetworkPacket &pkt, long interpValue) {
+	if(pkt.header.type == OBJECT_SEND) {
+		WorldObject *tmpObjPtr;
+		ObjectType woType = *(ObjectType*)(pkt.data);
+
+		switch (woType) {
+		default:
+			tmpObjPtr = new WorldObject(pkt.data);
+		}
+
+		tmpObjPtr->interpolate(interpValue);
+		addObjectPhys(tmpObjPtr);
+	}
+	else if(pkt.header.type == OBJECT_BATCHSEND) {
+		WorldObject *tmpObjPtr;
+		ObjectType woType;
+		int woPktLoc = 0;
+
+		while(woPktLoc < pkt.dataSize) {
+			woType = *(ObjectType*)(pkt.data + woPktLoc);
+
+			switch (woType) {
+			default:
+				tmpObjPtr = new WorldObject();
+				woPktLoc += tmpObjPtr->fromBinStream(pkt.data + woPktLoc);
+			}
+
+			//tmpObjPtr->print();
+			tmpObjPtr->interpolate(interpValue);
+			addObjectPhys(tmpObjPtr);
+		}
+	}
 }

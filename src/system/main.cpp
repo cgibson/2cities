@@ -7,6 +7,7 @@
 #include "../state/CarnageState.h"
 #include "../network/NetworkManager.h"
 #include "../scene/ModelManager.h"
+#include "../audio/SoundManager.h"
 
 int msLast = 0;
 bool running;
@@ -60,6 +61,13 @@ void initState()
   global::stateManager->initialize();
 }
 
+void initSound()
+{
+	global::soundManager->initialize();
+	//Here's where the sound (could) initially start playing.
+	//global::soundManager->playSound();
+}
+
 void initialize()
 {
 
@@ -81,16 +89,19 @@ void initialize()
   // initialization of all other modules
   io::init();
   gfx::init();
-  global::soundManager->init();
 
   initState();
 
   global::networkManager->initialize();
+  
+  //Here's where the modelManager would read in all models.
+  //Commented out because of deconstructor taking extra time to
+  //free everything that was malloc'd upon game exit.
   //global::modelManager->initialize();
 
-  glutIdleFunc(updateLoop);
+  initSound();
 
-  global::soundManager->play(SoundManager::TEMP_BACKGROUND_MUSIC);
+  glutIdleFunc(updateLoop);
 
   glutMainLoop();
 }

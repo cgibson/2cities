@@ -9,8 +9,9 @@
  * TODO Improve efficiency
  */
 void NetworkSystem::updateObjectVector(vector<WorldObject *> *objVec, WorldObject *objPtr) {
-
-//	printf("starting update\n");
+/*
+    // *********************************************
+    // Sorted, Linear Iterator Based Update Code
 	vector<WorldObject *>::iterator it = objVec->begin();
 
 	while(it != objVec->end() && (*it)->getID() < objPtr->getID()) ++it;
@@ -29,9 +30,58 @@ void NetworkSystem::updateObjectVector(vector<WorldObject *> *objVec, WorldObjec
 //		printf("new item after %i! ID=%i\n", (*it)->getID(), objPtr->getID());
 		objVec->insert(it, objPtr);
 	}
-//	printf("done with update\n");
+	// *********************************************
+*/
+	// *********************************************
+    // Sorted, Binary Search Update Code
+	int locBeg = 0;
+	int locEnd = objVec->size() - 1;
+	int locMid = (locBeg + locEnd) / 2;
+	while(locBeg < locEnd) {
+		// Check if found object
+		if ((*objVec)[locMid]->getID() == objPtr->getID()) {
+			locBeg = locMid;	// Found, break out!
+			break;
+		}
+		// Must be in last half
+		else if ((*objVec)[locMid]->getID() < objPtr->getID()) {
+			locBeg = locMid + 1;
+		}
+		// Must be in first half
+		else {
+			locEnd = locMid - 1;
+		}
+		locMid = (locBeg + locEnd) / 2;
+	}
+	if(objVec->size() != 0 && (*objVec)[locBeg]->getID() < objPtr->getID()) locBeg++;
+
+	unsigned int i = locBeg;
+
+	// Find Location in main Object vector
+	//while (i < objVec->size() && (*objVec)[i]->getID() < objPtr->getID()) { i++; }
+
+	// If at end, must not have found... push to back
+	if (i == objVec->size()) {
+		objVec->push_back(objPtr);
+	}
+	// if found, replace pointer with newer one
+	else if((*objVec)[i]->getID() == objPtr->getID()) {
+		// Check if incoming packet is newer data
+		if (objPtr->getTimeStamp() > (*objVec)[i]->getTimeStamp()) {
+			WorldObject *oldObjPtr = (*objVec)[i];
+			(*objVec)[i] = objPtr;
+			delete oldObjPtr;
+		}
+	}
+	// Else, not found (but at insert location)
+	else {
+		objVec->insert(objVec->begin() + i, objPtr);
+	}
+	// *********************************************
 
 /*
+	// *********************************************
+    // Non-Sorted, Linear Search Update Code
 	unsigned int i=0;
 	// Find Location in main Object vector
 	while (i < objVec->size() && (*objVec)[i]->getID() != objPtr->getID()) { i++; }
@@ -46,6 +96,7 @@ void NetworkSystem::updateObjectVector(vector<WorldObject *> *objVec, WorldObjec
 		(*objVec)[i] = objPtr;
 		delete oldObjPtr;
 	}
+	// *********************************************
 */
 }
 

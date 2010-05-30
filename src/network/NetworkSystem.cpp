@@ -9,6 +9,29 @@
  * TODO Improve efficiency
  */
 void NetworkSystem::updateObjectVector(vector<WorldObject *> *objVec, WorldObject *objPtr) {
+
+//	printf("starting update\n");
+	vector<WorldObject *>::iterator it = objVec->begin();
+
+	while(it != objVec->end() && (*it)->getID() < objPtr->getID()) ++it;
+
+	if(it == objVec->end()) {
+//		printf("No Object Found! ID=%i\n",objPtr->getID());
+		objVec->push_back(objPtr);
+	}
+	else if((*it)->getID() == objPtr->getID()) {
+//		printf("found item! ID=%i (it=%i)\n",objPtr->getID(), (*it)->getID());
+		WorldObject *oldObjPtr = (*it);
+		(*it) = objPtr;
+		delete oldObjPtr;
+	}
+	else {
+//		printf("new item after %i! ID=%i\n", (*it)->getID(), objPtr->getID());
+		objVec->insert(it, objPtr);
+	}
+//	printf("done with update\n");
+
+/*
 	unsigned int i=0;
 	// Find Location in main Object vector
 	while (i < objVec->size() && (*objVec)[i]->getID() != objPtr->getID()) { i++; }
@@ -23,6 +46,7 @@ void NetworkSystem::updateObjectVector(vector<WorldObject *> *objVec, WorldObjec
 		(*objVec)[i] = objPtr;
 		delete oldObjPtr;
 	}
+*/
 }
 
 /* Method to take a WorldObject* and update/add it to the main vector (based on ID field)

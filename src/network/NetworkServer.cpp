@@ -254,16 +254,17 @@ void NetworkServer::update(long elapsed) {
 #ifdef SERVER
 	static long lastClockTime = global::elapsed_ms();
 	long currClockTime;
-	if(_waitSet->WaitWithTimeout(1)) {
+	while(1) {
+		if(_waitSet->WaitWithTimeout(1)) {
 #endif
 		networkIncoming(elapsed);
 #ifdef SERVER
-	}
-	else {
-		currClockTime = global::elapsed_ms();
-		if(currClockTime != lastClockTime) {
-			elapsed = currClockTime - lastClockTime;
-			lastClockTime = currClockTime;
+		}
+		else {
+			currClockTime = global::elapsed_ms();
+			if(currClockTime != lastClockTime) {
+				elapsed = currClockTime - lastClockTime;
+				lastClockTime = currClockTime;
 #endif
 
 	updatePktData(elapsed);
@@ -272,16 +273,16 @@ void NetworkServer::update(long elapsed) {
 	static int physicsDelay = 0;
 	if(physicsDelay <= 0) {
 #ifdef SERVER
-		printf("\015 elapsed(%4i) tx(%5i) rx(%5i) objs(%4i) | ",
-				(net::SERVER_PHYSICS_UPDATE_RATE - physicsDelay),
-				global::pbs_sent,
-				global::pbs_recv,
-				_serverObjs.size());
-		for(unsigned int p=0; p<_players.size(); p++) {
-			printf("P%i(%4i ms) ", _players[p]->ID, _players[p]->lagDelay);
-		}
-		printf("  ");
-		fflush(stdout);
+			printf("\015 elapsed(%4i) tx(%5i) rx(%5i) objs(%4i) | ",
+					(net::SERVER_PHYSICS_UPDATE_RATE - physicsDelay),
+					global::pbs_sent,
+					global::pbs_recv,
+					_serverObjs.size());
+			for(unsigned int p=0; p<_players.size(); p++) {
+				printf("P%i(%4i ms) ", _players[p]->ID, _players[p]->lagDelay);
+			}
+			printf("  ");
+			fflush(stdout);
 #endif
 		physicsEngine.update(net::SERVER_PHYSICS_UPDATE_RATE - physicsDelay);
 		physicsDelay = net::SERVER_PHYSICS_UPDATE_RATE;
@@ -313,6 +314,7 @@ void NetworkServer::update(long elapsed) {
 
 	networkOutgoing(elapsed);
 #ifdef SERVER
+			}
 		}
 	}
 #endif

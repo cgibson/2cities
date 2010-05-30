@@ -45,7 +45,9 @@ namespace global
   int elapsed_ms();
 }
 
-#include "../scene/ModelManager.h"
-#include "../audio/SoundManager.h"
+#ifdef CLIENT
+	#include "../scene/ModelManager.h"
+	#include "../audio/SoundManager.h"
+#endif
 #include "../network/NetworkManager.h"
 #endif

@@ -36,19 +36,8 @@ int main(int argc, char** argv) {
 	}
 
 	initialize();
-	networkManager->network->update(0);
-
-	int timePrev = global::elapsed_ms();
-	int timeCurr;
-	int elapsed = 0;
-	while(1) {
-		//while((timePrev + 1) > (timeCurr = global::elapsed_ms()));
-		//elapsed = (timeCurr - timePrev);
-		//timePrev = timeCurr;
-		//networkManager->network->update(elapsed);
+	while (1)
 		networkManager->network->update(-1);
-	}
-
 
 	/*
 	char input[100];

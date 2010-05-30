@@ -150,7 +150,7 @@ void Console::update(int ms)
 
     // for shell command processing
     static char outbuf[81];
-    static char outbuf_pos = 0;
+    static int outbuf_pos = 0;
 
     // use a circular buffer to average update times over CONSOLE_UPDATE_SAMPLES updates
     updateTimes[updateTimeCtr] = ms;

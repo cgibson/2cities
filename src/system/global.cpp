@@ -3,6 +3,7 @@
 #ifdef CLIENT
 	#include "../graphics/camera.h"
 	#include "../scene/ModelManager.h"
+	#include "../audio/SoundManager.h"
 #endif
 
 /*
@@ -15,7 +16,8 @@ namespace global
   ObjectFactory  *factory        = new ObjectFactory();
   NetworkManager *networkManager = new NetworkManager();
 #ifdef CLIENT
-//  ModelManager   *modelManager   = new ModelManager();
+  ModelManager   *modelManager   = new ModelManager();
+  SoundManager	 *soundManager	 = new SoundManager();
 #endif
 
   int width;  // window width

@@ -8,6 +8,8 @@
 #include "ComplexObject.h"
 #include "../system/global.h"
 
+using namespace global;
+
 ComplexObject::ComplexObject(E_ModelType modelType)
 {
 	modeltype = modelType;

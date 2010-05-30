@@ -10,12 +10,31 @@
 
 using namespace enumeration;
 
-const char* modelFiles[] = {"drillcone4.obj"};
+const char* modelFiles[] = {"../../models/drillcone4.obj"};
 
 //Create a new ModelManager.
 ModelManager::ModelManager()
 {
 	resetLoader();
+}
+
+ModelManager::~ModelManager()
+{
+	for(int i = 0; i < NUM_GAME_MODELS; i++)
+	{
+		if(modelvertices[i] != NULL)
+		{
+			delete modelvertices[i];
+		}
+		if(modelnormals[i] != NULL)
+		{
+			delete modelnormals[i];
+		}
+		if(modelcolors[i] != NULL)
+		{
+			delete modelcolors[i];
+		}
+	}
 }
 
 //Reads in all data from the .obj model files.

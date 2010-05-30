@@ -6,7 +6,7 @@
 #include "../graphics/graphics.h"
 #include "../state/CarnageState.h"
 #include "../network/NetworkManager.h"
-//#include "../scene/ModelManager.h"
+#include "../scene/ModelManager.h"
 
 int msLast = 0;
 bool running;

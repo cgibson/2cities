@@ -13,12 +13,14 @@ class Camera;
  */
 class ModelManager;
 class NetworkManager;
+class SoundManager;
 
 namespace global
 {
   extern StateManager   *stateManager;
   extern ObjectFactory  *factory;
   extern ModelManager   *modelManager;
+  extern SoundManager	*soundManager;
   extern NetworkManager *networkManager;
 
   extern int width;  // window width
@@ -41,6 +43,7 @@ namespace global
   int elapsed_ms();
 }
 
+#include "../audio/SoundManager.h"
 #include "../scene/ModelManager.h"
 #include "../network/NetworkManager.h"
 #endif

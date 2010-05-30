@@ -45,7 +45,6 @@ void ObjectFactory::makeBlock(int key, bool special)
     }
     blockSetHeight++;
   }
-//  printf(" The world now contains %d objects.\n", networkManager->network->
 }
 ///////////////////////////////////
 
@@ -131,4 +130,33 @@ btCollisionShape * ObjectFactory::getShape(ObjectType type)
     shapes[type] = temp;
   }
   return shapes[type];
+}
+
+/* Creates a WorldObject* from derived classes (as required for polymorphism.)
+ *
+ * If simply a different shape, then no addition is needed as other factory
+ * features will take care of this. As such, only add another "case" if the new
+ * items is actually a derived class with different update, think, and/or
+ * extra data items.
+ */
+WorldObject* ObjectFactory::makeObject(ObjectType type) {
+	WorldObject *retObjPtr;
+
+	switch (type) {
+	case FRACTAL_BOMB :
+		retObjPtr = new WorldObject(); // TODO update
+		break;
+	case BLACK_HOLE :
+		retObjPtr = new BlackHole();
+		break;
+
+	// Explicitly listing the dummy objects although not needed due to default
+	case DUMMY_SPHERE :
+	case DUMMY_CYLINDER :
+	case DUMMY_CONE :
+	default:
+		retObjPtr = new WorldObject();
+	}
+
+	return retObjPtr;
 }

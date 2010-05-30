@@ -32,8 +32,8 @@ void NetworkPrivate::update(long milli_time) {
 	}
 }
 
-void NetworkPrivate::addObject(WorldObject newObj) {
-	physicsEngine.addWorldObject(newObj);
+void NetworkPrivate::addObject(WorldObject *newObj) {
+	physicsEngine.addWorldObject(*newObj);
 }
 
 void NetworkPrivate::loadLevel(const char * file) {

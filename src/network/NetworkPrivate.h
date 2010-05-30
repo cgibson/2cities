@@ -28,7 +28,7 @@ public:
 	virtual void update(long milli_time);
 
 	// Add new object to scene
-	virtual void addObject(WorldObject newObj);
+	virtual void addObject(WorldObject *newObj);
 
 	// Load a stored lvl
 	virtual void loadLevel(const char * file);

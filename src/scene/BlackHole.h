@@ -5,7 +5,8 @@
 class BlackHole : public WorldObject
 {
   public:
-    BlackHole(int, int, ObjectType);
+	BlackHole();
+	BlackHole(int, int, ObjectType);
     virtual void draw();
     virtual void think(int elapsedTime);
 };

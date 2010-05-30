@@ -233,7 +233,8 @@ void NetworkSystem::decodeObjectSend(NetworkPacket &pkt, long interpValue) {
 
 		switch (woType) {
 		default:
-			tmpObjPtr = new WorldObject(pkt.data);
+			tmpObjPtr = global::factory->makeObject(woType);
+			tmpObjPtr->fromBinStream(pkt.data);
 		}
 
 		tmpObjPtr->interpolate(interpValue);
@@ -249,7 +250,7 @@ void NetworkSystem::decodeObjectSend(NetworkPacket &pkt, long interpValue) {
 
 			switch (woType) {
 			default:
-				tmpObjPtr = new WorldObject();
+				tmpObjPtr = global::factory->makeObject(woType);
 				woPktLoc += tmpObjPtr->fromBinStream(pkt.data + woPktLoc);
 			}
 

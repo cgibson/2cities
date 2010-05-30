@@ -5,10 +5,13 @@
 #include "../system/enum.h"
 #include <vector>
 #include "btBulletDynamicsCommon.h"
+#include "WorldObject.h"
 
 #define MAX_OBJECT_TYPES 100
 
 using namespace enumeration;
+
+class WorldObject;
 
 class ObjectFactory{
 public:
@@ -17,6 +20,8 @@ public:
   Blueprint getBlueprint(ObjectType);
   void loadConfig(char*);
   btCollisionShape * getShape(ObjectType);
+  WorldObject * makeObject(ObjectType);
+
 private:
   static btVector3 VtobtV3(Vector in)
   {

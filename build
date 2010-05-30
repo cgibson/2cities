@@ -32,7 +32,9 @@ includes = {}
 includes.client = {
     "include/bullet",
     "include/freetype",
-    "include/lua"
+    "include/lua",
+    "include/SDL_mixer",
+    "/usr/include/SDL"
 }
 includes.server = {
     "include/bullet",
@@ -160,7 +162,7 @@ end
 -- CLEAN
 if mode == "clean" then
     print("========== CLEANING EVERYTHING ==========")
-    
+
     -- remove object files
     os.execute("rm " .. objdir.client .. "/*")
     os.execute("rm " .. objdir.server .. "/*")
@@ -198,18 +200,18 @@ if mode == "debug" and (build == "client" or build == "both") then
 
     -- open output file
     local f = io.open("Makefile.debug-client", "w")
-   
+
     -- compiler and binary name
     f:write("CXX = ", cxx, "\n")
     f:write("BIN = ", bin.client, "\n")
-    
+
     -- include directories
     includes.gen = ""
     if #includes.client > 0 then
         includes.gen = includes.gen .. " -I" .. table.concat(includes.client, " -I")
     end
     f:write("INCDIR = ", includes.gen, "\n")
-   
+
     -- preprocessor defines
     defines.gen = ""
     if #defines.client > 0 then
@@ -222,7 +224,7 @@ if mode == "debug" and (build == "client" or build == "both") then
         defines.gen = defines.gen .. " -D" .. table.concat(defines.debug, " -D")
     end
     f:write("DEFS = ", defines.gen, "\n")
-    
+
     -- library directory
     f:write("LIBDIR = ", libdir, "\n")
 
@@ -246,7 +248,7 @@ if mode == "debug" and (build == "client" or build == "both") then
         ldflags.gen = ldflags.gen .. " -l" .. table.concat(ldflags.client, " -l")
     end
     f:write("LDFLAGS = ", ldflags.gen, "\n")
-    
+
     -- object files list
     local objs = ""
     for i, file in ipairs(client_srcs) do
@@ -309,18 +311,18 @@ if mode == "debug" and (build == "server" or build == "both") then
 
     -- open output file
     local f = io.open("Makefile.debug-server", "w")
-   
+
     -- compiler and binary name
     f:write("CXX = ", cxx, "\n")
     f:write("BIN = ", bin.server, "\n")
-    
+
     -- include directories
     includes.gen = ""
     if #includes.server > 0 then
         includes.gen = includes.gen .. " -I" .. table.concat(includes.server, " -I")
     end
     f:write("INCDIR = ", includes.gen, "\n")
-   
+
     -- preprocessor defines
     defines.gen = ""
     if #defines.server > 0 then
@@ -333,7 +335,7 @@ if mode == "debug" and (build == "server" or build == "both") then
         defines.gen = defines.gen .. " -D" .. table.concat(defines.debug, " -D")
     end
     f:write("DEFS = ", defines.gen, "\n")
-    
+
     -- library directory
     f:write("LIBDIR = ", libdir, "\n")
 
@@ -357,7 +359,7 @@ if mode == "debug" and (build == "server" or build == "both") then
         ldflags.gen = ldflags.gen .. " -l" .. table.concat(ldflags.server, " -l")
     end
     f:write("LDFLAGS = ", ldflags.gen, "\n")
-    
+
     -- object files list
     local objs = ""
     for i, file in ipairs(server_srcs) do
@@ -380,7 +382,7 @@ if mode == "debug" and (build == "server" or build == "both") then
     -- done
     f:close()
     print("done.")
-    
+
     -- check validity of object files
     io.write("Checking validity of object files... ")
     io.flush()
@@ -399,7 +401,7 @@ if mode == "debug" and (build == "server" or build == "both") then
     -- run makefile
     print("Running make...")
     os.execute("make -f Makefile.debug-server")
-    
+
     -- tag the object files
     io.write("Tagging object files... ")
     io.flush()
@@ -420,18 +422,18 @@ if mode == "release" and (build == "client" or build == "both") then
 
     -- open output file
     local f = io.open("Makefile.release-client", "w")
-   
+
     -- compiler and binary name
     f:write("CXX = ", cxx, "\n")
     f:write("BIN = ", bin.client, "\n")
-    
+
     -- include directories
     includes.gen = ""
     if #includes.client > 0 then
         includes.gen = includes.gen .. " -I" .. table.concat(includes.client, " -I")
     end
     f:write("INCDIR = ", includes.gen, "\n")
-   
+
     -- preprocessor defines
     defines.gen = ""
     if #defines.client > 0 then
@@ -444,7 +446,7 @@ if mode == "release" and (build == "client" or build == "both") then
         defines.gen = defines.gen .. " -D" .. table.concat(defines.release, " -D")
     end
     f:write("DEFS = ", defines.gen, "\n")
-    
+
     -- library directory
     f:write("LIBDIR = ", libdir, "\n")
 
@@ -468,7 +470,7 @@ if mode == "release" and (build == "client" or build == "both") then
         ldflags.gen = ldflags.gen .. " -l" .. table.concat(ldflags.client, " -l")
     end
     f:write("LDFLAGS = ", ldflags.gen, "\n")
-    
+
     -- object files list
     local objs = ""
     for i, file in ipairs(client_srcs) do
@@ -491,7 +493,7 @@ if mode == "release" and (build == "client" or build == "both") then
     -- done
     f:close()
     print("done.")
-    
+
     -- check validity of object files
     io.write("Checking validity of object files... ")
     io.flush()
@@ -510,7 +512,7 @@ if mode == "release" and (build == "client" or build == "both") then
     -- run makefile
     print("Running make...")
     os.execute("make -f Makefile.release-client")
-    
+
     -- tag the object files
     io.write("Tagging object files... ")
     io.flush()
@@ -531,18 +533,18 @@ if mode == "release" and (build == "server" or build == "both") then
 
     -- open output file
     local f = io.open("Makefile.release-server", "w")
-   
+
     -- compiler and binary name
     f:write("CXX = ", cxx, "\n")
     f:write("BIN = ", bin.server, "\n")
-    
+
     -- include directories
     includes.gen = ""
     if #includes.server > 0 then
         includes.gen = includes.gen .. " -I" .. table.concat(includes.server, " -I")
     end
     f:write("INCDIR = ", includes.gen, "\n")
-   
+
     -- preprocessor defines
     defines.gen = ""
     if #defines.server > 0 then
@@ -555,7 +557,7 @@ if mode == "release" and (build == "server" or build == "both") then
         defines.gen = defines.gen .. " -D" .. table.concat(defines.release, " -D")
     end
     f:write("DEFS = ", defines.gen, "\n")
-    
+
     -- library directory
     f:write("LIBDIR = ", libdir, "\n")
 
@@ -579,7 +581,7 @@ if mode == "release" and (build == "server" or build == "both") then
         ldflags.gen = ldflags.gen .. " -l" .. table.concat(ldflags.server, " -l")
     end
     f:write("LDFLAGS = ", ldflags.gen, "\n")
-    
+
     -- object files list
     local objs = ""
     for i, file in ipairs(server_srcs) do
@@ -602,7 +604,7 @@ if mode == "release" and (build == "server" or build == "both") then
     -- done
     f:close()
     print("done.")
-    
+
     -- check validity of object files
     io.write("Checking validity of object files... ")
     io.flush()
@@ -621,7 +623,7 @@ if mode == "release" and (build == "server" or build == "both") then
     -- run makefile
     print("Running make...")
     os.execute("make -f Makefile.release-server")
-    
+
     -- tag the object files
     io.write("Tagging object files... ")
     io.flush()

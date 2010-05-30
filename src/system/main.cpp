@@ -69,7 +69,7 @@ void initialize()
   sprintf(global::app_title, "2Cities : The Game");
 
   // initialize SDL (timer and sound in the future)
-  if (SDL_Init(SDL_INIT_TIMER) < 0)
+  if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0)
   {
     fprintf(stderr, "Oh noes! Failed to initialize SDL! Sadface!\n");
     exit(EXIT_FAILURE);
@@ -81,6 +81,7 @@ void initialize()
   // initialization of all other modules
   io::init();
   gfx::init();
+  global::soundManager->init();
 
   initState();
 
@@ -88,6 +89,8 @@ void initialize()
   //global::modelManager->initialize();
 
   glutIdleFunc(updateLoop);
+
+  global::soundManager->play(SoundManager::TEMP_BACKGROUND_MUSIC);
 
   glutMainLoop();
 }

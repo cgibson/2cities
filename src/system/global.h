@@ -19,8 +19,10 @@ namespace global
 {
   extern StateManager   *stateManager;
   extern ObjectFactory  *factory;
+#ifdef CLIENT
   extern ModelManager   *modelManager;
   extern SoundManager	*soundManager;
+#endif
   extern NetworkManager *networkManager;
 
   extern int width;  // window width
@@ -43,7 +45,9 @@ namespace global
   int elapsed_ms();
 }
 
-#include "../audio/SoundManager.h"
-#include "../scene/ModelManager.h"
+#ifdef CLIENT
+	#include "../audio/SoundManager.h"
+	#include "../scene/ModelManager.h"
+#endif
 #include "../network/NetworkManager.h"
 #endif

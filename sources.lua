@@ -11,6 +11,7 @@
 -- By the way, double dashes are comments in Lua
 
 client_srcs = {
+    "audio/SoundManager.cpp",
     "graphics/hud.cpp",
     "graphics/shader.cpp",
     "graphics/tex.cpp",
@@ -44,10 +45,9 @@ client_srcs = {
 	"network/NetworkManager.cpp",
     "physics/Physics.cpp",
     "physics/PhysicsBody.cpp",
-    "audio/SoundManager.cpp",
     "scene/WorldObject.cpp",
     "scene/CustomObject.cpp",
---    "scene/ComplexObject.cpp",
+    "scene/ComplexObject.cpp",
     "scene/factory.cpp",
     "scene/loader.cpp",
     "scene/model.cpp",

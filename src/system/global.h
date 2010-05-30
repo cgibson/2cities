@@ -12,8 +12,8 @@ class Camera;
  * All values within global namespace will be available for everyone
  */
 class ModelManager;
-class NetworkManager;
 class SoundManager;
+class NetworkManager;
 
 namespace global
 {
@@ -45,9 +45,7 @@ namespace global
   int elapsed_ms();
 }
 
-#ifdef CLIENT
-	#include "../audio/SoundManager.h"
-	#include "../scene/ModelManager.h"
-#endif
+#include "../scene/ModelManager.h"
+#include "../audio/SoundManager.h"
 #include "../network/NetworkManager.h"
 #endif

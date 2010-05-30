@@ -10,7 +10,7 @@
 
 using namespace enumeration;
 
-const char* modelFiles[] = {"../../models/drillcone4.obj"};
+const char* modelFiles[] = {"models/drillcone.obj"};
 
 //Create a new ModelManager.
 ModelManager::ModelManager()

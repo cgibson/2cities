@@ -91,10 +91,7 @@ libs.client = {
 libs.server = {
     "libBulletDynamics.a",
     "libBulletCollision.a",
-    "libLinearMath.a",
-    "libfreetype.a", -- TODO: remove me
-    "libz.a", -- TODO: remove me
-    "liblua.a" -- TODO: remove me
+    "libLinearMath.a"
 }
 
 -- linker flags

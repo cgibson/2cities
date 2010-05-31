@@ -20,14 +20,14 @@
 class SoundManager
 {
 	private:
-		Mix_Music *buildmusic[NUM_BUILD_SONGS];
-		Mix_Music *carnagemusic[NUM_CARNAGE_SONGS];
-		Mix_Chunk *buildsfx[NUM_BUILD_SFX];
-		Mix_Chunk *carnagesfx[NUM_CARNAGE_SFX];
 		int currbuildmusic;
 		int currcarnagemusic;
 		int currbuildsfx;
 		int currcarnagesfx;
+		Mix_Music *buildmusic[NUM_BUILD_SONGS];
+		Mix_Music *carnagemusic[NUM_CARNAGE_SONGS];
+		Mix_Chunk *buildsfx[NUM_BUILD_SFX];
+		Mix_Chunk *carnagesfx[NUM_CARNAGE_SFX];
 		
 	public:
 		SoundManager();
@@ -43,10 +43,18 @@ class SoundManager
 		void playNextBuildSong();
 		void playNextCarnageSong();
 		void stopPlayingMusic();
-		int getCurrBuildMusic() {return currbuildmusic;}
-		int getCurrCarnageMusic() {return currcarnagemusic;}
-		int getCurrBuildSfx() {return currbuildsfx;}
-		int getCurrCarnageSfx() {return currcarnagesfx;}
+		void playBuildSfx(int buildsfxnum);
+		void playCarnageSfx(int carnagesfxnum);
+		int getCurrBuildMusic();
+		int getCurrCarnageMusic();
+		int getCurrBuildSfx();
+		int getCurrCarnageSfx();
+		void setCurrBuildMusic(int newcurrbuildmusic);
+		void setCurrCarnageMusic(int newcurrcarnagemusic);
+		
+		//Useful for ammo in particular.
+		void setCurrBuildSfx(int newcurrbuildsfx);
+		void setCurrCarnageSfx(int newcurrcarnagesfx);
 };
 
 #endif

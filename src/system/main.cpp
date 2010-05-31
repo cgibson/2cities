@@ -63,12 +63,12 @@ void initState()
 
 void initSound()
 {
-	//Here's where sound is initialized. However, it adds extra cleanup
+	//Here's where sound is initialized. Note that it adds extra cleanup
 	//when exiting the game, causing a significantly slower exit time.
 	//global::soundManager->initialize();
 	
 	//Here's where the sound (could) initially start playing.
-	//global::soundManager->playSound();
+	//global::soundManager->playCarnageSong();
 }
 
 void initialize()

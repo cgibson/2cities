@@ -1,6 +1,8 @@
 #include "SoundManager.h"
+#include "sound.h"
 
 using namespace std;
+using namespace sound;
 
 SoundManager::SoundManager()
 {
@@ -8,23 +10,25 @@ SoundManager::SoundManager()
 	memset(carnagemusic, 0, sizeof(Mix_Music *) * NUM_CARNAGE_SONGS);
 	memset(buildsfx, 0, sizeof(Mix_Chunk *) * NUM_BUILD_SFX);
 	memset(carnagesfx, 0, sizeof(Mix_Chunk *) * NUM_CARNAGE_SFX);
-	currbuildmusic = currcarnagemusic =
-		currbuildsfx = currcarnagesfx = 0;
+	currbuildmusic = 0;
+	currcarnagemusic = 0;
+	currbuildsfx = 0;
+	currcarnagesfx = 0;
 }
 
 bool SoundManager::hasEnding(std::string const &musicFile, std::string const &extension)
+{
+	if (musicFile.length() > extension.length())
 	{
-		if (musicFile.length() > extension.length())
-		{
-			return (musicFile.compare(musicFile.length() -
-			extension.length(), extension.length(), extension) == 0);
-		}
-		return false;
+		return (musicFile.compare(musicFile.length() -
+		extension.length(), extension.length(), extension) == 0);
 	}
+	return false;
+}
 
 void SoundManager::initialize()
 {
-	//Initialize SDL
+	//Initialize SDL. Although this may already be done in the main initialize() function.
 	if (SDL_Init(SDL_INIT_AUDIO) < 0)
 	{
 		cerr << Mix_GetError() << endl;
@@ -62,27 +66,17 @@ void SoundManager::tearDownSound()
 }
 
 void SoundManager::loadMusic()
-{
-	char *buildmusicnames[NUM_BUILD_SONGS] = {
-		"resources/sound/DesignTime.ogg"};
-		
-	char *carnagemusicnames[NUM_CARNAGE_SONGS] = {
-	"resources/sound/HopeNeverDiesBrenner.ogg",
-	"resources/sound/SupremeLogicianLin.ogg",
-	"resources/sound/ProudSoldierGage.ogg",
-	"resources/sound/HeroOfLegendForsythe.ogg",
-	"resources/sound/FlightOfTheCowardWaylon.ogg"};
-	
+{	
 	//Attempt to read in build state music
 	for(int i = 0; i < NUM_BUILD_SONGS; i++)
 	{
-		if(hasEnding(buildmusicnames[i], ".ogg"))
+		if(hasEnding(sound::buildmusicnames[i], ".ogg"))
 		{
-			buildmusic[i] = Mix_LoadMUS(buildmusicnames[i]);
+			buildmusic[i] = Mix_LoadMUS(sound::buildmusicnames[i]);
 		}
 		else
 		{
-			cout << "music file" << buildmusicnames[i] << "should be .wav format" << endl;
+			cout << "music file" << sound::buildmusicnames[i] << "should be .wav format" << endl;
 			exit(EXIT_FAILURE);
 		}
 		
@@ -95,13 +89,13 @@ void SoundManager::loadMusic()
 	//Attempt to read in carnage state music
 	for(int i = 0; i < NUM_CARNAGE_SONGS; i++)
 	{
-		if(hasEnding(carnagemusicnames[i], ".ogg"))
+		if(hasEnding(sound::carnagemusicnames[i], ".ogg"))
 		{
-			carnagemusic[i] = Mix_LoadMUS(carnagemusicnames[i]);
+			carnagemusic[i] = Mix_LoadMUS(sound::carnagemusicnames[i]);
 		}
 		else
 		{
-			cout << "music file" << carnagemusicnames[i] << "should be .wav format" << endl;
+			cout << "music file" << sound::carnagemusicnames[i] << "should be .wav format" << endl;
 			exit(EXIT_FAILURE);
 		}
 		
@@ -114,21 +108,13 @@ void SoundManager::loadMusic()
 }
 
 void SoundManager::loadSfx()
-{	
-	//Not used for now.
-	char *buildsfxnames[NUM_BUILD_SFX];
-	
-	char *carnagesfxnames[NUM_CARNAGE_SFX] = {
-	"resources/sound/28911__junggle__btn101.wav",
-	"resources/sound/39457__THE_bizniss__laser_3.wav",
-	"resources/sound/73537__Snipperbes__ClassicLaser.wav"};
-	
-	//Attempt to read in build SFX
-	for(int i = 0; i < NUM_BUILD_SFX; i++)
+{
+	//Attempt to read in build SFX (not used right now)
+/*	for(int i = 0; i < NUM_BUILD_SFX; i++)
 	{
-		if(hasEnding(buildsfxnames[i], ".wav"))
+		if(hasEnding(sound::buildsfxnames[i], ".wav"))
 		{
-			buildsfx[i] = Mix_LoadWAV(buildsfxnames[i]);
+			buildsfx[i] = Mix_LoadWAV(sound::buildsfxnames[i]);
 		}
 		else
 		{
@@ -142,6 +128,7 @@ void SoundManager::loadSfx()
 			exit(EXIT_FAILURE);
 		}
 	}
+*/
 	//Attempt to read in carnage SFX
 	for(int i = 0; i < NUM_CARNAGE_SFX; i++)
 	{
@@ -204,4 +191,62 @@ void SoundManager::stopPlayingMusic()
 	{
 		SDL_Delay(SDL_DELAY_TIME);
 	}
+}
+
+void SoundManager::playBuildSfx(int buildsfxnum)
+{
+	if(Mix_PlayChannel(SFX_CHANNEL, buildsfx[buildsfxnum], 0) == -1)
+	{
+		cerr << Mix_GetError() << endl;
+		exit(EXIT_FAILURE);
+	}
+}
+
+void SoundManager::playCarnageSfx(int carnagesfxnum)
+{
+	if(Mix_PlayChannel(SFX_CHANNEL, carnagesfx[carnagesfxnum], 0) == -1)
+	{
+		cerr << Mix_GetError() << endl;
+		exit(EXIT_FAILURE);
+	}
+}
+
+int SoundManager::getCurrBuildMusic()
+{
+	return currbuildmusic;
+}
+
+int SoundManager::getCurrCarnageMusic()
+{
+	return currcarnagemusic;
+}
+
+int SoundManager::getCurrBuildSfx()
+{
+	return currbuildsfx;
+}
+
+int SoundManager::getCurrCarnageSfx()
+{
+	return currcarnagesfx;
+}
+
+void SoundManager::setCurrBuildMusic(int newcurrbuildmusic)
+{
+	currbuildmusic = newcurrbuildmusic;
+}
+
+void SoundManager::setCurrCarnageMusic(int newcurrcarnagemusic)
+{
+	currcarnagemusic = newcurrcarnagemusic;
+}
+
+void SoundManager::setCurrBuildSfx(int newcurrbuildsfx)
+{
+	currbuildsfx = newcurrbuildsfx;
+}
+
+void SoundManager::setCurrCarnageSfx(int newcurrcarnagesfx)
+{
+	currcarnagesfx = newcurrcarnagesfx;
 }

@@ -20,6 +20,9 @@ namespace global
   SoundManager	 *soundManager	 = new SoundManager();
 #endif
 
+  int map_width = 120;
+  int map_height = 120;
+
   int width;  // window width
   int height; // wondow height
 

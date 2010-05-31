@@ -47,12 +47,6 @@ void Physics::initPhysics()
   groundBody = new btRigidBody(grbInfo);
   world->addRigidBody(groundBody);
   groundBody->setActivationState(ISLAND_SLEEPING);
-//  bldgShape = new btBoxShape(btVector3(BLDG_BLOCK_SIDE_LENGTH,
-//                                       BLDG_BLOCK_SIDE_LENGTH,
-//                                       BLDG_BLOCK_SIDE_LENGTH));
-//  ammoShape = new btSphereShape(btScalar(AMMO_RADIUS));
-//  collisionShapes.push_back(bldgShape);
-//  collisionShapes.push_back(ammoShape);
   nextBlockNumber = 0;
   world->setInternalTickCallback(&tickCallback);
 }
@@ -62,9 +56,8 @@ void Physics::update(int timeChange)
 //  printf("Updating by: %d milliseconds.\n", timeChange);
   vector<WorldObject> changed;
   vector<PhysicsBody *> temp = physicsBodies;
-  vector<WorldObject> newWorldObjects(temp.size(), WorldObject());
   if (timeChange)
-    world->stepSimulation(btScalar(timeChange / 1000.0), 10);
+    world->stepSimulation(btScalar(timeChange / 1000.0), 2, btScalar(1 / 25.0));
   unsigned int i;
   int result;
   for (i = 0; i < temp.size(); i++)
@@ -72,31 +65,25 @@ void Physics::update(int timeChange)
 		result = temp[i]->update();
     if (result == 1)
     {
-      changed.push_back(temp[i]->getWorldObject());
+      changed.push_back(*(temp[i]->getWorldObject()));
     }
     if (result == 0)
     {
 			//removeWorldObject(temp[i]->getWorldObject().getID());
-      newWorldObjects[i] = temp[i]->getWorldObject();
 		}
 		else
 		{
-      newWorldObjects[i] = temp[i]->getWorldObject();
-		}
+    }
   }
-//  printf("changed.size() = %d, ", changed.size());
-//  printf("newWorldObjects.size() = %d, ", newWorldObjects.size());
-//  printf("worldObjects.size() = %d\n", worldObjects.size());
-  worldObjects = newWorldObjects;
 }
 
 int Physics::isUniqueID(int id)
 {
   unsigned int i;
   int result = 1;
-  for (i = 0; result && i < worldObjects.size(); i++)
+  for (i = 0; result && i < physicsBodies.size(); i++)
   {
-    if (worldObjects[i].getID() == (unsigned int)id)
+    if (physicsBodies[i]->getID() == id)
     {
       result = 0;
     }
@@ -120,11 +107,11 @@ void Physics::addWorldObject(WorldObject worldObject)
 
     if (worldObject.getVelocity().mag() < .01)
     {
-//      newBody->setActivationState(ISLAND_SLEEPING);
+      newBody->setActivationState(ISLAND_SLEEPING);
     }
     world->addRigidBody(newBody->getRigidBody());
     physicsBodies.push_back(newBody);
-//    worldObjects.push_back(worldObject);
+    printf("sleeping threshholds: %f, %f \n", newBody->getLinearSleepingThreshold(), newBody->getAngularSleepingThreshold());
   }
   else
   {
@@ -139,7 +126,6 @@ void Physics::emptyWorld()
 #endif
   vector<PhysicsBody *> temp = physicsBodies;
   // blank out the viewed objects
-  worldObjects.clear();
   physicsBodies.clear();
   int i = temp.size();
   // iterate backwards through the existing PhysicsBodies, removing them all.
@@ -168,9 +154,14 @@ bool Physics::removeWorldObject(int id)
   return removed;
 }
 
-vector<WorldObject> Physics::getWorldObjects()
+vector<WorldObject *> Physics::getWorldObjects()
 {
-  return worldObjects;
+  vector<WorldObject *> result;
+  for (unsigned int i = 0; i < physicsBodies.size(); i++)
+  {
+    result.push_back(physicsBodies[i]->getWorldObject());
+  }
+  return result;
 }
 
 void Physics::InsertNewBlock(ObjectType type, Vector position)

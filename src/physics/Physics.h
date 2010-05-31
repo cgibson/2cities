@@ -31,7 +31,6 @@ class Physics
     btDefaultCollisionConfiguration * collConf;
     btAlignedObjectArray<btCollisionShape *> collisionShapes;
     btRigidBody * groundBody;
-    std::vector<WorldObject> worldObjects;
     std::vector<WorldObject> recentChanges;
     std::vector<PhysicsBody *> physicsBodies;
     std::vector<Vector> fileToBlockLocations(const char * fileName);
@@ -43,7 +42,7 @@ class Physics
 //    btBoxShape * bldgShape;
 //    btSphereShape * ammoShape;
     void addWorldObject(WorldObject newObject);
-    std::vector<WorldObject> getWorldObjects();
+    std::vector<WorldObject *> getWorldObjects();
     
     void exitPhysics();
     void initPhysics();

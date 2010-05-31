@@ -37,10 +37,6 @@ btRigidBody(getCI(worldObject))
   setCenterOfMassTransform(trans);
   // set velocity
   setLinearVelocity(VtobtV3(vel));
-//  btScalar linearDamping = getLinearDamping();
-//  btScalar angularDamping = getAngularDamping();
-//  printf("ld = %f, ad = %f\n", linearDamping, angularDamping);
-//  setDamping(linearDamping * 100, angularDamping * 100);
   body = (btRigidBody *)(this);
 }
 
@@ -58,14 +54,14 @@ btRigidBody::btRigidBodyConstructionInfo PhysicsBody::getCI(WorldObject worldObj
     thisShape->calculateLocalInertia(mass, inertia);
   }
   btRigidBody::btRigidBodyConstructionInfo ci(mass, ms, thisShape, inertia);
-//  printf("Friction was: %f,\t", ci.m_friction);
-//  printf("Restitution was: %f,\t", ci.m_restitution);
   ci.m_friction = 0.75;
   ci.m_restitution = 0;
   ci.m_linearDamping = btScalar(.1);
   ci.m_angularDamping = btScalar(.1);
-//  printf("Friction is now: %f", ci.m_friction); 
-//  printf("Restitution is now: %f", ci.m_restitution); 
+//  ci.m_linearSleepingThreshold = btScalar(10.0);
+//  ci.m_angularSleepingThreshold = btScalar(10.0);
+
+  
   return ci;
 }
 

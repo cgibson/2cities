@@ -66,6 +66,10 @@ namespace enumeration {
   typedef enum E_ModelType {
 	  AMMO_DRILL_CONE
   } ModelType;
+  
+  typedef enum E_TesselationType {
+    TESS_NONE, TESS_STONEHENGE, TESS_SIMPLE, TESS_SOLID
+  } Tesselation;
 }
 
 #endif

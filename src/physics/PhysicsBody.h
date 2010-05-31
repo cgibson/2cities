@@ -39,7 +39,7 @@ class PhysicsBody : public btRigidBody
     int getID() {return wo.getID();}
     int getPlayerID() {return wo.getPlayerID();}
     int getType() {return wo.getType();}
-    WorldObject getWorldObject() {return wo;}
+    WorldObject * getWorldObject() {return &wo;}
     int update();
     Vector getForce();
 };

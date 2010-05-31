@@ -286,10 +286,10 @@ void NetworkServer::update(long elapsed) {
 		physicsDelay = net::SERVER_PHYSICS_UPDATE_RATE;
 
 		// UPDATE LOCAL DATA (and remove items fallen off world)
-		std::vector<WorldObject> PhysEngObjs = physicsEngine.getWorldObjects();
+		std::vector<WorldObject *> PhysEngObjs = physicsEngine.getWorldObjects();
 		for(unsigned int i=0; i < PhysEngObjs.size(); i++) {
-			if(PhysEngObjs[i].getPosition().y() < -10.0f) {
-				unsigned int removeID = PhysEngObjs[i].getID();
+			if(PhysEngObjs[i]->getPosition().y() < -10.0f) {
+				unsigned int removeID = PhysEngObjs[i]->getID();
 				// Local Removal
 				physicsEngine.removeWorldObject(removeID);
 				removeObjectVector(&_serverObjs,removeID);
@@ -302,7 +302,7 @@ void NetworkServer::update(long elapsed) {
 				}
 			}
 			else {
-				updateObjectVector(&_serverObjs,new WorldObject(PhysEngObjs[i]));
+				updateObjectVector(&_serverObjs,new WorldObject(*PhysEngObjs[i]));
 			}
 		}
 	}

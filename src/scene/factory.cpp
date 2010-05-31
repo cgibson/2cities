@@ -35,11 +35,12 @@ void ObjectFactory::makeBlock(int key, bool special)
     {
       for (j = 0; j < floorSize; j++)
       {
-//        WorldObject anObject = WorldObject(blockNumberBase + 
-          BlackHole anObject = BlackHole(blockNumberBase +
-          blockSetHeight * floorSize * floorSize + i * floorSize + j,
-          0, enumeration::DUMMY_CONE);
-        anObject.setPosition(Vector(i - floorSize / 2.0, blockSetHeight + .5, j - floorSize / 2.0));
+//      WorldObject *anObject = new WorldObject(blockNumberBase +
+        BlackHole *anObject = new BlackHole(blockNumberBase +
+                                         blockSetHeight * floorSize * floorSize +
+                                         i * floorSize + j,
+                                       0, enumeration::DUMMY_CONE);
+        anObject->setPosition(Vector(i - floorSize / 2.0, blockSetHeight + .5, j - floorSize / 2.0));
         networkManager->network->addObject(anObject);
       }
     }

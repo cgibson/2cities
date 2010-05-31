@@ -37,21 +37,24 @@ protected:
 	int _playerID;
 	unsigned int _currObjID;
 
-	int _pktCountRecv; // Count of packets over a 250 ms period
+	// Variables for rx/tx rates (counted over ~250ms period)
+	int _pktCountRecv;
 	int _pktCountSent;
 	int _pktPeriod;
 
-	void updateObjectLocal(WorldObject *obj);
+	// Helper functions for quick/sorted actions on std:vectors
 	void updateObjectVector(vector<WorldObject *> *objVec, WorldObject *objPtr);
-
-	void removeObjectLocal(unsigned int worldObjectID);
 	void removeObjectVector(vector<WorldObject *> *objVec, unsigned int worldObjectID);
 
-	int SendPacket(NetworkPacket  pktPtr, ting::UDPSocket *socket, ting::IPAddress  destIP);
+	// Helper functions to specifically act on currState->objects vector
+	void updateObjectLocal(WorldObject *obj);
+	void removeObjectLocal(unsigned int worldObjectID);
+
+
+	int SendPacket(NetworkPacket &pktPtr, ting::UDPSocket *socket, ting::IPAddress  destIP);
 	int RecvPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ting::IPAddress *srcIP);
 
 	void buildBatchPacket(NetworkPacket *pkt, WorldObject *objs[], unsigned int size);
-	int  readBatchPacket (NetworkPacket *pkt, WorldObject objs[], unsigned int size);
 
 	void decodeObjectSend(NetworkPacket &pkt, long interpValue);
 
@@ -70,7 +73,7 @@ public:
 
 	virtual void initialize() {};
 	virtual void update(long elapsed) {};
-	void updatePktData(long elapsed);
+	void updateRxTxData(long elapsed);
 
 	int getPlayerID() { return _playerID; };
 
@@ -86,10 +89,6 @@ public:
 
 	virtual void sendMsg(char * msgStr) {};
 
-	// TODO Depreciated since polymorphism requires ptr
-	virtual void addObject(WorldObject newObj) {
-		addObject(new WorldObject(newObj));
-	};
 	// Add new object to scene
 	virtual void addObject(WorldObject *objPtr) {};
 	virtual void addObjectPhys(WorldObject *objPtr) {};

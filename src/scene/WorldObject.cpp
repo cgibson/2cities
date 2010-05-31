@@ -9,6 +9,52 @@ using namespace enumeration;
 	#include "../graphics/graphics.h"
 #endif
 
+WorldObject::WorldObject() {
+	id = 0;
+	playerid = 0;
+	type = DUMMY_BLOCK;
+	timestamp = 0;
+}
+
+WorldObject::WorldObject(unsigned int newid, unsigned int newplayerid, ObjectType newtype) {
+	id = newid;
+	playerid = newplayerid;
+	type = newtype;
+	timestamp = 0;
+}
+
+WorldObject::WorldObject(const WorldObject& newObj) {
+	this->id = newObj.id;
+	this->playerid = newObj.playerid;
+	this->position = newObj.position;
+	this->velocity = newObj.velocity;
+	this->force = newObj.force;
+	this->orientation = newObj.orientation;
+	this->type = newObj.type;
+	this->physics = newObj.physics;
+	this->timestamp = newObj.timestamp;
+}
+
+WorldObject::WorldObject(unsigned char *bufPtr) {
+	fromBinStream(bufPtr);
+}
+
+void WorldObject::import(const WorldObject& newObj) {
+	this->id = newObj.id;
+	this->playerid = newObj.playerid;
+	this->position = newObj.position;
+	this->velocity = newObj.velocity;
+	this->force = newObj.force;
+	this->orientation = newObj.orientation;
+	this->type = newObj.type;
+	this->physics = newObj.physics;
+	this->timestamp = newObj.timestamp;
+}
+
+void WorldObject::import(unsigned char *bufPtr) {
+	fromBinStream(bufPtr);
+}
+
 void WorldObject::draw() {
 #ifdef CLIENT
 //	Vector pos = getPosition();

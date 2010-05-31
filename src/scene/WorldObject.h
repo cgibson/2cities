@@ -44,67 +44,47 @@ class WorldObject
         uint64_t timestamp;
 
     public:
-	WorldObject()
-        {
-            id = 0;
-            playerid = 0;
-            type = DUMMY_BLOCK;
-            timestamp = 0;
-        }
-        WorldObject(unsigned int newid, unsigned int newplayerid, ObjectType newtype)
-        {
-            id = newid;
-            playerid = newplayerid;
-            type = newtype;
-            timestamp = 0;
-        }
-        WorldObject(const WorldObject& newObj) {
-        	this->id = newObj.id;
-        	this->playerid = newObj.playerid;
-        	this->position = newObj.position;
-        	this->velocity = newObj.velocity;
-        	this->force = newObj.force;
-        	this->orientation = newObj.orientation;
-        	this->type = newObj.type;
-        	this->physics = newObj.physics;
-        	this->timestamp = newObj.timestamp;
-        }
-        WorldObject(unsigned char *bufPtr) {
-        	fromBinStream(bufPtr);
-        }
+        // WO Derivative Specific Functions
+        WorldObject();
+        WorldObject(unsigned int newid, unsigned int newplayerid, ObjectType newtype);
+        WorldObject(const WorldObject& newObj);
+        WorldObject(unsigned char *bufPtr);
         
+        void import(const WorldObject& newObj);
+        void import(unsigned char *bufPtr);
+
         virtual void draw();
         virtual void update(int elapsedTime);
         virtual void think(int elapsedTime);
         virtual void interpolate(int elapsedTime);
 
+        int makeBinStream(unsigned char *bufPtr);
+        int fromBinStream(unsigned char *bufPtr);
         virtual void print();
 
+        // Default Functions
         unsigned int getID() {return id;}
         unsigned int getPlayerID() {return playerid;}
         unsigned int getBldgID() {return bldgid;}
 
-        Vector getPosition() {return position;}
-        Vector getVelocity() {return velocity;}
-        Vector getForce() {return force;}
-        Quaternion getOrientation() {return orientation;}
-        ObjectType getType() {return type;}
-        PhysicsState getPhysics() {return physics;}
-        uint64_t getTimeStamp() {return timestamp;}
+        Vector       getPosition()    {return position;}
+        Vector       getVelocity()    {return velocity;}
+        Vector       getForce()       {return force;}
+        Quaternion   getOrientation() {return orientation;}
+        ObjectType   getType()        {return type;}
+        PhysicsState getPhysics()     {return physics;}
+        uint64_t     getTimeStamp()   {return timestamp;}
 
-        void setID(unsigned int newid) { id = newid; }
+        void setID      (unsigned int newid)       { id = newid; }
         void setPlayerID(unsigned int newplayerid) { playerid = newplayerid;}
-        void setBldgID(unsigned int newbldgid) { bldgid = newbldgid;}
+        void setBldgID  (unsigned int newbldgid)   { bldgid = newbldgid;}
 
-        void setPosition(Vector newposition) {position = newposition;}
-        void setVelocity(Vector newvelocity) {velocity = newvelocity;}
-        void setForce(Vector newforce) {force = newforce;}
+        void setPosition   (Vector newposition)        {position = newposition;}
+        void setVelocity   (Vector newvelocity)        {velocity = newvelocity;}
+        void setForce      (Vector newforce)           {force = newforce;}
         void setOrientation(Quaternion neworientation) {orientation = neworientation;}
-        void setPhysics(PhysicsState newphysics) {physics = newphysics;}
-        void setTimeStamp(time_t newTimeStamp) {timestamp = (uint64_t)newTimeStamp;}
-
-        int makeBinStream(unsigned char *bufPtr);
-        int fromBinStream(unsigned char *bufPtr);
+        void setPhysics    (PhysicsState newphysics)   {physics = newphysics;}
+        void setTimeStamp  (time_t newTimeStamp)       {timestamp = (uint64_t)newTimeStamp;}
 };
 
 #endif

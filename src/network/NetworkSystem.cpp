@@ -4,36 +4,9 @@
  *
  * Passed Object Pointer must remain alive past function call and shouldn't be deleted
  * until object in later updates OR gameState changes.
- *
- * NOTE: Currently implementation is VERY inefficient **
- * TODO Improve efficiency
  */
 void NetworkSystem::updateObjectVector(vector<WorldObject *> *objVec, WorldObject *objPtr) {
-/*
-    // *********************************************
-    // Sorted, Linear Iterator Based Update Code
-	vector<WorldObject *>::iterator it = objVec->begin();
-
-	while(it != objVec->end() && (*it)->getID() < objPtr->getID()) ++it;
-
-	if(it == objVec->end()) {
-//		printf("No Object Found! ID=%i\n",objPtr->getID());
-		objVec->push_back(objPtr);
-	}
-	else if((*it)->getID() == objPtr->getID()) {
-//		printf("found item! ID=%i (it=%i)\n",objPtr->getID(), (*it)->getID());
-		WorldObject *oldObjPtr = (*it);
-		(*it) = objPtr;
-		delete oldObjPtr;
-	}
-	else {
-//		printf("new item after %i! ID=%i\n", (*it)->getID(), objPtr->getID());
-		objVec->insert(it, objPtr);
-	}
-	// *********************************************
-*/
-	// *********************************************
-    // Sorted, Binary Search Update Code
+    // *** Binary Search Code ***
 	int locBeg = 0;
 	int locEnd = objVec->size() - 1;
 	int locMid = (locBeg + locEnd) / 2;
@@ -57,60 +30,36 @@ void NetworkSystem::updateObjectVector(vector<WorldObject *> *objVec, WorldObjec
 
 	unsigned int i = locBeg;
 
-	// Find Location in main Object vector
+	// *** Linear Search Code ***
 	//while (i < objVec->size() && (*objVec)[i]->getID() < objPtr->getID()) { i++; }
 
-	// If at end, must not have found... push to back
+	// *** Add, Insert, Update Code ***
+	// ObjID Not Found (and at end)... Push_back
 	if (i == objVec->size()) {
 		objVec->push_back(objPtr);
 	}
-	// if found, replace pointer with newer one
+	// ObjID Found, Replace Data
 	else if((*objVec)[i]->getID() == objPtr->getID()) {
-		// Check if incoming packet is newer data
-//		if (objPtr->getTimeStamp() > (*objVec)[i]->getTimeStamp()) {
-			WorldObject *oldObjPtr = (*objVec)[i];
-			(*objVec)[i] = objPtr;
-			delete oldObjPtr;
-//		}
+		// Is new item newer? If not, ignore
+		if (objPtr->getTimeStamp() > (*objVec)[i]->getTimeStamp()) {
+			//WorldObject *oldObjPtr = (*objVec)[i];
+			(*objVec)[i]->import(*objPtr);
+			delete objPtr;
+			//delete oldObjPtr;
+		}
 	}
-	// Else, not found (but at insert location)
+	// ObjID Not Found, thus Insert Item
 	else {
 		objVec->insert(objVec->begin() + i, objPtr);
 	}
-	// *********************************************
-
-/*
-	// *********************************************
-    // Non-Sorted, Linear Search Update Code
-	unsigned int i=0;
-	// Find Location in main Object vector
-	while (i < objVec->size() && (*objVec)[i]->getID() != objPtr->getID()) { i++; }
-
-	// if not found, add to end of vector
-	if (i == objVec->size()) {
-		objVec->push_back(objPtr);
-	}
-	// if found (and newer), replace pointer with newer one
-	else if(objPtr->getTimeStamp() > (*objVec)[i]->getTimeStamp()) {
-		WorldObject *oldObjPtr = (*objVec)[i];
-		(*objVec)[i] = objPtr;
-		delete oldObjPtr;
-	}
-	// *********************************************
-*/
 }
 
-/* Method to take a WorldObject* and update/add it to the main vector (based on ID field)
- *
- * Passed Object Pointer must remain alive past function call and shouldn't be deleted
- * until object in later updates OR gameState changes.
- */
 void NetworkSystem::updateObjectLocal(WorldObject *objPtr) {
 	std::vector<WorldObject *> *currObjects = &(global::stateManager->currentState->objects);
 	updateObjectVector(currObjects, objPtr);
 }
 
-void NetworkSystem::updatePktData(long elapsed) {
+void NetworkSystem::updateRxTxData(long elapsed) {
 	_pktPeriod += elapsed;
 	if(_pktPeriod > 250) {
 		global::pbs_recv = _pktCountRecv * 4;
@@ -124,20 +73,20 @@ void NetworkSystem::updatePktData(long elapsed) {
 	}
 }
 
-/* Method to take a WorldObject* and update/add it to the main vector (based on ID field)
+/* Method to take a WorldObjectID and remove it from a vector
  *
- * Passed Object Pointer must remain alive past function call and shouldn't be deleted
- * until object in later updates OR gameState changes.
- *
- * NOTE: Currently implementation is VERY inefficient **
- * TODO Improve efficiency
+ * NOTE: Currently search implementation could be replaced with binary search inefficient **
  */
 void NetworkSystem::removeObjectVector(vector<WorldObject *> *objVec, unsigned int worldObjectID) {
+    // *** Binary Search Code ***
+	// If more complex code desired, see updateObjectVector Code
+
 	unsigned int i=0;
-	// Find Location in main Object vector
+
+	// *** Linear Search Code ***
 	while (i < objVec->size() && (*objVec)[i]->getID() != worldObjectID) { i++; }
 
-	// if found, erase entry
+	// ObjID found, erase entry
 	if (i < objVec->size()) {
 		objVec->erase(objVec->begin()+i);
 	}
@@ -150,7 +99,7 @@ void NetworkSystem::removeObjectLocal(unsigned int worldObjectID) {
 
 /* Creates Buffer required for send, sends packet, and cleans up
  */
-int NetworkSystem::SendPacket(NetworkPacket  pkt, ting::UDPSocket *socket, ting::IPAddress  destIP_P) {
+int NetworkSystem::SendPacket(NetworkPacket &pkt, ting::UDPSocket *socket, ting::IPAddress  destIP_P) {
 	if(socket->IsNotValid()) {
 		printf("SendPacket> Socket IsNotValid\n");
 		return -1;
@@ -208,39 +157,8 @@ void NetworkSystem::buildBatchPacket(NetworkPacket *pkt, WorldObject *objs[], un
 	pkt->dataSize = currPos;
 }
 
-int NetworkSystem::readBatchPacket(NetworkPacket *pkt, WorldObject objs[], unsigned int size) {
-	if (pkt->header.type != OBJECT_BATCHSEND) {
-		printf("readBatchPacket trying to read a non-OBJECT_BATCHSEND packet!\n");
-		return -1;
-	}
-	if (pkt->dataSize % sizeof(WorldObject) != 0) {
-		printf("readBatchPacket trying to read a malformed OBJECT_BATCHSEND packet!\n");
-		return -1;
-	}
-
-	int objCount = pkt->dataSize / sizeof(WorldObject);
-	for(int o=0; o<objCount; o++)
-		memcpy(&(objs[o]), pkt->data + o*sizeof(WorldObject), sizeof(WorldObject));
-
-	return objCount;
-}
-
-
 void NetworkSystem::decodeObjectSend(NetworkPacket &pkt, long interpValue) {
-	if(pkt.header.type == OBJECT_SEND) {
-		WorldObject *tmpObjPtr;
-		ObjectType woType = *(ObjectType*)(pkt.data);
-
-		switch (woType) {
-		default:
-			tmpObjPtr = global::factory->makeObject(woType);
-			tmpObjPtr->fromBinStream(pkt.data);
-		}
-
-		tmpObjPtr->interpolate(interpValue);
-		addObjectPhys(tmpObjPtr);
-	}
-	else if(pkt.header.type == OBJECT_BATCHSEND) {
+	if(pkt.header.type == OBJECT_BATCHSEND || pkt.header.type == OBJECT_SEND) {
 		WorldObject *tmpObjPtr;
 		ObjectType woType;
 		int woPktLoc = 0;

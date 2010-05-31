@@ -261,7 +261,7 @@ void NetworkServer::update(long elapsed) {
 				lastClockTime = currClockTime;
 #endif
 
-	updatePktData(elapsed);
+	updateRxTxData(elapsed);
 
 	// Update Physics Engine
 	static int physicsDelay = 0;
@@ -324,7 +324,7 @@ void NetworkServer::addObject(WorldObject *objPtr) {
 	
 	addObjectPhys(objPtr);
 
-	// Add to local system for interpolation
+	// Add to local vector for rendering
 	updateObjectLocal(objPtr);
 }
 
@@ -332,7 +332,7 @@ void NetworkServer::addObjectPhys(WorldObject *objPtr) {
 	objPtr->setTimeStamp(global::elapsed_ms());
 	
 	// TODO Add ObjectState to Tracker
-	NetworkObjectState newObjState(objPtr, 4);
+	// NetworkObjectState newObjState(objPtr, 4);
 	
 	physicsEngine.addWorldObject(*objPtr);
 }
@@ -340,14 +340,17 @@ void NetworkServer::addObjectPhys(WorldObject *objPtr) {
 void NetworkServer::loadLevel(const char * file) {
 	// Clear GameState objects
 	global::stateManager->currentState->objects.clear();
+
 	// Clear Server objects
 	_serverObjs.clear();
+
 	// Send to Clients
 	char msg[] = "";
 	NetworkPacket pkt(LEVEL_CLEAR, (unsigned char *)&msg, sizeof(msg));
 	for(unsigned int p=0; p<_players.size(); p++) {
 		SendPacket(pkt, &(_players[p]->socket), _players[p]->ip);
 	}
+
 	// Load level (which will clear PhysicsEngine objects)
 	physicsEngine.loadFromFile(file);
 	PRINTINFO("Network Initiated Level in PhysicsEngine\n");

@@ -125,7 +125,7 @@ int NetworkClient::checkLag(ting::UDPSocket *socket, ting::IPAddress ip) {
 }
 
 void NetworkClient::update(long milli_time) {
-	updatePktData(milli_time);
+	updateRxTxData(milli_time);
 	int currServerTime = global::elapsed_ms() - serverTimeDelta;
 
 	ting::IPAddress sourceIP;
@@ -138,8 +138,6 @@ void NetworkClient::update(long milli_time) {
 			lagCalc_StartTime = global::elapsed_ms();
 			NetworkPacket tmpPkt(LAG_REQ, (unsigned char *)&lagCalc_StartTime, sizeof(int));
 			SendPacket(tmpPkt, &socket, serverIP);
-			//serverDelay = checkLag(&socket, serverIP);
-			//printf("ServerDelay = %i\n",serverDelay);
 			lagDelayUpdatePeriod = 1000;
 		}
 		else {

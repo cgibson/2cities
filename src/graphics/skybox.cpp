@@ -31,10 +31,10 @@ Skybox::~Skybox()
 void Skybox::init()
 {
 	// load necessary textures
-	_circuit_tex = texldr::loadBMP("resources/textures/circuit.bmp");
-	_sweeper_tex = texldr::loadBMP("resources/textures/sweeper.bmp");
-	_cloud_tex = texldr::loadBMP("resources/textures/clouds.bmp");
-	_skyline_alpha = texldr::loadBMP("resources/textures/skylinealpha.bmp");
+	_circuit_tex = texldr::loadBMP("resources/textures/circuit.bmp", NULL, NULL);
+	_sweeper_tex = texldr::loadBMP("resources/textures/sweeper.bmp", NULL, NULL);
+	_cloud_tex = texldr::loadBMP("resources/textures/clouds.bmp", NULL, NULL);
+	_skyline_alpha = texldr::loadBMP("resources/textures/skylinealpha.bmp", NULL, NULL);
 
 	// randomize the madness!
 	srand48(time(NULL));
@@ -129,7 +129,7 @@ void Skybox::draw(float light_x, float light_y, float light_z) // hackalicious!
 	glEnd();
 
 	// switch to the distant shader
-	gfx::distantShader.enable();	
+	gfx::distantShader.enable();
 	// set fixed uniforms
 	loc = glGetUniformLocation(gfx::distantShader.getProgram(), "circuit_tex");
 	glUniform1i(loc, 0); // tex unit 0
@@ -139,7 +139,7 @@ void Skybox::draw(float light_x, float light_y, float light_z) // hackalicious!
 	glUniform1i(loc, 3); // tex unit 3
 	loc = glGetUniformLocation(gfx::distantShader.getProgram(), "time");
 	glUniform1f(loc, _time);
-	
+
 	// draw the wall planes
 	glBegin(GL_QUADS);
 		glTexCoord2f(0.0, 0.0);
@@ -181,10 +181,10 @@ void Skybox::draw(float light_x, float light_y, float light_z) // hackalicious!
 		glTexCoord2f(0.0, 1.0);
 		glVertex3f(-(SKY_SIZE - SKY_WALL_OFFSET) / 2.0, SKY_HEIGHT, -(SKY_SIZE - SKY_WALL_OFFSET) / 2.0);
 	glEnd();
-	
+
 
 	// switch to the skyscraper shader
-	gfx::skyscraperShader.enable();	
+	gfx::skyscraperShader.enable();
 
 	// set fixed uniforms for all buildings
 	loc = glGetUniformLocation(gfx::skyscraperShader.getProgram(), "amb_contrib");

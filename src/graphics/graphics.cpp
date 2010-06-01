@@ -25,6 +25,7 @@ namespace gfx{
   DefaultShader skyscraperShader;
   DefaultShader skyShader;
   DefaultShader distantShader;
+  DefaultShader uiIconShader;
 
   void display()
   {
@@ -127,13 +128,14 @@ namespace gfx{
   {
     bool success = true;
     getGLversion();
-    
+
     simpleShader.load("resources/shaders/simpleShade");
     gridShader.load("resources/shaders/buildGrid");
     forceBlockShader.load("resources/shaders/forceblock");
     skyscraperShader.load("resources/shaders/skyscraper");
     skyShader.load("resources/shaders/sky");
     distantShader.load("resources/shaders/distant");
+    uiIconShader.load("resources/shaders/uiicon");
 
     if(!success)
     {
@@ -158,9 +160,9 @@ namespace gfx{
 
     loc = glGetUniformLocation(gridShader.getProgram(), "line_pct");
     glUniform1f(loc, 0.03f);
-    
+
     shader::setProgram(old);
-    
+
   }
 
   bool installShader( string filename, int *shaderID )

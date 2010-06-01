@@ -37,6 +37,7 @@ namespace gfx{
   extern DefaultShader skyscraperShader;
   extern DefaultShader skyShader;
   extern DefaultShader distantShader;
+  extern DefaultShader uiIconShader;
 
   extern bool draw_wireframe;
   extern bool draw_axis;

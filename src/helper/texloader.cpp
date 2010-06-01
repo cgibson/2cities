@@ -5,12 +5,12 @@ namespace texldr
     static unsigned int getuint(FILE *fp);
     static unsigned short getushort(FILE *fp);
 
-    GLuint loadBMP(const char *filename)
+    GLuint loadBMP(const char *filename, int *img_width, int *img_height)
     {
         // generate texture id
         GLuint id;
         glGenTextures(1, &id);
-        
+
         // open the file
         FILE *fp = fopen(filename, "rb");
         if (fp == NULL)
@@ -77,6 +77,10 @@ namespace texldr
         glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+		// set the width and height return pointers (if not null)
+		if (img_width != NULL) *img_width = width;
+		if (img_height != NULL) *img_height = height;
 
         // hand back the new texture id
         return id;

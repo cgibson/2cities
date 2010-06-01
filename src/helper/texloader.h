@@ -14,7 +14,9 @@
 namespace texldr
 {
     // takes a bmp file, returns an OpenGL texture id
-    GLuint loadBMP(const char *filename);
+    // the width and height pointers are filled with the width and height of
+	// the image when it is loaded from disk
+    GLuint loadBMP(const char *filename, int *img_width, int *img_height);
 
     // don't call these, internal use only
     //static unsigned int getuint(FILE *fp);

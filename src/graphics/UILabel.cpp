@@ -1,41 +1,82 @@
 #include "UILabel.h"
 
-UILabel::UILabel(const char *name)
-	: UIControl(name)
+const int UILabel::DROP_X = 3;
+const int UILabel::DROP_Y = 3;
+
+UILabel::UILabel()
+	: UIControl()
 {
-	// nothing at the moment
+	_fgr = 1.0;
+	_fgg = 1.0;
+	_fgb = 1.0;
+	_fga = 1.0;
+	_shadow = false;
+	_font = NULL;
+	_text = NULL;
 }
 
 UILabel::~UILabel()
 {
-	// nothing at the moment
+	if (_font != NULL) delete _font;
+	if (_text != NULL) free(_text);
 }
 
-void UILabel::init(lua_State *L)
+void UILabel::init(const char *font, int size, TextJustify justify)
 {
-	// initialize common properties
-	UIControl::init(L);
+	UIControl::init(2, 2, 0, 0, 0.0, 0.0, 0.0, 0.0);
 
-	// initalize label-specific properties
+	_font = new OGLFT::Translucent(font, size);
+	if (!_font->isValid())
+	{
+		fprintf(stderr, "Failed to load font %s!\n", font);
+		exit(EXIT_FAILURE);
+	}
+	_font->setForegroundColor(_fgr, _fgg, _fgb, _fga);
+	switch (justify)
+	{
+		case LEFT:
+			_font->setHorizontalJustification(OGLFT::Face::LEFT);
+			break;
 
+		case CENTER:
+			_font->setHorizontalJustification(OGLFT::Face::CENTER);
+			break;
+
+		case RIGHT:
+			_font->setHorizontalJustification(OGLFT::Face::RIGHT);
+			break;
+
+		default:
+			break;
+	}
 }
 
-void UILabel::update(lua_State *L, int ms)
+void UILabel::update(int ms)
 {
-	// update common properties
-	UIControl::update(L, ms);
+	// update the base class
+	UIControl::update(ms);
 
-	// update label-specific properties
+	// update this class
 
+	// update our children
+	updateChildren(ms);
 }
 
 void UILabel::draw()
 {
-	glBegin(GL_QUADS);
-		glColor4f(_bgr, _bgg, _bgb, _bga);
-		glVertex2i(_x, _y);
-		glVertex2i(_x + _width, _y);
-		glVertex2i(_x + _width, _y + _height);
-		glVertex2i(_x, _y + _height);
-	glEnd();
+	// draw the base class
+	UIControl::draw();
+
+	// draw this class
+	if (_shadow)
+	{
+		_font->setForegroundColor(0.0, 0.0, 0.0, 0.5);
+		_font->draw(_parent->x() + _x + DROP_X, _parent->y() + _y - DROP_Y, _text);
+	}
+
+	_font->setForegroundColor(_fgr, _fgg, _fgb, _fga);
+	_font->draw(_parent->x() + _x, _parent->y() + _y, _text);
+
+	// draw our children
+	drawChildren();
 }

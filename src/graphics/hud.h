@@ -15,27 +15,34 @@
 #include "../system/io.h"
 #include "console.h"
 #include "GameUI.h"
+#include "CarnageUI.h"
 
 class Hud {
 public:
+	typedef enum E_UITYPE
+	{
+		NONE,
+		MENU,
+		BUILD,
+		CARNAGE,
+		RESULTS
+	} UiType;
+
     Console console;
 
     Hud();
+    ~Hud();
 
     void init();
     void update(int ms);
     void draw();
 
     // use this command to swap UI's
-	void swapUI(const char *script);
+	void swapUI(UiType which);
 
     // shows or hides the console
     bool showConsole() const { return _showConsole; }
     void showConsole(bool show) { _showConsole = show; }
-
-    // access uis
-    GameUI *getUI(int i) const { return _allUIs[i]; }
-	int numUIs() const { return (int)_allUIs.size(); }
 
     // console commands
     static void exitApp(int argc, char *argv[]);
@@ -44,12 +51,8 @@ public:
 
 private:
     bool _showConsole;
-	std::vector<GameUI *> _allUIs;
-	GameUI *_currentUI;
-	char *_unloadUI;
-	bool _unloadingUI;
-	GameUI *loadUI(const char *script);
-	void unloadUI();
+    GameUI *_currentUI;
+    CarnageUI *_carnageUI;
 };
 
 #endif

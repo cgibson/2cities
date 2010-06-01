@@ -29,28 +29,26 @@ namespace Tesselator
           sz = 1.0 / blockSize;
         }
         placeBuilding(Vector(x1, y1, z1) * sz, Vector(x2, y2, z2) * sz,
-                      TESS_NONE);
+                      TESS_SIMPLE);
       }
     }
     else
     {
-      printf("starting\n");
       while((count = fscanf(inFile, "%d %d %d %d %d %d %d",
         &x1, &y1, &z1, &x2, &y2, &z2, &type)) == 7)
       {
         placeBuilding(Vector(x1, y1, z1), Vector(x2, y2, z2), (Tesselation)type);
-        printf("placeBuilding being called\n");
       }
-      printf("count %d\n", count);
     }
   }
 
-  void placeBlock(ObjectType type, Vector lowerBound)
+  WorldObject * placeBlock(ObjectType type, Vector lowerBound)
   {
-    WorldObject obj = WorldObject(0, 0, type);
-    obj.setPosition(lowerBound +
+    WorldObject * obj = new WorldObject(0, 0, type);
+    obj->setPosition(lowerBound +
       global::factory->getBlueprint(type).getSize() * 0.5);
-    networkManager->network->addObject(&obj);
+    networkManager->network->addObject(obj);
+    return obj;
   }
   
 /*  void placeSimpleEdge(Vector spot, Quaternion quat)
@@ -63,10 +61,49 @@ namespace Tesselator
     for (int i = 1);
   }
   void placeSimpleColumn(Vector spot)*/
-  
-  void placeSimpleSegment(Vector spot, int bits)
+  vector<WorldObject *> placeSolidSegment(Vector spot, int bits)
   {
-    printf("simpleSegment %s, bits: %d", spot.str(), bits);
+    vector<WorldObject *> result;
+    Vector sc = global::factory->getBlueprint(BLOCK_5_1_5).getSize();
+    for (int i = 0; i < TESS_BLOCKSIZE; i++)
+      result.push_back(placeBlock(BLOCK_5_1_5, spot + sc.yVector() * i));
+    return result;
+  }
+  
+  vector<WorldObject *> placeStoneHengeSegment(Vector spot, int bits)
+  {
+    vector<WorldObject *> result;
+    Vector sg = Vector(TESS_BLOCKSIZE, TESS_BLOCKSIZE,
+                       TESS_BLOCKSIZE); // size of a segment
+    Vector sb = global::factory->getBlueprint(BLOCK_2_4_2).getSize();
+    Vector sc = global::factory->getBlueprint(BLOCK_5_1_5).getSize();
+    Vector one = Vector(1, 1, 1);
+    if ((bits & TESS_MIN_X) && (bits & TESS_MIN_Z))
+      result.push_back(placeBlock(BLOCK_2_4_2, spot));
+    if ((bits & TESS_MIN_X) && (bits & TESS_MAX_Z))
+      result.push_back(placeBlock(BLOCK_2_4_2, spot + sg.zVector() - sb.zVector()));
+    if ((bits & TESS_MAX_X) && (bits & TESS_MIN_Z))
+      result.push_back(placeBlock(BLOCK_2_4_2, spot + sg.xVector() - sb.xVector()));
+    if ((bits & TESS_MAX_X) && (bits & TESS_MAX_Z))
+      result.push_back(placeBlock(BLOCK_2_4_2, spot + sg.xVector() - sb.xVector() + sg.zVector() - sb.zVector()));
+    if ((bits & TESS_MIN_X) && (!(bits & (TESS_MIN_Z | TESS_MAX_Z))))
+      result.push_back(placeBlock(BLOCK_2_4_2, spot - sb.zVector() * 0.5));
+    if ((bits & TESS_MAX_X) && (!(bits & (TESS_MIN_Z | TESS_MAX_Z))))
+      result.push_back(placeBlock(BLOCK_2_4_2, spot + sg.xVector() - sb.xVector() - sb.zVector() * 0.5));
+    if ((bits & TESS_MIN_Z) && (!(bits & (TESS_MIN_X | TESS_MAX_X))))
+      result.push_back(placeBlock(BLOCK_2_4_2, spot - sb.xVector() * 0.5));
+    if ((bits & TESS_MAX_Z) && (!(bits & (TESS_MIN_X | TESS_MAX_X))))
+      result.push_back(placeBlock(BLOCK_1_2_1, spot + sg.zVector() - sb.zVector() - sb.xVector() * 0.5));
+//      
+    if (!(bits & (TESS_MIN_X | TESS_MIN_Z)))
+      result.push_back(placeBlock(BLOCK_2_4_2, spot- sb.xVector() * 0.5 - sb.zVector() * 0.5));
+    result.push_back(placeBlock(BLOCK_5_1_5, spot + sg.yVector() - sc.yVector()));
+    return result;
+  }
+  
+  vector<WorldObject *> placeSimpleSegment(Vector spot, int bits)
+  {
+    vector<WorldObject *> result;
     // Tesselation segment size: (5, 5, 5), hardcoded
     Vector sg = Vector(TESS_BLOCKSIZE, TESS_BLOCKSIZE,
                        TESS_BLOCKSIZE); // size of a segment
@@ -76,81 +113,86 @@ namespace Tesselator
     Vector one = Vector(1, 1, 1);
     if ((bits & TESS_MIN_X) || (bits & TESS_MIN_Z))
     {
-      placeBlock(BLOCK_1_2_1, spot);
-      placeBlock(BLOCK_1_2_1, spot + sa.yVector());
+      result.push_back(placeBlock(BLOCK_1_2_1, spot));
+      result.push_back(placeBlock(BLOCK_1_2_1, spot + sa.yVector()));
     }
     if ((bits & TESS_MIN_X) || (bits & TESS_MAX_Z))
     {
-      placeBlock(BLOCK_1_2_1, spot + sg.zVector() - sa.zVector());
-      placeBlock(BLOCK_1_2_1, spot + sa.yVector() + sg.zVector() - sa.zVector());
+      result.push_back(placeBlock(BLOCK_1_2_1, spot + sg.zVector() - sa.zVector()));
+      result.push_back(placeBlock(BLOCK_1_2_1, spot + sa.yVector() + sg.zVector() - sa.zVector()));
     }
     if ((bits & TESS_MAX_X) || (bits & TESS_MIN_Z))
     {
-      placeBlock(BLOCK_1_2_1, spot + sg.xVector() - sa.xVector());
-      placeBlock(BLOCK_1_2_1, spot + sa.yVector() + sg.xVector() - sa.xVector());
+      result.push_back(placeBlock(BLOCK_1_2_1, spot + sg.xVector() - sa.xVector()));
+      result.push_back(placeBlock(BLOCK_1_2_1, spot + sa.yVector() + sg.xVector() - sa.xVector()));
     }
     if ((bits & TESS_MAX_X) || (bits & TESS_MAX_Z))
     {
-      placeBlock(BLOCK_1_2_1, spot + sg.xVector() - sa.xVector() + sg.zVector() - sa.zVector());
-      placeBlock(BLOCK_1_2_1, spot + sa.yVector() + sg.xVector() - sa.xVector() + sg.zVector() - sa.zVector());
+      result.push_back(placeBlock(BLOCK_1_2_1, spot + sg.xVector() - sa.xVector() + sg.zVector() - sa.zVector()));
+      result.push_back(placeBlock(BLOCK_1_2_1, spot + sa.yVector() + sg.xVector() - sa.xVector() + sg.zVector() - sa.zVector()));
     }
     if (!(bits & (TESS_MIN_X | TESS_MIN_Z)))
-      placeBlock(BLOCK_2_4_2, spot- sb.xVector() * 0.5 - sb.zVector() * 0.5);
+      result.push_back(placeBlock(BLOCK_2_4_2, spot- sb.xVector() * 0.5 - sb.zVector() * 0.5));
     for (int i = 1; i < 4; i++)
     {
       if ((bits & TESS_MIN_X))
       {
-        placeBlock(BLOCK_1_2_1, spot + one.zVector() * i);
-        placeBlock(BLOCK_1_2_1, spot + one.zVector() * i + sa.yVector());
+        result.push_back(placeBlock(BLOCK_1_2_1, spot + one.zVector() * i));
+        result.push_back(placeBlock(BLOCK_1_2_1, spot + one.zVector() * i + sa.yVector()));
       }
       if ((bits & TESS_MIN_Z))
       {
-        placeBlock(BLOCK_1_2_1, spot + one.xVector() * i);
-        placeBlock(BLOCK_1_2_1, spot + one.xVector() * i + sa.yVector());
+        result.push_back(placeBlock(BLOCK_1_2_1, spot + one.xVector() * i));
+        result.push_back(placeBlock(BLOCK_1_2_1, spot + one.xVector() * i + sa.yVector()));
       }
       if ((bits & TESS_MAX_X))
       {
-        placeBlock(BLOCK_1_2_1, spot + one.zVector() * i + sg.xVector() - sa.xVector());
-        placeBlock(BLOCK_1_2_1, spot + one.zVector() * i + sg.xVector() - sa.xVector() + sa.yVector());
+        result.push_back(placeBlock(BLOCK_1_2_1, spot + one.zVector() * i + sg.xVector() - sa.xVector()));
+        result.push_back(placeBlock(BLOCK_1_2_1, spot + one.zVector() * i + sg.xVector() - sa.xVector() + sa.yVector()));
       }
       if ((bits & TESS_MAX_Z))
       {
-        placeBlock(BLOCK_1_2_1, spot + one.xVector() * i + sg.zVector() - sa.zVector());
-        placeBlock(BLOCK_1_2_1, spot + one.xVector() * i + sg.zVector() - sa.zVector() + sa.yVector());
+        result.push_back(placeBlock(BLOCK_1_2_1, spot + one.xVector() * i + sg.zVector() - sa.zVector()));
+        result.push_back(placeBlock(BLOCK_1_2_1, spot + one.xVector() * i + sg.zVector() - sa.zVector() + sa.yVector()));
       }
     }
-    placeBlock(BLOCK_5_1_5, spot + sg.yVector() - sc.yVector());
-    printf("sg %s, sc %s, sp%s\n", sg.str(), sc.str(), spot.str());
+    result.push_back(placeBlock(BLOCK_5_1_5, spot + sg.yVector() - sc.yVector()));
+    return result;
   }
 
-  void placeSegment(Vector spot, Tesselation type,
+  vector<WorldObject *> placeSegment(Vector spot, Tesselation type,
       int bits)
   {
-    printf("placeSegment\n");
+    vector<WorldObject *> result;
     switch (type)
     {
       case TESS_NONE:
-        placeBlock(DUMMY_BLOCK, spot);
-      break;
+        for (int x = 0; x < TESS_BLOCKSIZE; x++)
+          for (int y = 0; y < TESS_BLOCKSIZE; y++)
+            for (int z = 0; z < TESS_BLOCKSIZE; z++)
+              result.push_back(placeBlock(DUMMY_BLOCK, spot + Vector(x, y, z)));
+        return result;
       case TESS_SIMPLE:
-        placeSimpleSegment(spot, bits);
-        break;
+        return placeSimpleSegment(spot, bits);
       case TESS_STONEHENGE:
+        return placeStoneHengeSegment(spot, bits);
       case TESS_SOLID:
+        return placeSolidSegment(spot, bits);
       default:
-      placeBlock(DUMMY_BLOCK, spot);
-      placeBlock(DUMMY_BLOCK, spot);
-      placeBlock(DUMMY_BLOCK, spot);
+      result.push_back(placeBlock(DUMMY_BLOCK, spot));
+      result.push_back(placeBlock(DUMMY_BLOCK, spot));
+      result.push_back(placeBlock(DUMMY_BLOCK, spot));
       printf("This tesselation number (%d) is not implemented yet.\n",
              type);
-      break;
+      return result;
     }
   }
 
-  void placeBuilding(Vector lowerBound, Vector upperBound,
+  vector <WorldObject *> placeBuilding(Vector lowerBound, Vector upperBound,
         Tesselation type)
   {
-    printf("PlaceBuilding\n");
+    vector<WorldObject *> result;
+    vector<WorldObject *> subResult;
     Vector here;
     Vector sg = Vector(5,5,5);// TODO initialize this properly
     int bits;
@@ -172,7 +214,10 @@ namespace Tesselator
           if ((here.x() + sg.x()) >= upperBound.x()) bits += TESS_MAX_X;
           if ((here.y() + sg.y()) >= upperBound.y()) bits += TESS_MAX_Y;
           if ((here.z() + sg.z()) >= upperBound.z()) bits += TESS_MAX_Z;
-          placeSegment(here, type, bits);
+          subResult = placeSegment(here, type, bits);
+          for (int i = 0; i < subResult.size(); i++)
+            result.push_back(subResult[i]);
         }
+    return result;
   }
 }

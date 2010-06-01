@@ -2,6 +2,7 @@
 #define _TESSELATOR_H_
 
 #include <stdio.h>
+#include <vector>
 #include "../system/enum.h"
 #include "WorldObject.h"
 #include "../physics/Physics.h"
@@ -16,10 +17,12 @@
 
 namespace Tesselator
 {
-  extern void placeBlock(ObjectType type, Vector lowerBound);
-  extern void placeSimpleSegment(Vector spot, int bits);
-  extern void placeSegment(Vector spot, Tesselation type, int bits);
-  extern void placeBuilding(Vector lowerBound, Vector upperBound,
+  extern WorldObject * placeBlock(ObjectType type, Vector lowerBound);
+  extern std::vector<WorldObject *> placeSolidSegment(Vector spot, int bits);
+  extern std::vector<WorldObject *> placeStoneHengeSegment(Vector spot, int bits);
+  extern std::vector<WorldObject *> placeSimpleSegment(Vector spot, int bits);
+  extern std::vector<WorldObject *> placeSegment(Vector spot, Tesselation type, int bits);
+  extern std::vector<WorldObject *> placeBuilding(Vector lowerBound, Vector upperBound,
         Tesselation type);
   extern void dumpFileIntoPhysics(const char * fileName);
 }

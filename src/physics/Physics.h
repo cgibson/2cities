@@ -10,13 +10,10 @@
 
 #define GROUND_HEIGHT 10
 
-//#define AMMO_MASS 10
+//#define AMMO_MASS 1
+//#define AMMO_RADIUS 1
 //#define BLDG_BLOCK_MASS 1
-
-#define AMMO_MASS 1
-#define AMMO_RADIUS 1
-#define BLDG_BLOCK_MASS 1
-#define BLDG_BLOCK_SIDE_LENGTH 1.
+//#define BLDG_BLOCK_SIDE_LENGTH 1.
 
 class Physics
 {
@@ -35,12 +32,9 @@ class Physics
     std::vector<PhysicsBody *> physicsBodies;
     std::vector<Vector> fileToBlockLocations(const char * fileName);
     int isUniqueID(int id);
-//    void emptyWorld();
   public:
     static void tickCallback(btDynamicsWorld *dWorld,
       btScalar timeChange);
-//    btBoxShape * bldgShape;
-//    btSphereShape * ammoShape;
     void addWorldObject(WorldObject newObject);
     std::vector<WorldObject *> getWorldObjects();
     

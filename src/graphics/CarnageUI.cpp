@@ -10,6 +10,7 @@ CarnageUI::CarnageUI()
     _blueDestructLabel = NULL;
     _redDestructProgress = NULL;
     _blueDestructProgress = NULL;
+    _countdown = NULL;
 }
 
 CarnageUI::~CarnageUI()
@@ -21,6 +22,7 @@ CarnageUI::~CarnageUI()
 	if (_blueDestructLabel != NULL) delete _blueDestructLabel;
 	if (_redDestructProgress != NULL) delete _redDestructProgress;
 	if (_blueDestructProgress != NULL) delete _blueDestructProgress;
+	if (_countdown != NULL) delete _countdown;
 }
 
 void CarnageUI::init()
@@ -75,6 +77,13 @@ void CarnageUI::init()
 	_blueDestructLabel->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::LEFT);
 	_blueDestructLabel->text("0%");
 	_blueDestructLabel->parent(_blueDestructProgress);
+
+	_countdown = new UICountdown();
+	_countdown->init();
+	_countdown->pos(0, 0);
+	_countdown->size(240, 75);
+	_countdown->bgclr(1.0, 1.0, 1.0, 0.5);
+	_countdown->parent(_window);
 }
 
 void CarnageUI::update(int ms)

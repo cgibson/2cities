@@ -86,17 +86,17 @@ void UIScoreDisplay::draw()
 			switch (_player)
 			{
 				case LEFT_PLAYER:
-					glVertex2f(_x, _y);
-					glVertex2f(_x + _w - 50, _y);
-					glVertex2f(_x + _w - 50, _y + _h);
-					glVertex2f(_x, _y + _h);
+					glVertex2f(_parent->x() + _x, _parent->y() + _y);
+					glVertex2f(_parent->x() + _x + _w - 50, _parent->y() + _y);
+					glVertex2f(_parent->x() + _x + _w - 50, _parent->y() + _y + _h);
+					glVertex2f(_parent->x() + _x, _parent->y() + _y + _h);
 					break;
 
 				case RIGHT_PLAYER:
-					glVertex2f(_x + 50, _y);
-					glVertex2f(_x + _w, _y);
-					glVertex2f(_x + _w, _y + _h);
-					glVertex2f(_x + 50, _y + _h);
+					glVertex2f(_parent->x() + _x + 50, _parent->y() + _y);
+					glVertex2f(_parent->x() + _x + _w, _parent->y() + _y);
+					glVertex2f(_parent->x() + _x + _w, _parent->y() + _y + _h);
+					glVertex2f(_parent->x() + _x + 50, _parent->y() + _y + _h);
 					break;
 
 				default:
@@ -108,15 +108,15 @@ void UIScoreDisplay::draw()
 			switch (_player)
 			{
 				case LEFT_PLAYER:
-					glVertex2f(_x + _w - 50, _y);
-					glVertex2f(_x + _w, _y + _h);
-					glVertex2f(_x + _w - 50, _y + _h);
+					glVertex2f(_parent->x() + _x + _w - 50, _parent->y() + _y);
+					glVertex2f(_parent->x() + _x + _w, _parent->y() + _y + _h);
+					glVertex2f(_parent->x() + _x + _w - 50, _parent->y() + _y + _h);
 					break;
 
 				case RIGHT_PLAYER:
-					glVertex2f(_x + 50, _y);
-					glVertex2f(_x + 50, _y + _h);
-					glVertex2f(_x, _y + _h);
+					glVertex2f(_parent->x() + _x + 50, _parent->y() + _y);
+					glVertex2f(_parent->x() + _x + 50, _parent->y() + _y + _h);
+					glVertex2f(_parent->x() + _x, _parent->y() + _y + _h);
 					break;
 
 				default:

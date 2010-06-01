@@ -17,6 +17,7 @@
 #include "UIIcon.h"
 #include "UIProgress.h"
 #include "UIScoreDisplay.h"
+#include "UICountdown.h"
 
 class CarnageUI : public GameUI {
 public:
@@ -37,6 +38,7 @@ private:
 	UIProgress *_blueDestructProgress;
 	char _redDestructBuf[10];
 	char _blueDestructBuf[10];
+	UICountdown *_countdown;
 };
 
 #endif

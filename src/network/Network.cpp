@@ -12,7 +12,7 @@ namespace net{
 	unsigned int SERVER_SEND_MAX_PACKETS_PER_MS = 5;
 	unsigned int SERVER_RECV_MAX_PACKETS_PER_CYCLE = 15;
 
-	unsigned int SERVER_PHYSICS_UPDATE_RATE = 5;
+	unsigned int SERVER_PHYSICS_UPDATE_RATE = 1;
 
 	const unsigned int SERVER_PORT_DEFAULT = 5060;
 

@@ -55,6 +55,7 @@ public:
 
 	// Load a stored lvl
 	void loadLevel(const char * file);
+	void loadLevel(vector<WorldObject *> newObjs);
 };
 
 #endif

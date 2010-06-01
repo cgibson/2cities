@@ -83,5 +83,6 @@ server_srcs = {
     "system/io.cpp",
     "system/mainServer.cpp",
     "scene/CustomObject.cpp",
+    "scene/ComplexObject.cpp",
     "helper/Point.cpp"
 }

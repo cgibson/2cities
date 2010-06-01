@@ -208,3 +208,12 @@ void NetworkClient::loadLevel(const char * file) {
 		printf("Sent LoadLevel Request.\n");
 	}
 }
+
+void NetworkClient::loadLevel(vector<WorldObject *> newObjs) {
+	if(isConnected) {
+		for(int o = 0; o < newObjs.size(); ++o) {
+			// TODO make it so building blocks have a 0-10000 value
+			addObject(newObjs[o]);
+		}
+	}
+}

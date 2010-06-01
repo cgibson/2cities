@@ -55,17 +55,16 @@ void Physics::update(int timeChange)
 {
 //  printf("Updating by: %d milliseconds.\n", timeChange);
   vector<WorldObject> changed;
-  vector<PhysicsBody *> temp = physicsBodies;
   if (timeChange)
-    world->stepSimulation(btScalar(timeChange / 1000.0), 2, btScalar(1 / 25.0));
+	  world->stepSimulation(btScalar(timeChange / 1000.0), 1, btScalar(1 / 25.0));
   unsigned int i;
   int result;
-  for (i = 0; i < temp.size(); i++)
+  for (i = 0; i < physicsBodies.size(); i++)
   {
-		result = temp[i]->update();
+		result = physicsBodies[i]->update();
     if (result == 1)
     {
-      changed.push_back(*(temp[i]->getWorldObject()));
+      changed.push_back(*(physicsBodies[i]->getWorldObject()));
     }
     if (result == 0)
     {
@@ -111,7 +110,7 @@ void Physics::addWorldObject(WorldObject worldObject)
     }
     world->addRigidBody(newBody->getRigidBody());
     physicsBodies.push_back(newBody);
-    printf("sleeping threshholds: %f, %f \n", newBody->getLinearSleepingThreshold(), newBody->getAngularSleepingThreshold());
+//    printf("sleeping threshholds: %f, %f \n", newBody->getLinearSleepingThreshold(), newBody->getAngularSleepingThreshold());
   }
   else
   {

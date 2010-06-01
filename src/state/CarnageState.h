@@ -34,6 +34,7 @@ class CarnageState: public InGameState
 
     protected:
         double ammo_recharge;
+        ObjectType ammo_type;
 };
 
 #endif

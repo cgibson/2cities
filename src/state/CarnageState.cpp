@@ -32,6 +32,7 @@ void CarnageState::initialize() {
     // we just capture the mouse
     io::capture_mouse();
     ammo_recharge = 0;
+    ammo_type = DUMMY_SPHERE;
 
    // initialize our camera (orbital)
    if (global::camera != NULL) delete global::camera;
@@ -58,6 +59,18 @@ void CarnageState::updateInput(long milli_time) {
 	  io::keys['2'] = false;
       networkManager->network->loadLevel("resources/test2.lvl");
    }
+   if(io::keys['3']) {
+	  io::keys['3'] = false;
+      networkManager->network->loadLevel("resources/bigplus.lvl");
+   }
+   if(io::keys['4']) {
+	  io::keys['4'] = false;
+      networkManager->network->loadLevel("resources/ibigplus.lvl");
+   }
+   if(io::keys['c']) {
+	  io::keys['c'] = false;
+	  networkManager->network->connectServer("127.0.0.1", 5060);
+   }
    // TODO END DEMO CODE
 
    // General Keyboard Layout
@@ -68,25 +81,10 @@ void CarnageState::updateInput(long milli_time) {
 
    // FIRE CONTROLS
    if((io::keys[' '] || io::mouse_buttons[MOUSE_LEFT] == GLUT_DOWN) && ammo_recharge <= 0) {
-	  //Vector dir = (camera.eye-camera.lookAt) * -1;
-	  //dir.norm();
-	  // uniqueID creation & addObject(WorldObject *)
-	  static int newObjID = 10000; // TODO to be removed... network already does this now
-	  WorldObject *newObjPtr = new WorldObject(newObjID++,0,enumeration::DUMMY_SPHERE);
+	  WorldObject *newObjPtr = global::factory->makeObject(ammo_type);
 	  newObjPtr->setPosition(camera->position() - Vector( 0.0f, 1.0f, 0.0f));
-	  //newObj.setVelocity(dir * 50);
 	  newObjPtr->setVelocity(camera->viewVec() * 50);
-/*	  Vector strafe = camera->strafeVec();
-	  float angle = acos(Vector (0, 0, -1) * camera->viewVec()) * 180 / 3.14159;
-	  if (camera->liftVec() * Vector(0,1,0) < 0)
-	  {
-	    angle *= -1;
-	  }
-	  Quaternion quat;
-	  quat.setAxis(strafe);
-	  quat.setAngle(angle);
-	  newObj.setOrientation(quat);
-*/	  networkManager->network->addObject(newObjPtr);
+	  networkManager->network->addObject(newObjPtr);
 
 	  ammo_recharge = RECHARGE_TIME;
    }

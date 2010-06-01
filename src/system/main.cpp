@@ -100,7 +100,7 @@ void initialize()
   //Here's where the modelManager would read in all models.
   //Commented out because of deconstructor taking extra time to
   //free everything that was malloc'd upon game exit.
-  //global::modelManager->initialize();
+  global::modelManager->initialize();
 
   initSound();
 

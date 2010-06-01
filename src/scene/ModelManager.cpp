@@ -68,6 +68,8 @@ void ModelManager::initialize()
 				glDisableClientState(GL_NORMAL_ARRAY);
 		}
 		glEndList();
+		if(modelDLs[i] <= 0)
+			printf("LAME!\n");
 		resetLoader();
 	}
 }

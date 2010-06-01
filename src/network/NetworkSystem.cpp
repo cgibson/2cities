@@ -3,7 +3,7 @@
 /* Method to take a WorldObject* and update/add it to the main vector (based on ID field)
  *
  * Passed Object Pointer must remain alive past function call and shouldn't be deleted
- * until object in later updates OR gameState changes.
+ * by calling function.
  */
 void NetworkSystem::updateObjectVector(vector<WorldObject *> *objVec, WorldObject *objPtr) {
     // *** Binary Search Code ***
@@ -42,10 +42,8 @@ void NetworkSystem::updateObjectVector(vector<WorldObject *> *objVec, WorldObjec
 	else if((*objVec)[i]->getID() == objPtr->getID()) {
 		// Is new item newer? If not, ignore
 		if (objPtr->getTimeStamp() > (*objVec)[i]->getTimeStamp()) {
-			//WorldObject *oldObjPtr = (*objVec)[i];
 			(*objVec)[i]->import(*objPtr);
 			delete objPtr;
-			//delete oldObjPtr;
 		}
 	}
 	// ObjID Not Found, thus Insert Item

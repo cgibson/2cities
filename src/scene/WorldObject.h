@@ -83,6 +83,7 @@ class WorldObject
         void setVelocity   (Vector newvelocity)        {velocity = newvelocity;}
         void setForce      (Vector newforce)           {force = newforce;}
         void setOrientation(Quaternion neworientation) {orientation = neworientation;}
+        void setType       (ObjectType newtype)        {type = newtype;}
         void setPhysics    (PhysicsState newphysics)   {physics = newphysics;}
         void setTimeStamp  (time_t newTimeStamp)       {timestamp = (uint64_t)newTimeStamp;}
 };

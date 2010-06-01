@@ -355,3 +355,25 @@ void NetworkServer::loadLevel(const char * file) {
 	physicsEngine.loadFromFile(file);
 	PRINTINFO("Network Initiated Level in PhysicsEngine\n");
 }
+/*
+void NetworkServer::loadLevel(vector<WorldObject *> newObjs) {
+	// Clear GameState objects
+	global::stateManager->currentState->objects.clear();
+
+	// Clear Server objects
+	_serverObjs.clear();
+
+	// Send to Clients
+	char msg[] = "";
+	NetworkPacket pkt(LEVEL_CLEAR, (unsigned char *)&msg, sizeof(msg));
+	for(unsigned int p=0; p<_players.size(); p++) {
+		SendPacket(pkt, &(_players[p]->socket), _players[p]->ip);
+	}
+
+	for(int o = 0; o < newObjs.size(); ++o) {
+		// TODO make it so building blocks have a 0-10000 value
+		addObject(newObjs[o]);
+	}
+	PRINTINFO("Network Initiated Level in PhysicsEngine\n");
+}
+*/

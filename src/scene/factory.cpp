@@ -5,6 +5,7 @@
 #include "../system/io.h"
 #include "../network/NetworkManager.h"
 #include "../scene/BlackHole.h"
+#include "../scene/ComplexObject.h"
 ///////////////////////////////
 
 ObjectFactory::ObjectFactory()
@@ -70,6 +71,7 @@ void ObjectFactory::loadConfig(char* filename)
   setBlueprint(CUSTOM_BLOCK, 1.0f, GREEN_MAT, SMALL_CUBE, Vector(1.0f, 1.0f, 1.0f));
   
   
+  setBlueprint(DRILL_CONE, 1.0f, YELLOW_MAT, SMALL_CONE, Vector(1.0f, 1.0f, 1.0f));
   setBlueprint(DUMMY_CONE, 1.0f, YELLOW_MAT, SMALL_CONE, Vector(1.0f, 1.0f, 1.0f));
   
   setBlueprint(DUMMY_CYLINDER, 1.0f, YELLOW_MAT, SMALL_CYLINDER, Vector(1.0f, 1.0f, 1.0f));
@@ -144,8 +146,8 @@ WorldObject* ObjectFactory::makeObject(ObjectType type) {
 	WorldObject *retObjPtr;
 
 	switch (type) {
-	case FRACTAL_BOMB :
-		retObjPtr = new WorldObject(); // TODO update
+	case DUMMY_CONE : // TODO TO BE UPDATED for drill
+		retObjPtr = new ComplexObject(AMMO_DRILL_CONE);
 		break;
 	case BLACK_HOLE :
 		retObjPtr = new BlackHole();
@@ -154,10 +156,10 @@ WorldObject* ObjectFactory::makeObject(ObjectType type) {
 	// Explicitly listing the dummy objects although not needed due to default
 	case DUMMY_SPHERE :
 	case DUMMY_CYLINDER :
-	case DUMMY_CONE :
 	default:
 		retObjPtr = new WorldObject();
 	}
 
+	retObjPtr->setType(type);
 	return retObjPtr;
 }

@@ -10,11 +10,13 @@
 #endif
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "GameUI.h"
 #include "UILabel.h"
 #include "UIIcon.h"
 #include "UIProgress.h"
+#include "UIScoreDisplay.h"
 
 class CarnageUI : public GameUI {
 public:
@@ -26,9 +28,15 @@ public:
 	void draw();
 
 private:
-	UILabel *_testLabel;
-	UIIcon *_testIcon;
-	UIProgress *_testProgress;
+	UIIcon *_reticle;
+	UIScoreDisplay *_redScore;
+	UIScoreDisplay *_blueScore;
+	UILabel *_redDestructLabel;
+	UILabel *_blueDestructLabel;
+	UIProgress *_redDestructProgress;
+	UIProgress *_blueDestructProgress;
+	char _redDestructBuf[10];
+	char _blueDestructBuf[10];
 };
 
 #endif

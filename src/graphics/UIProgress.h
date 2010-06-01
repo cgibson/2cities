@@ -12,6 +12,7 @@
 #include <stdlib.h>
 
 #include "UIControl.h"
+#include "UILabel.h"
 
 class UIProgress : public UIControl {
 public:
@@ -36,6 +37,16 @@ public:
     void fgclr(float r, float g, float b, float a) { _fgr = r; _fgg = g; _fgb = b; _fga = a; }
 	int percent() const { return _percent; }
 	void percent(int percent) { _percent = (percent < 0) ? 0 : percent; _percent = (_percent > 100) ? 100 : _percent; }
+	int percentX() {
+		if (_dir == LEFT)
+		{
+			return _w - (_percent * 0.01 * _w);
+		}
+		else
+		{
+			return (_percent * 0.01 * _w);
+		}
+	}
 
 private:
 	float _fgr;

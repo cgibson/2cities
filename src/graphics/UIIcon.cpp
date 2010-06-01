@@ -7,6 +7,8 @@ UIIcon::UIIcon()
 	_image_tex = 0;
 	_alpha_tex = 0;
 	_alpha = false;
+	_tint = false;
+	_tintr = _tintg = _tintb = 1.0;
 	_naturalWidth = 0;
 	_naturalHeight = 0;
 }
@@ -68,19 +70,25 @@ void UIIcon::draw()
 	glUniform1i(loc, 1); // tex unit 1
 	loc = glGetUniformLocation(gfx::uiIconShader.getProgram(), "use_alpha");
 	glUniform1i(loc, _alpha);
+	loc = glGetUniformLocation(gfx::uiIconShader.getProgram(), "use_tint");
+	glUniform1i(loc, _tint);
+	loc = glGetUniformLocation(gfx::uiIconShader.getProgram(), "tint_clr");
+	glUniform3f(loc, _tintr, _tintg, _tintb);
 
 	// screen space quad
 	glPushMatrix();
+		glTranslatef(_x + _w / 2.0, _y + _h / 2.0, 0.0);
+		glScalef(_w, _h, 1.0);
+		glRotatef(_rotAngle, 0.0, 0.0, 1.0);
 		glBegin(GL_QUADS);
-			//glColor4f(0.0, 0.0, 1.0, 1.0);
 			glTexCoord2f(0.0, 0.0);
-			glVertex2f(_x, _y);
+			glVertex2f(-0.5, -0.5);
 			glTexCoord2f(1.0, 0.0);
-			glVertex2f(_x + _w, _y);
+			glVertex2f(0.5, -0.5);
 			glTexCoord2f(1.0, 1.0);
-			glVertex2f(_x + _w, _y + _h);
+			glVertex2f(0.5, 0.5);
 			glTexCoord2f(0.0, 1.0);
-			glVertex2f(_x, _y + _h);
+			glVertex2f(-0.5, 0.5);
 		glEnd();
 	glPopMatrix();
 

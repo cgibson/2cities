@@ -21,6 +21,9 @@ void Hud::init()
 	_carnageUI = new CarnageUI();
 	_carnageUI->init();
 
+	// DEBUG DEBUG DEBUG
+	//_currentUI = _carnageUI;
+
     // register commands with the console
     console.registerCmd("exit", Hud::exitApp);
 	console.registerCmd("quit", Hud::exitApp);

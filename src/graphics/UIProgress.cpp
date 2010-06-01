@@ -42,17 +42,17 @@ void UIProgress::draw()
 			switch (_dir)
 			{
 				case LEFT:
-					glVertex2f(_x + _w - (_percent * 0.01 * _w), _y);
-					glVertex2f(_x + _w, _y);
-					glVertex2f(_x + _w, _y + _h);
-					glVertex2f(_x + _w - (_percent * 0.01 * _w), _y + _h);
+					glVertex2f(_parent->x() + _x + percentX(), _parent->y() + _y);
+					glVertex2f(_parent->x() + _x + _w, _parent->y() + _y);
+					glVertex2f(_parent->x() + _x + _w, _parent->y() + _y + _h);
+					glVertex2f(_parent->x() + _x + percentX(), _parent->y() + _y + _h);
 					break;
 
 				case RIGHT:
-					glVertex2f(_x, _y);
-					glVertex2f(_x + (_percent * 0.01 * _w), _y);
-					glVertex2f(_x + (_percent * 0.01 * _w), _y + _h);
-					glVertex2f(_x, _y + _h);
+					glVertex2f(_parent->x() + _x, _parent->y() + _y);
+					glVertex2f(_parent->x() + _x + percentX(), _parent->y() + _y);
+					glVertex2f(_parent->x() + _x + percentX(), _parent->y() + _y + _h);
+					glVertex2f(_parent->x() + _x, _parent->y() + _y + _h);
 					break;
 
 				default:

@@ -58,10 +58,8 @@ btRigidBody::btRigidBodyConstructionInfo PhysicsBody::getCI(WorldObject worldObj
   ci.m_restitution = 0;
   ci.m_linearDamping = btScalar(.1);
   ci.m_angularDamping = btScalar(.1);
-  ci.m_linearSleepingThreshold = btScalar(10.0);
-  ci.m_angularSleepingThreshold = btScalar(1.0);
-
-  
+//  ci.m_linearSleepingThreshold = btScalar(10.0);
+//  ci.m_angularSleepingThreshold = btScalar(1.0);
   return ci;
 }
 

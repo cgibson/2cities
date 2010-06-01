@@ -52,6 +52,21 @@ public:
      return Vector( p_x * v.p_x, p_y * v.p_y, p_z * v.p_z);
   }
   
+  Vector xVector()
+  {
+    return Vector(p_x, 0, 0);
+  }
+  
+  Vector yVector()
+  {
+    return Vector(0, p_y, 0);
+  }
+  
+  Vector zVector()
+  {
+    return Vector(0, 0, p_z);
+  }
+  
   bool equals( const Vector& v )
   {
     return ((p_x < (v.p_x + FLOAT_EPSILON)) &&

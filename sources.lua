@@ -53,6 +53,7 @@ client_srcs = {
     "scene/model.cpp",
     "scene/ModelManager.cpp",
     "scene/BlackHole.cpp",
+    "scene/Tesselator.cpp",
     "state/BuildState.cpp",
     "state/CarnageState.cpp",
     "state/InGameState.cpp",
@@ -60,7 +61,7 @@ client_srcs = {
     "system/gl_helper.cpp",
     "system/global.cpp",
     "system/io.cpp",
-    "system/main.cpp"
+    "system/main.cpp",
 }
 
 server_srcs = {
@@ -75,6 +76,7 @@ server_srcs = {
     "scene/WorldObject.cpp",
     "scene/factory.cpp",
     "scene/BlackHole.cpp",
+    "scene/Tesselator.cpp",
     "state/BuildState.cpp",
     "state/CarnageState.cpp",
     "state/InGameState.cpp",

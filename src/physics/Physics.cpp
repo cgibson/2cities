@@ -1,5 +1,6 @@
 #include "Physics.h"
 #include "../system/global.h"
+#include "../scene/Tesselator.h"
 
 using namespace std;
 //void Physics::emptyWorld()
@@ -56,22 +57,22 @@ void Physics::update(int timeChange)
 //  printf("Updating by: %d milliseconds.\n", timeChange);
   vector<WorldObject> changed;
   if (timeChange)
-	  world->stepSimulation(btScalar(timeChange / 1000.0), 1, btScalar(1 / 25.0));
+    world->stepSimulation(btScalar(timeChange / 1000.0), 1, btScalar(1 / 25.0));
   unsigned int i;
   int result;
   for (i = 0; i < physicsBodies.size(); i++)
   {
-		result = physicsBodies[i]->update();
+    result = physicsBodies[i]->update();
     if (result == 1)
     {
       changed.push_back(*(physicsBodies[i]->getWorldObject()));
     }
     if (result == 0)
     {
-			//removeWorldObject(temp[i]->getWorldObject().getID());
-		}
-		else
-		{
+      //removeWorldObject(temp[i]->getWorldObject().getID());
+    }
+    else
+    {
     }
   }
 }
@@ -175,8 +176,9 @@ void Physics::InsertNewBlock(ObjectType type, Vector position)
 
 vector<Vector> Physics::fileToBlockLocations(const char * fileName)
 {
+  Tesselator::dumpFileIntoPhysics(fileName);
   vector<Vector> result;
-  FILE * inFile = fopen(fileName, "r");
+/*  FILE * inFile = fopen(fileName, "r");
   if(inFile == NULL) {
 	  printf("level not found\n");
 	  return result;
@@ -205,7 +207,7 @@ vector<Vector> Physics::fileToBlockLocations(const char * fileName)
                     size515.z() * 0.5);
     WorldObject newObj;
     while ((numRead = fscanf(inFile, "%d %d %d %d %d %d\n",&x1, &y1, &z1,
-            &x2, &y2, &z2)) == 6)
+            &x2, &y2, &z2)) == 6)*/
 /*      for (xi = x1; xi < x2; xi += blockSize)
         for (yi = y1; yi < y2; yi += blockSize)
           for (zi = z1; zi < z2; zi += blockSize)
@@ -214,7 +216,7 @@ vector<Vector> Physics::fileToBlockLocations(const char * fileName)
                                       + BLDG_BLOCK_SIDE_LENGTH / 2.0,
                                     (float)zi / blockSize * BLDG_BLOCK_SIDE_LENGTH));*/
 
-    {
+/*    {
       start = Vector(x1, y1, z1);
       xf = (x2 - x1) / blockSize;
       yf = (y2 - y1) / blockSize;
@@ -306,7 +308,7 @@ vector<Vector> Physics::fileToBlockLocations(const char * fileName)
               printf("j\n\n");
 #endif
             InsertNewBlock(BLOCK_5_1_5, here + off515);
-          }
+          }*/
 /*      for (xi = 0; xi <= xf; xi++)
         for (yi = 0; yi < yf; yi++)
           for (zi = 0; zi < zf; zi++)
@@ -409,10 +411,10 @@ vector<Vector> Physics::fileToBlockLocations(const char * fileName)
                 (float)xi * sz * size242.x() - size242.x() * 0.5,
                 (float)yi * sz * size242.y() + size242.y() * 0.5,
                 (float)z1 * sz * size242.z() - size242.z() * 0.5));
-          }*/
+          }
       
-    }
-    if (numRead != 0)
+    }*/
+/*    if (numRead != 0)
     {
 //      printf("Unexpected data at end of file: ignored\n");
     }
@@ -420,7 +422,7 @@ vector<Vector> Physics::fileToBlockLocations(const char * fileName)
   else
   {
     printf("Unable to read block size.\n");
-  }
+  }*/
   return result;
 }
 

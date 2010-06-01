@@ -20,7 +20,7 @@ void UICountdown::init()
 
 	_explainLabel = new UILabel();
 	_explainLabel->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::LEFT);
-	_explainLabel->pos(10, 55);
+	_explainLabel->pos(8, 55);
 	_explainLabel->text("TIME REMAINING");
 	_explainLabel->parent(this);
 

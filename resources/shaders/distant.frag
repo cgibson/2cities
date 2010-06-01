@@ -24,10 +24,10 @@ void main()
     vec2 sweep_down_coord = 1.0 - coords.ts;
 
     // animate them (divide by primes to randomize things a bit)
-    sweep_right_coord.s -= time / 5.0;
-    sweep_left_coord.s -= time / 13.0;
-    sweep_up_coord.s -= time / 7.0;
-    sweep_down_coord.s -= time / 19.0;
+    sweep_right_coord.s -= time / 11.0;
+    sweep_left_coord.s -= time / 27.0;
+    sweep_up_coord.s -= time / 17.0;
+    sweep_down_coord.s -= time / 37.0;
 
     // sample sweeper texture
     vec4 sweep_right = texture2D(sweeper_tex, sweep_right_coord);
@@ -53,8 +53,7 @@ void main()
 
     // final composition
     vec4 final = layer1 + layer2 + layer3 + layer4;
-    //final.a = final.r;
-    final.a = 0.5;
+    final.a = final.r;
 
     // set the fragment color
     gl_FragColor = final;

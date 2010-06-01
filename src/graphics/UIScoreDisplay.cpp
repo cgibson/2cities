@@ -24,13 +24,13 @@ void UIScoreDisplay::init(ScoreDisplay player)
 	if (_player == LEFT_PLAYER)
 	{
 		_explainLabel->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::LEFT);
-		_explainLabel->pos(5, 55);
+		_explainLabel->pos(8, 55);
 		_explainLabel->text("RED SCORE");
 	}
 	else
 	{
 		_explainLabel->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::RIGHT);
-		_explainLabel->pos(330 - 5, 55);
+		_explainLabel->pos(330 - 8, 55);
 		_explainLabel->text("BLUE SCORE");
 	}
 	_explainLabel->parent(this);

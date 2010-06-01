@@ -43,6 +43,13 @@ bool FBOHelper::initialize( int w, int h, int textureCount )
   glGenTextures( textureCount, mTextureIDs );
   
   bool r = init_fbo( w, h, true );
+  if(!r)
+  {
+    printf("WARNING: FBO could not be enabled.  Your hardware may not "\
+           "support frame buffer objects and will experience reduced "\
+           "render quality\n");
+    return false;
+  }
 
   // bind current FBO
   glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, mFboID );

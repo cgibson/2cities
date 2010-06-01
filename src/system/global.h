@@ -25,8 +25,8 @@ namespace global
 #endif
   extern NetworkManager *networkManager;
   
-  extern int map_width = 120;
-  extern int map_height = 120;
+  extern int map_width;
+  extern int map_height;
 
   extern int width;  // window width
   extern int height; // wondow height

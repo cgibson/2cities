@@ -48,7 +48,9 @@ private:
 
   Skybox skybox;
   
-  FBOHelper fbo;
+  FBOHelper *fbo;
+  
+  bool use_fbo;
 };
 
 #endif

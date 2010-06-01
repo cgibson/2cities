@@ -16,17 +16,14 @@ Renderer::Renderer()
 
 bool Renderer::initFBO()
 {
-  return fbo.initialize(global::width, global::height, 2);
+  fbo = new FBOHelper();
+  return fbo->initialize(global::width, global::height, 2);
 }
 
 void Renderer::init()
 {
   init_lights();
-  if(!initFBO())
-  {
-    printf("ERROR: fbo generation error.\n");
-    exit(-1);
-  }
+  use_fbo = initFBO();
   skybox.init();
 }
 

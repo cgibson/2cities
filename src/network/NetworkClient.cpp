@@ -10,7 +10,7 @@ NetworkClient::NetworkClient() : NetworkSystem() {
 	waitSet->Add(&socket, ting::Waitable::READ);
 
 	isConnected = false;
-	_playerID = 0;
+	_playerID = 1;
 	_currObjID = _playerID * 10000;
 	PRINTINFO("Network Initialized!\n");
 }
@@ -126,7 +126,7 @@ int NetworkClient::checkLag(ting::UDPSocket *socket, ting::IPAddress ip) {
 
 void NetworkClient::update(long milli_time) {
 	updateRxTxData(milli_time);
-	int currServerTime = global::elapsed_ms() - serverTimeDelta;
+	//int currServerTime = global::elapsed_ms() - serverTimeDelta;
 
 	ting::IPAddress sourceIP;
 	NetworkPacket pkt;
@@ -211,7 +211,7 @@ void NetworkClient::loadLevel(const char * file) {
 
 void NetworkClient::loadLevel(vector<WorldObject *> newObjs) {
 	if(isConnected) {
-		for(int o = 0; o < newObjs.size(); ++o) {
+		for(unsigned int o = 0; o < newObjs.size(); ++o) {
 			// TODO make it so building blocks have a 0-10000 value
 			addObject(newObjs[o]);
 		}

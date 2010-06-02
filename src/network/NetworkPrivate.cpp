@@ -2,6 +2,8 @@
 
 NetworkPrivate::NetworkPrivate() {
 	PRINTINFO("Network Initializing...");
+	_playerID = 1;
+	_currObjID = _playerID * 10000;
 	PRINTINFO("Network Initialized!\n");
 
 	PRINTINFO("Network Initializing PhysicsEngine...");
@@ -28,11 +30,20 @@ void NetworkPrivate::update(long milli_time) {
 	global::stateManager->currentState->objects.swap(PhysEngObjPtrs);
 */
 	for(unsigned int i=0; i < PhysEngObjs.size(); i++) {
-		updateObjectLocal(new WorldObject(*PhysEngObjs[i]));
+		if(PhysEngObjs[i]->getPosition().y() < -50.0f) {
+			unsigned int removeID = PhysEngObjs[i]->getID();
+			// Local Removal
+			physicsEngine.removeWorldObject(removeID);
+			removeObjectLocal(removeID);
+		}
+		else {
+			updateObjectLocal(new WorldObject(*PhysEngObjs[i]));
+		}
 	}
 }
 
 void NetworkPrivate::addObject(WorldObject *newObj) {
+	newObj->setID(_currObjID++);
 	physicsEngine.addWorldObject(*newObj);
 }
 

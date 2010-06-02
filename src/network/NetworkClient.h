@@ -36,26 +36,39 @@ protected:
 public:
 	NetworkClient();
 	~NetworkClient();
-	void closeSockets();
 
 	void initialize();
 	void update(long milli_time);
 
-	bool connectServer(const char * ip, unsigned int port);
-	void disconnectServer();
-	int  checkLag(ting::UDPSocket *socket, ting::IPAddress ip);
+	// Server Details
+	virtual void closeSockets();
+	//virtual void dedicatedServer(bool toggle) {};
+	//virtual bool dedicatedServer(void) { return false; };
 
-	void sendMsg(char * msgStr);
+	// Connection Based Functions
+	virtual bool connectServer(const char * ip, unsigned int port);
+	virtual void disconnectServer();
+	virtual int  checkLag(ting::UDPSocket *socket, ting::IPAddress ip);
+
+	// Player Detail Functions
+	//      int  getPlayerID() { return _playerID; };
+	//virtual int  getPlayerScore(int playerID) { return 0; };
+	//virtual PlayerColor getPlayerColor() { return (PlayerColor)_playerID; };
+	//virtual void sendPlayerCamera() {};
+	//virtual void sendPlayerReady(int readyFlag) {};
+
+	// Communication
+	virtual void sendMsg(char *msgStr);
+	//virtual void recvMsg(NetworkPacket &pktPtr) {};
 
 	// Add new object to scene
-	void addObject(WorldObject *newObj);
-	void addObjectPhys(WorldObject *ObjPtr) { updateObjectLocal(ObjPtr); }
-
-	void reqUpdateObj(unsigned int objID) {};
+	virtual void addObject(WorldObject *objPtr);
+	virtual void addObjectPhys(WorldObject *objPtr) { updateObjectLocal(objPtr); };
+	//virtual void reqUpdateObj(unsigned int objID) {};
 
 	// Load a stored lvl
-	void loadLevel(const char * file);
-	void loadLevel(vector<WorldObject *> newObjs);
+	virtual void loadLevel(const char * file);
+	virtual void loadLevel(vector<WorldObject *> newObjs);
 };
 
 #endif

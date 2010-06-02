@@ -159,7 +159,7 @@ void NetworkSystem::decodeObjectSend(NetworkPacket &pkt, long interpValue) {
 	if(pkt.header.type == OBJECT_BATCHSEND || pkt.header.type == OBJECT_SEND) {
 		WorldObject *tmpObjPtr;
 		ObjectType woType;
-		int woPktLoc = 0;
+		unsigned int woPktLoc = 0;
 
 		while(woPktLoc < pkt.dataSize) {
 			woType = *(ObjectType*)(pkt.data + woPktLoc);

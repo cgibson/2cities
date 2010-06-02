@@ -180,9 +180,6 @@ void NetworkServer::networkIncomingPlayers(int p,long &elapsed) {
 			printf("Player #%i has updated lagDelay to %i!\n", _players[p]->ID,  _players[p]->lagDelay);
 #endif
 			break;
-		case STATUS_CHG :
-			printf("STATUS_CHG\n");
-			break;
 		case DISCONNECT :
 			printf("Player #%i is Disconnecting!\n", _players[p]->ID);
 			_waitSet->Remove(&_players[p]->socket);
@@ -270,7 +267,7 @@ void NetworkServer::update(long elapsed) {
 
 #ifdef SERVER
 		// Print Server Stats for Dedicated Server Only
-		printf("\015 LCycle(%4i) Phys(%4i) tx(%5i) rx(%5i) objs(%4i) | ",
+		printf("\015 LCycle(%4i) Phys(%4li) tx(%5i) rx(%5i) objs(%4i) | ",
 				(net::SERVER_PHYSICS_UPDATE_RATE - physicsDelay),
 				(global::elapsed_ms() - currClockTime),
 				global::pbs_sent,
@@ -288,7 +285,7 @@ void NetworkServer::update(long elapsed) {
 		// UPDATE LOCAL DATA (and remove items fallen off world)
 		std::vector<WorldObject *> PhysEngObjs = physicsEngine.getWorldObjects();
 		for(unsigned int i=0; i < PhysEngObjs.size(); i++) {
-			if(PhysEngObjs[i]->getPosition().y() < -10.0f) {
+			if(PhysEngObjs[i]->getPosition().y() < -50.0f) {
 				unsigned int removeID = PhysEngObjs[i]->getID();
 				// Local Removal
 				physicsEngine.removeWorldObject(removeID);

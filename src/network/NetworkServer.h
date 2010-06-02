@@ -72,24 +72,38 @@ protected:
 public:
 	NetworkServer();
 	~NetworkServer();
-	void closeSockets();
-
-	int  checkLag(ting::UDPSocket *socket, ting::IPAddress ip);
 
 	void initialize();
 	void update(long milli_time);
 
-	void dedicatedServer(bool toggle) {	_dedicatedServer = toggle; }
-	bool dedicatedServer(void) { return _dedicatedServer; }
+	// Server Details
+	virtual void closeSockets();
+	virtual void dedicatedServer(bool toggle) {	_dedicatedServer = toggle; }
+	virtual bool dedicatedServer(void) { return _dedicatedServer; }
+
+	// Connection Based Functions
+	virtual bool connectServer(const char * ip, unsigned int port) { return true; };
+	//virtual void disconnectServer() {};
+	virtual int  checkLag(ting::UDPSocket *socket, ting::IPAddress ip);
+
+	// Player Detail Functions
+	//virtual int  getPlayerScore(int playerID) { return 0; };
+	virtual PlayerColor getPlayerColor() { return (PlayerColor)_playerID; };
+	//virtual void sendPlayerCamera() {};
+	//virtual void sendPlayerReady(int readyFlag) {};
+
+	// Communication
+	//virtual void sendMsg(char *msgStr) {};
+	//virtual void recvMsg(NetworkPacket &pktPtr) {};
 
 	// Add new object to scene
-	void addObject(WorldObject *newObj);
-	void addObjectPhys(WorldObject *newObj);
-
-	void reqUpdateObj(unsigned int objID) {};
+	virtual void addObject(WorldObject *objPtr);
+	virtual void addObjectPhys(WorldObject *objPtr);
+	//virtual void reqUpdateObj(unsigned int objID) {};
 
 	// Load a stored lvl
-	void loadLevel(const char * file);
+	virtual void loadLevel(const char * file);
+	//virtual void loadLevel(vector<WorldObject *> newObjs) {};
 };
 
 #endif

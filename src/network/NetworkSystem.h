@@ -20,7 +20,7 @@
 	#define PRINTINFO(x) gfx::hud.console.info(x);
 	#define PRINTINFO(x,y) gfx::hud.console.info(x,y);
 	#define PRINTINFO(x,y,z) gfx::hud.console.info(x,y,z);
-	*/
+*/
 	#define PRINTINFO(x) printf(x);
 #endif
 
@@ -41,6 +41,7 @@ protected:
 	int _pktCountRecv;
 	int _pktCountSent;
 	int _pktPeriod;
+    void updateRxTxData(long elapsed);
 
 	// Helper functions for quick/sorted actions on std:vectors
 	void updateObjectVector(vector<WorldObject *> *objVec, WorldObject *objPtr);
@@ -50,54 +51,50 @@ protected:
 	void updateObjectLocal(WorldObject *obj);
 	void removeObjectLocal(unsigned int worldObjectID);
 
-
-	int SendPacket(NetworkPacket &pktPtr, ting::UDPSocket *socket, ting::IPAddress  destIP);
+	// Helper functions to abstract packet filling
+	int SendPacket(NetworkPacket &pkt   , ting::UDPSocket *socket, ting::IPAddress  destIP);
 	int RecvPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ting::IPAddress *srcIP);
 
+	// Object Packaging Helpers
 	void buildBatchPacket(NetworkPacket *pkt, WorldObject *objs[], unsigned int size);
-
 	void decodeObjectSend(NetworkPacket &pkt, long interpValue);
 
 public:
-	NetworkSystem() {
-		_pktCountRecv = 0;
-		_pktCountSent = 0;
-		_pktPeriod = 0;
-
-		_playerID = 0;
-	}
-	~NetworkSystem() {
-		closeSockets();
-	};
-	virtual void closeSockets() {};
+	NetworkSystem() { _pktCountRecv = _pktCountSent = _pktPeriod = _playerID = 0; };
+	~NetworkSystem() { closeSockets(); };
 
 	virtual void initialize() {};
 	virtual void update(long elapsed) {};
-	void updateRxTxData(long elapsed);
 
-	int getPlayerID() { return _playerID; };
-
-	virtual bool connectServer(const char * ip, unsigned int port) { return false; };
-	virtual void disconnectServer() {};
-
-	virtual int  checkLag(ting::UDPSocket *socket, ting::IPAddress ip) { return 0; };
-
-	virtual PlayerColor getPlayerColor() { return (PlayerColor)_playerID; };
-
+	// Server Details
+	virtual void closeSockets() {};
 	virtual void dedicatedServer(bool toggle) {};
 	virtual bool dedicatedServer(void) { return false; };
 
-	virtual void sendMsg(char * msgStr) {};
+	// Connection Based Functions
+	virtual bool connectServer(const char * ip, unsigned int port) { return false; };
+	virtual void disconnectServer() {};
+	virtual int  checkLag(ting::UDPSocket *socket, ting::IPAddress ip) { return 0; };
+
+	// Player Detail Functions
+	        int  getPlayerID() { return _playerID; };
+	virtual int  getPlayerScore(int playerID) { return 0; };
+	virtual PlayerColor getPlayerColor() { return (PlayerColor)_playerID; };
+	virtual void sendPlayerCamera() {};
+	virtual void sendPlayerReady(int readyFlag) {};
+
+	// Communication
+	virtual void sendMsg(char *msgStr) {};
+	virtual void recvMsg(NetworkPacket &pktPtr) {};
 
 	// Add new object to scene
 	virtual void addObject(WorldObject *objPtr) {};
 	virtual void addObjectPhys(WorldObject *objPtr) {};
+	virtual void reqUpdateObj(unsigned int objID) {};
 
 	// Load a stored lvl
 	virtual void loadLevel(const char * file) {};
 	virtual void loadLevel(vector<WorldObject *> newObjs) {};
-
-	virtual void reqUpdateObj(unsigned int objID) {};
 };
 
 #endif

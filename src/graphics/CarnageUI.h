@@ -32,6 +32,7 @@ public:
 	void update(int ms);
 	void draw();
 
+	void keyDown(int key, bool special);
 	void mouseWheel(int direction);
 
 private:

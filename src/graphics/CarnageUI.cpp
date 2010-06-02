@@ -236,6 +236,46 @@ void CarnageUI::draw()
 	GameUI::draw();
 }
 
+void CarnageUI::keyDown(int key, bool special)
+{
+	if (!special)
+	{
+		switch (key)
+		{
+			case '1':
+				_ammoSelect->selectItem(0);
+				break;
+				
+			case '2':
+				_ammoSelect->selectItem(1);
+				break;
+				
+			case '3':
+				_ammoSelect->selectItem(2);
+				break;
+				
+			case '4':
+				_ammoSelect->selectItem(3);
+				break;
+				
+			case '5':
+				_ammoSelect->selectItem(4);
+				break;
+				
+			case '6':
+				_ammoSelect->selectItem(5);
+				break;
+				
+			case '7':
+				_ammoSelect->selectItem(6);
+				break;
+				
+			default:
+				break;
+		}
+	}
+}
+
 void CarnageUI::mouseWheel(int direction)
 {
 	if (direction == MOUSE_WHEEL_UP)

@@ -30,6 +30,7 @@ public:
 	// movement controls
 	void nextItem() { _currentItem = (++_currentItem >= _numItems) ? _numItems - 1 : _currentItem; }
 	void prevItem() { _currentItem = (--_currentItem < 0) ? 0 : _currentItem; }
+	void selectItem(int item) { checkBounds(item); _currentItem = item; }
 
 	// property accessors
 	int currentItem() const { return _currentItem; }

@@ -52,20 +52,20 @@ void CarnageState::update(long milli_time) {
 void CarnageState::updateInput(long milli_time) {
 #ifdef CLIENT
    // TODO REMOVE DEMO CODE
-   if(io::keys['1']) {
-	  io::keys['1'] = false;
+   if(io::keys['8']) {
+	  io::keys['8'] = false;
       networkManager->network->loadLevel("resources/2base.lvl");
    }
-   if(io::keys['2']) {
-	  io::keys['2'] = false;
+   if(io::keys['9']) {
+	  io::keys['9'] = false;
       networkManager->network->loadLevel("resources/test2.lvl");
    }
-   if(io::keys['3']) {
-	  io::keys['3'] = false;
+   if(io::keys['0']) {
+	  io::keys['0'] = false;
       networkManager->network->loadLevel("resources/bigplus.lvl");
    }
-   if(io::keys['4']) {
-	  io::keys['4'] = false;
+   if(io::keys['-']) {
+	  io::keys['-'] = false;
       networkManager->network->loadLevel("resources/ibigplus.lvl");
    }
    if(io::keys['c']) {

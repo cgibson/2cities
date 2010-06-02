@@ -24,6 +24,20 @@ public:
 	// property accessors
 	UIWindow *window() const { return _window; }
 
+	// default event handlers (does nothing, override to change)
+	virtual void keyDown(int key, bool special);
+	virtual void keyUp(int key, bool special);
+	virtual void mouseDown(int button);
+	virtual void mouseUp(int button);
+	virtual void mouseWheel(int direction);
+
+	// static event handler wrappers
+	static void key_down_handler(int key, bool special);
+	static void key_up_handler(int key, bool special);
+	static void mouse_down_handler(int button);
+	static void mouse_up_handler(int button);
+	static void mouse_wheel_handler(int direction);
+
 protected:
     UIWindow *_window;
 };

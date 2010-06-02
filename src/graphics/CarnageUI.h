@@ -12,12 +12,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../system/io.h"
 #include "GameUI.h"
 #include "UILabel.h"
 #include "UIIcon.h"
 #include "UIProgress.h"
 #include "UIScoreDisplay.h"
 #include "UICountdown.h"
+#include "UIWheelChooser.h"
 
 class CarnageUI : public GameUI {
 public:
@@ -28,6 +30,8 @@ public:
 	void update(int ms);
 	void draw();
 
+	void mouseWheel(int direction);
+
 private:
 	UIIcon *_reticle;
 	UIScoreDisplay *_redScore;
@@ -36,6 +40,7 @@ private:
 	UILabel *_blueDestructLabel;
 	UIProgress *_redDestructProgress;
 	UIProgress *_blueDestructProgress;
+	UIWheelChooser *_ammoSelect;
 	char _redDestructBuf[10];
 	char _blueDestructBuf[10];
 	UICountdown *_countdown;

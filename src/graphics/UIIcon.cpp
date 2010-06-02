@@ -77,7 +77,7 @@ void UIIcon::draw()
 
 	// screen space quad
 	glPushMatrix();
-		glTranslatef(_x + _w / 2.0, _y + _h / 2.0, 0.0);
+		glTranslatef(_parent->x() + _x + _w / 2.0, _parent->y() + _y + _h / 2.0, 0.0);
 		glScalef(_w, _h, 1.0);
 		glRotatef(_rotAngle, 0.0, 0.0, 1.0);
 		glBegin(GL_QUADS);

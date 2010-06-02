@@ -21,8 +21,8 @@ public:
     virtual void draw();
 
     // property accessors
-    int x() const { return _x; }
-    int y() const { return _y; }
+    int x() const { if (_parent != NULL) return _parent->x() + _x; else return _x; }
+    int y() const { if (_parent != NULL) return _parent->y() + _y; else return _y; }
     void pos(int x, int y) { _x = x; _y = y; }
     int width() const { return _w; }
     int height() const { return _h; }

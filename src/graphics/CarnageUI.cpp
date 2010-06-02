@@ -11,6 +11,7 @@ CarnageUI::CarnageUI()
     _redDestructProgress = NULL;
     _blueDestructProgress = NULL;
     _countdown = NULL;
+    _ammoSelect = NULL;
 }
 
 CarnageUI::~CarnageUI()
@@ -23,6 +24,7 @@ CarnageUI::~CarnageUI()
 	if (_redDestructProgress != NULL) delete _redDestructProgress;
 	if (_blueDestructProgress != NULL) delete _blueDestructProgress;
 	if (_countdown != NULL) delete _countdown;
+	if (_ammoSelect != NULL) delete _ammoSelect;
 }
 
 void CarnageUI::init()
@@ -84,6 +86,54 @@ void CarnageUI::init()
 	_countdown->size(240, 75);
 	_countdown->bgclr(1.0, 1.0, 1.0, 0.5);
 	_countdown->parent(_window);
+
+	_ammoSelect = new UIWheelChooser();
+	_ammoSelect->init(7, 64);
+	_ammoSelect->pos(global::width / 2, global::height - 115);
+
+	_ammoSelect->icon(0)->init("resources/textures/bullets_icon.bmp", NULL);
+	_ammoSelect->icon(0)->parent(_ammoSelect);
+	_ammoSelect->name(0)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
+	_ammoSelect->name(0)->text("BULLETS");
+	_ammoSelect->name(0)->parent(_ammoSelect->icon(0));
+
+	_ammoSelect->icon(1)->init("resources/textures/shotgun_icon.bmp", NULL);
+	_ammoSelect->icon(1)->parent(_ammoSelect);
+	_ammoSelect->name(1)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
+	_ammoSelect->name(1)->text("SHOTGUN");
+	_ammoSelect->name(1)->parent(_ammoSelect->icon(1));
+
+	_ammoSelect->icon(2)->init("resources/textures/ballhemoth_icon.bmp", NULL);
+	_ammoSelect->icon(2)->parent(_ammoSelect);
+	_ammoSelect->name(2)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
+	_ammoSelect->name(2)->text("BALLHEMOTH");
+	_ammoSelect->name(2)->parent(_ammoSelect->icon(2));
+
+	_ammoSelect->icon(3)->init("resources/textures/blackhole_icon.bmp", NULL);
+	_ammoSelect->icon(3)->parent(_ammoSelect);
+	_ammoSelect->name(3)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
+	_ammoSelect->name(3)->text("BLACK HOLE");
+	_ammoSelect->name(3)->parent(_ammoSelect->icon(3));
+
+	_ammoSelect->icon(4)->init("resources/textures/airstrike_icon.bmp", NULL);
+	_ammoSelect->icon(4)->parent(_ammoSelect);
+	_ammoSelect->name(4)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
+	_ammoSelect->name(4)->text("AIR STRIKE");
+	_ammoSelect->name(4)->parent(_ammoSelect->icon(4));
+
+	_ammoSelect->icon(5)->init("resources/textures/shapeshifter_icon.bmp", NULL);
+	_ammoSelect->icon(5)->parent(_ammoSelect);
+	_ammoSelect->name(5)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
+	_ammoSelect->name(5)->text("SHAPE SHIFTER");
+	_ammoSelect->name(5)->parent(_ammoSelect->icon(5));
+
+	_ammoSelect->icon(6)->init("resources/textures/clusterbomb_icon.bmp", NULL);
+	_ammoSelect->icon(6)->parent(_ammoSelect);
+	_ammoSelect->name(6)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
+	_ammoSelect->name(6)->text("CLUSTER BOMB");
+	_ammoSelect->name(6)->parent(_ammoSelect->icon(6));
+
+	_ammoSelect->parent(_window);
 }
 
 void CarnageUI::update(int ms)
@@ -92,15 +142,20 @@ void CarnageUI::update(int ms)
 	timeaccum += ms;
 	int amount = timeaccum % 4000;
 
+	// keep the reticle centered and slowly rotate it
 	_reticle->pos(global::width / 2 - _reticle->width() / 2, global::height  / 2 - _reticle->height() / 2);
 	_reticle->rotAngle((timeaccum / 1000.0) * 15.0);
 	if (_reticle->rotAngle() > 360.0) _reticle->rotAngle(_reticle->rotAngle() - 360.0);
 
+	// keep the progress bars sized and aligned correctly
 	_redDestructProgress->pos(330, global::height - 21);
 	_redDestructProgress->size(global::width / 2 - 330, 21);
 	_blueDestructProgress->pos(global::width / 2, global::height - 21);
 	_blueDestructProgress->size(global::width / 2 - 330, 21);
 	_blueDestructLabel->pos(global::width / 2 - 330 - 5, 4);
+
+	// keep the ammo selector "centered" in the middle of the screen (horizontally)
+	_ammoSelect->pos(global::width / 2, global::height - 115);
 
 	// TODO: actually get destruction percentage from game state here
 
@@ -135,3 +190,14 @@ void CarnageUI::draw()
 	GameUI::draw();
 }
 
+void CarnageUI::mouseWheel(int direction)
+{
+	if (direction == MOUSE_WHEEL_UP)
+	{
+		_ammoSelect->prevItem();
+	}
+	else
+	{
+		_ammoSelect->nextItem();
+	}
+}

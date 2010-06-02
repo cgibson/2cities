@@ -29,6 +29,7 @@ client_srcs = {
     "graphics/UIProgress.cpp",
     "graphics/UIScoreDisplay.cpp",
     "graphics/UICountdown.cpp",
+    "graphics/UIWheelChooser.cpp",
     "graphics/GameUI.cpp",
     "graphics/CarnageUI.cpp",
     "graphics/camera.cpp",

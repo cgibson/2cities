@@ -24,6 +24,13 @@ void Hud::init()
 	// DEBUG DEBUG DEBUG
 	//_currentUI = _carnageUI;
 
+	// register game ui event handler wrappers
+	io::register_key_down(GameUI::key_down_handler);
+	io::register_key_up(GameUI::key_up_handler);
+	io::register_mouse_down(GameUI::mouse_down_handler);
+	io::register_mouse_up(GameUI::mouse_up_handler);
+	io::register_mouse_wheel(GameUI::mouse_wheel_handler);
+
     // register commands with the console
     console.registerCmd("exit", Hud::exitApp);
 	console.registerCmd("quit", Hud::exitApp);

@@ -49,6 +49,9 @@ public:
     static void clearConsole(int argc, char *argv[]);
     static void swapUIcmd(int argc, char *argv[]);
 
+    // accessors
+    GameUI *currentUI() const { return _currentUI; } // may be null!
+
 private:
     bool _showConsole;
     GameUI *_currentUI;

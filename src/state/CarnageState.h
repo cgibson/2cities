@@ -34,13 +34,16 @@ class CarnageState: public InGameState
         void setOppView(const Vector& newOppView) {oppView = newOppView;}
         Vector getOppPos() {return oppPos;}
         Vector getOppView() {return oppView;}
+        int getRechargeTimeLeft() const { return ammo_recharge; }
 
         virtual enum E_STATE stateType() { return CARNAGE_STATE; }
 
+		static const int RECHARGE_TIME;
+
     protected:
-        double ammo_recharge;
+        int ammo_recharge;
         ObjectType ammo_type;
-        
+
         //Opponents' camera position and view vectors.
         Vector oppPos;
         Vector oppView;

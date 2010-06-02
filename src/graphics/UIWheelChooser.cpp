@@ -70,15 +70,15 @@ void UIWheelChooser::update(int ms)
 	for (int i = 0; i < _numItems; i++)
 	{
 		// calculate the distance from the selected item
-		float idealDist = (i * _bucketWidth) - idealOffset;
-		if (idealDist < 0) idealDist *= -1;
+		//float idealDist = (i * _bucketWidth) - idealOffset;
+		//if (idealDist < 0) idealDist *= -1;
 		float actualDist = (i * _bucketWidth) - _offset;
 		if (actualDist < 0) actualDist *= -1;
 
 		// adjust the size based on the distance from the selected element
 		int halfWidth = _icons[i]->naturalWidth() / 2;
 		int halfHeight = _icons[i]->naturalHeight() / 2;
-		if (idealDist >= _bucketWidth)
+		if (actualDist >= _bucketWidth)
 		{
 			// if greater than one bucket width away, size is 1/2
 			_icons[i]->size(halfWidth, halfHeight);

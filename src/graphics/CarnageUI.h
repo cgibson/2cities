@@ -12,7 +12,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../system/global.h"
 #include "../system/io.h"
+#include "../state/CarnageState.h"
 #include "GameUI.h"
 #include "UILabel.h"
 #include "UIIcon.h"
@@ -41,6 +43,9 @@ private:
 	UIProgress *_redDestructProgress;
 	UIProgress *_blueDestructProgress;
 	UIWheelChooser *_ammoSelect;
+	UIProgress *_bulletsRecharge;
+	UIProgress *_shotgunRecharge;
+	UIProgress *_ballhemothRecharge;
 	char _redDestructBuf[10];
 	char _blueDestructBuf[10];
 	UICountdown *_countdown;

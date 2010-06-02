@@ -15,9 +15,9 @@
 #include "../helper/Vector.h"
 #include "../scene/CustomObject.h"
 
-#define RECHARGE_TIME 300
-
 using namespace global;
+
+const int CarnageState::RECHARGE_TIME = 1000; // in milliseconds
 
 CarnageState::CarnageState() {
 	//initialize();
@@ -44,6 +44,7 @@ void CarnageState::initialize() {
 void CarnageState::update(long milli_time) {
 #ifdef CLIENT
 	ammo_recharge -= milli_time;
+	ammo_recharge = (ammo_recharge < 0) ? 0 : ammo_recharge; // clamp to 0
    updateInput(milli_time);
 #endif
 }

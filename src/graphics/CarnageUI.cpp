@@ -12,6 +12,9 @@ CarnageUI::CarnageUI()
     _blueDestructProgress = NULL;
     _countdown = NULL;
     _ammoSelect = NULL;
+    _bulletsRecharge = NULL;
+    _shotgunRecharge = NULL;
+    _ballhemothRecharge = NULL;
 }
 
 CarnageUI::~CarnageUI()
@@ -25,6 +28,9 @@ CarnageUI::~CarnageUI()
 	if (_blueDestructProgress != NULL) delete _blueDestructProgress;
 	if (_countdown != NULL) delete _countdown;
 	if (_ammoSelect != NULL) delete _ammoSelect;
+	if (_bulletsRecharge != NULL) delete _bulletsRecharge;
+	if (_shotgunRecharge != NULL) delete _shotgunRecharge;
+	if (_ballhemothRecharge != NULL) delete _ballhemothRecharge;
 }
 
 void CarnageUI::init()
@@ -37,6 +43,75 @@ void CarnageUI::init()
 	_reticle->tint(true);
 	_reticle->tintclr(1.0, 0.0, 0.0); // TODO: change this to the actual player's color!
 	_reticle->parent(_window);
+
+	_ammoSelect = new UIWheelChooser();
+	_ammoSelect->init(7, 64);
+	_ammoSelect->pos(global::width / 2, global::height - 115);
+
+	_ammoSelect->icon(0)->init("resources/textures/bullets_icon.bmp", NULL);
+	_ammoSelect->icon(0)->parent(_ammoSelect);
+	_ammoSelect->name(0)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
+	_ammoSelect->name(0)->text("BULLETS");
+	_ammoSelect->name(0)->parent(_ammoSelect->icon(0));
+
+	_bulletsRecharge = new UIProgress();
+	_bulletsRecharge->init(UIProgress::RIGHT);
+	_bulletsRecharge->bgclr(0.0, 0.0, 0.0, 0.0);
+	_bulletsRecharge->fgclr(0.0, 1.0, 0.0, 1.0);
+	_bulletsRecharge->percent(100);
+	_bulletsRecharge->parent(_ammoSelect->icon(0));
+
+	_ammoSelect->icon(1)->init("resources/textures/shotgun_icon.bmp", NULL);
+	_ammoSelect->icon(1)->parent(_ammoSelect);
+	_ammoSelect->name(1)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
+	_ammoSelect->name(1)->text("SHOTGUN");
+	_ammoSelect->name(1)->parent(_ammoSelect->icon(1));
+
+	_shotgunRecharge = new UIProgress();
+	_shotgunRecharge->init(UIProgress::RIGHT);
+	_shotgunRecharge->bgclr(0.0, 0.0, 0.0, 0.0);
+	_shotgunRecharge->fgclr(0.0, 1.0, 0.0, 1.0);
+	_shotgunRecharge->percent(100);
+	_shotgunRecharge->parent(_ammoSelect->icon(1));
+
+	_ammoSelect->icon(2)->init("resources/textures/ballhemoth_icon.bmp", NULL);
+	_ammoSelect->icon(2)->parent(_ammoSelect);
+	_ammoSelect->name(2)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
+	_ammoSelect->name(2)->text("BALLHEMOTH");
+	_ammoSelect->name(2)->parent(_ammoSelect->icon(2));
+
+	_ballhemothRecharge = new UIProgress();
+	_ballhemothRecharge->init(UIProgress::RIGHT);
+	_ballhemothRecharge->bgclr(0.0, 0.0, 0.0, 0.0);
+	_ballhemothRecharge->fgclr(0.0, 1.0, 0.0, 1.0);
+	_ballhemothRecharge->percent(100);
+	_ballhemothRecharge->parent(_ammoSelect->icon(2));
+
+	_ammoSelect->icon(3)->init("resources/textures/blackhole_icon.bmp", NULL);
+	_ammoSelect->icon(3)->parent(_ammoSelect);
+	_ammoSelect->name(3)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
+	_ammoSelect->name(3)->text("BLACK HOLE");
+	_ammoSelect->name(3)->parent(_ammoSelect->icon(3));
+
+	_ammoSelect->icon(4)->init("resources/textures/airstrike_icon.bmp", NULL);
+	_ammoSelect->icon(4)->parent(_ammoSelect);
+	_ammoSelect->name(4)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
+	_ammoSelect->name(4)->text("AIR STRIKE");
+	_ammoSelect->name(4)->parent(_ammoSelect->icon(4));
+
+	_ammoSelect->icon(5)->init("resources/textures/shapeshifter_icon.bmp", NULL);
+	_ammoSelect->icon(5)->parent(_ammoSelect);
+	_ammoSelect->name(5)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
+	_ammoSelect->name(5)->text("SHAPE SHIFTER");
+	_ammoSelect->name(5)->parent(_ammoSelect->icon(5));
+
+	_ammoSelect->icon(6)->init("resources/textures/clusterbomb_icon.bmp", NULL);
+	_ammoSelect->icon(6)->parent(_ammoSelect);
+	_ammoSelect->name(6)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
+	_ammoSelect->name(6)->text("CLUSTER BOMB");
+	_ammoSelect->name(6)->parent(_ammoSelect->icon(6));
+
+	_ammoSelect->parent(_window);
 
 	_redScore = new UIScoreDisplay();
 	_redScore->init(UIScoreDisplay::LEFT_PLAYER);
@@ -86,54 +161,6 @@ void CarnageUI::init()
 	_countdown->size(240, 75);
 	_countdown->bgclr(1.0, 1.0, 1.0, 0.5);
 	_countdown->parent(_window);
-
-	_ammoSelect = new UIWheelChooser();
-	_ammoSelect->init(7, 64);
-	_ammoSelect->pos(global::width / 2, global::height - 115);
-
-	_ammoSelect->icon(0)->init("resources/textures/bullets_icon.bmp", NULL);
-	_ammoSelect->icon(0)->parent(_ammoSelect);
-	_ammoSelect->name(0)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
-	_ammoSelect->name(0)->text("BULLETS");
-	_ammoSelect->name(0)->parent(_ammoSelect->icon(0));
-
-	_ammoSelect->icon(1)->init("resources/textures/shotgun_icon.bmp", NULL);
-	_ammoSelect->icon(1)->parent(_ammoSelect);
-	_ammoSelect->name(1)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
-	_ammoSelect->name(1)->text("SHOTGUN");
-	_ammoSelect->name(1)->parent(_ammoSelect->icon(1));
-
-	_ammoSelect->icon(2)->init("resources/textures/ballhemoth_icon.bmp", NULL);
-	_ammoSelect->icon(2)->parent(_ammoSelect);
-	_ammoSelect->name(2)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
-	_ammoSelect->name(2)->text("BALLHEMOTH");
-	_ammoSelect->name(2)->parent(_ammoSelect->icon(2));
-
-	_ammoSelect->icon(3)->init("resources/textures/blackhole_icon.bmp", NULL);
-	_ammoSelect->icon(3)->parent(_ammoSelect);
-	_ammoSelect->name(3)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
-	_ammoSelect->name(3)->text("BLACK HOLE");
-	_ammoSelect->name(3)->parent(_ammoSelect->icon(3));
-
-	_ammoSelect->icon(4)->init("resources/textures/airstrike_icon.bmp", NULL);
-	_ammoSelect->icon(4)->parent(_ammoSelect);
-	_ammoSelect->name(4)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
-	_ammoSelect->name(4)->text("AIR STRIKE");
-	_ammoSelect->name(4)->parent(_ammoSelect->icon(4));
-
-	_ammoSelect->icon(5)->init("resources/textures/shapeshifter_icon.bmp", NULL);
-	_ammoSelect->icon(5)->parent(_ammoSelect);
-	_ammoSelect->name(5)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
-	_ammoSelect->name(5)->text("SHAPE SHIFTER");
-	_ammoSelect->name(5)->parent(_ammoSelect->icon(5));
-
-	_ammoSelect->icon(6)->init("resources/textures/clusterbomb_icon.bmp", NULL);
-	_ammoSelect->icon(6)->parent(_ammoSelect);
-	_ammoSelect->name(6)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
-	_ammoSelect->name(6)->text("CLUSTER BOMB");
-	_ammoSelect->name(6)->parent(_ammoSelect->icon(6));
-
-	_ammoSelect->parent(_window);
 }
 
 void CarnageUI::update(int ms)
@@ -142,10 +169,8 @@ void CarnageUI::update(int ms)
 	timeaccum += ms;
 	int amount = timeaccum % 4000;
 
-	// keep the reticle centered and slowly rotate it
+	// keep the reticle centered
 	_reticle->pos(global::width / 2 - _reticle->width() / 2, global::height  / 2 - _reticle->height() / 2);
-	_reticle->rotAngle((timeaccum / 1000.0) * 15.0);
-	if (_reticle->rotAngle() > 360.0) _reticle->rotAngle(_reticle->rotAngle() - 360.0);
 
 	// keep the progress bars sized and aligned correctly
 	_redDestructProgress->pos(330, global::height - 21);
@@ -170,6 +195,27 @@ void CarnageUI::update(int ms)
 	_blueDestructLabel->pos(_blueDestructProgress->percentX() + 5, 4);
 
 	GameUI::update(ms);
+
+	// keep the ammo progress bars matched to their icons
+	_bulletsRecharge->pos(0, -10);
+	_bulletsRecharge->size(_ammoSelect->icon(0)->width(), 5);
+	_shotgunRecharge->pos(0, -10);
+	_shotgunRecharge->size(_ammoSelect->icon(1)->width(), 5);
+	_ballhemothRecharge->pos(0, -10);
+	_ballhemothRecharge->size(_ammoSelect->icon(2)->width(), 5);
+
+	// read recharge progress from carnage state (TODO: read different recharge times for different weapons)
+	CarnageState *state = static_cast<CarnageState *>(global::stateManager->currentState);
+	float percent = (CarnageState::RECHARGE_TIME - state->getRechargeTimeLeft()) / (float)CarnageState::RECHARGE_TIME * 100.0;
+	_bulletsRecharge->percent((int)percent);
+	_bulletsRecharge->fgclr(1.0 - (percent / 100.0), (percent / 100.0),
+		_bulletsRecharge->fgb(), 1.0);
+	_shotgunRecharge->percent((int)percent);
+	_shotgunRecharge->fgclr(1.0 - (percent / 100.0), (percent / 100.0),
+		_shotgunRecharge->fgb(), 1.0);
+	_ballhemothRecharge->percent((int)percent);
+	_ballhemothRecharge->fgclr(1.0 - (percent / 100.0), (percent / 100.0),
+		_ballhemothRecharge->fgb(), 1.0);
 }
 
 void CarnageUI::draw()

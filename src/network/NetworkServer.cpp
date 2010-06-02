@@ -331,7 +331,7 @@ void NetworkServer::addObjectPhys(WorldObject *objPtr) {
 	// TODO Add ObjectState to Tracker
 	// NetworkObjectState newObjState(objPtr, 4);
 	
-	physicsEngine.addWorldObject(*objPtr);
+	physicsEngine.addWorldObject(objPtr);
 }
 
 void NetworkServer::loadLevel(const char * file) {

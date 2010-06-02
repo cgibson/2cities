@@ -35,7 +35,7 @@ class Physics
   public:
     static void tickCallback(btDynamicsWorld *dWorld,
       btScalar timeChange);
-    void addWorldObject(WorldObject newObject);
+    void addWorldObject(WorldObject *newObject);
     std::vector<WorldObject *> getWorldObjects();
     
     void exitPhysics();

@@ -44,7 +44,7 @@ void NetworkPrivate::update(long milli_time) {
 
 void NetworkPrivate::addObject(WorldObject *newObj) {
 	newObj->setID(_currObjID++);
-	physicsEngine.addWorldObject(*newObj);
+	physicsEngine.addWorldObject(newObj);
 }
 
 void NetworkPrivate::loadLevel(const char * file) {

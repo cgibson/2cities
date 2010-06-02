@@ -97,15 +97,15 @@ void Physics::tickCallback(btDynamicsWorld *dWorld, btScalar timeChange)
 }
 
 
-void Physics::addWorldObject(WorldObject worldObject)
+void Physics::addWorldObject(WorldObject *worldObject)
 {
   
-  if (isUniqueID(worldObject.getID()))
+  if (isUniqueID(worldObject->getID()))
   {
-    PhysicsBody * newBody = new PhysicsBody(worldObject);
+    PhysicsBody * newBody = new PhysicsBody(*worldObject);
     // stall slow objects
 
-    if (worldObject.getVelocity().mag() < .01)
+    if (worldObject->getVelocity().mag() < .01)
     {
       newBody->setActivationState(ISLAND_SLEEPING);
     }
@@ -167,7 +167,7 @@ void Physics::InsertNewBlock(ObjectType type, Vector position)
 {
   WorldObject * newObj = new WorldObject(nextBlockNumber++, 0, type);
   newObj->setPosition(position);
-  addWorldObject(*newObj);
+  addWorldObject(newObj);
 #ifdef DEBUG
   printf("Adding object at %s\n", position.str());
 #endif

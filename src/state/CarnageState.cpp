@@ -83,7 +83,7 @@ void CarnageState::updateInput(long milli_time) {
    if((io::keys[' '] || io::mouse_buttons[MOUSE_LEFT] == GLUT_DOWN) && ammo_recharge <= 0) {
 	  WorldObject *newObjPtr = global::factory->makeObject(ammo_type);
 	  newObjPtr->setPosition(camera->position() - Vector( 0.0f, 1.0f, 0.0f));
-	  newObjPtr->setVelocity(camera->viewVec() * 50);
+	  newObjPtr->setVelocity((camera->viewVec() + Vector(0.0f, 0.15f, 0.0f)) * 50); // offset the view vector a bit to more closely match the targeting reticle
 	  networkManager->network->addObject(newObjPtr);
 
 	  ammo_recharge = RECHARGE_TIME;

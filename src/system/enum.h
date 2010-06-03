@@ -39,9 +39,9 @@ namespace enumeration {
 
   // Used by BuildState to determine which face the user has selected
   typedef enum E_FACE {
-  		NOTHING, TOP, FACE1, FACE2, FACE3, FACE4, BOTTOM	
+  		NOTHING, TOP, FACE1, FACE2, FACE3, FACE4, BOTTOM
   } Face;
-	
+
   // Used by Network classes to determine which WorldObject to create/load
   // ENUM Will be passed from client->server when object creation requested
   typedef enum E_WorldObjType {
@@ -54,7 +54,7 @@ namespace enumeration {
   typedef enum E_MaterialType {
     MAT_TYPE_MIN, YELLOW_MAT=MAT_TYPE_MIN, BLUE_MAT, WHITE_MAT, GREEN_MAT, GRID, GRID_DIFFUSE, MAT_TYPE_MAX
   } MaterialType;
-  
+
   typedef enum E_NetworkInterface {
 	  N_PRIVATE, N_CLIENT, N_SERVER
   } NetworkInterface;
@@ -62,14 +62,24 @@ namespace enumeration {
   typedef enum E_PlayerColor {
 	  PLAYER_SPECTATOR, PLAYER_BLUE, PLAYER_RED, PLAYER_GREEN, PLAYER_YELLOW
   } PlayerColor;
-  
+
   typedef enum E_ModelType {
 	  AMMO_DRILL_CONE
   } ModelType;
-  
+
   typedef enum E_TesselationType {
     TESS_NONE, TESS_STONEHENGE, TESS_SIMPLE, TESS_SOLID
   } Tesselation;
+
+  // THESE SHOULD MATCH THE ORDER IN WHICH THE SHADERS ARE LOADED IN EFFECTMANAGER!
+  typedef enum E_EFFECTSHADERS {
+	SHOCKWAVE
+  } EffectShader;
+
+// THESE SHOULD MATCH THE ORDER IN WHICH THE TEXTURES ARE LOADED IN EFFECTMANAGER!
+  typedef enum E_EFFECTTEXTURES {
+	SHOCKWAVE_MOD
+  } EffectTexture;
 }
 
 #endif

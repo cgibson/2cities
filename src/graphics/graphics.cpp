@@ -13,6 +13,7 @@ namespace gfx{
   Renderer renderer;
   ModelHandler modelHandler = ModelHandler();
   Hud hud;
+  EffectManager fxManager;
   bool draw_wireframe;
 
   bool draw_axis;
@@ -34,6 +35,7 @@ namespace gfx{
       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
     renderer.draw();
+    fxManager.draw();
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -107,6 +109,7 @@ namespace gfx{
 
     hud.init();
     modelHandler.initialize();
+    fxManager.init();
   }
 
 
@@ -114,6 +117,7 @@ namespace gfx{
   {
     hud.update(elapsed);
     renderer.update(elapsed);
+    fxManager.update(elapsed);
 
     if(io::keys['p'])
     {

@@ -18,6 +18,7 @@
 #include "../helper/GLSL_helper.h"
 #include "../system/enum.h"
 #include "shader.h"
+#include "EffectManager.h"
 
 using namespace enumeration;
 
@@ -28,6 +29,7 @@ namespace gfx{
   extern Renderer renderer;
   extern ModelHandler modelHandler;
   extern Hud hud;
+  extern EffectManager fxManager;
 
   extern Material* materials;
 

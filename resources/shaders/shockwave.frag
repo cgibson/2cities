@@ -11,9 +11,9 @@ void main(void)
 
     // compute the trail amount
     float trail_amt = 0.0;
-    if (dist > 0.25 && dist < 0.5)
+    if (dist > 0.05 && dist < 0.5)
     {
-        trail_amt = (dist - 0.25) / 0.25;
+        trail_amt = (dist - 0.05) / 0.45;
         trail_amt *= trail_amt;
     }
     
@@ -32,6 +32,10 @@ void main(void)
     // compute ring and trail colors
     vec4 trail = trail_clr * trail_amt * trail_mod + trail_clr * trail_amt * trail_amt;
     vec4 ring = (1.0 - trail_clr) * ring_amt;
+
+	// set the alpha of the entire effect
+	ring.a *= (1.0 - progression * progression);
+	trail.a *= (1.0 - progression * progression);
 
     // final composite
     vec4 final = ring + trail;

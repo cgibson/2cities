@@ -12,6 +12,8 @@
 #include "../system/enum.h"
 #include "../helper/Vector.h"
 
+#include "../graphics/ShockwaveEffect.h"
+
 using namespace std;
 
 /**

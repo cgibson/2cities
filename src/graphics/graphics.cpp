@@ -19,6 +19,8 @@ namespace gfx{
   bool draw_axis;
 
   Material* materials;
+  
+  RenderState renderState = LIMITED;
 
   DefaultShader simpleShader;
   DefaultShader gridShader;
@@ -27,6 +29,17 @@ namespace gfx{
   DefaultShader skyShader;
   DefaultShader distantShader;
   DefaultShader uiIconShader;
+  
+  PassShader simpleScreenFillShader;
+  
+  FBOHelper *fbo;
+  
+  
+  bool initFBO()
+  {
+    gfx::fbo = new FBOHelper();
+    return gfx::fbo->initialize(global::width, global::height, 2);
+  }
 
   void display()
   {
@@ -96,6 +109,10 @@ namespace gfx{
 
   void init()
   {
+	if(renderState == FULL)
+	{
+	  initFBO();
+    }
     initMaterials();
     loadShaders();
     loadDefaultShaderValues();
@@ -140,6 +157,7 @@ namespace gfx{
     skyShader.load("resources/shaders/sky");
     distantShader.load("resources/shaders/distant");
     uiIconShader.load("resources/shaders/uiicon");
+    simpleScreenFillShader.load("resources/shaders/simpleFill");
 
     if(!success)
     {
@@ -176,6 +194,11 @@ namespace gfx{
 
     loc = glGetUniformLocation(gridShader.getProgram(), "division_size");
     glUniform1f(loc, 5);
+    
+    if(renderState == FULL)
+    {
+      simpleScreenFillShader.setTextures(fbo->getTextureIDs(), 1);
+    }
 
     shader::setProgram(old);
 

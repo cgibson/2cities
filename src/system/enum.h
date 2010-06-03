@@ -6,6 +6,10 @@ namespace enumeration {
   typedef enum E_STATE {
     GLOBAL_STATE, MENU_STATE, BUILD_STATE, CARNAGE_STATE, RESULTS_STATE
   } State;
+  
+  typedef enum R_STATE {
+	LIMITED, FULL
+  } RenderState;
 
   // Physics Engine Shape Enum
   typedef enum E_SHAPE {

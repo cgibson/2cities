@@ -124,7 +124,7 @@ int main(int argc, char** argv)
 			beginState = BUILD_STATE;
 			gfx::draw_axis = true;
 		}
-		if (strcmp(argv[i], "-carnage") == 0)
+		else if (strcmp(argv[i], "-carnage") == 0)
 		{
 			beginState = CARNAGE_STATE;
 			gfx::draw_axis = true;
@@ -133,6 +133,12 @@ int main(int argc, char** argv)
 		{
 			global::fullscreen = true;
 		}
+		else if (strcmp(argv[i], "-pretty") == 0)
+		{
+			gfx::renderState = FULL;
+		}
+		
+		
 	}
 
   glutInit(&argc, argv);

@@ -40,10 +40,17 @@ namespace gfx{
   extern DefaultShader skyShader;
   extern DefaultShader distantShader;
   extern DefaultShader uiIconShader;
+  
+  extern PassShader simpleScreenFillShader;
+  
+  extern FBOHelper *fbo;
+  
+  extern RenderState renderState;
 
   extern bool draw_wireframe;
   extern bool draw_axis;
 
+  bool initFBO();
   void loadDefaultShaderValues();
   void display();
   void reshape(int w, int h);

@@ -30,7 +30,8 @@ public:
   void init();
   void update(int elapsed);
   void draw();
-  void drawDiffusePass();
+  void draw_screen();
+  void draw_diffusePass();
   void drawBloomPass();
   void draw_scene();
   void reshape(int w, int h);
@@ -40,15 +41,12 @@ private:
   void update_view();
   void init_lights();
   void do_lights(Shader sh);
-  bool initFBO();
 
   Vector eye, lookAt;
 
   Lighting light;
 
   Skybox skybox;
-  
-  FBOHelper *fbo;
   
   bool use_fbo;
 };

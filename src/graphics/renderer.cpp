@@ -14,16 +14,9 @@ Renderer::Renderer()
 	// no need to init camera here anymore, it knows how to initialize itself
 }
 
-bool Renderer::initFBO()
-{
-  fbo = new FBOHelper();
-  return fbo->initialize(global::width, global::height, 2);
-}
-
 void Renderer::init()
 {
   init_lights();
-  use_fbo = initFBO();
   skybox.init();
 }
 
@@ -47,16 +40,49 @@ void Renderer::init_lights()
                     0.3,0.3,0.3);
 }
 
+void Renderer::draw_screen()
+{
+  gfx::simpleScreenFillShader.enable();
+  gfx::simpleScreenFillShader.update();
+  
+  glBegin(GL_QUADS);
+	glColor4f(1,1,1,1);
+    glTexCoord2f(0,0);
+    glVertex3f(-1.0, -1.0, -1);
+    glTexCoord2f(1,0);
+    glVertex3f(1.0, -1.0, -1);
+    glTexCoord2f(1 ,1);
+    glVertex3f(1.0, 1.0, -1);
+    glTexCoord2f(0 ,1);
+    glVertex3f(-1.0, 1.0, -1);
+  glEnd();
+}
+
 void Renderer::draw()
 {
-  //fbo.enable();
-  drawDiffusePass();
-  //fbo.disable();
+  if(gfx::renderState == FULL)
+  {
+	// render the scene into the FBO (first pass)
+    gfx::fbo->enable();
+    draw_diffusePass();
+    gfx::fbo->disable();
+    
+    shader::reset();
+    
+    // clear the current 
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    // draw second pass
+    draw_screen();
+    
+  }else{  
+    draw_diffusePass();
+  }
   
   
 }
 
-void Renderer::drawDiffusePass()
+void Renderer::draw_diffusePass()
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

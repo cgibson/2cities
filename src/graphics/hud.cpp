@@ -6,11 +6,13 @@ Hud::Hud()
     _showConsole = false; // default off
     _currentUI = NULL; // none
     _carnageUI = NULL;
+    _buildUI = NULL;
 }
 
 Hud::~Hud()
 {
 	if (_carnageUI != NULL) delete _carnageUI;
+	if (_buildUI != NULL) delete _buildUI;
 }
 
 void Hud::init()
@@ -20,6 +22,8 @@ void Hud::init()
 	// preload our UIs
 	_carnageUI = new CarnageUI();
 	_carnageUI->init();
+	_buildUI = new BuildUI();
+	_buildUI->init();
 
 	// DEBUG DEBUG DEBUG
 	//_currentUI = _carnageUI;
@@ -95,7 +99,7 @@ void Hud::swapUI(UiType which)
 			break;
 
 		case BUILD:
-
+			_currentUI = _buildUI;
 			break;
 
 		case CARNAGE:

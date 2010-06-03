@@ -24,15 +24,22 @@ public:
 		RIGHT_PLAYER
 	} ScoreDisplay;
 
+	typedef enum E_SCORETYPE
+	{
+		SCORE,
+		RESOURCES
+	} ScoreType;
+
 	UIScoreDisplay();
 	~UIScoreDisplay();
 
-	void init(ScoreDisplay player);
+	void init(ScoreDisplay player, ScoreType type);
 	void update(int ms);
 	void draw();
 
 private:
 	ScoreDisplay _player;
+	ScoreType _type;
 	UILabel *_explainLabel;
 	UILabel *_scoreLabel;
 	int _score;

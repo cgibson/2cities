@@ -47,6 +47,10 @@ private:
 	UIProgress *_bulletsRecharge;
 	UIProgress *_shotgunRecharge;
 	UIProgress *_ballhemothRecharge;
+	UILabel *_blackholeClip;
+	UILabel *_airstrikeClip;
+	UILabel *_shapeshifterClip;
+	UILabel *_clusterbombClip;
 	char _redDestructBuf[10];
 	char _blueDestructBuf[10];
 	UICountdown *_countdown;

@@ -16,6 +16,7 @@
 #include "console.h"
 #include "GameUI.h"
 #include "CarnageUI.h"
+#include "BuildUI.h"
 
 class Hud {
 public:
@@ -56,6 +57,7 @@ private:
     bool _showConsole;
     GameUI *_currentUI;
     CarnageUI *_carnageUI;
+    BuildUI *_buildUI;
 };
 
 #endif

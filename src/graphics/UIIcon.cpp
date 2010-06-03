@@ -11,6 +11,7 @@ UIIcon::UIIcon()
 	_tintr = _tintg = _tintb = 1.0;
 	_naturalWidth = 0;
 	_naturalHeight = 0;
+	_rotAngle = 0.0;
 }
 
 UIIcon::~UIIcon()

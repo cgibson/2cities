@@ -14,24 +14,39 @@ UIScoreDisplay::~UIScoreDisplay()
 	if (_scoreLabel != NULL) delete _scoreLabel;
 }
 
-void UIScoreDisplay::init(ScoreDisplay player)
+void UIScoreDisplay::init(ScoreDisplay player, ScoreType type)
 {
 	UIControl::init(100, 100, 100, 100, 0.0, 0.0, 0.0, 1.0);
 
 	_player = player;
+	_type = type;
 
 	_explainLabel = new UILabel();
 	if (_player == LEFT_PLAYER)
 	{
 		_explainLabel->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::LEFT);
 		_explainLabel->pos(8, 55);
-		_explainLabel->text("RED SCORE");
+		if (_type == SCORE)
+		{
+			_explainLabel->text("RED SCORE");
+		}
+		else
+		{
+			_explainLabel->text("RED RESOURCES");
+		}
 	}
 	else
 	{
 		_explainLabel->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::RIGHT);
 		_explainLabel->pos(330 - 8, 55);
-		_explainLabel->text("BLUE SCORE");
+		if (_type == SCORE)
+		{
+			_explainLabel->text("BLUE SCORE");
+		}
+		else
+		{
+			_explainLabel->text("BLUE RESOURCES");
+		}
 	}
 	_explainLabel->parent(this);
 
@@ -131,5 +146,12 @@ void UIScoreDisplay::draw()
 
 void UIScoreDisplay::printScoreToBuffer()
 {
-	snprintf(_scoreBuf, 10, "%d", _score);
+	if (_type == SCORE)
+	{
+		snprintf(_scoreBuf, 10, "%d", _score);
+	}
+	else
+	{
+		snprintf(_scoreBuf, 10, "$%d", _score);
+	}
 }

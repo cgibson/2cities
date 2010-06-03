@@ -15,6 +15,10 @@ CarnageUI::CarnageUI()
     _bulletsRecharge = NULL;
     _shotgunRecharge = NULL;
     _ballhemothRecharge = NULL;
+    _blackholeClip = NULL;
+	_airstrikeClip = NULL;
+	_shapeshifterClip = NULL;
+	_clusterbombClip = NULL;
 }
 
 CarnageUI::~CarnageUI()
@@ -31,6 +35,10 @@ CarnageUI::~CarnageUI()
 	if (_bulletsRecharge != NULL) delete _bulletsRecharge;
 	if (_shotgunRecharge != NULL) delete _shotgunRecharge;
 	if (_ballhemothRecharge != NULL) delete _ballhemothRecharge;
+	if (_blackholeClip != NULL) delete _blackholeClip;
+	if (_airstrikeClip != NULL) delete _airstrikeClip;
+	if (_shapeshifterClip != NULL) delete _shapeshifterClip;
+	if (_clusterbombClip != NULL) delete _clusterbombClip;
 }
 
 void CarnageUI::init()
@@ -93,11 +101,21 @@ void CarnageUI::init()
 	_ammoSelect->name(3)->text("BLACK HOLE");
 	_ammoSelect->name(3)->parent(_ammoSelect->icon(3));
 
+	_blackholeClip = new UILabel();
+	_blackholeClip->init("resources/fonts/sui_generis_free.ttf", 10, UILabel::CENTER);
+	_blackholeClip->text("0");
+	_blackholeClip->parent(_ammoSelect->icon(3));
+
 	_ammoSelect->icon(4)->init("resources/textures/airstrike_icon.bmp", NULL);
 	_ammoSelect->icon(4)->parent(_ammoSelect);
 	_ammoSelect->name(4)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
 	_ammoSelect->name(4)->text("AIR STRIKE");
 	_ammoSelect->name(4)->parent(_ammoSelect->icon(4));
+
+	_airstrikeClip = new UILabel();
+	_airstrikeClip->init("resources/fonts/sui_generis_free.ttf", 10, UILabel::CENTER);
+	_airstrikeClip->text("0");
+	_airstrikeClip->parent(_ammoSelect->icon(4));
 
 	_ammoSelect->icon(5)->init("resources/textures/shapeshifter_icon.bmp", NULL);
 	_ammoSelect->icon(5)->parent(_ammoSelect);
@@ -105,23 +123,33 @@ void CarnageUI::init()
 	_ammoSelect->name(5)->text("SHAPE SHIFTER");
 	_ammoSelect->name(5)->parent(_ammoSelect->icon(5));
 
+	_shapeshifterClip = new UILabel();
+	_shapeshifterClip->init("resources/fonts/sui_generis_free.ttf", 10, UILabel::CENTER);
+	_shapeshifterClip->text("0");
+	_shapeshifterClip->parent(_ammoSelect->icon(5));
+
 	_ammoSelect->icon(6)->init("resources/textures/clusterbomb_icon.bmp", NULL);
 	_ammoSelect->icon(6)->parent(_ammoSelect);
 	_ammoSelect->name(6)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
 	_ammoSelect->name(6)->text("CLUSTER BOMB");
 	_ammoSelect->name(6)->parent(_ammoSelect->icon(6));
 
+	_clusterbombClip = new UILabel();
+	_clusterbombClip->init("resources/fonts/sui_generis_free.ttf", 10, UILabel::CENTER);
+	_clusterbombClip->text("0");
+	_clusterbombClip->parent(_ammoSelect->icon(6));
+
 	_ammoSelect->parent(_window);
 
 	_redScore = new UIScoreDisplay();
-	_redScore->init(UIScoreDisplay::LEFT_PLAYER);
+	_redScore->init(UIScoreDisplay::LEFT_PLAYER, UIScoreDisplay::SCORE);
 	_redScore->pos(0, global::height - 75);
 	_redScore->size(330, 75);
 	_redScore->bgclr(1.0, 0.0, 0.0, 0.75);
 	_redScore->parent(_window);
 
 	_blueScore = new UIScoreDisplay();
-	_blueScore->init(UIScoreDisplay::RIGHT_PLAYER);
+	_blueScore->init(UIScoreDisplay::RIGHT_PLAYER, UIScoreDisplay::SCORE);
 	_blueScore->pos(global::width - 290, global::height - 75);
 	_blueScore->size(330, 75);
 	_blueScore->bgclr(0.0, 0.0, 1.0, 0.75);
@@ -204,6 +232,12 @@ void CarnageUI::update(int ms)
 	_ballhemothRecharge->pos(0, -10);
 	_ballhemothRecharge->size(_ammoSelect->icon(2)->width(), 5);
 
+	// keep the ammo clips matched to their icons
+	_blackholeClip->pos(_ammoSelect->icon(3)->width() / 2, -13);
+	_airstrikeClip->pos(_ammoSelect->icon(4)->width() / 2, -13);
+	_shapeshifterClip->pos(_ammoSelect->icon(5)->width() / 2, -13);
+	_clusterbombClip->pos(_ammoSelect->icon(6)->width() / 2, -13);
+
 	// read recharge progress from carnage state (TODO: read different recharge times for different weapons)
 	CarnageState *state = static_cast<CarnageState *>(global::stateManager->currentState);
 	float percent = (CarnageState::RECHARGE_TIME - state->getRechargeTimeLeft()) / (float)CarnageState::RECHARGE_TIME * 100.0;
@@ -245,31 +279,31 @@ void CarnageUI::keyDown(int key, bool special)
 			case '1':
 				_ammoSelect->selectItem(0);
 				break;
-				
+
 			case '2':
 				_ammoSelect->selectItem(1);
 				break;
-				
+
 			case '3':
 				_ammoSelect->selectItem(2);
 				break;
-				
+
 			case '4':
 				_ammoSelect->selectItem(3);
 				break;
-				
+
 			case '5':
 				_ammoSelect->selectItem(4);
 				break;
-				
+
 			case '6':
 				_ammoSelect->selectItem(5);
 				break;
-				
+
 			case '7':
 				_ammoSelect->selectItem(6);
 				break;
-				
+
 			default:
 				break;
 		}

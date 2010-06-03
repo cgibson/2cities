@@ -13,6 +13,7 @@ UILabel::UILabel()
 	_shadow = false;
 	_font = NULL;
 	_text = NULL;
+	_fontSize = 12;
 }
 
 UILabel::~UILabel()
@@ -25,7 +26,9 @@ void UILabel::init(const char *font, int size, TextJustify justify)
 {
 	UIControl::init(2, 2, 0, 0, 0.0, 0.0, 0.0, 0.0);
 
-	_font = new OGLFT::Translucent(font, size);
+	_fontSize = size;
+
+	_font = new OGLFT::Translucent(font, _fontSize);
 	if (!_font->isValid())
 	{
 		fprintf(stderr, "Failed to load font %s!\n", font);

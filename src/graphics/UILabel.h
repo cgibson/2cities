@@ -46,6 +46,7 @@ public:
 		memcpy(_text, text, strlen(text));
 		_text[strlen(text)] = '\0';
 	}
+	int fontSize() const { return _fontSize; }
 
 private:
 	float _fgr;
@@ -55,6 +56,7 @@ private:
 	bool _shadow;
 	OGLFT::Translucent *_font;
 	char *_text;
+	int _fontSize;
 
 	static const int DROP_X;
 	static const int DROP_Y;

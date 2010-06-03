@@ -26,7 +26,7 @@ void Hud::init()
 	_buildUI->init();
 
 	// DEBUG DEBUG DEBUG
-	//_currentUI = _carnageUI;
+	_currentUI = _buildUI;
 
 	// register game ui event handler wrappers
 	io::register_key_down(GameUI::key_down_handler);

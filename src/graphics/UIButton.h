@@ -30,10 +30,21 @@ public:
 	// property accessors
 	UILabel *text() const { return _text; }
 	UIIcon *icon() const { return _icon; }
+	void mouseOverClr(float r, float g, float b, float a) {_mor = r; _mog = g; _mob = b; _moa = a; }
+	void mouseDownClr(float r, float g, float b, float a) {_mdr = r; _mdg = g; _mdb = b; _mda = a; }
 
 private:
+	typedef enum E_BUTTONSTATE {
+		OUT,
+		OVER,
+		DOWN
+	} ButtonState;
+
 	UILabel *_text;
 	UIIcon *_icon;
+	float _mor, _mog, _mob, _moa;
+	float _mdr, _mdg, _mdb, _mda;
+	ButtonState _state;
 };
 
 #endif

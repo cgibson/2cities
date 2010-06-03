@@ -121,7 +121,9 @@ void BuildUI::init()
 	_readyButton->text()->init("resources/fonts/sui_generis_free.ttf", 18, UILabel::LEFT);
 	_readyButton->text()->text("I'm ready!");
 	_readyButton->icon()->init("resources/textures/bullets_icon.bmp", NULL);
-	_readyButton->bgclr(0.6, 0.6, 0.6, 0.5);
+	_readyButton->bgclr(0.5, 0.5, 0.5, 0.5);
+	_readyButton->mouseOverClr(0.5, 0.5, 0.5, 0.75);
+	_readyButton->mouseDownClr(0.5, 1.0, 0.5, 0.75);
 	_readyButton->pos(300, 300);
 	_readyButton->size(200, 75);
 	_readyButton->parent(_window);

@@ -21,7 +21,6 @@ void ShockwaveEffect::init(int durationInMS, float maxSize)
 void ShockwaveEffect::update(int ms)
 {
 	Effect::update(ms);
-	if (!_alive) return;
 }
 
 void ShockwaveEffect::draw()

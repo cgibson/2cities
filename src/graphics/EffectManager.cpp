@@ -32,6 +32,7 @@ void EffectManager::update(int ms)
 	// loop through all effects and update them
 	for (int i = 0; i < (int)_effects.size(); i++)
 	{
+		if (!_effects[i]->alive()) continue;
 		_effects[i]->update(ms);
 	}
 
@@ -52,6 +53,7 @@ void EffectManager::draw()
 	// draw all effects
 	for (int i = 0; i < (int)_effects.size(); i++)
 	{
+		if (!_effects[i]->alive()) continue;
 		_effects[i]->draw();
 	}
 }

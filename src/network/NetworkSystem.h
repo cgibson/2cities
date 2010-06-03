@@ -59,6 +59,11 @@ protected:
 	void buildBatchPacket(NetworkPacket *pkt, WorldObject *objs[], unsigned int size);
 	void decodeObjectSend(NetworkPacket &pkt, long interpValue);
 
+	// Player Status Updaters
+	int  makePlayerCamera(Vector  camPos, Vector  camView, unsigned char *bufPtr);
+	void sendPlayerCamera(Vector  camPos, Vector  camView, ting::UDPSocket *socketPtr, ting::IPAddress destIP);
+	void recvPlayerCamera(Vector &camPos, Vector &camView, unsigned char *bufPtr);
+
 public:
 	NetworkSystem() { _pktCountRecv = _pktCountSent = _pktPeriod = _playerID = 0; };
 	~NetworkSystem() { closeSockets(); };
@@ -80,7 +85,7 @@ public:
 	        int  getPlayerID() { return _playerID; };
 	virtual int  getPlayerScore(int playerID) { return 0; };
 	virtual PlayerColor getPlayerColor() { return (PlayerColor)_playerID; };
-	virtual void sendPlayerCamera() {};
+
 	virtual void sendPlayerReady(int readyFlag) {};
 
 	// Communication

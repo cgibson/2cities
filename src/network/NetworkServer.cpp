@@ -33,8 +33,12 @@ NetworkServer::NetworkServer() {
 	_sendObjNext = 0;
 	_playerIDNext = 1;
 
-	// Player Specific (since server can be hosted, must include here)
+// Player Specific (since server can be hosted, must include here)
+#ifdef CLIENT
 	_playerID = _playerIDNext++;
+#else
+	_playerID = 0;
+#endif
 	_currObjID = _playerID * 10000;
 	PRINTINFO("Network Initialized!\n");
 
@@ -129,6 +133,19 @@ void NetworkServer::networkIncomingGeneral(long &elapsed) {
 			// Create new player and add to players
 			Player *currPlayer = new Player;
 			currPlayer->ID = _playerIDNext++;
+			currPlayer->camPos = Vector(0,100,0);
+			currPlayer->camView = Vector(0,100,0);
+			currPlayer->lagDelay = 0;
+			currPlayer->playerReady = 0;
+			currPlayer->playerScore = 0;
+			int playerCount = 0;
+			for(unsigned int i=0; i<_players.size(); i++)
+				if(_players[i]->playerType == PLAYER)
+					playerCount++;
+			if(playerCount < 2)
+				currPlayer->playerType = PLAYER;
+			else
+				currPlayer->playerType = SPECTATOR;
 			_players.push_back(currPlayer);
 
 			// Add Socket/IP to currPlayer
@@ -157,7 +174,7 @@ void NetworkServer::networkIncomingGeneral(long &elapsed) {
 	}
 }
 
-void NetworkServer::networkIncomingPlayers(int p,long &elapsed) {
+void NetworkServer::networkIncomingPlayers(int p, long &elapsed) {
 	try {
 		ting::IPAddress ip;
 		NetworkPacket pkt;
@@ -176,9 +193,6 @@ void NetworkServer::networkIncomingPlayers(int p,long &elapsed) {
 			break;
 		case LAG_RESULT :
 			_players[p]->lagDelay = *(int*)(pkt.data);
-#ifdef DEBUG
-			printf("Player #%i has updated lagDelay to %i!\n", _players[p]->ID,  _players[p]->lagDelay);
-#endif
 			break;
 		case DISCONNECT :
 			printf("Player #%i is Disconnecting!\n", _players[p]->ID);
@@ -189,6 +203,14 @@ void NetworkServer::networkIncomingPlayers(int p,long &elapsed) {
 		case LEVEL_LOAD :
 			printf("LEVEL_LOAD: %s\n", (char *)pkt.data);
 			loadLevel((char *)pkt.data);
+			break;
+		case PLAYER_READY :
+			_players[p]->playerReady = *(int*)(pkt.data);
+			printf("PLAYER_READY: %i\n", _players[p]->playerReady);
+			break;
+		case CAMLOC_MYLOC :
+			recvPlayerCamera(_players[p]->camPos, _players[p]->camView, pkt.data);
+			//printf("Player #%i CamPos%s CamView%s\n",_players[p]->ID,_players[p]->camPos.str(),_players[p]->camView.str());
 			break;
 		case TEXT_MSG :
 			printf("MSG: %s\n", (char *)pkt.data);
@@ -207,6 +229,16 @@ void NetworkServer::networkIncomingPlayers(int p,long &elapsed) {
 void NetworkServer::networkOutgoing(long &elapsed) {
 	// Outgoing Network Section
 	try {
+		/*
+		// Send STATUS update to each _players
+		if((_players.size() > 0 || _dedicatedServer == false)) {
+			NetworkPacket pkt;
+			for(unsigned int p=0; p<_players.size(); p++) {
+				SendPacket(pkt, &(_players[p]->socket), _players[p]->ip);
+			}
+		}
+		*/
+
 		// Send up to MAX_PACKETS_PER_CYCLE Packets
 		const int objsSize = _serverObjs.size();
 		const int sendSize = min(objsSize, (int)(SERVER_SEND_MAX_PACKETS_PER_MS * elapsed * OBJECT_BATCHSEND_SIZE));

@@ -176,3 +176,33 @@ void NetworkSystem::decodeObjectSend(NetworkPacket &pkt, long interpValue) {
 		}
 	}
 }
+
+int NetworkSystem::makePlayerCamera(Vector  camPos, Vector  camView, unsigned char *bufPtr) {
+	int currPos = 0;
+	int currISize;
+
+	double tmpD;
+	currISize = sizeof(double);
+
+	tmpD = camPos.x(); memcpy(bufPtr + currPos, &tmpD, currISize); currPos += currISize;
+	tmpD = camPos.y(); memcpy(bufPtr + currPos, &tmpD, currISize); currPos += currISize;
+	tmpD = camPos.z(); memcpy(bufPtr + currPos, &tmpD, currISize); currPos += currISize;
+
+	tmpD = camView.x(); memcpy(bufPtr + currPos, &tmpD, currISize); currPos += currISize;
+	tmpD = camView.y(); memcpy(bufPtr + currPos, &tmpD, currISize); currPos += currISize;
+	tmpD = camView.z(); memcpy(bufPtr + currPos, &tmpD, currISize); currPos += currISize;
+
+	return currPos;
+}
+
+void NetworkSystem::sendPlayerCamera(Vector camPos, Vector camView, ting::UDPSocket *socketPtr, ting::IPAddress destIP) {
+	NetworkPacket tmpPkt;
+	tmpPkt.dataSize = makePlayerCamera(camPos, camView, tmpPkt.data);
+	tmpPkt.header.type = CAMLOC_MYLOC;
+	SendPacket(tmpPkt, socketPtr, destIP);
+}
+
+void NetworkSystem::recvPlayerCamera(Vector &camPos, Vector &camView, unsigned char *bufPtr) {
+	camPos = Vector(*((double*)(bufPtr)+0), *((double*)(bufPtr)+1), *((double*)(bufPtr)+2));
+	camView = Vector(*((double*)(bufPtr)+3), *((double*)(bufPtr)+4), *((double*)(bufPtr)+5));
+}

@@ -89,7 +89,7 @@ public:
 	// Player Detail Functions
 	//virtual int  getPlayerScore(int playerID) { return 0; };
 	virtual PlayerColor getPlayerColor() { return (PlayerColor)_playerID; };
-	//virtual void sendPlayerCamera() {};
+
 	//virtual void sendPlayerReady(int readyFlag) {};
 
 	// Communication

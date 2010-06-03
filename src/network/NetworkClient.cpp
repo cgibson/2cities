@@ -1,5 +1,7 @@
 #include "NetworkClient.h"
 
+#include "../graphics/camera.h"
+
 NetworkClient::NetworkClient() : NetworkSystem() {
 	PRINTINFO("Network Initializing...");
 	ting::SocketLib socketsLib;
@@ -31,6 +33,56 @@ void NetworkClient::closeSockets() {
 }
 
 void NetworkClient::initialize() {}
+
+
+void NetworkClient::update(long milli_time) {
+	updateRxTxData(milli_time);
+	//int currServerTime = global::elapsed_ms() - serverTimeDelta;
+
+	ting::IPAddress sourceIP;
+	NetworkPacket pkt;
+	unsigned int pktsRecv = 0;
+
+	static int lagDelayUpdatePeriod = 1000;
+	if(isConnected) {
+		if(lagDelayUpdatePeriod < 0) {
+			lagCalc_StartTime = global::elapsed_ms();
+			NetworkPacket tmpPkt(LAG_REQ, (unsigned char *)&lagCalc_StartTime, sizeof(int));
+			SendPacket(tmpPkt, &socket, serverIP);
+			sendPlayerCamera(camera->position(), camera->viewVec(), &socket, serverIP);
+			lagDelayUpdatePeriod = 1000;
+		}
+		else {
+			lagDelayUpdatePeriod -= milli_time;
+		}
+	}
+
+	// Check for Waiting Network Data
+	while(isConnected && waitSet->WaitWithTimeout(0) && pktsRecv < SERVER_RECV_MAX_PACKETS_PER_CYCLE) {
+		RecvPacket(&pkt, &socket, &sourceIP);
+		int pktRecvTime = global::elapsed_ms();
+
+		if(pkt.header.type == OBJECT_BATCHSEND || pkt.header.type == OBJECT_SEND) {
+			// TODO timestamp based interpolation timing
+			decodeObjectSend(pkt, 0);
+		}
+		else if(pkt.header.type == OBJECT_KILL) {
+			removeObjectLocal(*(unsigned int*)(pkt.data));
+		}
+		else if(pkt.header.type == LAG_REPLY) {
+			serverDelay = (pktRecvTime - lagCalc_StartTime)/2;
+			NetworkPacket tmpPkt(LAG_RESULT, (unsigned char *)&serverDelay, sizeof(int));
+			SendPacket(tmpPkt, &socket, serverIP);
+		}
+		else if(pkt.header.type == LEVEL_CLEAR) {
+			global::stateManager->currentState->objects.clear();
+		}
+		else {
+			printf("Received an unknown packet type!\n");
+		}
+		pktsRecv++;
+	}
+}
 
 bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 	serverIP = ting::IPAddress(ip, port);
@@ -124,58 +176,14 @@ int NetworkClient::checkLag(ting::UDPSocket *socket, ting::IPAddress ip) {
 	return lagCalc_Delta;
 }
 
-void NetworkClient::update(long milli_time) {
-	updateRxTxData(milli_time);
-	//int currServerTime = global::elapsed_ms() - serverTimeDelta;
-
-	ting::IPAddress sourceIP;
-	NetworkPacket pkt;
-	unsigned int pktsRecv = 0;
-
-	static int lagDelayUpdatePeriod = 1000;
+void NetworkClient::sendPlayerReady(int readyFlag) {
 	if(isConnected) {
-		if(lagDelayUpdatePeriod < 0) {
-			lagCalc_StartTime = global::elapsed_ms();
-			NetworkPacket tmpPkt(LAG_REQ, (unsigned char *)&lagCalc_StartTime, sizeof(int));
-			SendPacket(tmpPkt, &socket, serverIP);
-			lagDelayUpdatePeriod = 1000;
-		}
-		else {
-			lagDelayUpdatePeriod -= milli_time;
-		}
-	}
-
-	// Check for Waiting Network Data
-	while(isConnected && waitSet->WaitWithTimeout(0) && pktsRecv < SERVER_RECV_MAX_PACKETS_PER_CYCLE) {
-		RecvPacket(&pkt, &socket, &sourceIP);
-		int pktRecvTime = global::elapsed_ms();
-
-		if(pkt.header.type == OBJECT_BATCHSEND || pkt.header.type == OBJECT_SEND) {
-			// TODO timestamp based interpolation timing
-			decodeObjectSend(pkt, 0);
-		}
-		else if(pkt.header.type == OBJECT_KILL) {
-			removeObjectLocal(*(unsigned int*)(pkt.data));
-		}
-		else if(pkt.header.type == LAG_REPLY) {
-			serverDelay = (pktRecvTime - lagCalc_StartTime)/2;
-#ifdef DEBUG
-			printf("ServerDelay = %i\n",serverDelay);
-#endif
-			NetworkPacket tmpPkt(LAG_RESULT, (unsigned char *)&serverDelay, sizeof(int));
-			SendPacket(tmpPkt, &socket, serverIP);
-		}
-		else if(pkt.header.type == LEVEL_CLEAR) {
-			global::stateManager->currentState->objects.clear();
-		}
-		else {
-			printf("Received an unknown packet type!\n");
-		}
-		pktsRecv++;
+		NetworkPacket tmpPkt(PLAYER_READY, (unsigned char *)&readyFlag, sizeof(int));
+		SendPacket(tmpPkt, &socket, serverIP);
 	}
 }
 
-void NetworkClient::sendMsg(char * msgStr) {
+void NetworkClient::sendMsg(char *msgStr) {
 	if(isConnected) {
 		NetworkPacket tmpPkt(TEXT_MSG, (unsigned char *)msgStr, strlen(msgStr)+1);
 		SendPacket(tmpPkt, &socket, serverIP);

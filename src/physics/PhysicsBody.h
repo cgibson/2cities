@@ -15,7 +15,7 @@ class PhysicsBody : public btRigidBody
     btRigidBody::btRigidBodyConstructionInfo getCI(WorldObject);
 
     btRigidBody * body; 
-    WorldObject wo;
+    WorldObject * wo;
     ObjectType type;
     float forceScale;
     float boundForce(float);
@@ -35,11 +35,12 @@ class PhysicsBody : public btRigidBody
       return btVector3(btScalar(in.x()), btScalar(in.y()), btScalar(in.z()));
     }
     btRigidBody * getRigidBody() {return body;}
-    PhysicsBody(WorldObject);
-    int getID() {return wo.getID();}
-    int getPlayerID() {return wo.getPlayerID();}
-    int getType() {return wo.getType();}
-    WorldObject * getWorldObject() {return &wo;}
+    PhysicsBody(WorldObject *);
+//    PhysicsBody(WorldObject);
+    int getID() {return wo->getID();}
+    int getPlayerID() {return wo->getPlayerID();}
+    int getType() {return wo->getType();}
+    WorldObject * getWorldObject() {return wo;}
     int update();
     Vector getForce();
 };

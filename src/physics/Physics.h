@@ -28,10 +28,10 @@ class Physics
     btAlignedObjectArray<btCollisionShape *> collisionShapes;
     btRigidBody * groundBody;
     std::vector<WorldObject> recentChanges;
-    std::vector<PhysicsBody *> physicsBodies;
     std::vector<Vector> fileToBlockLocations(const char * fileName);
     int isUniqueID(int id);
   public:
+    std::vector<PhysicsBody *> physicsBodies;
     static void tickCallback(btDynamicsWorld *dWorld,
       btScalar timeChange);
     void addWorldObject(WorldObject *newObject);

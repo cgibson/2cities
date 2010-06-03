@@ -86,14 +86,14 @@ namespace Tesselator
       result.push_back(placeBlock(BLOCK_2_4_2, spot + sg.xVector() - sb.xVector()));
     if ((bits & TESS_MAX_X) && (bits & TESS_MAX_Z))
       result.push_back(placeBlock(BLOCK_2_4_2, spot + sg.xVector() - sb.xVector() + sg.zVector() - sb.zVector()));
-    if ((bits & TESS_MIN_X) && (!(bits & (TESS_MIN_Z | TESS_MAX_Z))))
+    if ((bits & TESS_MIN_X) && (!(bits & (TESS_MIN_Z ))))//| TESS_MAX_Z))))
       result.push_back(placeBlock(BLOCK_2_4_2, spot - sb.zVector() * 0.5));
-    if ((bits & TESS_MAX_X) && (!(bits & (TESS_MIN_Z | TESS_MAX_Z))))
+    if ((bits & TESS_MAX_X) && (!(bits & (TESS_MIN_Z ))))//| TESS_MAX_Z))))
       result.push_back(placeBlock(BLOCK_2_4_2, spot + sg.xVector() - sb.xVector() - sb.zVector() * 0.5));
-    if ((bits & TESS_MIN_Z) && (!(bits & (TESS_MIN_X | TESS_MAX_X))))
+    if ((bits & TESS_MIN_Z) && (!(bits & (TESS_MIN_X ))))//| TESS_MAX_X))))
       result.push_back(placeBlock(BLOCK_2_4_2, spot - sb.xVector() * 0.5));
-    if ((bits & TESS_MAX_Z) && (!(bits & (TESS_MIN_X | TESS_MAX_X))))
-      result.push_back(placeBlock(BLOCK_1_2_1, spot + sg.zVector() - sb.zVector() - sb.xVector() * 0.5));
+    if ((bits & TESS_MAX_Z) && (!(bits & (TESS_MIN_X ))))//| TESS_MAX_X))))
+      result.push_back(placeBlock(BLOCK_2_4_2, spot + sg.zVector() - sb.zVector() - sb.xVector() * 0.5));
 //      
     if (!(bits & (TESS_MIN_X | TESS_MIN_Z)))
       result.push_back(placeBlock(BLOCK_2_4_2, spot- sb.xVector() * 0.5 - sb.zVector() * 0.5));
@@ -215,7 +215,7 @@ namespace Tesselator
           if ((here.y() + sg.y()) >= upperBound.y()) bits += TESS_MAX_Y;
           if ((here.z() + sg.z()) >= upperBound.z()) bits += TESS_MAX_Z;
           subResult = placeSegment(here, type, bits);
-          for (int i = 0; i < subResult.size(); i++)
+          for (unsigned int i = 0; i < subResult.size(); i++)
             result.push_back(subResult[i]);
         }
     return result;

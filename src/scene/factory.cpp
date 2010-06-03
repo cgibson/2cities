@@ -102,7 +102,7 @@ void ObjectFactory::loadConfig(char* filename)
   setBlueprint(DRILL_CONE, 1000.0f, YELLOW_MAT, DRILL_CONE_SHAPE, Vector(1.0f, 1.0f, 1.0f));
   
   setBlueprint(DUMMY_CYLINDER, 1.0f, YELLOW_MAT, SMALL_CYLINDER, Vector(1.0f, 1.0f, 1.0f));
-  setBlueprint(BLACK_HOLE, 10000.0f, YELLOW_MAT, SMALL_SPHERE, Vector(1.0f, 0.0f, 0.f));
+  setBlueprint(BLACK_HOLE, 100.0f, YELLOW_MAT, SMALL_SPHERE, Vector(0.5f, 0.0f, 0.f));
   setBlueprint(BLOCK_1_2_1, 2.0f, YELLOW_MAT, BLOCK_1_2_1_SHAPE, Vector(1.0f, 2.0f, 1.0f));
   setBlueprint(BLOCK_2_4_2, 4.0f, YELLOW_MAT, BLOCK_2_4_2_SHAPE, Vector(1.0f, 4.0f, 1.0f));
   setBlueprint(BLOCK_5_1_5, 25.0f, YELLOW_MAT, BLOCK_5_1_5_SHAPE, Vector(5.0f, 1.0f, 5.0f));

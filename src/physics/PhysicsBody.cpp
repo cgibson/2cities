@@ -18,14 +18,34 @@ void PhysicsBody::setVelocity(Vector in)
 	body->setLinearVelocity(VtobtV3(in));
 }
 
-PhysicsBody::PhysicsBody(WorldObject worldObject):
-btRigidBody(getCI(worldObject))
+PhysicsBody::PhysicsBody(WorldObject *worldObject):
+btRigidBody(getCI(*worldObject))
 {
   wo = worldObject;
   btTransform trans;
-  Vector pos = wo.getPosition();
-  Vector vel = wo.getVelocity();
-  Quaternion ori = wo.getOrientation();
+  Vector pos = wo->getPosition();
+  Vector vel = wo->getVelocity();
+  Quaternion ori = wo->getOrientation();
+  
+  trans.setIdentity();
+  trans.setOrigin(VtobtV3(pos));
+  btQuaternion quat = trans.getRotation();
+  if (ori.getAngle() < -0.001 || ori.getAngle() > 0.001)
+    quat.setRotation(VtobtV3(ori.getAxis()), btScalar(ori.getAngle()));
+  trans.setRotation(quat);
+  setCenterOfMassTransform(trans);
+  setLinearVelocity(VtobtV3(vel));
+  body = (btRigidBody *)(this);
+}
+/*
+PhysicsBody::PhysicsBody(WorldObject worldObject):
+btRigidBody(getCI(worldObject))
+{
+  wo = new WorldObject(worldObject);
+  btTransform trans;
+  Vector pos = wo->getPosition();
+  Vector vel = wo->getVelocity();
+  Quaternion ori = wo->getOrientation();
   
   // set position
   trans.setIdentity();
@@ -38,7 +58,7 @@ btRigidBody(getCI(worldObject))
   // set velocity
   setLinearVelocity(VtobtV3(vel));
   body = (btRigidBody *)(this);
-}
+}*/
 
 btRigidBody::btRigidBodyConstructionInfo PhysicsBody::getCI(WorldObject worldObject)
 {
@@ -88,7 +108,7 @@ Vector PhysicsBody::getForce()
 bool PhysicsBody::drawnByBlackHoleAt(Vector loc, float strength,
                                      float far,float eh)
 {
-  Vector line = loc - wo.getPosition();
+  Vector line = loc - wo->getPosition();
   if (line.mag() < far)
   {
 		if (line.mag() < eh)
@@ -113,29 +133,29 @@ bool PhysicsBody::drawnByBlackHoleAt(Vector loc, float strength,
 int PhysicsBody::update()
 {
   float epsilon = .1;
-  Vector oldPos = wo.getPosition();
+  Vector oldPos = wo->getPosition();
   Vector newPos = btV3toV(body->getCenterOfMassPosition());
-  wo.setPosition(newPos);
-  wo.setVelocity(btV3toV(body->getLinearVelocity()));
+  wo->setPosition(newPos);
+  wo->setVelocity(btV3toV(body->getLinearVelocity()));
   Quaternion quat;
   btQuaternion btq = body->getOrientation();
 //  btTransform trans = body->getCenterOfMassTransform();
 //  btQuaternion btq = trans.getRotation();
   quat.setAxis(btV3toV(btq.getAxis()));
   quat.setAngle(btq.getAngle() * 180 / 3.14159 );
-  wo.setOrientation(quat);
+  wo->setOrientation(quat);
   Vector force = getForce();
-  wo.setForce(force);
-  wo.setTimeStamp(global::elapsed_ms());
-  if (wo.getID() >= 10000)
-  {
+  wo->setForce(force);
+  wo->setTimeStamp(global::elapsed_ms());
+//  if (wo->getID() >= 10000)
+//  {
 //    if (drawnByBlackHoleAt(Vector(0, 100, 0), 10, 1000, 10))
 //      return -1;
-  }
-  if (wo.getID() < 10000 && wo.getID() % 2 && (body->getActivationState() & ISLAND_SLEEPING))
+//  }
+//  if (wo->getID() < 10000 && wo.getID() % 2 && (body->getActivationState() & ISLAND_SLEEPING))
 //    if (drawnByBlackHoleAt(Vector(-10, 10, 0), 100, 100, .5))
 //      return -1;
-  if (wo.getID() < 10000 && wo.getID() % 2 - 1 && (body->getActivationState() & ISLAND_SLEEPING))
+//  if (wo.getID() < 10000 && wo.getID() % 2 - 1 && (body->getActivationState() & ISLAND_SLEEPING))
 //		if (drawnByBlackHoleAt(Vector(10, 10, 0), 100, 100, .5))
 //		  return -1;
   if ((newPos - oldPos).mag() > epsilon)

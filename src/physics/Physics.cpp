@@ -33,8 +33,8 @@ void Physics::initPhysics()
   world = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver,
            collConf);
   world->setGravity(btVector3(0,-10, 0));
-  btCollisionShape * ground = new btBoxShape(btVector3(btScalar(40.),
-          btScalar(GROUND_HEIGHT / 2.0), btScalar(40.)));
+  btCollisionShape * ground = new btBoxShape(btVector3(btScalar(global::map_width / 2.0),
+          btScalar(GROUND_HEIGHT / 2.0), btScalar(global::map_height / 2.0)));
 //  btCollisionShape * ground = new btStaticPlaneShape(btVector3(0,1,0), 50);
   btAlignedObjectArray<btCollisionShape *> collisionShapes;
   collisionShapes.push_back(ground);
@@ -93,16 +93,18 @@ int Physics::isUniqueID(int id)
 
 void Physics::tickCallback(btDynamicsWorld *dWorld, btScalar timeChange)
 {
-//  printf("The world just ticked by %f seconds!\n", timeChange);
+//  for (int i = 0; i < physicsBodies.size(); i++)
+  {
+//    global::physicsBodies[i]->getWorldObject()->think();
+  }
 }
-
 
 void Physics::addWorldObject(WorldObject *worldObject)
 {
   
   if (isUniqueID(worldObject->getID()))
   {
-    PhysicsBody * newBody = new PhysicsBody(*worldObject);
+    PhysicsBody * newBody = new PhysicsBody(worldObject);
     // stall slow objects
 
     if (worldObject->getVelocity().mag() < .01)

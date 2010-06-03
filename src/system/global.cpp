@@ -21,7 +21,7 @@ namespace global
 #endif
 
   int map_width = 120;
-  int map_height = 120;
+  int map_height = 80;
 
   int width;  // window width
   int height; // wondow height

@@ -1,11 +1,17 @@
-//
+// build grid shader
+
 uniform vec4 material_ambient;
 uniform vec4 material_diffuse;
-uniform vec4 grid_diffuse;
 uniform vec4 material_specular;
 uniform float material_shininess;
+uniform vec4 grid_diffuse;
+
 uniform float grid_size;
 uniform float line_pct;
+uniform float field_width;
+uniform float field_depth;
+uniform float border_size;
+uniform float division_size;
 
 uniform vec3 light_position;
 uniform vec4 light_diffuse;
@@ -14,10 +20,6 @@ uniform vec4 light_ambient;
 varying vec3 lightPos;
 varying vec3 N;
 varying vec3 v; 
-
-#define WIDTH 40
-#define HEIGHT 40
-#define EDGE 1
 
 #define Integral(x, p, notp) ((floor(x)*(p)) + max(fract(x)-(notp), 0.0))
   
@@ -63,13 +65,25 @@ void main (void)
     vec3 reflection = normalize( -reflect(view_vec,normal) );
 
     float NdotL = clamp(dot(normal,light_vec), 0.0, 1.0);
+    
+    float width = field_width / 2.0;
+    float depth = field_depth / 2.0;
 
-    if((v.x < WIDTH) && (v.x > -WIDTH) &&
-       (v.z < HEIGHT) && (v.z > -HEIGHT))
+    if((v.x < width) && (v.x > -width) &&
+       (v.z < depth) && (v.z > -depth))
     {
-      diffuse = (diffuse1 * balance) + (diffuse2 * (1.0 - balance));
-    }else if((v.x < (WIDTH + EDGE)) && (v.x > -(WIDTH + EDGE)) &&
-             (v.z < (HEIGHT + EDGE)) && (v.z > -(HEIGHT + EDGE)))
+	  if((v.x < division_size) && (v.x > -division_size))
+	  {
+		float colorflip = sin((v.x + v.z) * 2.0);
+        if(colorflip > 0.0)
+          diffuse = vec4(0.5,0,0,1);
+        else
+          diffuse = vec4(0.1,0,0,1);
+	  }
+        diffuse += (diffuse1 * balance) + (diffuse2 * (1.0 - balance));
+        
+    }else if((v.x < (width + border_size)) && (v.x > -(width + border_size)) &&
+             (v.z < (depth + border_size)) && (v.z > -(depth + border_size)))
     {
       float colorflip = sin((v.x + v.z) * 2.0);
       if(colorflip > 0.0)

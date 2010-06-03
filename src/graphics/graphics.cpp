@@ -165,6 +165,18 @@ namespace gfx{
     loc = glGetUniformLocation(gridShader.getProgram(), "line_pct");
     glUniform1f(loc, 0.03f);
 
+    loc = glGetUniformLocation(gridShader.getProgram(), "field_width");
+    glUniform1f(loc, global::map_width);
+
+    loc = glGetUniformLocation(gridShader.getProgram(), "field_depth");
+    glUniform1f(loc, global::map_height);
+
+    loc = glGetUniformLocation(gridShader.getProgram(), "border_size");
+    glUniform1f(loc, 1);
+
+    loc = glGetUniformLocation(gridShader.getProgram(), "division_size");
+    glUniform1f(loc, 5);
+
     shader::setProgram(old);
 
   }

@@ -102,6 +102,7 @@ public:
 	//virtual void reqUpdateObj(unsigned int objID) {};
 
 	// Load a stored lvl
+	virtual void emptyWorld();
 	virtual void loadLevel(const char * file);
 	//virtual void loadLevel(vector<WorldObject *> newObjs) {};
 };

@@ -1,11 +1,13 @@
 #include "StateManager.h"
 #ifdef CLIENT
 	#include "../graphics/graphics.h"
+	#include "../graphics/hud.h"
 #endif
 
 #include "BuildState.h"
 #include "CarnageState.h"
 #include "../system/global.h"
+#include "../system/enum.h"
 
 using namespace enumeration;
 
@@ -35,15 +37,30 @@ void StateManager::changeCurrentState(enum E_STATE newState)
     //InGameState *oldInGameState = global::stateManager->currentState;
     switch(newState)
     {
+    case MENU_STATE:
+#ifdef CLIENT
+        gfx::hud.swapUI(Hud::MENU);
+#endif
+        break;
     case BUILD_STATE:
         currentState = new BuildState();
         currentState->initialize();
+#ifdef CLIENT
+        gfx::hud.swapUI(Hud::BUILD);
+#endif
         break;
     case CARNAGE_STATE:
 		currentState = new CarnageState();
 		currentState->initialize();
+#ifdef CLIENT
+		gfx::hud.swapUI(Hud::CARNAGE);
+#endif
         break;
-
+    case RESULTS_STATE:
+#ifdef CLIENT
+		gfx::hud.swapUI(Hud::RESULTS);
+#endif
+        break;
     default:
         break;
     }
@@ -109,8 +126,8 @@ void StateManager::stateConsoleCmds(int argc, char *argv[])
 		}
 	}
 	if(!strcmp(argv[0], "ready") || !strcmp(argv[0], "r")) {
-		global::stateManager->switchToCarnage();
-		gfx::hud.console.info("changing to Carnage State from Building Level");
+		global::networkManager->network->sendPlayerReady(1);
+		gfx::hud.console.info("I'm Ready!");
 	}
 #endif
 }

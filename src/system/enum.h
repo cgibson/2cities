@@ -2,11 +2,12 @@
 #define _ENUM_H_
 
 namespace enumeration {
-
+  // InGameState Enum
   typedef enum E_STATE {
-    GLOBAL_STATE, BUILD_STATE, AMMO_STATE, CARNAGE_STATE
+    GLOBAL_STATE, MENU_STATE, BUILD_STATE, CARNAGE_STATE, RESULTS_STATE
   } State;
 
+  // Physics Engine Shape Enum
   typedef enum E_SHAPE {
     SHAPE_MIN,
       SHAPE_SPHERE_MIN = SHAPE_MIN,
@@ -37,7 +38,8 @@ namespace enumeration {
   // NONE   : No Physics Simulation Needed for Object
   // STATIC : Physics Simulation object (not currently needed in PhysicsEngine)
   // DYNAMIC: Physics Simulation object (currently needed in PhysicsEngine)
-  // NOTE... Currently not used. Will be an optimization feature for later
+
+  // TODO Currently not used. Will be an optimization feature for later
   typedef enum E_PHYSICS {
     NONE, STATIC, DYNAMIC
   } PhysicsState;

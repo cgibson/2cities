@@ -38,11 +38,11 @@ public:
 	//virtual int  checkLag(ting::UDPSocket *socket, ting::IPAddress ip) { return 0; };
 
 	// Player Detail Functions
-	//      int  getPlayerID() { return _playerID; };
+	//        int  getPlayerID() { return _playerID; };
 	//virtual int  getPlayerScore(int playerID) { return 0; };
 	//virtual PlayerColor getPlayerColor() { return (PlayerColor)_playerID; };
 
-	virtual void sendPlayerReady(int readyFlag) { global::stateManager->switchToCarnage(); };
+	virtual void sendPlayerReady(int readyFlag);
 
 	// Communication
 	//virtual void sendMsg(char *msgStr) {};
@@ -54,6 +54,7 @@ public:
 	//virtual void reqUpdateObj(unsigned int objID) {};
 
 	// Load a stored lvl
+	virtual void emptyWorld();
 	virtual void loadLevel(const char * file);
 	//virtual void loadLevel(vector<WorldObject *> newObjs) {};
 };

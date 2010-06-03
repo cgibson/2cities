@@ -42,9 +42,21 @@ void NetworkPrivate::update(long milli_time) {
 	}
 }
 
+void NetworkPrivate::sendPlayerReady(int readyFlag) {
+	global::stateManager->switchToCarnage();	// TODO REMOVE. TEMP FLOW CODE
+}
+
 void NetworkPrivate::addObject(WorldObject *newObj) {
 	newObj->setID(_currObjID++);
 	physicsEngine.addWorldObject(newObj);
+}
+
+void NetworkPrivate::emptyWorld() {
+	// Clear GameState objects
+	global::stateManager->currentState->objects.clear();
+
+	// Clear Physics
+	physicsEngine.emptyWorld();
 }
 
 void NetworkPrivate::loadLevel(const char * file) {

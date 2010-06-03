@@ -200,6 +200,9 @@ void NetworkServer::networkIncomingPlayers(int p, long &elapsed) {
 			_players[p]->socket.Close();
 			_players.erase(_players.begin()+p);
 			break;
+		case LEVEL_CLEAR :
+			emptyWorld();
+			break;
 		case LEVEL_LOAD :
 			printf("LEVEL_LOAD: %s\n", (char *)pkt.data);
 			loadLevel((char *)pkt.data);
@@ -366,12 +369,15 @@ void NetworkServer::addObjectPhys(WorldObject *objPtr) {
 	physicsEngine.addWorldObject(objPtr);
 }
 
-void NetworkServer::loadLevel(const char * file) {
+void NetworkServer::emptyWorld() {
 	// Clear GameState objects
 	global::stateManager->currentState->objects.clear();
 
 	// Clear Server objects
 	_serverObjs.clear();
+
+	// Clear Physics
+	physicsEngine.emptyWorld();
 
 	// Send to Clients
 	char msg[] = "";
@@ -379,6 +385,10 @@ void NetworkServer::loadLevel(const char * file) {
 	for(unsigned int p=0; p<_players.size(); p++) {
 		SendPacket(pkt, &(_players[p]->socket), _players[p]->ip);
 	}
+}
+
+void NetworkServer::loadLevel(const char * file) {
+	emptyWorld();
 
 	// Load level (which will clear PhysicsEngine objects)
 	physicsEngine.loadFromFile(file);
@@ -386,18 +396,7 @@ void NetworkServer::loadLevel(const char * file) {
 }
 /*
 void NetworkServer::loadLevel(vector<WorldObject *> newObjs) {
-	// Clear GameState objects
-	global::stateManager->currentState->objects.clear();
-
-	// Clear Server objects
-	_serverObjs.clear();
-
-	// Send to Clients
-	char msg[] = "";
-	NetworkPacket pkt(LEVEL_CLEAR, (unsigned char *)&msg, sizeof(msg));
-	for(unsigned int p=0; p<_players.size(); p++) {
-		SendPacket(pkt, &(_players[p]->socket), _players[p]->ip);
-	}
+	emptyWorld();
 
 	for(int o = 0; o < newObjs.size(); ++o) {
 		// TODO make it so building blocks have a 0-10000 value

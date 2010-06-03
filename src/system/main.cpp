@@ -114,7 +114,7 @@ void initialize()
  */
 int main(int argc, char** argv)
 {
-	beginState = CARNAGE_STATE;
+	beginState = BUILD_STATE;
 	global::fullscreen = false;
 
 	for (int i = 0; i < argc; i++)
@@ -122,6 +122,11 @@ int main(int argc, char** argv)
 		if (strcmp(argv[i], "-build") == 0)
 		{
 			beginState = BUILD_STATE;
+			gfx::draw_axis = true;
+		}
+		if (strcmp(argv[i], "-carnage") == 0)
+		{
+			beginState = CARNAGE_STATE;
 			gfx::draw_axis = true;
 		}
 		else if (strcmp(argv[i], "-fullscreen") == 0)

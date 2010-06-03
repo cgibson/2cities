@@ -87,6 +87,9 @@ void NetworkClient::update(long milli_time) {
 bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 	serverIP = ting::IPAddress(ip, port);
 
+//	if(isConnected)
+//		disconnectServer();
+
 	if(socket.IsNotValid()) {
 		socket.Open();
 	}
@@ -177,6 +180,7 @@ int NetworkClient::checkLag(ting::UDPSocket *socket, ting::IPAddress ip) {
 }
 
 void NetworkClient::sendPlayerReady(int readyFlag) {
+	global::stateManager->switchToCarnage();	// TODO REMOVE. TEMP FLOW CODE
 	if(isConnected) {
 		NetworkPacket tmpPkt(PLAYER_READY, (unsigned char *)&readyFlag, sizeof(int));
 		SendPacket(tmpPkt, &socket, serverIP);
@@ -206,11 +210,23 @@ void NetworkClient::addObject(WorldObject *ObjPtr) {
 	updateObjectLocal(ObjPtr);
 }
 
-void NetworkClient::loadLevel(const char * file) {
-	if(isConnected) {
-		// Clear GameState objects
-		global::stateManager->currentState->objects.clear();
+void NetworkClient::emptyWorld() {
+	// Clear GameState objects
+	global::stateManager->currentState->objects.clear();
 
+	if(isConnected) {
+		int tmpInt = 0;
+		NetworkPacket tmpPkt(LEVEL_CLEAR, (unsigned char *)&tmpInt, sizeof(int));
+		SendPacket(tmpPkt, &socket, serverIP);
+		printf("Sent ClearWorld Request.\n");
+	}
+}
+
+void NetworkClient::loadLevel(const char * file) {
+	// Clear GameState objects
+	global::stateManager->currentState->objects.clear();
+
+	if(isConnected) {
 		NetworkPacket tmpPkt(LEVEL_LOAD, (unsigned char *)file, strlen(file)+1);
 		SendPacket(tmpPkt, &socket, serverIP);
 		printf("Sent LoadLevel Request.\n");

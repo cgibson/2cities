@@ -20,7 +20,6 @@ class Physics
   private:
     int nextBlockNumber;
     void InsertNewBlock(ObjectType type, Vector position);
-    void emptyWorld();
     btDiscreteDynamicsWorld * world;
     btSequentialImpulseConstraintSolver * solver;
     btBroadphaseInterface * broadphase;
@@ -44,6 +43,7 @@ class Physics
     void update(int timeChange);
     int loadFromFile(const char * fileName);
     bool removeWorldObject(int);
+    void emptyWorld();
 };
 
 #endif

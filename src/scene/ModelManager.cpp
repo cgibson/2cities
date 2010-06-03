@@ -10,7 +10,14 @@
 
 using namespace enumeration;
 
-const char* modelFiles[] = {"models/drillcone.obj"};
+const char* modelFiles[NUM_GAME_MODELS] = {
+	"models/tronrecognizer.obj",
+	"models/cannonsmooth.obj",
+	"models/cannontwist.obj",
+	"models/cannonfrontmount.obj",
+	"models/fractalbomb.obj",
+	"models/warpedcube.obj",
+	"models/drillcone.obj"};
 
 //Create a new ModelManager.
 ModelManager::ModelManager()
@@ -49,15 +56,15 @@ void ModelManager::initialize()
 		modelnormals[i] = mdl::normalarray;
 		modelcolors[i] = mdl::colorarray;
 		modelfaces[i] = mdl::totalfaces;
-		modelDLs[i] = glGenLists(i);
+		modelDLs[i] = glGenLists(i+1);
 		glNewList(modelDLs[i], GL_COMPILE);
 		{				
 				glEnableClientState(GL_NORMAL_ARRAY);
 				glEnableClientState(GL_COLOR_ARRAY);
 				glEnableClientState(GL_VERTEX_ARRAY);
-				glNormalPointer(GL_FLOAT, 0, getmodelvertices((enumeration::ModelType)i));
+				glNormalPointer(GL_FLOAT, 0, getmodelnormals((enumeration::ModelType)i));
 				glColorPointer(3, GL_FLOAT, 0, getmodelcolors((enumeration::ModelType)i));
-				glVertexPointer(3, GL_FLOAT, 0, getmodelnormals((enumeration::ModelType)i));
+				glVertexPointer(3, GL_FLOAT, 0, getmodelvertices((enumeration::ModelType)i));
 				glPushMatrix();
 				{
 					glDrawArrays(GL_TRIANGLES, 0, getmodelfaces((enumeration::ModelType)i) * 3);

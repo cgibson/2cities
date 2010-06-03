@@ -24,7 +24,6 @@ void ComplexObject::draw()
 		glTranslatef(position.x(), position.y(), position.z());
 		glRotatef(orientation.getK(), orientation.getH(), orientation.getI(), orientation.getJ());
 		glScalef(scalevec.x(), scalevec.y(), scalevec.z());
-		//glutSolidCone(1, 1, 10, 10);
 		glCallList(global::modelManager->getmodelDL(modeltype));
 	}
 	glPopMatrix();

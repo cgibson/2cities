@@ -32,7 +32,7 @@ void CarnageState::initialize() {
     // we just capture the mouse
     io::capture_mouse();
     ammo_recharge = 0;
-    ammo_type = DUMMY_SPHERE;
+    ammo_type = RECOGNIZER;
 
    // initialize our camera (orbital)
    if (global::camera != NULL) delete global::camera;

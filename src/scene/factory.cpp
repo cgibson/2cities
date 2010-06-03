@@ -70,9 +70,36 @@ void ObjectFactory::loadConfig(char* filename)
   // dummy block
   setBlueprint(CUSTOM_BLOCK, 1.0f, GREEN_MAT, SMALL_CUBE, Vector(1.0f, 1.0f, 1.0f));
   
-  
-  setBlueprint(DRILL_CONE, 1.0f, YELLOW_MAT, SMALL_CONE, Vector(1.0f, 1.0f, 1.0f));
+  // dummy cone
   setBlueprint(DUMMY_CONE, 1.0f, YELLOW_MAT, SMALL_CONE, Vector(1.0f, 1.0f, 1.0f));
+  
+  // recognizer
+  //TODO: change this to an appropriate blueprint
+  setBlueprint(RECOGNIZER, 1000.0f, YELLOW_MAT, RECOGNIZER_SHAPE, Vector(1.0f, 1.0f, 1.0f));
+  
+  // smooth cannon
+  //TODO: change this to an appropriate blueprint
+  setBlueprint(SMOOTH, 1000.0f, YELLOW_MAT, SMOOTH_CANNON_SHAPE, Vector(1.0f, 1.0f, 1.0f));
+  
+  // twist cannon
+  //TODO: change this to an appropriate blueprint
+  setBlueprint(TWIST, 1000.0f, YELLOW_MAT, TWIST_CANNON_SHAPE, Vector(1.0f, 1.0f, 1.0f));
+  
+  // buster cannon
+  //TODO: change this to an appropriate blueprint
+  setBlueprint(BUSTER, 1000.0f, YELLOW_MAT, BUSTER_CANNON_SHAPE, Vector(1.0f, 1.0f, 1.0f));
+  
+  // fractal bomb
+  //TODO: change this to an appropriate blueprint
+  setBlueprint(FRACTAL_BOMB, 1000.0f, YELLOW_MAT, FRACTAL_BOMB_SHAPE, Vector(1.0f, 1.0f, 1.0f));
+  
+  // warped cube
+  //TODO: change this to an appropriate blueprint
+  setBlueprint(WARPED_CUBE, 1000.0f, YELLOW_MAT, WARPED_CUBE_SHAPE, Vector(1.0f, 1.0f, 1.0f));
+  
+  // drill cone
+  //TODO: change this to an appropriate blueprint
+  setBlueprint(DRILL_CONE, 1000.0f, YELLOW_MAT, DRILL_CONE_SHAPE, Vector(1.0f, 1.0f, 1.0f));
   
   setBlueprint(DUMMY_CYLINDER, 1.0f, YELLOW_MAT, SMALL_CYLINDER, Vector(1.0f, 1.0f, 1.0f));
   setBlueprint(BLACK_HOLE, 10000.0f, YELLOW_MAT, SMALL_SPHERE, Vector(1.0f, 0.0f, 0.f));
@@ -145,9 +172,28 @@ btCollisionShape * ObjectFactory::getShape(ObjectType type)
 WorldObject* ObjectFactory::makeObject(ObjectType type) {
 	WorldObject *retObjPtr;
 
-	switch (type) {
-	case DUMMY_CONE : // TODO TO BE UPDATED for drill
-		retObjPtr = new ComplexObject(AMMO_DRILL_CONE);
+	switch (type)
+	{
+	case RECOGNIZER :
+		retObjPtr = new ComplexObject(TRON_RECOGNIZER);
+		break;
+	case SMOOTH :
+		retObjPtr = new ComplexObject(SMOOTH_CANNON);
+		break;
+	case TWIST :
+		retObjPtr = new ComplexObject(TWIST_CANNON);
+		break;
+	case BUSTER :
+		retObjPtr = new ComplexObject(BUSTER_CANNON);
+		break;
+	case FRACTAL_BOMB :
+		retObjPtr = new ComplexObject(FRACTAL_BOMB_AMMO);
+		break;
+	case WARPED_CUBE :
+		retObjPtr = new ComplexObject(WARPED_CUBE_AMMO);
+		break;
+	case DRILL_CONE :
+		retObjPtr = new ComplexObject(DRILL_CONE_AMMO);
 		break;
 	case BLACK_HOLE :
 		retObjPtr = new BlackHole();
@@ -156,6 +202,7 @@ WorldObject* ObjectFactory::makeObject(ObjectType type) {
 	// Explicitly listing the dummy objects although not needed due to default
 	case DUMMY_SPHERE :
 	case DUMMY_CYLINDER :
+	case DUMMY_CONE :
 	default:
 		retObjPtr = new WorldObject();
 	}

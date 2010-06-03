@@ -4,7 +4,7 @@
 #include "loader.h"
 #include "../system/enum.h"
 
-#define NUM_GAME_MODELS 1
+#define NUM_GAME_MODELS 7
 
 using namespace mdl;
 using namespace loader;

@@ -14,7 +14,9 @@ namespace Tesselator
     }
     
     int blockSize, count, x1, y1, z1, x2, y2, z2, type;
+    unsigned int i;
     float sz;
+    vector<WorldObject *> objects;
     if ((count = fscanf(inFile, "blocksize: %d\n", &blockSize)) == 1)
     {
       while((count = fscanf(inFile, "%d %d %d %d %d %d",
@@ -28,8 +30,10 @@ namespace Tesselator
         {
           sz = 1.0 / blockSize;
         }
-        placeBuilding(Vector(x1, y1, z1) * sz, Vector(x2, y2, z2) * sz,
+        objects = placeBuilding(Vector(x1, y1, z1) * sz, Vector(x2, y2, z2) * sz,
                       TESS_SIMPLE);
+        for (i = 0; i < objects.size(); i++)
+          networkManager->network->addObject(objects[i]);
       }
     }
     else
@@ -37,7 +41,9 @@ namespace Tesselator
       while((count = fscanf(inFile, "%d %d %d %d %d %d %d",
         &x1, &y1, &z1, &x2, &y2, &z2, &type)) == 7)
       {
-        placeBuilding(Vector(x1, y1, z1), Vector(x2, y2, z2), (Tesselation)type);
+        objects = placeBuilding(Vector(x1, y1, z1), Vector(x2, y2, z2), (Tesselation)type);
+        for (i = 0; i < objects.size(); i++)
+          networkManager->network->addObject(objects[i]);
       }
     }
   }
@@ -47,7 +53,7 @@ namespace Tesselator
     WorldObject * obj = new WorldObject(0, 0, type);
     obj->setPosition(lowerBound +
       global::factory->getBlueprint(type).getSize() * 0.5);
-    networkManager->network->addObject(obj);
+    //networkManager->network->addObject(obj);
     return obj;
   }
   

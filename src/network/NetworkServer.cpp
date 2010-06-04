@@ -182,6 +182,9 @@ void NetworkServer::networkIncomingPlayers(int p, long &elapsed) {
 			break;
 		case CAMLOC_MYLOC :
 			recvPlayerCamera(clients[p]->camPos, clients[p]->camView, pkt.data);
+#ifdef CLIENT
+			updOPlayerCamera();
+#endif
 			//printf("Player #%i CamPos%s CamView%s\n",_players[p]->ID,_players[p]->camPos.str(),_players[p]->camView.str());
 			break;
 		case TEXT_MSG :

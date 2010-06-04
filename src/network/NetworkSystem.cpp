@@ -1,4 +1,5 @@
 #include "NetworkSystem.h"
+#include "../state/CarnageState.h"
 
 NetworkSystem::NetworkSystem() {
 	_pktCountRecv = _pktCountSent = _pktPeriod = 0;
@@ -15,6 +16,16 @@ int NetworkSystem::getMyPlayerID() {
 		return 0;
 	else
 		return clients[myClientID]->playerID;
+}
+
+int NetworkSystem::getPlayerScore(int playerID) {
+	unsigned int currPlayer = 0;
+	while(currPlayer < clients.size()) {
+		if(clients[currPlayer]->playerID == playerID)
+			return clients[currPlayer]->playerScore;
+		currPlayer++;
+	}
+	return -1;
 }
 
 /* Method to take a WorldObject* and update/add it to the main vector (based on ID field)
@@ -224,4 +235,21 @@ void NetworkSystem::sendPlayerCamera(Vector camPos, Vector camView, ting::UDPSoc
 void NetworkSystem::recvPlayerCamera(Vector &camPos, Vector &camView, unsigned char *bufPtr) {
 	camPos = Vector(*((double*)(bufPtr)+0), *((double*)(bufPtr)+1), *((double*)(bufPtr)+2));
 	camView = Vector(*((double*)(bufPtr)+3), *((double*)(bufPtr)+4), *((double*)(bufPtr)+5));
+}
+
+void NetworkSystem::updOPlayerCamera() {
+	if(global::stateManager->currentState->stateType() != CARNAGE_STATE)
+		return;
+
+	int myPlayerID = getMyPlayerID();
+	int currClient = 0;
+	while(currClient < clients.size() &&
+			!(clients[currClient]->playerType == Client::PLAYER &&
+					clients[currClient]->playerID != myPlayerID))
+		currClient++;
+
+	if(currClient < clients.size()) {
+		((CarnageState *)(global::stateManager->currentState))->setOppPos(clients[currClient]->camPos);
+		((CarnageState *)(global::stateManager->currentState))->setOppView(clients[currClient]->camView);
+	}
 }

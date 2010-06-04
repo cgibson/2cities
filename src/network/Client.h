@@ -139,6 +139,9 @@ class Client {
 				currVecLoc++;
 			}
 
+			while(clientVec.size() > currVecLoc)
+				clientVec.pop_back();
+
 			return currPos;
 		}
 };

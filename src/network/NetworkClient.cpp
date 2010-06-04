@@ -80,6 +80,7 @@ void NetworkClient::update(long milli_time) {
 		else if(pkt.header.type == STATUS_UPDATE ) {
 			myClientID = *(int*)(pkt.data);
 			Client::recvClientVectorBinStream(clients, pkt.data+4, pkt.dataSize-4);
+			updOPlayerCamera();
 /*
 			printf("Received Status Update!\n");
 			for(unsigned int i=0; i<clients.size(); i++)
@@ -127,6 +128,7 @@ bool NetworkClient::serverConnect(const char * ip, unsigned int port) {
 			serverIP.port = sourceIP.port;
 			myClientID = *(int*)(pkt.data);
 			Client::recvClientVectorBinStream(clients, pkt.data+8, pkt.dataSize-8);
+			updOPlayerCamera();
 			nextNewObjID = clients[myClientID]->playerID * 10000;
 
 			serverDelay = (lagCalc_EndTime - lagCalc_StartTime)/2;

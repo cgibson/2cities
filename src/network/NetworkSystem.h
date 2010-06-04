@@ -69,6 +69,7 @@ protected:
 	int  makePlayerCamera(Vector  camPos, Vector  camView, unsigned char *bufPtr);
 	void sendPlayerCamera(Vector  camPos, Vector  camView, ting::UDPSocket *socketPtr, ting::IPAddress destIP);
 	void recvPlayerCamera(Vector &camPos, Vector &camView, unsigned char *bufPtr);
+	void updOPlayerCamera();
 
 public:
 	NetworkSystem();
@@ -90,7 +91,7 @@ public:
 	vector<Client *> getPlayers() { return clients; };
 	        int  getMyPlayerID();
 	        int  getMyClientID() { return myClientID; };
-	virtual int  getPlayerScore(int playerID) { return 0; };
+	        int  getPlayerScore(int playerID);
 	virtual PlayerColor getPlayerColor(int playerID) { return (PlayerColor)myClientID; };
 
 	virtual void sendPlayerReady(int readyFlag) {};

@@ -126,11 +126,12 @@ bool NetworkClient::serverConnect(const char * ip, unsigned int port) {
 		if(pkt.header.type == CONN_REPLY) {
 			serverIP.port = sourceIP.port;
 			myClientID = *(int*)(pkt.data);
-			nextNewObjID = myClientID * 10000;
+			Client::recvClientVectorBinStream(clients, pkt.data+8, pkt.dataSize-8);
+			nextNewObjID = clients[myClientID]->playerID * 10000;
 
 			serverDelay = (lagCalc_EndTime - lagCalc_StartTime)/2;
 			serverClockDelta = global::elapsed_ms() - (*((int*)(pkt.data)+1) + serverDelay);
-			Client::recvClientVectorBinStream(clients, pkt.data+8, pkt.dataSize-8);
+
 
 			printf("Connected! Client %i/%i with a %i ms server delay!\n", myClientID, clients.size(), serverDelay);
 
@@ -188,6 +189,7 @@ void NetworkClient::sendMsg(char *msgStr) {
 void NetworkClient::addObject(WorldObject *ObjPtr) {
 	ObjPtr->setID(nextNewObjID++);
 	ObjPtr->setPlayerID(clients[myClientID]->playerID);
+	ObjPtr->print();
 
 	if(isConnected && clients[myClientID]->playerType == Client::PLAYER) {
 		unsigned char buf[150];

@@ -326,7 +326,10 @@ void NetworkServer::update(long elapsed) {
 
 void NetworkServer::addObject(WorldObject *objPtr) {
 	objPtr->setID(nextNewObjID++);
-	objPtr->setPlayerID(clients[myClientID]->playerID);
+	if(myClientID == -1)
+		objPtr->setPlayerID(0);
+	else
+		objPtr->setPlayerID(clients[myClientID]->playerID);
 	
 	addObjectPhys(objPtr);
 

@@ -190,6 +190,8 @@ void NetworkSystem::decodeObjectSend(NetworkPacket &pkt, long interpValue) {
 			//tmpObjPtr->print();
 			tmpObjPtr->interpolate(interpValue);
 			addObjectPhys(tmpObjPtr);
+			if(interpValue != 0)
+				tmpObjPtr->print();
 		}
 	}
 }

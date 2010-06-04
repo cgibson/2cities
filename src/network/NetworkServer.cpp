@@ -1,5 +1,8 @@
 #include "NetworkServer.h"
 
+/*******************************************
+ * HELPER FUNCTIONS
+ *******************************************/
 bool NetworkPrioritySort(NetworkObjectState objSt1, NetworkObjectState objSt2) {
 	if(objSt1.priority != objSt2.priority)
 		return (objSt1.priority > objSt2.priority);
@@ -17,6 +20,9 @@ bool NetworkPrioritySort(NetworkObjectState objSt1, NetworkObjectState objSt2) {
 	return (objSt1.lastUpdate < objSt2.lastUpdate);
 }
 
+/*******************************************
+ * CONSTRUCTORS / DESTRUCTORS
+ *******************************************/
 NetworkServer::NetworkServer() {
 	PRINTINFO("Network Initializing...");
 	ting::SocketLib socketsLib;
@@ -56,18 +62,90 @@ NetworkServer::~NetworkServer() {
 	closeSockets();
 }
 
-void NetworkServer::closeSockets() {
-	serverSocket.Close();
-	PRINTINFO("Main Server Port Closed\n");
+/*******************************************
+ * CORE FUNCTIONS
+ *******************************************/
+void NetworkServer::update(long elapsed) {
+#ifdef SERVER
+	static long lastClockTime = global::elapsed_ms();
+	long currClockTime;
+	while(1) {
+		if(_waitSet->WaitWithTimeout(1)) {
+#endif
+	networkIncoming(elapsed);
+#ifdef SERVER
+		}
+		else {
+			currClockTime = global::elapsed_ms();
+			if(currClockTime != lastClockTime) {
+				elapsed = currClockTime - lastClockTime;
+				lastClockTime = currClockTime;
+#endif
 
-	for(unsigned int p=0; p<clients.size(); p++) {
-		clients[p]->socket.Close();
+	updateRxTxData(elapsed);
+	checkStateChange();
+	checkClientTimeout();
+
+	// Update Physics Engine
+	static int physicsDelay = 0;
+	if(physicsDelay <= 0) {
+		physicsEngine.update(net::SERVER_PHYSICS_UPDATE_RATE - physicsDelay);
+
+#ifdef SERVER
+		// Print Server Stats for Dedicated Server Only
+		printf("\015 LCycle(%4i) Phys(%4li) tx(%5i) rx(%5i) objs(%4i) ttsc(%4i) | ",
+				(net::SERVER_PHYSICS_UPDATE_RATE - physicsDelay),
+				(global::elapsed_ms() - currClockTime),
+				global::pbs_sent,
+				global::pbs_recv,
+				_serverObjs.size(),
+				(global::elapsed_ms()-timeToStateChange)/1000);
+		for(unsigned int p=0; p<clients.size(); p++) {
+			printf("P%i(%4i ms) ", clients[p]->playerID, clients[p]->playerDelay);
+		}
+		printf("   ");
+		fflush(stdout);
+#endif
+
+		physicsDelay = net::SERVER_PHYSICS_UPDATE_RATE;
+
+		// UPDATE LOCAL DATA (and remove items fallen off world)
+		std::vector<WorldObject *> PhysEngObjs = physicsEngine.getWorldObjects();
+		for(unsigned int i=0; i < PhysEngObjs.size(); i++) {
+			if(PhysEngObjs[i]->getPosition().y() < -50.0f) {
+				unsigned int removeID = PhysEngObjs[i]->getID();
+				// Local Removal
+				physicsEngine.removeWorldObject(removeID);
+				removeObjectVector(&_serverObjs,removeID);
+				removeObjectLocal(removeID);
+
+				// Send to Clients
+				NetworkPacket pkt(OBJECT_KILL, (unsigned char *)&removeID, sizeof(unsigned int));
+				for(unsigned int p=0; p<clients.size(); p++) {
+					if(!clients[p]->isLocal)
+						SendPacket(pkt, &(clients[p]->socket), clients[p]->ip);
+				}
+			}
+			else {
+				updateObjectVector(&_serverObjs,new WorldObject(*PhysEngObjs[i]));
+			}
+		}
 	}
-	PRINTINFO("Player Ports Closed\n");
+	else {
+		physicsDelay -= elapsed;
+	}
+
+	networkOutgoing(elapsed);
+#ifdef SERVER
+			}
+		}
+	}
+#endif
 }
 
-void NetworkServer::initialize() {}
-
+/*******************************************
+ * PACKET HANDLING FUNCTIONS (INCOMING)
+ *******************************************/
 void NetworkServer::networkIncoming(long &elapsed) {
 	try {
 		ting::IPAddress ip;
@@ -191,8 +269,7 @@ void NetworkServer::networkIncomingPlayers(int p, long &elapsed) {
 			//printf("Player #%i CamPos%s CamView%s\n",_players[p]->ID,_players[p]->camPos.str(),_players[p]->camView.str());
 			break;
 		case TEXT_MSG :
-			printf("MSG: %s\n", (char *)pkt.data);
-			exit(0);
+			recvMsg(pkt);
 			break;
 		case UNKNOWN :
 		default :
@@ -204,24 +281,13 @@ void NetworkServer::networkIncomingPlayers(int p, long &elapsed) {
 	}
 }
 
+/*******************************************
+ * PACKET HANDLING FUNCTIONS (OUTGOING)
+ *******************************************/
 void NetworkServer::networkOutgoing(long &elapsed) {
 	// Outgoing Network Section
 	try {
-		// Send STATUS update to each _players
-		if((clients.size() > 1 || (_dedicatedServer == true && clients.size() > 0))) {
-			NetworkPacket pkt;
-			pkt.dataSize = Client::makeClientVectorBinStream(clients, pkt.data+12) + 12;
-			State serverState = global::stateManager->currentState->stateType();
-			memcpy(pkt.data+4, (unsigned char *)&serverState, sizeof(State));
-			memcpy(pkt.data+8, (unsigned char *)&timeToStateChange, sizeof(int));
-			pkt.header.type = STATUS_UPDATE;
-			for(unsigned int p=0; p<clients.size(); p++) {
-				if(!clients[p]->isLocal) {
-					memcpy(pkt.data, (unsigned char *)&p, sizeof(unsigned int));
-					SendPacket(pkt, &(clients[p]->socket), clients[p]->ip);
-				}
-			}
-		}
+		sendStatusUpdates();
 
 		// Send up to MAX_PACKETS_PER_CYCLE Packets
 		const int objsSize = _serverObjs.size();
@@ -258,82 +324,17 @@ void NetworkServer::networkOutgoing(long &elapsed) {
 	}
 }
 
-void NetworkServer::update(long elapsed) {
-#ifdef SERVER
-	static long lastClockTime = global::elapsed_ms();
-	long currClockTime;
-	while(1) {
-		if(_waitSet->WaitWithTimeout(1)) {
-#endif
-	networkIncoming(elapsed);
-#ifdef SERVER
-		}
-		else {
-			currClockTime = global::elapsed_ms();
-			if(currClockTime != lastClockTime) {
-				elapsed = currClockTime - lastClockTime;
-				lastClockTime = currClockTime;
-#endif
+/*******************************************
+ * SOCKET/CONNECTION/CLEAN-UP FUNCTIONS
+ *******************************************/
+void NetworkServer::closeSockets() {
+	serverSocket.Close();
+	PRINTINFO("Main Server Port Closed\n");
 
-	updateRxTxData(elapsed);
-	checkStateChange();
-	checkClientTimeout();
-
-	// Update Physics Engine
-	static int physicsDelay = 0;
-	if(physicsDelay <= 0) {
-		physicsEngine.update(net::SERVER_PHYSICS_UPDATE_RATE - physicsDelay);
-
-#ifdef SERVER
-		// Print Server Stats for Dedicated Server Only
-		printf("\015 LCycle(%4i) Phys(%4li) tx(%5i) rx(%5i) objs(%4i) ttsc(%4i) | ",
-				(net::SERVER_PHYSICS_UPDATE_RATE - physicsDelay),
-				(global::elapsed_ms() - currClockTime),
-				global::pbs_sent,
-				global::pbs_recv,
-				_serverObjs.size(),
-				(global::elapsed_ms()-timeToStateChange)/1000);
-		for(unsigned int p=0; p<clients.size(); p++) {
-			printf("P%i(%4i ms) ", clients[p]->playerID, clients[p]->playerDelay);
-		}
-		printf("   ");
-		fflush(stdout);
-#endif
-
-		physicsDelay = net::SERVER_PHYSICS_UPDATE_RATE;
-
-		// UPDATE LOCAL DATA (and remove items fallen off world)
-		std::vector<WorldObject *> PhysEngObjs = physicsEngine.getWorldObjects();
-		for(unsigned int i=0; i < PhysEngObjs.size(); i++) {
-			if(PhysEngObjs[i]->getPosition().y() < -50.0f) {
-				unsigned int removeID = PhysEngObjs[i]->getID();
-				// Local Removal
-				physicsEngine.removeWorldObject(removeID);
-				removeObjectVector(&_serverObjs,removeID);
-				removeObjectLocal(removeID);
-
-				// Send to Clients
-				NetworkPacket pkt(OBJECT_KILL, (unsigned char *)&removeID, sizeof(unsigned int));
-				for(unsigned int p=0; p<clients.size(); p++) {
-					if(!clients[p]->isLocal)
-						SendPacket(pkt, &(clients[p]->socket), clients[p]->ip);
-				}
-			}
-			else {
-				updateObjectVector(&_serverObjs,new WorldObject(*PhysEngObjs[i]));
-			}
-		}
+	for(unsigned int p=0; p<clients.size(); p++) {
+		clients[p]->socket.Close();
 	}
-	else {
-		physicsDelay -= elapsed;
-	}
-
-	networkOutgoing(elapsed);
-#ifdef SERVER
-			}
-		}
-	}
-#endif
+	PRINTINFO("Player Ports Closed\n");
 }
 
 void NetworkServer::playerDisconnect(int clientID) {
@@ -356,6 +357,27 @@ void NetworkServer::checkClientTimeout() {
 		}
 		else
 			++i;
+	}
+}
+
+/*******************************************
+ * STATUS/STATE CHECKING FUNCTIONS
+ *******************************************/
+void NetworkServer::sendStatusUpdates() {
+	// Send STATUS update to each _players
+	if((clients.size() > 1 || (_dedicatedServer == true && clients.size() > 0))) {
+		NetworkPacket pkt;
+		pkt.dataSize = Client::makeClientVectorBinStream(clients, pkt.data+12) + 12;
+		State serverState = global::stateManager->currentState->stateType();
+		memcpy(pkt.data+4, (unsigned char *)&serverState, sizeof(State));
+		memcpy(pkt.data+8, (unsigned char *)&timeToStateChange, sizeof(int));
+		pkt.header.type = STATUS_UPDATE;
+		for(unsigned int p=0; p<clients.size(); p++) {
+			if(!clients[p]->isLocal) {
+				memcpy(pkt.data, (unsigned char *)&p, sizeof(unsigned int));
+				SendPacket(pkt, &(clients[p]->socket), clients[p]->ip);
+			}
+		}
 	}
 }
 
@@ -411,6 +433,9 @@ void NetworkServer::checkStateChange() {
 	}
 }
 
+/*******************************************
+ * OBJECT/LEVEL/WORLD FUNCTIONS
+ *******************************************/
 void NetworkServer::addObject(WorldObject *objPtr) {
 	objPtr->setID(nextNewObjID++);
 	if(myClientID == -1)
@@ -459,14 +484,22 @@ void NetworkServer::loadLevel(const char * file) {
 	physicsEngine.loadFromFile(file);
 	PRINTINFO("Network Initiated Level in PhysicsEngine\n");
 }
-/*
-void NetworkServer::loadLevel(vector<WorldObject *> newObjs) {
-	emptyWorld();
 
-	for(int o = 0; o < newObjs.size(); ++o) {
-		// TODO make it so building blocks have a 0-10000 value
-		addObject(newObjs[o]);
-	}
-	PRINTINFO("Network Initiated Level in PhysicsEngine\n");
+/*******************************************
+ * PLAYER INTERACTION FUNCTIONS
+ *******************************************/
+void NetworkServer::sendMsg(char *msgStr) {
+	NetworkPacket tmpPkt(TEXT_MSG, (unsigned char *)msgStr, strlen(msgStr)+1);
+	recvMsg(tmpPkt);
 }
-*/
+
+void NetworkServer::recvMsg(NetworkPacket &pkt) {
+	printf("MSG: %s\n", (char *)pkt.data);
+
+	// TODO Send to all clients
+}
+
+void NetworkServer::sendPlayerReady(int readyFlag) {
+	clients[myClientID]->playerReady = 1;
+}
+

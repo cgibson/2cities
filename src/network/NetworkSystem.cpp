@@ -48,6 +48,12 @@ int NetworkSystem::getPlayerDamage(int playerID) {
 	return -1;
 }
 
+void NetworkSystem::sendServerLagReq(ting::UDPSocket *socketPtr, ting::IPAddress destIP) {
+	lagCalc_StartTime = global::elapsed_ms();
+	NetworkPacket tmpPkt(LAG_REQ, (unsigned char *)&lagCalc_StartTime, sizeof(int));
+	SendPacket(tmpPkt, socketPtr, destIP);
+}
+
 /* Method to take a WorldObject* and update/add it to the main vector (based on ID field)
  *
  * Passed Object Pointer must remain alive past function call and shouldn't be deleted
@@ -271,5 +277,20 @@ void NetworkSystem::updOPlayerCamera() {
 	if(currClient < clients.size()) {
 		((CarnageState *)(global::stateManager->currentState))->setOppPos(clients[currClient]->camPos);
 		((CarnageState *)(global::stateManager->currentState))->setOppView(clients[currClient]->camView);
+	}
+}
+
+// Clear InGameState objects
+void NetworkSystem::emptyWorld() {
+	global::stateManager->currentState->objects.clear();
+}
+
+void NetworkSystem::loadLevel(vector<WorldObject *> newObjs) {
+	if(serverConnected() && clients[myClientID]->playerType == Client::PLAYER) {
+		int blockStart = (clients[myClientID]->playerID - 1) * 5000;
+		for(unsigned int o = 0; o < newObjs.size(); ++o) {
+			// building blocks have a 0-10000 value due to player value 1 or 2
+			addObject(newObjs[o + blockStart]);
+		}
 	}
 }

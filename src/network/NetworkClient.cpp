@@ -2,6 +2,9 @@
 
 #include "../graphics/camera.h"
 
+/*******************************************
+ * CONSTRUCTORS / DESTRUCTORS
+ *******************************************/
 NetworkClient::NetworkClient() : NetworkSystem() {
 	PRINTINFO("Network Initializing...");
 	ting::SocketLib socketsLib;
@@ -24,43 +27,49 @@ NetworkClient::~NetworkClient() {
 	closeSockets();
 }
 
-void NetworkClient::closeSockets() {
-	if(isConnected)
-		serverDisconnect();
-
-	if(socket.IsValid()) {
-		waitSet->Remove(&socket);
-		socket.Close();
-		PRINTINFO("Client Socket Closed\n");
-	}
-}
-
-void NetworkClient::initialize() {}
-
-
+/*******************************************
+ * CORE FUNCTIONS
+ *******************************************/
 void NetworkClient::update(long milli_time) {
 	updateRxTxData(milli_time);
 	//int currServerTime = global::elapsed_ms() - serverClockDelta;
 
-	ting::IPAddress sourceIP;
-	NetworkPacket pkt;
-	unsigned int pktsRecv = 0;
-
-	static int lagDelayUpdatePeriod = 1000;
+	// Periodic Lag Checking
+	static int delayedUpdateLag = 1000;
 	if(isConnected) {
-		if(lagDelayUpdatePeriod < 0) {
-			lagCalc_StartTime = global::elapsed_ms();
-			NetworkPacket tmpPkt(LAG_REQ, (unsigned char *)&lagCalc_StartTime, sizeof(int));
-			SendPacket(tmpPkt, &socket, serverIP);
-			sendPlayerCamera(camera->position(), camera->viewVec(), &socket, serverIP);
-			lagDelayUpdatePeriod = 1000;
+		if(delayedUpdateLag < 0) {
+			sendServerLagReq(&socket, serverIP);
+			delayedUpdateLag = 1000;
 		}
 		else {
-			lagDelayUpdatePeriod -= milli_time;
+			delayedUpdateLag -= milli_time;
+		}
+	}
+
+	// Periodic Send Camera Loc
+	static int delayedUpdateCamera = 250;
+	if(isConnected) {
+		if(delayedUpdateCamera < 0) {
+			sendPlayerCamera(camera->position(), camera->viewVec(), &socket, serverIP);
+			delayedUpdateCamera = 250;
+		}
+		else {
+			delayedUpdateCamera -= milli_time;
 		}
 	}
 
 	// Check for Waiting Network Data
+	networkIncoming(milli_time);
+}
+
+/*******************************************
+ * PACKET HANDLING FUNCTIONS (INCOMING)
+ *******************************************/
+void NetworkClient::networkIncoming(long &elapsed) {
+	ting::IPAddress sourceIP;
+	NetworkPacket pkt;
+	unsigned int pktsRecv = 0;
+
 	while(isConnected && waitSet->WaitWithTimeout(0) && pktsRecv < SERVER_RECV_MAX_PACKETS_PER_CYCLE) {
 		RecvPacket(&pkt, &socket, &sourceIP);
 		int pktRecvTime = global::elapsed_ms();
@@ -81,27 +90,45 @@ void NetworkClient::update(long milli_time) {
 			global::stateManager->currentState->objects.clear();
 		}
 		else if(pkt.header.type == STATUS_UPDATE ) {
-			myClientID = *(int*)(pkt.data);
-
-			Client::recvClientVectorBinStream(clients, pkt.data+12, pkt.dataSize-12);
-			updOPlayerCamera();
-
-			State serverState = *(State*)(pkt.data+4);
-			timeToStateChange = *(int*)(pkt.data+8) + serverClockDelta;
-			timeToStateChangeSet = true;
-
-			if(global::stateManager->currentState->stateType() != serverState)
-				global::stateManager->changeCurrentState(serverState);
-/*
-			printf("Received Status Update!\n");
-			for(unsigned int i=0; i<clients.size(); i++)
-				clients[i]->print();
-*/
+			recvStatusUpdate(pkt);
 		}
 		else {
 			printf("Received an unknown packet type!\n");
 		}
 		pktsRecv++;
+	}
+}
+
+void NetworkClient::recvStatusUpdate(NetworkPacket &pkt) {
+	myClientID = *(int*)(pkt.data);
+
+	Client::recvClientVectorBinStream(clients, pkt.data+12, pkt.dataSize-12);
+	updOPlayerCamera();
+
+	State serverState = *(State*)(pkt.data+4);
+	timeToStateChange = *(int*)(pkt.data+8) + serverClockDelta;
+	timeToStateChangeSet = true;
+
+	if(global::stateManager->currentState->stateType() != serverState)
+		global::stateManager->changeCurrentState(serverState);
+/*
+	printf("Received Status Update!\n");
+	for(unsigned int i=0; i<clients.size(); i++)
+		clients[i]->print();
+*/
+}
+
+/*******************************************
+ * SOCKET/CONNECTION/CLEAN-UP FUNCTIONS
+ *******************************************/
+void NetworkClient::closeSockets() {
+	if(isConnected)
+		serverDisconnect();
+
+	if(socket.IsValid()) {
+		waitSet->Remove(&socket);
+		socket.Close();
+		PRINTINFO("Client Socket Closed\n");
 	}
 }
 
@@ -182,21 +209,9 @@ int NetworkClient::getServerDelay() {
 	return serverDelay;
 }
 
-void NetworkClient::sendPlayerReady(int readyFlag) {
-	if(isConnected) {
-		NetworkPacket tmpPkt(PLAYER_READY, (unsigned char *)&readyFlag, sizeof(int));
-		SendPacket(tmpPkt, &socket, serverIP);
-	}
-}
-
-void NetworkClient::sendMsg(char *msgStr) {
-	if(isConnected) {
-		NetworkPacket tmpPkt(TEXT_MSG, (unsigned char *)msgStr, strlen(msgStr)+1);
-		SendPacket(tmpPkt, &socket, serverIP);
-		printf("Sent TextMsg.\n");
-	}
-}
-
+/*******************************************
+ * OBJECT/LEVEL/WORLD FUNCTIONS
+ *******************************************/
 void NetworkClient::addObject(WorldObject *ObjPtr) {
 	if(isConnected && clients[myClientID]->playerType == Client::PLAYER) {
 		ObjPtr->setID(nextNewObjID++);
@@ -235,11 +250,20 @@ void NetworkClient::loadLevel(const char * file) {
 	}
 }
 
-void NetworkClient::loadLevel(vector<WorldObject *> newObjs) {
-	if(isConnected && clients[myClientID]->playerType == Client::PLAYER) {
-		for(unsigned int o = 0; o < newObjs.size(); ++o) {
-			// TODO make it so building blocks have a 0-10000 value
-			addObject(newObjs[o]);
-		}
+/*******************************************
+ * PLAYER INTERACTION FUNCTIONS
+ *******************************************/
+void NetworkClient::sendPlayerReady(int readyFlag) {
+	if(isConnected) {
+		NetworkPacket tmpPkt(PLAYER_READY, (unsigned char *)&readyFlag, sizeof(int));
+		SendPacket(tmpPkt, &socket, serverIP);
+	}
+}
+
+void NetworkClient::sendMsg(char *msgStr) {
+	if(isConnected) {
+		NetworkPacket tmpPkt(TEXT_MSG, (unsigned char *)msgStr, strlen(msgStr)+1);
+		SendPacket(tmpPkt, &socket, serverIP);
+		printf("Sent TextMsg.\n");
 	}
 }

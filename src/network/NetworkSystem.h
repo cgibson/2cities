@@ -46,6 +46,9 @@ protected:
     // Server Function
 	virtual void closeSockets() {};
 
+	int lagCalc_StartTime;
+	void sendServerLagReq(ting::UDPSocket *socketPtr, ting::IPAddress destIP);
+
 	// Communication
 	virtual void recvMsg(NetworkPacket &pktPtr) {};
 
@@ -92,8 +95,6 @@ public:
 
 	        int  getTimeToStateChange() { return global::elapsed_ms() - timeToStateChange; };
 
-
-
 	// Player Detail Functions
 	vector<Client *> getPlayers() { return clients; };
 	        int  getMyPlayerID();
@@ -112,9 +113,9 @@ public:
 	virtual void addObject(WorldObject *objPtr) {};
 
 	// Load a stored lvl
-	virtual void emptyWorld() {};
+	virtual void emptyWorld();
 	virtual void loadLevel(const char * file) {};
-	virtual void loadLevel(vector<WorldObject *> newObjs) {};
+	virtual void loadLevel(vector<WorldObject *> newObjs);
 };
 
 #endif

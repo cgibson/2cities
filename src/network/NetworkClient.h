@@ -31,7 +31,6 @@ protected:
 	bool isConnected;
 	unsigned int serverDelay;
 	int  serverClockDelta;
-	int  lagCalc_StartTime;
 
 	virtual void closeSockets();
 
@@ -40,11 +39,14 @@ protected:
 	virtual void addObjectPhys(WorldObject *objPtr) { updateObjectLocal(objPtr); };
 	//virtual void reqUpdateObj(unsigned int objID) {};
 
+	void recvStatusUpdate(NetworkPacket &pkt);
+	void networkIncoming(long &elapsed);
+
 public:
 	NetworkClient();
 	~NetworkClient();
 
-	void initialize();
+	void initialize() {};
 	void update(long milli_time);
 
 	// Server Details
@@ -73,7 +75,6 @@ public:
 	// Load a stored lvl
 	virtual void emptyWorld();
 	virtual void loadLevel(const char * file);
-	virtual void loadLevel(vector<WorldObject *> newObjs);
 };
 
 #endif

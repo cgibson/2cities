@@ -1,5 +1,8 @@
 #include "NetworkPrivate.h"
 
+/*******************************************
+ * CONSTRUCTORS / DESTRUCTORS
+ *******************************************/
 NetworkPrivate::NetworkPrivate() {
 	PRINTINFO("Network Initializing...");
 
@@ -18,7 +21,9 @@ NetworkPrivate::NetworkPrivate() {
 
 NetworkPrivate::~NetworkPrivate() {}
 
-void NetworkPrivate::initialize() {}
+/*******************************************
+ * CORE FUNCTIONS
+ *******************************************/
 
 void NetworkPrivate::update(long milli_time) {
 	// Update PhysicsEngine
@@ -49,10 +54,9 @@ void NetworkPrivate::update(long milli_time) {
 	}
 }
 
-void NetworkPrivate::sendPlayerReady(int readyFlag) {
-	global::stateManager->switchToCarnage();	// TODO REMOVE. TEMP FLOW CODE
-}
-
+/*******************************************
+ * OBJECT/LEVEL/WORLD FUNCTIONS
+ *******************************************/
 void NetworkPrivate::addObject(WorldObject *newObj) {
 	newObj->setID(nextNewObjID++);
 	physicsEngine.addWorldObject(newObj);
@@ -67,8 +71,14 @@ void NetworkPrivate::emptyWorld() {
 }
 
 void NetworkPrivate::loadLevel(const char * file) {
-	// Clear GameState objects
-	global::stateManager->currentState->objects.clear();
+	emptyWorld();
 
 	physicsEngine.loadFromFile(file);
+}
+
+/*******************************************
+ * PLAYER INTERACTION FUNCTIONS
+ *******************************************/
+void NetworkPrivate::sendPlayerReady(int readyFlag) {
+	global::stateManager->switchToCarnage();	// TODO REMOVE. TEMP FLOW CODE
 }

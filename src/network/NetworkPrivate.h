@@ -24,25 +24,15 @@ public:
 	NetworkPrivate();
 	~NetworkPrivate();
 
-	virtual void initialize();
+	virtual void initialize() {};
 	virtual void update(long milli_time);
 
 	// Server Details
-	//virtual void closeSockets() {};
-	//virtual void dedicatedServer(bool toggle) {};
-	//virtual bool dedicatedServer(void) { return false; };
 
 	// Connection Based Functions
-	//virtual bool serverConnect(const char * ip, unsigned int port) { return false; };
-	//virtual void serverDisconnect() {};
-	//virtual int  checkLag(ting::UDPSocket *socket, ting::IPAddress ip) { return 0; };
 	virtual bool serverConnected() { return 1; };
 
 	// Player Detail Functions
-	//        int  getPlayerID() { return myClientID; };
-	//virtual int  getPlayerScore(int playerID) { return 0; };
-	//virtual PlayerColor getPlayerColor() { return (PlayerColor)myClientID; };
-
 	virtual void sendPlayerReady(int readyFlag);
 
 	// Communication
@@ -51,13 +41,10 @@ public:
 
 	// Add new object to scene
 	virtual void addObject(WorldObject *objPtr);
-	//virtual void addObjectPhys(WorldObject *objPtr) {};
-	//virtual void reqUpdateObj(unsigned int objID) {};
 
 	// Load a stored lvl
 	virtual void emptyWorld();
 	virtual void loadLevel(const char * file);
-	//virtual void loadLevel(vector<WorldObject *> newObjs) {};
 };
 
 #endif

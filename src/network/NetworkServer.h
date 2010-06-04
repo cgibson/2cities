@@ -36,7 +36,7 @@ protected:
 
 	virtual void closeSockets();
 
-	//virtual void recvMsg(NetworkPacket &pktPtr) {};
+	virtual void recvMsg(NetworkPacket &pkt);
 
 	virtual void addObjectPhys(WorldObject *objPtr);
 	//virtual void reqUpdateObj(unsigned int objID) {};
@@ -50,11 +50,13 @@ protected:
 	void checkClientTimeout();
 	void playerDisconnect(int clientID);
 
+	void sendStatusUpdates();
+
 public:
 	NetworkServer();
 	~NetworkServer();
 
-	void initialize();
+	void initialize() {};
 	void update(long milli_time);
 
 	// Server Details
@@ -63,18 +65,13 @@ public:
 
 	// Connection Based Functions
 	virtual bool serverConnect(const char * ip, unsigned int port) { return true; };
-	//virtual void serverDisconnect() {};
 	virtual bool serverConnected() { return 1; };
 	virtual int  getServerDelay() { return 0; };
 
-	// Player Detail Functions
-	//virtual int  getPlayerScore(int playerID) { return 0; };
-	virtual PlayerColor getPlayerColor() { return (PlayerColor)myClientID; };
-
-	//virtual void sendPlayerReady(int readyFlag) {};
+	virtual void sendPlayerReady(int readyFlag);
 
 	// Communication
-	//virtual void sendMsg(char *msgStr) {};
+	virtual void sendMsg(char *msgStr);
 
 	// Add new object to scene
 	virtual void addObject(WorldObject *objPtr);
@@ -82,7 +79,6 @@ public:
 	// Load a stored lvl
 	virtual void emptyWorld();
 	virtual void loadLevel(const char * file);
-	//virtual void loadLevel(vector<WorldObject *> newObjs) {};
 };
 
 class NetworkObjectState {

@@ -16,6 +16,9 @@ namespace net{
 
 	const unsigned int SERVER_PORT_DEFAULT = 5060;
 
+	int TIME_IN_BUILD_STATE = 300; // in sec
+	int TIME_IN_CARNAGE_STATE = 600; // in sec
+
 	NetworkPacket::NetworkPacket() {
 			dataSize = 0;
 			//data = NULL;

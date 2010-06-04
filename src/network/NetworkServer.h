@@ -44,6 +44,8 @@ protected:
 	void networkIncomingPlayers(int p, long &elapsed);
 	void networkOutgoing(long &elapsed);
 
+	void checkStateChange();
+
 public:
 	NetworkServer();
 	~NetworkServer();

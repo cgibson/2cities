@@ -34,6 +34,7 @@ protected:
 	vector<Client *> clients;
 
 	unsigned int nextNewObjID;
+	int timeToStateChange;
 
 	// Variables for rx/tx rates (counted over ~250ms period)
 	int _pktCountRecv;
@@ -86,6 +87,8 @@ public:
 	virtual bool serverConnect(const char * ip, unsigned int port) { return false; };
 	virtual void serverDisconnect() {};
 	virtual int  getServerDelay() { return 0; };
+
+	int getTimeToStateChange() { return global::elapsed_ms() - timeToStateChange; };
 
 	// Player Detail Functions
 	vector<Client *> getPlayers() { return clients; };

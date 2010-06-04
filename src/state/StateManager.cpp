@@ -35,6 +35,7 @@ StateManager::StateManager()
 void StateManager::changeCurrentState(enum E_STATE newState)
 {
     //InGameState *oldInGameState = global::stateManager->currentState;
+	//global::networkManager->network->emptyWorld();
     switch(newState)
     {
     case MENU_STATE:

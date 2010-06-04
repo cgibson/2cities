@@ -42,6 +42,9 @@ namespace net{
 
 	extern unsigned int SERVER_PHYSICS_UPDATE_RATE;
 
+	extern int TIME_IN_BUILD_STATE;
+	extern int TIME_IN_CARNAGE_STATE;
+
 	// A separate class to make the header distinct
 	struct NetworkPacketHeader {
 		net::N_PacketType type;

@@ -43,6 +43,7 @@ NetworkServer::NetworkServer() {
 	myClientID = -1;
 	nextNewObjID = 0;
 #endif
+	timeToStateChange = global::elapsed_ms() - 1; // Will be a long time until it circles around;
 	PRINTINFO("Network Initialized!\n");
 
 	PRINTINFO("Network Initializing PhysicsEngine...");
@@ -107,8 +108,10 @@ void NetworkServer::networkIncomingGeneral(long &elapsed) {
 
 			int playerValue = 1;
 			for(unsigned int i=0; i<clients.size(); i++) {
-				if(clients[i]->playerType == Client::PLAYER && clients[i]->playerID == playerValue)
-					playerValue++;
+				if(clients[i]->playerType == Client::PLAYER) {
+					if(clients[i]->playerID == playerValue)
+						playerValue++;
+				}
 			}
 			if(playerValue <= 2) {
 				currPlayer->playerType = Client::PLAYER;
@@ -207,7 +210,10 @@ void NetworkServer::networkOutgoing(long &elapsed) {
 		// Send STATUS update to each _players
 		if((clients.size() > 1 || (_dedicatedServer == true && clients.size() > 0))) {
 			NetworkPacket pkt;
-			pkt.dataSize = Client::makeClientVectorBinStream(clients, pkt.data+4) + 4;
+			pkt.dataSize = Client::makeClientVectorBinStream(clients, pkt.data+12) + 12;
+			State serverState = global::stateManager->currentState->stateType();
+			memcpy(pkt.data+4, (unsigned char *)&serverState, sizeof(State));
+			memcpy(pkt.data+8, (unsigned char *)&timeToStateChange, sizeof(int));
 			pkt.header.type = STATUS_UPDATE;
 			for(unsigned int p=0; p<clients.size(); p++) {
 				if(!clients[p]->isLocal) {
@@ -270,6 +276,7 @@ void NetworkServer::update(long elapsed) {
 #endif
 
 	updateRxTxData(elapsed);
+	checkStateChange();
 
 	// Update Physics Engine
 	static int physicsDelay = 0;
@@ -278,16 +285,17 @@ void NetworkServer::update(long elapsed) {
 
 #ifdef SERVER
 		// Print Server Stats for Dedicated Server Only
-		printf("\015 LCycle(%4i) Phys(%4li) tx(%5i) rx(%5i) objs(%4i) | ",
+		printf("\015 LCycle(%4i) Phys(%4li) tx(%5i) rx(%5i) objs(%4i) ttsc(%4i) | ",
 				(net::SERVER_PHYSICS_UPDATE_RATE - physicsDelay),
 				(global::elapsed_ms() - currClockTime),
 				global::pbs_sent,
 				global::pbs_recv,
-				_serverObjs.size());
+				_serverObjs.size(),
+				(global::elapsed_ms()-timeToStateChange)/1000);
 		for(unsigned int p=0; p<clients.size(); p++) {
 			printf("P%i(%4i ms) ", clients[p]->playerID, clients[p]->playerDelay);
 		}
-		printf("  ");
+		printf("   ");
 		fflush(stdout);
 #endif
 
@@ -325,6 +333,53 @@ void NetworkServer::update(long elapsed) {
 		}
 	}
 #endif
+}
+
+void NetworkServer::checkStateChange() {
+	State currState = global::stateManager->currentState->stateType();
+	int readyCount = 0;
+	int playerCount = 0;
+
+	for(unsigned int i=0; i<clients.size(); ++i) {
+		if(clients[i]->playerType == Client::PLAYER) {
+			++playerCount;
+			if(clients[i]->playerReady == 1)
+				++readyCount;
+		}
+	}
+
+	if(playerCount < 2) {
+		switch (currState) {
+		case BUILD_STATE :
+			timeToStateChange = global::elapsed_ms() + net::TIME_IN_BUILD_STATE * 1000;
+			break;
+		case CARNAGE_STATE :
+			timeToStateChange = global::elapsed_ms() + net::TIME_IN_CARNAGE_STATE * 1000;
+			break;
+		default :
+			timeToStateChange = global::elapsed_ms() - 1;
+		}
+	}
+
+	bool stateChange = ((playerCount == readyCount) || (global::elapsed_ms() >= timeToStateChange));
+	if(stateChange) {
+		for(unsigned int i=0; i<clients.size(); ++i) {
+			clients[i]->playerReady = 0;
+		}
+
+		switch (currState) {
+		case BUILD_STATE :
+			global::stateManager->changeCurrentState(CARNAGE_STATE);
+			timeToStateChange = global::elapsed_ms() + net::TIME_IN_CARNAGE_STATE * 1000;
+			break;
+		case CARNAGE_STATE :
+			global::stateManager->changeCurrentState(BUILD_STATE);
+			timeToStateChange = global::elapsed_ms() + net::TIME_IN_BUILD_STATE * 1000;
+			break;
+		default :
+			printf("What State am I In?");
+		}
+	}
 }
 
 void NetworkServer::addObject(WorldObject *objPtr) {

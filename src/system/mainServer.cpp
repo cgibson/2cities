@@ -30,8 +30,13 @@ int main(int argc, char** argv) {
 		  beginState=BUILD_STATE;
 		}
 	}
+	else if(argc == 2) {
+		if(!strcmp(argv[1], "-carnage")) {
+		  beginState=CARNAGE_STATE;
+		}
+	}
 	else {
-		beginState=CARNAGE_STATE;
+		beginState=BUILD_STATE;
 	}
 
 	initialize();

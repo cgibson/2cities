@@ -11,6 +11,7 @@ NetworkClient::NetworkClient() : NetworkSystem() {
 	waitSet = new ting::WaitSet(1);
 	waitSet->Add(&socket, ting::Waitable::READ);
 
+	timeToStateChange = 0;
 	isConnected = false;
 	myClientID = 1;
 	nextNewObjID = myClientID * 10000;
@@ -79,8 +80,12 @@ void NetworkClient::update(long milli_time) {
 		}
 		else if(pkt.header.type == STATUS_UPDATE ) {
 			myClientID = *(int*)(pkt.data);
-			Client::recvClientVectorBinStream(clients, pkt.data+4, pkt.dataSize-4);
+			Client::recvClientVectorBinStream(clients, pkt.data+12, pkt.dataSize-12);
 			updOPlayerCamera();
+			State serverState = *(State*)(pkt.data+4);
+			timeToStateChange = *(int*)(pkt.data+8) + serverClockDelta;
+			if(global::stateManager->currentState->stateType() != serverState)
+				global::stateManager->changeCurrentState(serverState);
 /*
 			printf("Received Status Update!\n");
 			for(unsigned int i=0; i<clients.size(); i++)
@@ -173,7 +178,6 @@ int NetworkClient::getServerDelay() {
 }
 
 void NetworkClient::sendPlayerReady(int readyFlag) {
-	global::stateManager->switchToCarnage();	// TODO REMOVE. TEMP FLOW CODE
 	if(isConnected) {
 		NetworkPacket tmpPkt(PLAYER_READY, (unsigned char *)&readyFlag, sizeof(int));
 		SendPacket(tmpPkt, &socket, serverIP);

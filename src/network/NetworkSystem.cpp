@@ -242,7 +242,7 @@ void NetworkSystem::updOPlayerCamera() {
 		return;
 
 	int myPlayerID = getMyPlayerID();
-	int currClient = 0;
+	unsigned int currClient = 0;
 	while(currClient < clients.size() &&
 			!(clients[currClient]->playerType == Client::PLAYER &&
 					clients[currClient]->playerID != myPlayerID))

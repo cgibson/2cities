@@ -46,7 +46,7 @@ void CarnageUI::init()
 	GameUI::init(0.0, 0.0, 0.0, 0.0);
 
 	_reticle = new UIIcon();
-	_reticle->init("resources/textures/reticle.bmp", "resources/textures/reticle.bmp");
+	_reticle->init("resources/textures/reticle.bmp", "resources/textures/reticle_alpha.bmp");
 	_reticle->pos(global::width / 2 - _reticle->width() / 2, global::height / 2 - _reticle->height() / 2);
 	_reticle->tint(true);
 	_reticle->tintclr(1.0, 0.0, 0.0); // TODO: change this to the actual player's color!

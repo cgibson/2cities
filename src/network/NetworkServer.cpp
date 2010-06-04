@@ -44,6 +44,7 @@ NetworkServer::NetworkServer() {
 	nextNewObjID = 0;
 #endif
 	timeToStateChange = global::elapsed_ms() - 1; // Will be a long time until it circles around;
+	timeToStateChangeSet = false;
 	PRINTINFO("Network Initialized!\n");
 
 	PRINTINFO("Network Initializing PhysicsEngine...");
@@ -348,7 +349,8 @@ void NetworkServer::checkStateChange() {
 		}
 	}
 
-	if(playerCount < 2) {
+	if(playerCount != 1 && playerCount != 2) {
+		timeToStateChangeSet = false;
 		switch (currState) {
 		case BUILD_STATE :
 			timeToStateChange = global::elapsed_ms() + net::TIME_IN_BUILD_STATE * 1000;
@@ -360,8 +362,12 @@ void NetworkServer::checkStateChange() {
 			timeToStateChange = global::elapsed_ms() - 1;
 		}
 	}
+	else {
+		timeToStateChangeSet = true;
+	}
 
-	bool stateChange = ((playerCount == readyCount) || (global::elapsed_ms() >= timeToStateChange));
+	bool stateChange = ((playerCount == readyCount && playerCount > 0) ||
+			(timeToStateChangeSet && global::elapsed_ms() >= timeToStateChange));
 	if(stateChange) {
 		for(unsigned int i=0; i<clients.size(); ++i) {
 			clients[i]->playerReady = 0;

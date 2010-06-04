@@ -12,6 +12,8 @@ NetworkClient::NetworkClient() : NetworkSystem() {
 	waitSet->Add(&socket, ting::Waitable::READ);
 
 	timeToStateChange = 0;
+	timeToStateChangeSet = false;
+
 	isConnected = false;
 	myClientID = 1;
 	nextNewObjID = myClientID * 10000;
@@ -80,10 +82,14 @@ void NetworkClient::update(long milli_time) {
 		}
 		else if(pkt.header.type == STATUS_UPDATE ) {
 			myClientID = *(int*)(pkt.data);
+
 			Client::recvClientVectorBinStream(clients, pkt.data+12, pkt.dataSize-12);
 			updOPlayerCamera();
+
 			State serverState = *(State*)(pkt.data+4);
 			timeToStateChange = *(int*)(pkt.data+8) + serverClockDelta;
+			timeToStateChangeSet = true;
+
 			if(global::stateManager->currentState->stateType() != serverState)
 				global::stateManager->changeCurrentState(serverState);
 /*
@@ -138,7 +144,6 @@ bool NetworkClient::serverConnect(const char * ip, unsigned int port) {
 
 			serverDelay = (lagCalc_EndTime - lagCalc_StartTime)/2;
 			serverClockDelta = global::elapsed_ms() - (*((int*)(pkt.data)+1) + serverDelay);
-
 
 			printf("Connected! Client %i/%i with a %i ms server delay!\n", myClientID, clients.size(), serverDelay);
 

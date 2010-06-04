@@ -41,6 +41,9 @@ void StateManager::changeCurrentState(enum E_STATE newState)
     case MENU_STATE:
 #ifdef CLIENT
         gfx::hud.swapUI(Hud::MENU);
+        //TODO: Add Menu State creation, initialization here
+        global::soundManager->stopPlayingMusic();
+        global::soundManager->playMenuSong();
 #endif
         break;
     case BUILD_STATE:
@@ -48,6 +51,8 @@ void StateManager::changeCurrentState(enum E_STATE newState)
         currentState->initialize();
 #ifdef CLIENT
         gfx::hud.swapUI(Hud::BUILD);
+        global::soundManager->stopPlayingMusic();
+        global::soundManager->playBuildSong();
 #endif
         break;
     case CARNAGE_STATE:
@@ -55,11 +60,16 @@ void StateManager::changeCurrentState(enum E_STATE newState)
 		currentState->initialize();
 #ifdef CLIENT
 		gfx::hud.swapUI(Hud::CARNAGE);
+		global::soundManager->stopPlayingMusic();
+        global::soundManager->playCarnageSong();
 #endif
         break;
     case RESULTS_STATE:
 #ifdef CLIENT
 		gfx::hud.swapUI(Hud::RESULTS);
+		global::soundManager->stopPlayingMusic();
+		//TODO: Add Results creation, initialization here;
+		//Decide which results song to play, too.
 #endif
         break;
     default:

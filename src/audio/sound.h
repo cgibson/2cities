@@ -4,22 +4,28 @@
 namespace sound
 {
 	const char *buildmusicnames[] = {
-		"resources/sound/DesignTime.ogg"};
+		"resources/sound/238997_Before_The_Storm.ogg"};
 		
 	const char *carnagemusicnames[] = {
-	"resources/sound/HopeNeverDiesBrenner.ogg",
-	"resources/sound/SupremeLogicianLin.ogg",
-	"resources/sound/ProudSoldierGage.ogg",
-	"resources/sound/HeroOfLegendForsythe.ogg",
-	"resources/sound/FlightOfTheCowardWaylon.ogg"};
+		"resources/sound/138144_Symphonic_Storms___Sincere.ogg",
+		"resources/sound/334445_dr_macarena__rock.ogg",
+		"resources/sound/253699_Lost_In_Clear_Blue__Final_.ogg",
+		"resources/sound/148404_Rose_at_Midnight.ogg"};
+	
+	const char *menumusicnames[] = {
+		"resources/sound/332673_Distant_Lights__Loop_.ogg"};
+	
+	const char *resultsmusicnames[] = {
+		"resources/sound/33782_newgrounds_victor.ogg",
+		"resources/sound/254573_Game_Over___SamsterProduct.ogg"};
 	
 	//Not used for now.
 	//const char *buildsfxnames[];
 	
 	const char *carnagesfxnames[] = {
-	"resources/sound/28911__junggle__btn101.wav",
-	"resources/sound/39457__THE_bizniss__laser_3.wav",
-	"resources/sound/73537__Snipperbes__ClassicLaser.wav"};
+		"resources/sound/28911__junggle__btn101.wav",
+		"resources/sound/39457__THE_bizniss__laser_3.wav",
+		"resources/sound/73537__Snipperbes__ClassicLaser.wav"};
 }
 
 #endif

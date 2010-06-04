@@ -18,9 +18,10 @@
 using namespace global;
 
 const int CarnageState::RECHARGE_TIME = 1000; // in milliseconds
+const int CarnageState::MUSIC_DELAY = 1000;
 
 CarnageState::CarnageState() {
-	//initialize();
+	
 }
 
 CarnageState::~CarnageState() {}
@@ -32,6 +33,7 @@ void CarnageState::initialize() {
     // we just capture the mouse
     io::capture_mouse();
     ammo_recharge = 0;
+    music_delay = 0;
     ammo_type = FRACTAL_BOMB;
 
    // initialize our camera (orbital)
@@ -45,6 +47,8 @@ void CarnageState::update(long milli_time) {
 #ifdef CLIENT
 	ammo_recharge -= milli_time;
 	ammo_recharge = (ammo_recharge < 0) ? 0 : ammo_recharge; // clamp to 0
+	music_delay -= milli_time;
+	music_delay = (music_delay < 0) ? 0 : music_delay; // clamp to 0
    updateInput(milli_time);
 #endif
 }
@@ -79,6 +83,29 @@ void CarnageState::updateInput(long milli_time) {
 	   fx->position(Vector(0.0, 5.0, 0.0));
 	   gfx::fxManager.addEffect(fx);
    }
+
+	//stop music
+	if(io::keys['['])
+	{
+		printf("Stopping the carnage state music.\n");
+		global::soundManager->stopPlayingMusic();
+	}
+	
+	//play music for carnage state
+	if(io::keys[']'] && music_delay <= 0)
+	{
+		printf("Playing carnage state music\n");
+		global::soundManager->playCarnageSong();
+		music_delay = MUSIC_DELAY;
+	}
+	
+	if(io::keys['n'] && music_delay <= 0)
+	{
+		printf("Playing the next carnage state song\n");
+		global::soundManager->playNextCarnageSong();
+		music_delay = MUSIC_DELAY;
+	}
+   
    // TODO END DEMO CODE
 
    // General Keyboard Layout
@@ -88,12 +115,13 @@ void CarnageState::updateInput(long milli_time) {
    }
 
    // FIRE CONTROLS
-   if((io::keys[' '] || io::mouse_buttons[MOUSE_LEFT] == GLUT_DOWN) && ammo_recharge <= 0) {
+   if((io::keys[' '] || io::mouse_buttons[MOUSE_LEFT] == GLUT_DOWN) && ammo_recharge <= 0)
+   {
+	  global::soundManager->playCarnageSfx(0);
 	  WorldObject *newObjPtr = global::factory->makeObject(ammo_type);
 	  newObjPtr->setPosition(camera->position() - Vector( 0.0f, 1.0f, 0.0f));
 	  newObjPtr->setVelocity((camera->viewVec() + Vector(0.0f, 0.15f, 0.0f)) * 50); // offset the view vector a bit to more closely match the targeting reticle
 	  networkManager->network->addObject(newObjPtr);
-
 	  ammo_recharge = RECHARGE_TIME;
    }
 #endif

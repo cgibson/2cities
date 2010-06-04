@@ -8,6 +8,8 @@ SoundManager::SoundManager()
 {
 	memset(buildmusic, 0, sizeof(Mix_Music *) * NUM_BUILD_SONGS);
 	memset(carnagemusic, 0, sizeof(Mix_Music *) * NUM_CARNAGE_SONGS);
+	memset(menumusic, 0, sizeof(Mix_Music *) * NUM_MENU_SONGS);
+	memset(resultsmusic, 0, sizeof(Mix_Music *) * NUM_RESULTS_SONGS);
 	memset(buildsfx, 0, sizeof(Mix_Chunk *) * NUM_BUILD_SFX);
 	memset(carnagesfx, 0, sizeof(Mix_Chunk *) * NUM_CARNAGE_SFX);
 	currbuildmusic = 0;
@@ -105,6 +107,46 @@ void SoundManager::loadMusic()
 			exit(EXIT_FAILURE);
 		}
 	}
+	
+	//Attempt to read in menu state music
+	for(int i = 0; i < NUM_MENU_SONGS; i++)
+	{
+		if(hasEnding(sound::menumusicnames[i], ".ogg"))
+		{
+			menumusic[i] = Mix_LoadMUS(sound::menumusicnames[i]);
+		}
+		else
+		{
+			cout << "music file" << sound::menumusicnames[i] << "should be .wav format" << endl;
+			exit(EXIT_FAILURE);
+		}
+		
+		if(menumusic[i] == NULL)
+		{
+			cerr << Mix_GetError() << endl;
+			exit(EXIT_FAILURE);
+		}
+	}
+	
+	//Attempt to read in menu state music
+	for(int i = 0; i < NUM_RESULTS_SONGS; i++)
+	{
+		if(hasEnding(sound::resultsmusicnames[i], ".ogg"))
+		{
+			resultsmusic[i] = Mix_LoadMUS(sound::resultsmusicnames[i]);
+		}
+		else
+		{
+			cout << "music file" << sound::resultsmusicnames[i] << "should be .wav format" << endl;
+			exit(EXIT_FAILURE);
+		}
+		
+		if(resultsmusic[i] == NULL)
+		{
+			cerr << Mix_GetError() << endl;
+			exit(EXIT_FAILURE);
+		}
+	}
 }
 
 void SoundManager::loadSfx()
@@ -164,6 +206,34 @@ void SoundManager::playCarnageSong()
 {
 	//Attempt to play the song
 	if (Mix_PlayMusic(carnagemusic[currcarnagemusic], -1) == -1)
+	{
+		cerr << Mix_GetError() << endl;
+		exit(EXIT_FAILURE);
+	}
+}
+
+void SoundManager::playMenuSong()
+{
+	//Attempt to play the song
+	if (Mix_PlayMusic(menumusic[0], -1) == -1)
+	{
+		cerr << Mix_GetError() << endl;
+		exit(EXIT_FAILURE);
+	}
+}
+void SoundManager::playResultWinSong()
+{
+	//Attempt to play the song
+	if (Mix_PlayMusic(resultsmusic[0], -1) == -1)
+	{
+		cerr << Mix_GetError() << endl;
+		exit(EXIT_FAILURE);
+	}
+}
+void SoundManager::playResultLoseSong()
+{
+	//Attempt to play the song
+	if (Mix_PlayMusic(resultsmusic[1], -1) == -1)
 	{
 		cerr << Mix_GetError() << endl;
 		exit(EXIT_FAILURE);

@@ -9,13 +9,18 @@
 #include <string>
 
 #define NUM_BUILD_SONGS 1
-#define NUM_CARNAGE_SONGS 5
+#define NUM_CARNAGE_SONGS 4
+#define NUM_MENU_SONGS 1
+#define NUM_RESULTS_SONGS 2
+
 #define NUM_BUILD_SFX 0
 #define NUM_CARNAGE_SFX 3
-#define MUSIC_CHANNEL 1
-#define SFX_CHANNEL 2
-#define FADE_OUT_MSECS 1000
-#define SDL_DELAY_TIME 100
+#define NUM_MENU_SFX 0
+#define NUM_RESULTS_SFX 0
+
+#define SFX_CHANNEL 1
+#define FADE_OUT_MSECS 20
+#define SDL_DELAY_TIME 5
 
 class SoundManager
 {
@@ -26,6 +31,8 @@ class SoundManager
 		int currcarnagesfx;
 		Mix_Music *buildmusic[NUM_BUILD_SONGS];
 		Mix_Music *carnagemusic[NUM_CARNAGE_SONGS];
+		Mix_Music *menumusic[NUM_MENU_SONGS];
+		Mix_Music *resultsmusic[NUM_RESULTS_SONGS];
 		Mix_Chunk *buildsfx[NUM_BUILD_SFX];
 		Mix_Chunk *carnagesfx[NUM_CARNAGE_SFX];
 		
@@ -40,6 +47,9 @@ class SoundManager
 		void loadSfx();
 		void playBuildSong();
 		void playCarnageSong();
+		void playMenuSong();
+		void playResultWinSong();
+		void playResultLoseSong();
 		void playNextBuildSong();
 		void playNextCarnageSong();
 		void stopPlayingMusic();
@@ -52,7 +62,7 @@ class SoundManager
 		void setCurrBuildMusic(int newcurrbuildmusic);
 		void setCurrCarnageMusic(int newcurrcarnagemusic);
 		
-		//Useful for ammo in particular.
+		//Useful for setting sfx when shooting particular ammunition.
 		void setCurrBuildSfx(int newcurrbuildsfx);
 		void setCurrCarnageSfx(int newcurrcarnagesfx);
 };

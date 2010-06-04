@@ -64,6 +64,10 @@ class BuildState : public InGameState
 		bool isInsideRect(CustomObject co, int excluded);
 
        virtual enum E_STATE stateType() { return BUILD_STATE; }
+       
+       static const int MUSIC_DELAY;
+       
+       int music_delay;
 };
 
 #endif

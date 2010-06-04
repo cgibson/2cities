@@ -49,6 +49,8 @@ using namespace io;
 using namespace global;
 using namespace BuildStateGlobals;
 
+const int BuildState::MUSIC_DELAY = 1000;
+
 BuildState::BuildState() {
    //initialize();
 }
@@ -81,6 +83,7 @@ void BuildState::save_level(int argc, char *argv[])
 void BuildState::initialize() {
 #ifdef CLIENT
 	gfx::hud.console.registerCmd("save_level", BuildState::save_level);
+	music_delay = 0;
 #endif
 
 	DELETE_MODE = false;
@@ -115,6 +118,8 @@ void BuildState::initialize() {
 }
 
 void BuildState::update(long milli_time) {
+	music_delay -= milli_time;
+	music_delay = (music_delay < 0) ? 0 : music_delay; // clamp to 0
    updateInput(milli_time);
 }
 
@@ -132,6 +137,29 @@ void BuildState::updateInput(long milli_time) {
 	if(io::keys[27]) {
 		exit(0);
 	}
+#ifdef CLIENT
+	//stop music
+	if(io::keys['['])
+	{
+		printf("Stopping the build state music.\n");
+		global::soundManager->stopPlayingMusic();
+	}
+	
+	//play music for carnage state
+	if(io::keys[']'] && music_delay <= 0)
+	{
+		printf("Playing build state music\n");
+		global::soundManager->playBuildSong();
+		music_delay = MUSIC_DELAY;
+	}
+	
+	if(io::keys['n'] && music_delay <= 0)
+	{
+		printf("Playing the next build state song\n");
+		global::soundManager->playNextBuildSong();
+		music_delay = MUSIC_DELAY;
+	}
+#endif
 }
 
 bool BuildState::isValidClick(Point click, int button)

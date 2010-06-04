@@ -65,7 +65,7 @@ void initSound()
 {
 	//Here's where sound is initialized. Note that it adds extra cleanup
 	//when exiting the game, causing a significantly slower exit time.
-	//global::soundManager->initialize();
+	global::soundManager->initialize();
 	
 	//Here's where the sound (could) initially start playing.
 	//global::soundManager->playCarnageSong();
@@ -93,6 +93,8 @@ void initialize()
   io::init();
   gfx::init();
 
+  initSound();
+
   initState();
 
   global::networkManager->initialize();
@@ -101,8 +103,6 @@ void initialize()
   //Commented out because of deconstructor taking extra time to
   //free everything that was malloc'd upon game exit.
   global::modelManager->initialize();
-
-  initSound();
 
   glutIdleFunc(updateLoop);
 

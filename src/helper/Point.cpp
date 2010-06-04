@@ -17,24 +17,30 @@ Point::Point(GLdouble clicked_x, GLdouble clicked_y)
    GLdouble *mvMatrix = (GLdouble*)modelview_matrix;
    GLdouble *pMatrix = (GLdouble*)projection_matrix;
    GLint *vMatrix = (GLint*)viewport;
-#endif
 
 	GLfloat winX, winY, winZ;
 	GLdouble posX, posY, posZ;
 
 	//glGetDoublev( GL_MODELVIEW_MATRIX, modelview_matrix );
 	//glGetDoublev( GL_PROJECTION_MATRIX, projection_matrix );
-#ifdef CLIENT
    gfx::renderer.getMatrices(&mvMatrix, &pMatrix, &vMatrix);
-#endif
+
    //glGetIntegerv( GL_VIEWPORT, viewport );
 
 	winX = (float)clicked_x;
 	winY = (float)viewport[3] - (float)clicked_y;
-	glReadPixels( clicked_x, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
 
-	gluUnProject( winX, winY, winZ, modelview_matrix, projection_matrix, viewport, &posX, &posY, &posZ);
-	
+  if(gfx::renderState == FULL)
+  {
+    gfx::fbo->enable();
+    
+	  glReadPixels( clicked_x, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
+	  gluUnProject( winX, winY, winZ, modelview_matrix, projection_matrix, viewport, &posX, &posY, &posZ);
+    gfx::fbo->disable();
+  }else{
+	  glReadPixels( clicked_x, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
+	  gluUnProject( winX, winY, winZ, modelview_matrix, projection_matrix, viewport, &posX, &posY, &posZ);
+  }
 	/*printf("winX = %f, winY = %f, winZ = %f\n", winX, winY, winZ);
 	int i, j;	
 	printf("modelview:\n");	
@@ -69,6 +75,9 @@ Point::Point(GLdouble clicked_x, GLdouble clicked_y)
 	p_x = posX;
 	p_y = posY;
 	p_z = posZ;
+
+#endif
+
 }
 
 Point Point::operator=( const Point& p1) {

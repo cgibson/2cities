@@ -6,6 +6,7 @@
 #include "InGameState.h"
 #include "../system/enum.h"
 #include "../helper/Point.h"
+#include "../scene/CustomObject.h"
 
 using namespace enumeration;
 
@@ -23,6 +24,7 @@ namespace BuildStateGlobals
 	extern Vector planeNormal;
 	extern Vector planeLocation;
 	extern float planeSize;
+	extern Point mapMax, mapMin;
 }
 
 class BuildState : public InGameState
@@ -47,7 +49,7 @@ class BuildState : public InGameState
 		void recursive_bump(int bottom, int delta_height);
 		void blockalize_face(int index, Face f, bool pull);
 		bool inPullPath(int reMax, int reMin, int iMax, int iMin);
-		void check_pull(int index, Face f, bool move);
+		bool check_pull(int index, Face f, bool move);
 		void recursive_push(Face f, int bottom);
 		void adjust_face(int index, Face f, Point mouse_pos, bool pull);
 		void new_push_pull(Point mouse_pos);
@@ -57,6 +59,9 @@ class BuildState : public InGameState
 		void get_pp_plane(Face f);
 		bool isValidClick(Point click, int button);
 		void checkRectBase(int index);
+		Face whichFaceIsAdjusted(Point lastMax, Point lastMin, int index);
+		bool isOutsideMap(Point p);
+		bool isInsideRect(CustomObject co, int excluded);
 
        virtual enum E_STATE stateType() { return BUILD_STATE; }
 };

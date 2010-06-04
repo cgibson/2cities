@@ -97,9 +97,10 @@ public:
 	vector<Client *> getPlayers() { return clients; };
 	        int  getMyPlayerID();
 	        int  getMyClientID() { return myClientID; };
+	        int  getPlayerReady(int playerID);
 	        int  getPlayerScore(int playerID);
 	        int  getPlayerDamage(int playerID);
-	virtual PlayerColor getPlayerColor(int playerID) { return (PlayerColor)myClientID; };
+	virtual PlayerColor getPlayerColor(int clientID) { return (PlayerColor)myClientID; };
 
 	virtual void sendPlayerReady(int readyFlag) {};
 

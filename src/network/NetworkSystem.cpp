@@ -18,6 +18,16 @@ int NetworkSystem::getMyPlayerID() {
 		return clients[myClientID]->playerID;
 }
 
+int NetworkSystem::getPlayerReady(int playerID) {
+	unsigned int currPlayer = 0;
+	while(currPlayer < clients.size()) {
+		if(clients[currPlayer]->playerID == playerID)
+			return clients[currPlayer]->playerReady;
+		currPlayer++;
+	}
+	return -1;
+}
+
 int NetworkSystem::getPlayerScore(int playerID) {
 	unsigned int currPlayer = 0;
 	while(currPlayer < clients.size()) {

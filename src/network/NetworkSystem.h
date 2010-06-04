@@ -98,6 +98,7 @@ public:
 	        int  getMyPlayerID();
 	        int  getMyClientID() { return myClientID; };
 	        int  getPlayerScore(int playerID);
+	        int  getPlayerDamage(int playerID);
 	virtual PlayerColor getPlayerColor(int playerID) { return (PlayerColor)myClientID; };
 
 	virtual void sendPlayerReady(int readyFlag) {};

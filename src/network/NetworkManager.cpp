@@ -174,9 +174,13 @@ void NetworkManager::consolePlayers(int argc, char *argv[]) {
 #ifdef CLIENT
 	vector<Client *> clients = global::networkManager->network->getPlayers();
 	for(unsigned int i=0; i<clients.size(); ++i)
-		gfx::hud.console.info("ID(%i) Type(%i) Name(%s)",
+		gfx::hud.console.info("C#(%1i) P#(%1i) Type(%1i) Rdy(%1i) Scr(%4i) Dmg(%3i) Name: %s",
+				i,
 				clients[i]->playerID,
 				clients[i]->playerType,
+				clients[i]->playerReady,
+				clients[i]->playerScore,
+				clients[i]->playerDamage,
 				clients[i]->playerName);
 #endif
 }

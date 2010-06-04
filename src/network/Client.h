@@ -9,6 +9,7 @@ class Client {
 		int playerID;
 		int playerReady;
 		int playerScore;
+		int playerDamage; // 0-100
 		Vector camPos;
 		Vector camView;
 
@@ -67,9 +68,10 @@ class Client {
 
 			// WRITE playerID, Ready, Score, camPos, camView, Name
 			currISize = sizeof(int);
-			memcpy(bufPtr + currPos, &playerID   , currISize); currPos += currISize;
-			memcpy(bufPtr + currPos, &playerReady, currISize); currPos += currISize;
-			memcpy(bufPtr + currPos, &playerScore, currISize); currPos += currISize;
+			memcpy(bufPtr + currPos, &playerID    , currISize); currPos += currISize;
+			memcpy(bufPtr + currPos, &playerReady , currISize); currPos += currISize;
+			memcpy(bufPtr + currPos, &playerScore , currISize); currPos += currISize;
+			memcpy(bufPtr + currPos, &playerDamage, currISize); currPos += currISize;
 
 			double tmpD;
 			currISize = sizeof(double);
@@ -98,9 +100,10 @@ class Client {
 
 			// WRITE playerID, Ready, Score, camPos, camView, Name
 			currISize = sizeof(int);
-			memcpy(&playerID   , bufPtr + currPos, currISize); currPos += currISize;
-			memcpy(&playerReady, bufPtr + currPos, currISize); currPos += currISize;
-			memcpy(&playerScore, bufPtr + currPos, currISize); currPos += currISize;
+			memcpy(&playerID    , bufPtr + currPos, currISize); currPos += currISize;
+			memcpy(&playerReady , bufPtr + currPos, currISize); currPos += currISize;
+			memcpy(&playerScore , bufPtr + currPos, currISize); currPos += currISize;
+			memcpy(&playerDamage, bufPtr + currPos, currISize); currPos += currISize;
 
 			double tmpD;
 			currISize = sizeof(double);

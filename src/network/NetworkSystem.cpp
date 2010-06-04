@@ -28,6 +28,16 @@ int NetworkSystem::getPlayerScore(int playerID) {
 	return -1;
 }
 
+int NetworkSystem::getPlayerDamage(int playerID) {
+	unsigned int currPlayer = 0;
+	while(currPlayer < clients.size()) {
+		if(clients[currPlayer]->playerID == playerID)
+			return clients[currPlayer]->playerDamage;
+		currPlayer++;
+	}
+	return -1;
+}
+
 /* Method to take a WorldObject* and update/add it to the main vector (based on ID field)
  *
  * Passed Object Pointer must remain alive past function call and shouldn't be deleted

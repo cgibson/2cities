@@ -198,10 +198,10 @@ void NetworkClient::sendMsg(char *msgStr) {
 }
 
 void NetworkClient::addObject(WorldObject *ObjPtr) {
-	ObjPtr->setID(nextNewObjID++);
-	ObjPtr->setPlayerID(clients[myClientID]->playerID);
-
 	if(isConnected && clients[myClientID]->playerType == Client::PLAYER) {
+		ObjPtr->setID(nextNewObjID++);
+		ObjPtr->setPlayerID(clients[myClientID]->playerID);
+
 		unsigned char buf[150];
 		int woSize = ObjPtr->makeBinStream(buf);
 		NetworkPacket pkt(OBJECT_SEND, buf, woSize);

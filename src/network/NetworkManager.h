@@ -23,6 +23,7 @@ public:
 	static void consoleSendMsg(int argc, char *argv[]);
 	static void consoleChangeLevel(int argc, char *argv[]);
 
+	static void consolePlayers(int argc, char *argv[]);
 	static void consoleNetworkRates(int argc, char *argv[]);
 	static void consoleNetworkTests(int argc, char *argv[]);
 };

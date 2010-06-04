@@ -32,7 +32,7 @@ void CarnageState::initialize() {
     // we just capture the mouse
     io::capture_mouse();
     ammo_recharge = 0;
-    ammo_type = RECOGNIZER;
+    ammo_type = DUMMY_SPHERE;
 
    // initialize our camera (orbital)
    if (global::camera != NULL) delete global::camera;
@@ -70,7 +70,7 @@ void CarnageState::updateInput(long milli_time) {
    }
    if(io::keys['c']) {
 	  io::keys['c'] = false;
-	  networkManager->network->connectServer("127.0.0.1", 5060);
+	  networkManager->network->serverConnect("127.0.0.1", 5060);
    }
    if (io::keys[';']) {
 	   io::keys[';'] = false;
@@ -83,7 +83,7 @@ void CarnageState::updateInput(long milli_time) {
 
    // General Keyboard Layout
    if(io::keys[27]) {
-	  networkManager->network->disconnectServer();
+	  networkManager->network->serverDisconnect();
       exit(0);
    }
 

@@ -2,8 +2,13 @@
 
 NetworkPrivate::NetworkPrivate() {
 	PRINTINFO("Network Initializing...");
-	_playerID = 1;
-	_currObjID = _playerID * 10000;
+
+	myClientID = 0;
+	char playerName[] = "Priv Player";	// TODO check pkt.data for name
+	clients.push_back(new Client(1,playerName));
+
+	nextNewObjID = myClientID * 10000;
+
 	PRINTINFO("Network Initialized!\n");
 
 	PRINTINFO("Network Initializing PhysicsEngine...");
@@ -47,7 +52,7 @@ void NetworkPrivate::sendPlayerReady(int readyFlag) {
 }
 
 void NetworkPrivate::addObject(WorldObject *newObj) {
-	newObj->setID(_currObjID++);
+	newObj->setID(nextNewObjID++);
 	physicsEngine.addWorldObject(newObj);
 }
 

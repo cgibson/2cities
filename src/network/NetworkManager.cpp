@@ -38,6 +38,8 @@ void NetworkManager::initialize() {
 	gfx::hud.console.registerCmd("netrate",    NetworkManager::consoleNetworkRates);
 	gfx::hud.console.registerCmd("nr",         NetworkManager::consoleNetworkRates);
 
+	gfx::hud.console.registerCmd("players",    NetworkManager::consolePlayers);
+
 	gfx::hud.console.registerCmd("nettest",    NetworkManager::consoleNetworkTests);
 	gfx::hud.console.registerCmd("nt",         NetworkManager::consoleNetworkTests);
 #endif
@@ -45,7 +47,6 @@ void NetworkManager::initialize() {
 
 void NetworkManager::changeNetworkInterface(E_NetworkInterface networkType) {
 	NetworkSystem *oldNetwork = network;
-	network->closeSockets();
 
 	switch (networkType) {
 #ifdef CLIENT
@@ -98,7 +99,7 @@ void NetworkManager::consoleSendMsg(int argc, char *argv[]) {
 
 void NetworkManager::consoleDisconnect(int argc, char *argv[]) {
 #ifdef CLIENT
-	networkManager->network->disconnectServer();
+	networkManager->network->serverDisconnect();
 #endif
 }
 
@@ -106,14 +107,14 @@ void NetworkManager::consoleConnect(int argc, char *argv[]) {
 #ifdef CLIENT
 	int results = 0;
 	if (!strcmp(argv[1],"local") || !strcmp(argv[0],"cl")) {
-		results = networkManager->network->connectServer("127.0.0.1", 5060);
+		results = networkManager->network->serverConnect("127.0.0.1", 5060);
 	}
 	else if (argc != 3) {
 		gfx::hud.console.error("Usage: %s <host ip> <host port>", argv[0]);
 		return;
 	}
 	else {
-		results = networkManager->network->connectServer(argv[1], atoi(argv[2]));
+		results = networkManager->network->serverConnect(argv[1], atoi(argv[2]));
 	}
 
 	if(results)
@@ -166,6 +167,17 @@ void NetworkManager::consoleNetworkRates(int argc, char *argv[]) {
 		printf("SERVER SEND MAX = %i\n", net::SERVER_SEND_MAX_PACKETS_PER_MS);
 	}
 	return;
+#endif
+}
+
+void NetworkManager::consolePlayers(int argc, char *argv[]) {
+#ifdef CLIENT
+	vector<Client *> clients = global::networkManager->network->getPlayers();
+	for(unsigned int i=0; i<clients.size(); ++i)
+		gfx::hud.console.info("ID(%i) Type(%i) Name(%s)",
+				clients[i]->playerID,
+				clients[i]->playerType,
+				clients[i]->playerName);
 #endif
 }
 

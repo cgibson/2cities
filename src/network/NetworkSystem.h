@@ -10,32 +10,30 @@
 #include "../../include/ting/Socket.hpp"
 #include "../../include/ting/WaitSet.hpp"
 
-#ifdef SERVER
+//#ifdef SERVER
 	#define PRINTINFO(x) printf(x);
-	//#define PRINTINFO(x,y) printf(x,y);
-	//#define PRINTINFO(x,y,z) printf(x,y,z);
-#else
+//#else
 /*
 	#include "../graphics/graphics.h"
 	#define PRINTINFO(x) gfx::hud.console.info(x);
-	#define PRINTINFO(x,y) gfx::hud.console.info(x,y);
-	#define PRINTINFO(x,y,z) gfx::hud.console.info(x,y,z);
 */
-	#define PRINTINFO(x) printf(x);
-#endif
+//#endif
 
 #include "../system/global.h"
 #include "../system/enum.h"
 using namespace global;
 using namespace enumeration;
 
+#include "Client.h"
 #include "Network.h"
 using namespace net;
 
 class NetworkSystem {
 protected:
-	int _playerID;
-	unsigned int _currObjID;
+	int myClientID;
+	vector<Client *> clients;
+
+	unsigned int nextNewObjID;
 
 	// Variables for rx/tx rates (counted over ~250ms period)
 	int _pktCountRecv;
@@ -43,11 +41,19 @@ protected:
 	int _pktPeriod;
     void updateRxTxData(long elapsed);
 
+    // Server Function
+	virtual void closeSockets() {};
+
+	// Communication
+	virtual void recvMsg(NetworkPacket &pktPtr) {};
+
+	// Object Control
+	virtual void addObjectPhys(WorldObject *objPtr) {};
+	virtual void reqUpdateObj(unsigned int objID) {};
+
 	// Helper functions for quick/sorted actions on std:vectors
 	void updateObjectVector(vector<WorldObject *> *objVec, WorldObject *objPtr);
 	void removeObjectVector(vector<WorldObject *> *objVec, unsigned int worldObjectID);
-
-	// Helper functions to specifically act on currState->objects vector
 	void updateObjectLocal(WorldObject *obj);
 	void removeObjectLocal(unsigned int worldObjectID);
 
@@ -65,37 +71,35 @@ protected:
 	void recvPlayerCamera(Vector &camPos, Vector &camView, unsigned char *bufPtr);
 
 public:
-	NetworkSystem() { _pktCountRecv = _pktCountSent = _pktPeriod = _playerID = 0; };
-	~NetworkSystem() { closeSockets(); };
+	NetworkSystem();
+	~NetworkSystem();
 
 	virtual void initialize() {};
 	virtual void update(long elapsed) {};
 
 	// Server Details
-	virtual void closeSockets() {};
 	virtual void dedicatedServer(bool toggle) {};
 	virtual bool dedicatedServer(void) { return false; };
 
 	// Connection Based Functions
-	virtual bool connectServer(const char * ip, unsigned int port) { return false; };
-	virtual void disconnectServer() {};
-	virtual int  checkLag(ting::UDPSocket *socket, ting::IPAddress ip) { return 0; };
+	virtual bool serverConnect(const char * ip, unsigned int port) { return false; };
+	virtual void serverDisconnect() {};
+	virtual int  getServerDelay() { return 0; };
 
 	// Player Detail Functions
-	        int  getPlayerID() { return _playerID; };
+	vector<Client *> getPlayers() { return clients; };
+	        int  getMyPlayerID();
+	        int  getMyClientID() { return myClientID; };
 	virtual int  getPlayerScore(int playerID) { return 0; };
-	virtual PlayerColor getPlayerColor() { return (PlayerColor)_playerID; };
+	virtual PlayerColor getPlayerColor(int playerID) { return (PlayerColor)myClientID; };
 
 	virtual void sendPlayerReady(int readyFlag) {};
 
 	// Communication
 	virtual void sendMsg(char *msgStr) {};
-	virtual void recvMsg(NetworkPacket &pktPtr) {};
 
 	// Add new object to scene
 	virtual void addObject(WorldObject *objPtr) {};
-	virtual void addObjectPhys(WorldObject *objPtr) {};
-	virtual void reqUpdateObj(unsigned int objID) {};
 
 	// Load a stored lvl
 	virtual void emptyWorld() {};

@@ -30,8 +30,15 @@ protected:
 
 	bool isConnected;
 	unsigned int serverDelay;
-	int serverTimeDelta;
-	int lagCalc_StartTime;
+	int  serverClockDelta;
+	int  lagCalc_StartTime;
+
+	virtual void closeSockets();
+
+	//virtual void recvMsg(NetworkPacket &pktPtr) {};
+
+	virtual void addObjectPhys(WorldObject *objPtr) { updateObjectLocal(objPtr); };
+	//virtual void reqUpdateObj(unsigned int objID) {};
 
 public:
 	NetworkClient();
@@ -41,30 +48,26 @@ public:
 	void update(long milli_time);
 
 	// Server Details
-	virtual void closeSockets();
-	//virtual void dedicatedServer(bool toggle) {};
-	//virtual bool dedicatedServer(void) { return false; };
+	virtual void dedicatedServer(bool toggle) {};
+	virtual bool dedicatedServer(void) { return false; };
 
 	// Connection Based Functions
-	virtual bool connectServer(const char * ip, unsigned int port);
-	virtual void disconnectServer();
-	virtual int  checkLag(ting::UDPSocket *socket, ting::IPAddress ip);
+	virtual bool serverConnect(const char * ip, unsigned int port);
+	virtual void serverDisconnect();
+	virtual int  getServerDelay();
 
 	// Player Detail Functions
-	//      int  getPlayerID() { return _playerID; };
+	//      int  getPlayerID() { return myClientID; };
 	//virtual int  getPlayerScore(int playerID) { return 0; };
-	//virtual PlayerColor getPlayerColor() { return (PlayerColor)_playerID; };
+	//virtual PlayerColor getPlayerColor() { return (PlayerColor)myClientID; };
 
 	virtual void sendPlayerReady(int readyFlag);
 
 	// Communication
 	virtual void sendMsg(char *msgStr);
-	//virtual void recvMsg(NetworkPacket &pktPtr) {};
 
 	// Add new object to scene
 	virtual void addObject(WorldObject *objPtr);
-	virtual void addObjectPhys(WorldObject *objPtr) { updateObjectLocal(objPtr); };
-	//virtual void reqUpdateObj(unsigned int objID) {};
 
 	// Load a stored lvl
 	virtual void emptyWorld();

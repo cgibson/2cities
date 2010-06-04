@@ -20,10 +20,10 @@ bool NetworkPrioritySort(NetworkObjectState objSt1, NetworkObjectState objSt2) {
 NetworkServer::NetworkServer() {
 	PRINTINFO("Network Initializing...");
 	ting::SocketLib socketsLib;
-	_incomingSock.Open(net::SERVER_PORT_DEFAULT);
+	serverSocket.Open(net::SERVER_PORT_DEFAULT);
 
 	_waitSet = new ting::WaitSet(10);
-	_waitSet->Add(&_incomingSock, ting::Waitable::READ);
+	_waitSet->Add(&serverSocket, ting::Waitable::READ);
 
 #ifdef CLIENT
 	_dedicatedServer = false;
@@ -31,15 +31,18 @@ NetworkServer::NetworkServer() {
 	_dedicatedServer = true;
 #endif
 	_sendObjNext = 0;
-	_playerIDNext = 1;
 
 // Player Specific (since server can be hosted, must include here)
 #ifdef CLIENT
-	_playerID = _playerIDNext++;
+	myClientID = 0;
+	char playerName[] = "Host Player";	// TODO check pkt.data for name
+	clients.push_back(new Client(1,playerName, true));
+	clients[myClientID]->playerType = Client::PLAYER;
+	nextNewObjID = clients[myClientID]->playerID * 10000;
 #else
-	_playerID = 0;
+	myClientID = -1;
+	nextNewObjID = 0;
 #endif
-	_currObjID = _playerID * 10000;
 	PRINTINFO("Network Initialized!\n");
 
 	PRINTINFO("Network Initializing PhysicsEngine...");
@@ -52,49 +55,16 @@ NetworkServer::~NetworkServer() {
 }
 
 void NetworkServer::closeSockets() {
-	_incomingSock.Close();
+	serverSocket.Close();
 	PRINTINFO("Main Server Port Closed\n");
 
-	for(unsigned int p=0; p<_players.size(); p++) {
-		_players[p]->socket.Close();
+	for(unsigned int p=0; p<clients.size(); p++) {
+		clients[p]->socket.Close();
 	}
 	PRINTINFO("Player Ports Closed\n");
 }
 
 void NetworkServer::initialize() {}
-
-int  NetworkServer::checkLag(ting::UDPSocket *socket, ting::IPAddress ip) {
-/*
-	try {
-		NetworkPacket pkt;
-
-		RecvPacket(&pkt, &_incomingSock, &ip);
-
-		if(pkt.header.type == net::LAG_REQ) {
-			// Add Socket/IP to currPlayer
-			socket->Open();
-			ip = ting::IPAddress(ip.host>>24, (ip.host<<8)>>24, (ip.host<<16)>>24, (ip.host<<24)>>24, ip.port);
-
-			// Add Socket to _waitSet
-			_waitSet->Add(&(currPlayer->socket), ting::Waitable::READ);
-
-			// Send reply so they have new UDP port, playerID, and serverClock
-			unsigned char msg[sizeof(int)];
-			int gameClock = global::elapsed_ms();
-			memcpy(msg, (unsigned char*)&gameClock, sizeof(int));
-
-			NetworkPacket tmpPkt(LAG_REPLY, msg, sizeof(int));
-			SendPacket(tmpPkt, &(currPlayer->socket), currPlayer->ip);
-		}
-		else {
-			printf("Received an unexpected packet on the server!");
-		}
-	} catch(ting::Socket::Exc &e) {
-		std::cout << "Network error: " << e.What() << std::endl;
-	}
-*/
-	return -1;
-}
 
 void NetworkServer::networkIncoming(long &elapsed) {
 	try {
@@ -103,14 +73,14 @@ void NetworkServer::networkIncoming(long &elapsed) {
 
 		// Check for incoming items
 		if(_waitSet->WaitWithTimeout(0)) {
-			if(_incomingSock.CanRead()) {
+			if(serverSocket.CanRead()) {
 				networkIncomingGeneral(elapsed);
 			}
 
 			// Check each player socket for data (allows up to 10 packets to be accepted)
-			for(unsigned int p=0; p<_players.size(); p++) {
+			for(unsigned int p=0; p<clients.size(); p++) {
 				int pktsRecv = 0;
-				while (_players[p]->socket.CanRead() && pktsRecv++ < 10) {
+				while (!clients[p]->isLocal && clients[p]->socket.CanRead() && pktsRecv++ < 10) {
 					networkIncomingPlayers(p, elapsed);
 				}
 			}
@@ -125,28 +95,25 @@ void NetworkServer::networkIncomingGeneral(long &elapsed) {
 		ting::IPAddress ip;
 		NetworkPacket pkt;
 
-		RecvPacket(&pkt, &_incomingSock, &ip);
+		RecvPacket(&pkt, &serverSocket, &ip);
 
 		if(pkt.header.type == net::CONN_REQ) {
 			printf("Client is requesting to connect!\n");
 
 			// Create new player and add to players
-			Player *currPlayer = new Player;
-			currPlayer->ID = _playerIDNext++;
-			currPlayer->camPos = Vector(0,100,0);
-			currPlayer->camView = Vector(0,100,0);
-			currPlayer->lagDelay = 0;
-			currPlayer->playerReady = 0;
-			currPlayer->playerScore = 0;
-			int playerCount = 0;
-			for(unsigned int i=0; i<_players.size(); i++)
-				if(_players[i]->playerType == PLAYER)
-					playerCount++;
-			if(playerCount < 2)
-				currPlayer->playerType = PLAYER;
-			else
-				currPlayer->playerType = SPECTATOR;
-			_players.push_back(currPlayer);
+			char playerName[] = "Rem Player";	// TODO check pkt.data for name
+			Client *currPlayer = new Client(0, playerName);
+			clients.push_back(currPlayer);
+
+			int playerValue = 1;
+			for(unsigned int i=0; i<clients.size(); i++) {
+				if(clients[i]->playerType == Client::PLAYER && clients[i]->playerID == playerValue)
+					playerValue++;
+			}
+			if(playerValue <= 2) {
+				currPlayer->playerType = Client::PLAYER;
+				currPlayer->playerID = playerValue;
+			}
 
 			// Add Socket/IP to currPlayer
 			currPlayer->socket.Open();
@@ -157,13 +124,15 @@ void NetworkServer::networkIncomingGeneral(long &elapsed) {
 
 			// Send reply so they have new UDP port, playerID, and serverClock
 			unsigned char msg[sizeof(int) * 2];
-			int playerID = currPlayer->ID;
-			memcpy(msg, (unsigned char*)&playerID, sizeof(int));
+			int clientID = clients.size()-1;
+			memcpy(msg, (unsigned char*)&clientID, sizeof(int));
 			int gameClock = global::elapsed_ms();
 			memcpy(msg + sizeof(int), (unsigned char*)&gameClock, sizeof(int));
 
 			printf("Sending Connection Reply (gameClock = %i)...\n", gameClock);
 			NetworkPacket tmpPkt(CONN_REPLY, msg, sizeof(int)*2);
+			tmpPkt.dataSize = Client::makeClientVectorBinStream(clients, tmpPkt.data+8) + 8;
+
 			SendPacket(tmpPkt, &(currPlayer->socket), currPlayer->ip);
 		}
 		else {
@@ -178,27 +147,27 @@ void NetworkServer::networkIncomingPlayers(int p, long &elapsed) {
 	try {
 		ting::IPAddress ip;
 		NetworkPacket pkt;
-		RecvPacket(&pkt, &(_players[p]->socket), &ip);
+		RecvPacket(&pkt, &(clients[p]->socket), &ip);
 
 		int gameClock;
 
 		switch (pkt.header.type) {
 		case OBJECT_SEND :
-			decodeObjectSend(pkt, _players[p]->lagDelay);
+			decodeObjectSend(pkt, clients[p]->playerDelay);
 			break;
 		case LAG_REQ :
 			gameClock = global::elapsed_ms();
 			pkt = NetworkPacket (LAG_REPLY, (unsigned char *)&gameClock, sizeof(int));
-			SendPacket(pkt, &(_players[p]->socket), _players[p]->ip);
+			SendPacket(pkt, &(clients[p]->socket), clients[p]->ip);
 			break;
 		case LAG_RESULT :
-			_players[p]->lagDelay = *(int*)(pkt.data);
+			clients[p]->playerDelay = *(int*)(pkt.data);
 			break;
 		case DISCONNECT :
-			printf("Player #%i is Disconnecting!\n", _players[p]->ID);
-			_waitSet->Remove(&_players[p]->socket);
-			_players[p]->socket.Close();
-			_players.erase(_players.begin()+p);
+			printf("Player #%i is Disconnecting!\n", clients[p]->playerID);
+			_waitSet->Remove(&clients[p]->socket);
+			clients[p]->socket.Close();
+			clients.erase(clients.begin()+p);
 			break;
 		case LEVEL_CLEAR :
 			emptyWorld();
@@ -208,11 +177,11 @@ void NetworkServer::networkIncomingPlayers(int p, long &elapsed) {
 			loadLevel((char *)pkt.data);
 			break;
 		case PLAYER_READY :
-			_players[p]->playerReady = *(int*)(pkt.data);
-			printf("PLAYER_READY: %i\n", _players[p]->playerReady);
+			clients[p]->playerReady = *(int*)(pkt.data);
+			printf("PLAYER_READY: %i\n", clients[p]->playerReady);
 			break;
 		case CAMLOC_MYLOC :
-			recvPlayerCamera(_players[p]->camPos, _players[p]->camView, pkt.data);
+			recvPlayerCamera(clients[p]->camPos, clients[p]->camView, pkt.data);
 			//printf("Player #%i CamPos%s CamView%s\n",_players[p]->ID,_players[p]->camPos.str(),_players[p]->camView.str());
 			break;
 		case TEXT_MSG :
@@ -232,20 +201,23 @@ void NetworkServer::networkIncomingPlayers(int p, long &elapsed) {
 void NetworkServer::networkOutgoing(long &elapsed) {
 	// Outgoing Network Section
 	try {
-		/*
 		// Send STATUS update to each _players
-		if((_players.size() > 0 || _dedicatedServer == false)) {
+		if((clients.size() > 1 || (_dedicatedServer == true && clients.size() > 0))) {
 			NetworkPacket pkt;
-			for(unsigned int p=0; p<_players.size(); p++) {
-				SendPacket(pkt, &(_players[p]->socket), _players[p]->ip);
+			pkt.dataSize = Client::makeClientVectorBinStream(clients, pkt.data+4) + 4;
+			pkt.header.type = STATUS_UPDATE;
+			for(unsigned int p=0; p<clients.size(); p++) {
+				if(!clients[p]->isLocal) {
+					memcpy(pkt.data, (unsigned char *)&p, sizeof(unsigned int));
+					SendPacket(pkt, &(clients[p]->socket), clients[p]->ip);
+				}
 			}
 		}
-		*/
 
 		// Send up to MAX_PACKETS_PER_CYCLE Packets
 		const int objsSize = _serverObjs.size();
 		const int sendSize = min(objsSize, (int)(SERVER_SEND_MAX_PACKETS_PER_MS * elapsed * OBJECT_BATCHSEND_SIZE));
-		if (sendSize > 0 && (_players.size() > 0 || _dedicatedServer == false)) {
+		if (sendSize > 0 && ((clients.size() > 1 || (_dedicatedServer == true && clients.size() > 0)))) {
 			unsigned int currObj = _sendObjNext;
 			while(currObj < _sendObjNext + sendSize) {
 				// Update Locally
@@ -260,8 +232,9 @@ void NetworkServer::networkOutgoing(long &elapsed) {
 				buildBatchPacket(&pkt, objPtrGroup, OBJECT_BATCHSEND_SIZE);
 
 				// Send to each _players
-				for(unsigned int p=0; p<_players.size(); p++) {
-					SendPacket(pkt, &(_players[p]->socket), _players[p]->ip);
+				for(unsigned int p=0; p<clients.size(); p++) {
+					if(!clients[p]->isLocal)
+						SendPacket(pkt, &(clients[p]->socket), clients[p]->ip);
 				}
 				currObj += OBJECT_BATCHSEND_SIZE;
 			}
@@ -308,8 +281,8 @@ void NetworkServer::update(long elapsed) {
 				global::pbs_sent,
 				global::pbs_recv,
 				_serverObjs.size());
-		for(unsigned int p=0; p<_players.size(); p++) {
-			printf("P%i(%4i ms) ", _players[p]->ID, _players[p]->lagDelay);
+		for(unsigned int p=0; p<clients.size(); p++) {
+			printf("P%i(%4i ms) ", clients[p]->playerID, clients[p]->playerDelay);
 		}
 		printf("  ");
 		fflush(stdout);
@@ -329,8 +302,9 @@ void NetworkServer::update(long elapsed) {
 
 				// Send to Clients
 				NetworkPacket pkt(OBJECT_KILL, (unsigned char *)&removeID, sizeof(unsigned int));
-				for(unsigned int p=0; p<_players.size(); p++) {
-					SendPacket(pkt, &(_players[p]->socket), _players[p]->ip);
+				for(unsigned int p=0; p<clients.size(); p++) {
+					if(!clients[p]->isLocal)
+						SendPacket(pkt, &(clients[p]->socket), clients[p]->ip);
 				}
 			}
 			else {
@@ -351,8 +325,8 @@ void NetworkServer::update(long elapsed) {
 }
 
 void NetworkServer::addObject(WorldObject *objPtr) {
-	objPtr->setID(_currObjID++);
-	objPtr->setPlayerID(_playerID);
+	objPtr->setID(nextNewObjID++);
+	objPtr->setPlayerID(clients[myClientID]->playerID);
 	
 	addObjectPhys(objPtr);
 
@@ -382,8 +356,9 @@ void NetworkServer::emptyWorld() {
 	// Send to Clients
 	char msg[] = "";
 	NetworkPacket pkt(LEVEL_CLEAR, (unsigned char *)&msg, sizeof(msg));
-	for(unsigned int p=0; p<_players.size(); p++) {
-		SendPacket(pkt, &(_players[p]->socket), _players[p]->ip);
+	for(unsigned int p=0; p<clients.size(); p++) {
+		if(!clients[p]->isLocal)
+			SendPacket(pkt, &(clients[p]->socket), clients[p]->ip);
 	}
 }
 

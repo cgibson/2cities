@@ -12,8 +12,8 @@ NetworkClient::NetworkClient() : NetworkSystem() {
 	waitSet->Add(&socket, ting::Waitable::READ);
 
 	isConnected = false;
-	_playerID = 1;
-	_currObjID = _playerID * 10000;
+	myClientID = 1;
+	nextNewObjID = myClientID * 10000;
 	PRINTINFO("Network Initialized!\n");
 }
 
@@ -23,7 +23,7 @@ NetworkClient::~NetworkClient() {
 
 void NetworkClient::closeSockets() {
 	if(isConnected)
-		disconnectServer();
+		serverDisconnect();
 
 	if(socket.IsValid()) {
 		waitSet->Remove(&socket);
@@ -37,7 +37,7 @@ void NetworkClient::initialize() {}
 
 void NetworkClient::update(long milli_time) {
 	updateRxTxData(milli_time);
-	//int currServerTime = global::elapsed_ms() - serverTimeDelta;
+	//int currServerTime = global::elapsed_ms() - serverClockDelta;
 
 	ting::IPAddress sourceIP;
 	NetworkPacket pkt;
@@ -77,6 +77,15 @@ void NetworkClient::update(long milli_time) {
 		else if(pkt.header.type == LEVEL_CLEAR) {
 			global::stateManager->currentState->objects.clear();
 		}
+		else if(pkt.header.type == STATUS_UPDATE ) {
+			myClientID = *(int*)(pkt.data);
+			Client::recvClientVectorBinStream(clients, pkt.data+4, pkt.dataSize-4);
+/*
+			printf("Received Status Update!\n");
+			for(unsigned int i=0; i<clients.size(); i++)
+				clients[i]->print();
+*/
+		}
 		else {
 			printf("Received an unknown packet type!\n");
 		}
@@ -84,11 +93,11 @@ void NetworkClient::update(long milli_time) {
 	}
 }
 
-bool NetworkClient::connectServer(const char * ip, unsigned int port) {
+bool NetworkClient::serverConnect(const char * ip, unsigned int port) {
 	serverIP = ting::IPAddress(ip, port);
 
 //	if(isConnected)
-//		disconnectServer();
+//		serverDisconnect();
 
 	if(socket.IsNotValid()) {
 		socket.Open();
@@ -116,13 +125,14 @@ bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 
 		if(pkt.header.type == CONN_REPLY) {
 			serverIP.port = sourceIP.port;
-			_playerID = *(int*)(pkt.data);
-			_currObjID = _playerID * 10000;
+			myClientID = *(int*)(pkt.data);
+			nextNewObjID = myClientID * 10000;
 
 			serverDelay = (lagCalc_EndTime - lagCalc_StartTime)/2;
-			serverTimeDelta = global::elapsed_ms() - (*((int*)(pkt.data)+1) + serverDelay);
+			serverClockDelta = global::elapsed_ms() - (*((int*)(pkt.data)+1) + serverDelay);
+			Client::recvClientVectorBinStream(clients, pkt.data+8, pkt.dataSize-8);
 
-			printf("Connected as Player %i with a %i ms server delay!\n", _playerID, serverDelay);
+			printf("Connected! Client %i/%i with a %i ms server delay!\n", myClientID, clients.size(), serverDelay);
 
 			NetworkPacket tmpPkt(LAG_RESULT, (unsigned char *)&serverDelay, sizeof(serverDelay));
 			SendPacket(tmpPkt, &socket, serverIP);
@@ -141,7 +151,7 @@ bool NetworkClient::connectServer(const char * ip, unsigned int port) {
 	return isConnected;
 }
 
-void NetworkClient::disconnectServer() {
+void NetworkClient::serverDisconnect() {
 	if(isConnected) {
 		unsigned char msg[] = "";
 		NetworkPacket pkt(DISCONNECT, msg, sizeof(msg));
@@ -152,31 +162,11 @@ void NetworkClient::disconnectServer() {
 	}
 }
 
-int NetworkClient::checkLag(ting::UDPSocket *socket, ting::IPAddress ip) {
-	if(socket->IsNotValid()) {
-		socket->Open();
-	}
+int NetworkClient::getServerDelay() {
+	if(!isConnected)
+		return -1;
 
-	int lagCalc_Delta = -1;
-	int lagCalc_EndTime;
-	int lagCalc_StartTime = global::elapsed_ms();
-	NetworkPacket tmpPkt(LAG_REQ, (unsigned char *)&lagCalc_StartTime, sizeof(int));
-	SendPacket(tmpPkt, socket, ip);
-
-	// Wait for reply response for 1 second
-	if(waitSet->WaitWithTimeout(1000)) {
-		NetworkPacket pkt;
-		RecvPacket(&pkt, socket, &ip);
-		lagCalc_EndTime = global::elapsed_ms();
-
-		if(pkt.header.type == LAG_REPLY) {
-			lagCalc_Delta = (lagCalc_EndTime - lagCalc_StartTime)/2;
-			NetworkPacket tmpPkt(LAG_RESULT, (unsigned char *)&lagCalc_Delta, sizeof(int));
-			SendPacket(tmpPkt, socket, ip);
-		}
-	}
-
-	return lagCalc_Delta;
+	return serverDelay;
 }
 
 void NetworkClient::sendPlayerReady(int readyFlag) {
@@ -196,10 +186,10 @@ void NetworkClient::sendMsg(char *msgStr) {
 }
 
 void NetworkClient::addObject(WorldObject *ObjPtr) {
-	ObjPtr->setID(_currObjID++);
-	ObjPtr->setPlayerID(_playerID);
+	ObjPtr->setID(nextNewObjID++);
+	ObjPtr->setPlayerID(clients[myClientID]->playerID);
 
-	if(isConnected) {
+	if(isConnected && clients[myClientID]->playerType == Client::PLAYER) {
 		unsigned char buf[150];
 		int woSize = ObjPtr->makeBinStream(buf);
 		NetworkPacket pkt(OBJECT_SEND, buf, woSize);
@@ -214,7 +204,7 @@ void NetworkClient::emptyWorld() {
 	// Clear GameState objects
 	global::stateManager->currentState->objects.clear();
 
-	if(isConnected) {
+	if(isConnected && clients[myClientID]->playerType == Client::PLAYER) {
 		int tmpInt = 0;
 		NetworkPacket tmpPkt(LEVEL_CLEAR, (unsigned char *)&tmpInt, sizeof(int));
 		SendPacket(tmpPkt, &socket, serverIP);
@@ -226,7 +216,7 @@ void NetworkClient::loadLevel(const char * file) {
 	// Clear GameState objects
 	global::stateManager->currentState->objects.clear();
 
-	if(isConnected) {
+	if(isConnected && clients[myClientID]->playerType == Client::PLAYER) {
 		NetworkPacket tmpPkt(LEVEL_LOAD, (unsigned char *)file, strlen(file)+1);
 		SendPacket(tmpPkt, &socket, serverIP);
 		printf("Sent LoadLevel Request.\n");
@@ -234,7 +224,7 @@ void NetworkClient::loadLevel(const char * file) {
 }
 
 void NetworkClient::loadLevel(vector<WorldObject *> newObjs) {
-	if(isConnected) {
+	if(isConnected && clients[myClientID]->playerType == Client::PLAYER) {
 		for(unsigned int o = 0; o < newObjs.size(); ++o) {
 			// TODO make it so building blocks have a 0-10000 value
 			addObject(newObjs[o]);

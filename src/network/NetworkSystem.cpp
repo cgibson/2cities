@@ -1,5 +1,22 @@
 #include "NetworkSystem.h"
 
+NetworkSystem::NetworkSystem() {
+	_pktCountRecv = _pktCountSent = _pktPeriod = 0;
+
+	myClientID = 0;
+}
+
+NetworkSystem::~NetworkSystem() {
+	closeSockets();
+};
+
+int NetworkSystem::getMyPlayerID() {
+	if(clients.size() == 0)
+		return 0;
+	else
+		return clients[myClientID]->playerID;
+}
+
 /* Method to take a WorldObject* and update/add it to the main vector (based on ID field)
  *
  * Passed Object Pointer must remain alive past function call and shouldn't be deleted

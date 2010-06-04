@@ -12,12 +12,71 @@
 #include "NetworkSystem.h"
 #include "../../include/ting/Socket.hpp"
 #include "../../include/ting/WaitSet.hpp"
-#include "Player.h"
 
 #include "../system/global.h"
 #include "../system/enum.h"
 using namespace global;
 using namespace enumeration;
+
+class NetworkObjectState; // See Bottom
+
+class NetworkServer : public NetworkSystem {
+protected:
+	Physics physicsEngine;
+
+	ting::UDPSocket serverSocket;
+	ting::WaitSet *_waitSet;
+
+	vector<WorldObject *> _serverObjs;
+
+	bool _dedicatedServer;
+	unsigned int _sendObjNext;
+
+	virtual void closeSockets();
+
+	//virtual void recvMsg(NetworkPacket &pktPtr) {};
+
+	virtual void addObjectPhys(WorldObject *objPtr);
+	//virtual void reqUpdateObj(unsigned int objID) {};
+
+	void networkIncoming(long &elapsed);
+	void networkIncomingGeneral(long &elapsed);
+	void networkIncomingPlayers(int p, long &elapsed);
+	void networkOutgoing(long &elapsed);
+
+public:
+	NetworkServer();
+	~NetworkServer();
+
+	void initialize();
+	void update(long milli_time);
+
+	// Server Details
+	virtual void dedicatedServer(bool toggle) {	_dedicatedServer = toggle; }
+	virtual bool dedicatedServer(void) { return _dedicatedServer; }
+
+	// Connection Based Functions
+	virtual bool serverConnect(const char * ip, unsigned int port) { return true; };
+	//virtual void serverDisconnect() {};
+	virtual int  getServerDelay() { return 0; };
+
+	// Player Detail Functions
+	//virtual int  getPlayerScore(int playerID) { return 0; };
+	virtual PlayerColor getPlayerColor() { return (PlayerColor)myClientID; };
+
+	//virtual void sendPlayerReady(int readyFlag) {};
+
+	// Communication
+	//virtual void sendMsg(char *msgStr) {};
+
+	// Add new object to scene
+	virtual void addObject(WorldObject *objPtr);
+
+	// Load a stored lvl
+	virtual void emptyWorld();
+	virtual void loadLevel(const char * file);
+	//virtual void loadLevel(vector<WorldObject *> newObjs) {};
+};
 
 class NetworkObjectState {
 public:
@@ -47,64 +106,6 @@ public:
 		lastUpdate = newObj->getTimeStamp();
 		priority   = initPriority;
 	}
-};
-
-class NetworkServer : public NetworkSystem {
-protected:
-	Physics physicsEngine;
-
-	vector<Player *> _players;
-
-	ting::UDPSocket _incomingSock;
-	ting::WaitSet *_waitSet;
-
-	vector<WorldObject *> _serverObjs;
-
-	bool _dedicatedServer;
-	unsigned int _sendObjNext;
-	unsigned int _playerIDNext;
-
-	void networkIncoming(long &elapsed);
-	void networkIncomingGeneral(long &elapsed);
-	void networkIncomingPlayers(int p, long &elapsed);
-	void networkOutgoing(long &elapsed);
-
-public:
-	NetworkServer();
-	~NetworkServer();
-
-	void initialize();
-	void update(long milli_time);
-
-	// Server Details
-	virtual void closeSockets();
-	virtual void dedicatedServer(bool toggle) {	_dedicatedServer = toggle; }
-	virtual bool dedicatedServer(void) { return _dedicatedServer; }
-
-	// Connection Based Functions
-	virtual bool connectServer(const char * ip, unsigned int port) { return true; };
-	//virtual void disconnectServer() {};
-	virtual int  checkLag(ting::UDPSocket *socket, ting::IPAddress ip);
-
-	// Player Detail Functions
-	//virtual int  getPlayerScore(int playerID) { return 0; };
-	virtual PlayerColor getPlayerColor() { return (PlayerColor)_playerID; };
-
-	//virtual void sendPlayerReady(int readyFlag) {};
-
-	// Communication
-	//virtual void sendMsg(char *msgStr) {};
-	//virtual void recvMsg(NetworkPacket &pktPtr) {};
-
-	// Add new object to scene
-	virtual void addObject(WorldObject *objPtr);
-	virtual void addObjectPhys(WorldObject *objPtr);
-	//virtual void reqUpdateObj(unsigned int objID) {};
-
-	// Load a stored lvl
-	virtual void emptyWorld();
-	virtual void loadLevel(const char * file);
-	//virtual void loadLevel(vector<WorldObject *> newObjs) {};
 };
 
 #endif

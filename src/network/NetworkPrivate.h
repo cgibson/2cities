@@ -33,14 +33,14 @@ public:
 	//virtual bool dedicatedServer(void) { return false; };
 
 	// Connection Based Functions
-	//virtual bool connectServer(const char * ip, unsigned int port) { return false; };
-	//virtual void disconnectServer() {};
+	//virtual bool serverConnect(const char * ip, unsigned int port) { return false; };
+	//virtual void serverDisconnect() {};
 	//virtual int  checkLag(ting::UDPSocket *socket, ting::IPAddress ip) { return 0; };
 
 	// Player Detail Functions
-	//        int  getPlayerID() { return _playerID; };
+	//        int  getPlayerID() { return myClientID; };
 	//virtual int  getPlayerScore(int playerID) { return 0; };
-	//virtual PlayerColor getPlayerColor() { return (PlayerColor)_playerID; };
+	//virtual PlayerColor getPlayerColor() { return (PlayerColor)myClientID; };
 
 	virtual void sendPlayerReady(int readyFlag);
 

@@ -123,20 +123,14 @@ void BuildState::updateInput(long milli_time) {
 		mouseDownHandler();
 
 	// General Keyboard Layout
+	if(io::keys['r']) {
+	  io::keys['r'] = false;
+	  networkManager->network->sendPlayerReady(1);
+	}
+
 	if(io::keys[27]) {
 		exit(0);
 	}
-
-   if(io::keys['f']) {
-	   if (io::captured)
-		{
-			io::release_mouse();
-	   }
-		else
-		{
-			io::capture_mouse();
-	   }
-   }
 }
 
 bool BuildState::isValidClick(Point click, int button)

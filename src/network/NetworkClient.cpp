@@ -189,7 +189,6 @@ void NetworkClient::sendMsg(char *msgStr) {
 void NetworkClient::addObject(WorldObject *ObjPtr) {
 	ObjPtr->setID(nextNewObjID++);
 	ObjPtr->setPlayerID(clients[myClientID]->playerID);
-	ObjPtr->print();
 
 	if(isConnected && clients[myClientID]->playerType == Client::PLAYER) {
 		unsigned char buf[150];

@@ -124,6 +124,12 @@ void PassShader::update()
 
 	int loc = glGetUniformLocation(shader_program, "texture0");
 	glUniform1i(loc, 0);
+	
+	glActiveTextureARB( GL_TEXTURE1 );
+	glBindTexture(GL_TEXTURE_2D, textures[1] );
+
+	loc = glGetUniformLocation(shader_program, "texture1");
+	glUniform1i(loc, 1);
 }
 
 void PassShader::enable()

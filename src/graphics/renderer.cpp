@@ -42,19 +42,25 @@ void Renderer::init_lights()
 
 void Renderer::draw_screen()
 {
-  gfx::simpleScreenFillShader.enable();
   gfx::simpleScreenFillShader.update();
+  gfx::simpleScreenFillShader.enable();
+  
+  int loc = glGetUniformLocation(gfx::simpleScreenFillShader.getProgram(), "texture0");
+  glUniform1i(loc, 0);
 
+  loc = glGetUniformLocation(gfx::simpleScreenFillShader.getProgram(), "texture1");
+  glUniform1i(loc, 1);
+  
   glBegin(GL_QUADS);
 	glColor4f(1,1,1,1);
     glTexCoord2f(0,0);
-    glVertex3f(-1.0, -1.0, -1);
+    glVertex3f(-1.0, -1.0, 0);
     glTexCoord2f(1,0);
-    glVertex3f(1.0, -1.0, -1);
+    glVertex3f(1.0, -1.0, 0);
     glTexCoord2f(1 ,1);
-    glVertex3f(1.0, 1.0, -1);
+    glVertex3f(1.0, 1.0, 0);
     glTexCoord2f(0 ,1);
-    glVertex3f(-1.0, 1.0, -1);
+    glVertex3f(-1.0, 1.0, 0);
   glEnd();
 }
 
@@ -63,6 +69,7 @@ void Renderer::draw()
   if(gfx::renderState == FULL)
   {
 	// render the scene into the FBO (first pass)
+	glEnable(GL_DEPTH_TEST);
     gfx::fbo->enable();
     draw_diffusePass();
     gfx::fbo->disable();
@@ -74,6 +81,10 @@ void Renderer::draw()
 
     // draw second pass
     draw_screen();
+    
+    shader::reset();
+    //draw_diffusePass();
+    
 
   }else{
     draw_diffusePass();

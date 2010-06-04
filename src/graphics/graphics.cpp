@@ -198,6 +198,7 @@ namespace gfx{
     if(renderState == FULL)
     {
       simpleScreenFillShader.setTextures(fbo->getTextureIDs(), 1);
+      simpleScreenFillShader.enable();
     }
 
     shader::setProgram(old);

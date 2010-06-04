@@ -1,11 +1,12 @@
 uniform sampler2D texture0;
+uniform sampler2D texture1;
 
 void main()
 {
     vec2 texLookup;
     vec4 col = texture2D(texture0, gl_TexCoord[0].st);
     
-    /*float change = 2.0/512.0;
+    float change = 2.0/512.0;
     
     vec4 accum = vec4(0.0);
     
@@ -27,6 +28,6 @@ void main()
     accum /= 16.0;
 
     col = max(col, accum);
-    */
+    
     gl_FragData[0] = col;//vec4(1,0,1,1);//col;//(col + accum) / 2.0;
 }

@@ -45,12 +45,6 @@ void Renderer::draw_screen()
   gfx::simpleScreenFillShader.update();
   gfx::simpleScreenFillShader.enable();
   
-  int loc = glGetUniformLocation(gfx::simpleScreenFillShader.getProgram(), "texture0");
-  glUniform1i(loc, 0);
-
-  loc = glGetUniformLocation(gfx::simpleScreenFillShader.getProgram(), "texture1");
-  glUniform1i(loc, 1);
-  
   glBegin(GL_QUADS);
 	glColor4f(1,1,1,1);
     glTexCoord2f(0,0);
@@ -203,8 +197,10 @@ void Renderer::draw_diffusePass()
         curMat.applyMaterial(gfx::simpleShader, "");
         switch(curType)
         {
-          case DUMMY_BLOCK:
+          case DUMMY_BLOCK: case BLOCK_1_2_1: case BLOCK_2_4_2: case BLOCK_5_1_5:
             gfx::forceBlockShader.enable();
+            curMat = gfx::materials[GREEN_PLAYER];
+            curMat.applyMaterial(gfx::forceBlockShader, "");
             break;
           case DUMMY_SPHERE: case CUSTOM_BLOCK:
             gfx::simpleShader.enable();
@@ -227,9 +223,9 @@ void Renderer::draw_diffusePass()
 
       if(curType != DUMMY_SPHERE)
       {
-        blueprint = global::factory->getBlueprint(curType);
+        /*blueprint = global::factory->getBlueprint(curType);
         curMat = gfx::materials[blueprint.getMaterial()];
-        curMat.applyMaterial(gfx::forceBlockShader, "");
+        curMat.applyMaterial(gfx::forceBlockShader, "");*/
 
         loc = glGetUniformLocation(gfx::forceBlockShader.getProgram(), "force");
 

@@ -64,7 +64,7 @@ namespace enumeration {
   } ObjectType;
 
   typedef enum E_MaterialType {
-    MAT_TYPE_MIN, YELLOW_MAT=MAT_TYPE_MIN, BLUE_MAT, WHITE_MAT, GREEN_MAT, GRID, GRID_DIFFUSE, MAT_TYPE_MAX
+    MAT_TYPE_MIN, YELLOW_MAT=MAT_TYPE_MIN, BLUE_MAT, WHITE_MAT, GREEN_MAT, GRID, GRID_DIFFUSE, BLUE_PLAYER, GREEN_PLAYER, MAT_TYPE_MAX
   } MaterialType;
 
   typedef enum E_NetworkInterface {

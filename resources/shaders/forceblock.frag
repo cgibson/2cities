@@ -4,8 +4,23 @@ uniform float force;
 // shock ripple effect (0 -> 1)
 uniform float shock;
 
+uniform vec3 light_position;
+uniform vec4 light_diffuse;
+uniform vec4 light_ambient;
+
+uniform vec4 material_ambient;
+uniform vec4 material_diffuse;
+uniform vec4 material_specular;
+uniform float material_shininess;
+
+varying vec3 normal;
+varying vec3 lightPos;
+
 void main()
 {   
+	vec3 light_vec = normalize(lightPos);
+	float NdotL = clamp(dot(normal,light_vec), 0.0, 1.0);
+	
     // edge highlights
     vec2 glow_amt = vec2(64.0 * pow(abs((gl_TexCoord[0].s - 0.5)), 6.0),
                          64.0 * pow(abs((gl_TexCoord[0].t - 0.5)), 6.0));
@@ -13,7 +28,7 @@ void main()
    
     // compute force color
     float force_amt = clamp(force, 0.0, 1.0);
-    vec4 force_clr = vec4(force_amt, 1.0 - force_amt, 0.0, 1.0);
+    vec4 force_clr = vec4(force_amt, force_amt, force_amt, 1.0) * material_diffuse + vec4(1-force_amt, 1-force_amt, 1-force_amt, 1.0) * material_ambient;
    
     // compute shock contribution
     float shock_amt = clamp(shock, 0.0, 1.0);
@@ -23,7 +38,12 @@ void main()
     vec4 final = (glow * force_clr) + (glow * shock_clr);
     final.a = 1.0;
     
+    vec4 diffuse = material_ambient * NdotL * 0.1;//* light.diffuse * NdotL;
+    vec4 ambient = vec4(0.0,0.0,0.0,1);// * light.ambient;
+    vec4 phong = ambient + diffuse;
+    
     // set the fragment color
-    gl_FragData[0] = final;
-    gl_FragData[1] = final;
+    gl_FragData[0] = final + phong;
+    gl_FragData[1] = ((max(force, 1.0) * 0.05 * vec4(1,0,0,1)) + (max(shock, 1.0) * 0.05 * vec4(1,1,1,1))) + vec4(0,0,0,1);
+    gl_FragData[2] = vec4(normal, 1);
 }

@@ -34,7 +34,7 @@ namespace global
   Camera *camera = NULL;
 #endif
 
-  float fill_color[4] = {0.05f, 0.05f, 0.05f, 0.05f};
+  float fill_color[4] = {0.00f, 0.00f, 0.00f, 0.00f};
 
   int fps;
   int pbs_recv;

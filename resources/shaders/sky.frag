@@ -18,5 +18,7 @@ void main()
     final.a = final.r;
 
     // set the fragment color
-    gl_FragColor = final;
+    gl_FragData[0] = final;
+    gl_FragData[1] = vec4(0,0,0,1);
+    gl_FragData[2] = vec4(0,0,0, 1);
 }

@@ -38,7 +38,7 @@ namespace gfx{
   bool initFBO()
   {
     gfx::fbo = new FBOHelper();
-    return gfx::fbo->initialize(global::width, global::height, 2);
+    return gfx::fbo->initialize(global::width, global::height, 3);
   }
 
   void display()
@@ -105,6 +105,18 @@ namespace gfx{
     specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
     shininess[0] = 100.0;
     materials[GRID_DIFFUSE] = Material(ambient, diffuse, specular, shininess);
+
+    ambient[0] = 0.0; ambient[1] = 0.0; ambient[2] = 0.9; ambient[3] = 1.0;
+    diffuse[0] = 0.9; diffuse[1] = 0.0; diffuse[2] = 0.0; diffuse[3] = 1.0;
+    specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
+    shininess[0] = 100.0;
+    materials[BLUE_PLAYER] = Material(ambient, diffuse, specular, shininess);
+
+    ambient[0] = 0.0; ambient[1] = 0.7; ambient[2] = 0.0; ambient[3] = 1.0;
+    diffuse[0] = 1.0; diffuse[1] = 0.0; diffuse[2] = 0.0; diffuse[3] = 1.0;
+    specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
+    shininess[0] = 100.0;
+    materials[GREEN_PLAYER] = Material(ambient, diffuse, specular, shininess);
   }
 
   void init()
@@ -197,7 +209,7 @@ namespace gfx{
     
     if(renderState == FULL)
     {
-      simpleScreenFillShader.setTextures(fbo->getTextureIDs(), 1);
+      simpleScreenFillShader.setTextures(fbo->getTextureIDs(), 3);
       simpleScreenFillShader.enable();
     }
 

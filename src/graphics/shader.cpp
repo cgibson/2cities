@@ -115,10 +115,15 @@ void PassShader::setTextures(GLuint *tex, int count)
 {
   textures = (GLuint*)malloc(sizeof(GLuint*) * count);
   memcpy(textures, tex, sizeof(GLuint*) * count);
+  printf("first: %d\nsecond: %d\n", textures[0], textures[1]);
 }
 
 void PassShader::update()
 {
+	GLuint old = shader::current_shader;
+	
+	enable();
+	
 	glActiveTextureARB( GL_TEXTURE0 );
 	glBindTexture(GL_TEXTURE_2D, textures[0] );
 
@@ -130,6 +135,14 @@ void PassShader::update()
 
 	loc = glGetUniformLocation(shader_program, "texture1");
 	glUniform1i(loc, 1);
+	
+	glActiveTextureARB( GL_TEXTURE2 );
+	glBindTexture(GL_TEXTURE_2D, textures[2] );
+
+	loc = glGetUniformLocation(shader_program, "texture2");
+	glUniform1i(loc, 2);
+	
+	shader::setProgram(old);
 }
 
 void PassShader::enable()

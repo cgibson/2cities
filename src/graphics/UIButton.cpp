@@ -16,9 +16,11 @@ UIButton::~UIButton()
 	if (_icon != NULL) delete _icon;
 }
 
-void UIButton::init()
+void UIButton::init(void (*click_callback)())
 {
 	UIControl::init(100, 100, 100, 100, 0.0, 0.0, 0.0, 1.0);
+
+	_click_callback = click_callback;
 
 	_text = new UILabel();
 	_text->parent(this);
@@ -48,6 +50,11 @@ void UIButton::update(int ms)
 		{
 			if (io::mouse_buttons[MOUSE_LEFT])
 			{
+				if (_state == DOWN)
+				{
+					// click! dispatch click callback (if not null)
+					if (_click_callback != NULL) _click_callback();
+				}
 				_state = OVER;
 			}
 			else
@@ -71,26 +78,70 @@ void UIButton::update(int ms)
 
 void UIButton::draw()
 {
-	if (_state == OVER)
+	// DON'T draw base class
+	//UIControl::draw();
+
+	float r, g, b, a;
+	switch (_state)
 	{
-		float r, g, b, a;
-		r = _bgr; g = _bgg; b = _bgb; a = _bga;
-		_bgr = _mor; _bgg = _mog; _bgb = _mob; _bga = _moa;
-		UIControl::draw();
-		_bgr = r; _bgg = g; _bgb = b; _bga = a;
+		case OVER:
+			r = _mor; g = _mog; b = _mob; a = _moa;
+			break;
+
+		case DOWN:
+			r = _mdr; g = _mdg; b = _mdb; a = _mda;
+			break;
+
+		default:
+			r = _bgr; g = _bgg; b = _bgb; a = _bga;
+			break;
 	}
-	else if (_state == DOWN)
-	{
-		float r, g, b, a;
-		r = _bgr; g = _bgg; b = _bgb; a = _bga;
-		_bgr = _mdr; _bgg = _mdg; _bgb = _mdb; _bga = _mda;
-		UIControl::draw();
-		_bgr = r; _bgg = g; _bgb = b; _bga = a;
-	}
-	else
-	{
-		UIControl::draw();
-	}
+
+	glPushMatrix();
+		glColor4f(r, g, b, a);
+
+		glBegin(GL_QUADS);
+			// middle quad
+			glVertex2i(_x, _y + 10);
+			glVertex2i(_x + _w, _y + 10);
+			glVertex2i(_x + _w, _y + _h - 10);
+			glVertex2i(_x, _y + _h - 10);
+
+			// top quad
+			glVertex2i(_x + 10, _y + _h - 10);
+			glVertex2i(_x + _w - 10, _y + _h - 10);
+			glVertex2i(_x + _w - 10, _y + _h);
+			glVertex2i(_x + 10, _y + _h);
+
+			// bottom quad
+			glVertex2i(_x + 10, _y);
+			glVertex2i(_x + _w - 10, _y);
+			glVertex2i(_x + _w - 10, _y + 10);
+			glVertex2i(_x + 10, _y + 10);
+		glEnd();
+
+		glBegin(GL_TRIANGLES);
+			// top left
+			glVertex2i(_x, _y + _h - 10);
+			glVertex2i(_x + 10, _y + _h - 10);
+			glVertex2i(_x + 10, _y + _h);
+
+			// top right
+			glVertex2i(_x + _w - 10, _y + _h - 10);
+			glVertex2i(_x + _w, _y + _h - 10);
+			glVertex2i(_x + _w - 10, _y + _h);
+
+			// bottom left
+			glVertex2i(_x, _y + 10);
+			glVertex2i(_x + 10, _y + 10);
+			glVertex2i(_x + 10, _y);
+
+			// bottom right
+			glVertex2i(_x + _w - 10, _y + 10);
+			glVertex2i(_x + _w, _y + 10);
+			glVertex2i(_x + _w - 10, _y);
+		glEnd();
+	glPopMatrix();
 
 	// draw our children
 	drawChildren();

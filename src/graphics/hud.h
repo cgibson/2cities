@@ -17,6 +17,7 @@
 #include "GameUI.h"
 #include "CarnageUI.h"
 #include "BuildUI.h"
+#include "WaitingUI.h"
 
 class Hud {
 public:
@@ -25,6 +26,7 @@ public:
 		NONE,
 		MENU,
 		BUILD,
+		WAITING,
 		CARNAGE,
 		RESULTS
 	} UiType;
@@ -58,6 +60,7 @@ private:
     GameUI *_currentUI;
     CarnageUI *_carnageUI;
     BuildUI *_buildUI;
+    WaitingUI *_waitingUI;
 };
 
 #endif

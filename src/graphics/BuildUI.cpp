@@ -1,4 +1,6 @@
 #include "BuildUI.h"
+#include "../state/BuildState.h"
+#include "graphics.h"
 
 BuildUI::BuildUI()
 	: GameUI()
@@ -14,6 +16,7 @@ BuildUI::BuildUI()
 	_lincolnMult = NULL;
 	_bubbleMult = NULL;
 	_readyButton = NULL;
+	_otherPlayerReady = NULL;
 }
 
 BuildUI::~BuildUI()
@@ -29,6 +32,7 @@ BuildUI::~BuildUI()
 	if (_lincolnMult != NULL) delete _lincolnMult;
 	if (_bubbleMult != NULL) delete _bubbleMult;
 	if (_readyButton != NULL) delete _readyButton;
+	if (_otherPlayerReady != NULL) delete _otherPlayerReady;
 }
 
 void BuildUI::init()
@@ -117,16 +121,22 @@ void BuildUI::init()
 	_blueFullLabel->parent(_blueFullProgress);
 
 	_readyButton = new UIButton();
-	_readyButton->init();
+	_readyButton->init(BuildUI::readyClick);
 	_readyButton->text()->init("resources/fonts/sui_generis_free.ttf", 18, UILabel::LEFT);
 	_readyButton->text()->text("I'm ready!");
-	_readyButton->icon()->init("resources/textures/bullets_icon.bmp", NULL);
+	_readyButton->icon()->init("resources/textures/checkmark.bmp", "resources/textures/checkmark_alpha.bmp");
 	_readyButton->bgclr(0.5, 0.5, 0.5, 0.5);
 	_readyButton->mouseOverClr(0.5, 0.5, 0.5, 0.75);
 	_readyButton->mouseDownClr(0.5, 1.0, 0.5, 0.75);
-	_readyButton->pos(300, 300);
-	_readyButton->size(200, 75);
+	_readyButton->pos(global::width / 2 - 95, 20);
+	_readyButton->size(190, 50);
 	_readyButton->parent(_window);
+
+	_otherPlayerReady = new UILabel();
+	_otherPlayerReady->init("resources/fonts/sui_generis_free.ttf", 18, UILabel::LEFT);
+	_otherPlayerReady->text("Other player is ready!");
+	_otherPlayerReady->pos(20, 34);
+	_otherPlayerReady->parent(_window);
 }
 
 void BuildUI::update(int ms)
@@ -145,6 +155,13 @@ void BuildUI::update(int ms)
 	// keep the type selector "centered" in the middle of the screen (horizontally)
 	_typeSelect->pos(global::width / 2, global::height - 115);
 
+	// keep the ready button centered on the screen
+	_readyButton->pos(global::width / 2 - 95, 20);
+
+	// animate the the intensity of the other player ready indicator
+	float alpha = (sinf(timeaccum / 100.0) + 1.0) / 4.0 + 0.5;
+	_otherPlayerReady->fgclr(_otherPlayerReady->fgr(), _otherPlayerReady->fgg(), _otherPlayerReady->fgb(), alpha);
+
 	// TODO: actually get resource percentage from game state here
 
 	_redFullProgress->percent((int)(amount / 4000.0 * 100));
@@ -156,6 +173,10 @@ void BuildUI::update(int ms)
 	snprintf(_blueFullBuf, 10, "%d%%", _blueFullProgress->percent());
 	_blueFullLabel->text(_blueFullBuf);
 	_blueFullLabel->pos(_blueFullProgress->percentX() + 5, 4);
+
+	// TODO: remove parenting the _otherPlayerReady label in the init() function
+	// and instead parent it here when we detect that the game state says the
+	// other player is ready
 
 	GameUI::update(ms);
 
@@ -181,6 +202,12 @@ void BuildUI::draw()
 	glPopMatrix();
 
 	GameUI::draw();
+}
+
+void BuildUI::ready()
+{
+	gfx::hud.swapUI(Hud::WAITING);
+	//TODO more things?
 }
 
 void BuildUI::keyDown(int key, bool special)
@@ -217,4 +244,10 @@ void BuildUI::mouseWheel(int direction)
 	{
 		_typeSelect->nextItem();
 	}
+}
+
+void BuildUI::readyClick()
+{
+	BuildUI *ui = static_cast<BuildUI *>(gfx::hud.currentUI());
+	ui->ready();
 }

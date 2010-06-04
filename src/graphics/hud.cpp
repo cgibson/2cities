@@ -7,12 +7,14 @@ Hud::Hud()
     _currentUI = NULL; // none
     _carnageUI = NULL;
     _buildUI = NULL;
+    _waitingUI = NULL;
 }
 
 Hud::~Hud()
 {
 	if (_carnageUI != NULL) delete _carnageUI;
 	if (_buildUI != NULL) delete _buildUI;
+	if (_waitingUI != NULL) delete _waitingUI;
 }
 
 void Hud::init()
@@ -24,9 +26,8 @@ void Hud::init()
 	_carnageUI->init();
 	_buildUI = new BuildUI();
 	_buildUI->init();
-
-	// DEBUG DEBUG DEBUG
-	_currentUI = _buildUI;
+	_waitingUI = new WaitingUI();
+	_waitingUI->init();
 
 	// register game ui event handler wrappers
 	io::register_key_down(GameUI::key_down_handler);
@@ -56,7 +57,7 @@ void Hud::swapUIcmd(int argc, char *argv[])
 {
     if (argc != 2)
     {
-        gfx::hud.console.error("Usage: %s <none|menu|build|carnage|results>", argv[0]);
+        gfx::hud.console.error("Usage: %s <none|menu|build|waiting|carnage|results>", argv[0]);
         return;
     }
 
@@ -71,6 +72,10 @@ void Hud::swapUIcmd(int argc, char *argv[])
 	else if (strcmp(argv[1], "build") == 0)
 	{
 		gfx::hud.swapUI(BUILD);
+	}
+	else if (strcmp(argv[1], "waiting") == 0)
+	{
+		gfx::hud.swapUI(WAITING);
 	}
 	else if (strcmp(argv[1], "carnage") == 0)
 	{
@@ -100,6 +105,10 @@ void Hud::swapUI(UiType which)
 
 		case BUILD:
 			_currentUI = _buildUI;
+			break;
+
+		case WAITING:
+			_currentUI = _waitingUI;
 			break;
 
 		case CARNAGE:

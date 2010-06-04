@@ -14,7 +14,6 @@
 
 #include "../system/global.h"
 #include "../system/io.h"
-//#include "../state/BuildState.h"
 #include "GameUI.h"
 #include "UILabel.h"
 #include "UIIcon.h"
@@ -32,8 +31,12 @@ public:
 	void update(int ms);
 	void draw();
 
+	void ready();
+
 	void keyDown(int key, bool special);
 	void mouseWheel(int direction);
+
+	static void readyClick();
 
 private:
 	UIScoreDisplay *_redResources;
@@ -47,6 +50,7 @@ private:
 	UILabel *_lincolnMult;
 	UILabel *_bubbleMult;
 	UIButton *_readyButton;
+	UILabel *_otherPlayerReady;
 	char _redFullBuf[10];
 	char _blueFullBuf[10];
 };

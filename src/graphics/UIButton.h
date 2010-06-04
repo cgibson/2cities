@@ -23,7 +23,7 @@ public:
 	UIButton();
 	~UIButton();
 
-	void init();
+	void init(void (*click_callback)());
 	void update(int ms);
 	void draw();
 
@@ -45,6 +45,7 @@ private:
 	float _mor, _mog, _mob, _moa;
 	float _mdr, _mdg, _mdb, _mda;
 	ButtonState _state;
+	void (*_click_callback)();
 };
 
 #endif

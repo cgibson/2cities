@@ -199,7 +199,12 @@ void Renderer::draw_diffusePass()
         {
           case DUMMY_BLOCK: case BLOCK_1_2_1: case BLOCK_2_4_2: case BLOCK_5_1_5:
             gfx::forceBlockShader.enable();
-            curMat = gfx::materials[GREEN_PLAYER];
+            if((*objIt)->getPlayerID() == 0)
+            {
+              curMat = gfx::materials[GREEN_PLAYER];
+		    }else{
+			  curMat = gfx::materials[BLUE_PLAYER];
+		    }
             curMat.applyMaterial(gfx::forceBlockShader, "");
             break;
           case DUMMY_SPHERE: case CUSTOM_BLOCK:

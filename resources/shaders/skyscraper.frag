@@ -39,6 +39,7 @@ void main()
                          256.0 * pow(abs((gl_TexCoord[0].t - 0.5)), 8.0));
     vec4 edge = (((edge_amt.s + edge_amt.t) / 2.0) * vec4(1.0, 1.0, 1.0, 1.0));
     float glow = (((0.5 * sin(time + rand_offset)) + 0.5) * (max_glow - min_glow)) + min_glow;
+    glow = glow * max(gl_TexCoord[0].t - 0.5, 0.0);
    
     // final composition
     vec4 final = vec4(glow, glow, glow, 1.0) * edge * phong;
@@ -46,6 +47,7 @@ void main()
 
     // set the fragment color
     gl_FragData[0] = final;
+    //gl_FragData[0].a = 1.0;
     gl_FragData[1] = vec4(0,0,0,1);
     gl_FragData[2] = vec4(0,0,0, 1);
 }

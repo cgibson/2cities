@@ -7,7 +7,7 @@ NetworkPrivate::NetworkPrivate() {
 	char playerName[] = "Priv Player";	// TODO check pkt.data for name
 	clients.push_back(new Client(1,playerName));
 
-	nextNewObjID = myClientID * 10000;
+	nextNewObjID = clients[myClientID]->playerID * 10000;
 
 	PRINTINFO("Network Initialized!\n");
 
@@ -42,7 +42,9 @@ void NetworkPrivate::update(long milli_time) {
 			removeObjectLocal(removeID);
 		}
 		else {
-			updateObjectLocal(new WorldObject(*PhysEngObjs[i]));
+			// TODO currently works due to deletes/update timing. However,
+			// following command should be a new pointer of its own.
+			updateObjectLocal(PhysEngObjs[i]);
 		}
 	}
 }

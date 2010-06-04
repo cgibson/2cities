@@ -87,6 +87,7 @@ public:
 	// Connection Based Functions
 	virtual bool serverConnect(const char * ip, unsigned int port) { return false; };
 	virtual void serverDisconnect() {};
+	virtual bool serverConnected() { return 0; };
 	virtual int  getServerDelay() { return 0; };
 
 	        int  getTimeToStateChange() { return global::elapsed_ms() - timeToStateChange; };

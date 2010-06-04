@@ -36,6 +36,7 @@ public:
 	//virtual bool serverConnect(const char * ip, unsigned int port) { return false; };
 	//virtual void serverDisconnect() {};
 	//virtual int  checkLag(ting::UDPSocket *socket, ting::IPAddress ip) { return 0; };
+	virtual bool serverConnected() { return 1; };
 
 	// Player Detail Functions
 	//        int  getPlayerID() { return myClientID; };

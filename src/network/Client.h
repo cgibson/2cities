@@ -17,6 +17,7 @@ class Client {
 		PlayerType playerType;
 
 		bool isLocal;
+		int  lastPktRecv;
 		ting::UDPSocket socket;
 		ting::IPAddress ip;
 		int playerDelay;
@@ -35,6 +36,7 @@ class Client {
 
 			playerType  = SPECTATOR;
 			isLocal = localPlayer;
+			lastPktRecv = 0;
 			playerDelay    = 0;
 		}
 

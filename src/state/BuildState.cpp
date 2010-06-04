@@ -135,6 +135,7 @@ void BuildState::updateInput(long milli_time) {
 	}
 
 	if(io::keys[27]) {
+		networkManager->network->serverDisconnect();
 		exit(0);
 	}
 #ifdef CLIENT

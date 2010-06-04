@@ -134,7 +134,6 @@ void NetworkManager::consoleChangeInterface(int argc, char *argv[]) {
 
 	if(!strcmp(argv[1],"private")) {
 		networkManager->changeNetworkInterface(N_PRIVATE);
-		networkManager->network->loadLevel("resources/test.lvl");
 	}
 	else if(!strcmp(argv[1],"client")) {
 		networkManager->changeNetworkInterface(N_CLIENT);

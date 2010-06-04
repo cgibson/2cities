@@ -20,6 +20,8 @@ using namespace enumeration;
 
 class NetworkObjectState; // See Bottom
 
+#define CLIENT_TIMEOUT 5000
+
 class NetworkServer : public NetworkSystem {
 protected:
 	Physics physicsEngine;
@@ -45,6 +47,8 @@ protected:
 	void networkOutgoing(long &elapsed);
 
 	void checkStateChange();
+	void checkClientTimeout();
+	void playerDisconnect(int clientID);
 
 public:
 	NetworkServer();
@@ -60,6 +64,7 @@ public:
 	// Connection Based Functions
 	virtual bool serverConnect(const char * ip, unsigned int port) { return true; };
 	//virtual void serverDisconnect() {};
+	virtual bool serverConnected() { return 1; };
 	virtual int  getServerDelay() { return 0; };
 
 	// Player Detail Functions

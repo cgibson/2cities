@@ -58,9 +58,10 @@ void InGameState::update(long milli_time) {
 void InGameState::updateInput(long milli_time) {
 #ifdef CLIENT
    // General Keyboard Layout
-	if(io::keys[27]) {
-		exit(0);
-	}
+   if(io::keys[27]) {
+      networkManager->network->serverDisconnect();
+      exit(0);
+   }
 
    if(io::keys['f']) {
 	   if (io::captured) {

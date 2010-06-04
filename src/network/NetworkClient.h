@@ -54,6 +54,7 @@ public:
 	// Connection Based Functions
 	virtual bool serverConnect(const char * ip, unsigned int port);
 	virtual void serverDisconnect();
+	virtual bool serverConnected() { return isConnected; };
 	virtual int  getServerDelay();
 
 	// Player Detail Functions

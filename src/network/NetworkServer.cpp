@@ -118,6 +118,7 @@ void NetworkServer::networkIncomingGeneral(long &elapsed) {
 				currPlayer->playerType = Client::PLAYER;
 				currPlayer->playerID = playerValue;
 			}
+			currPlayer->lastPktRecv = global::elapsed_ms();
 
 			// Add Socket/IP to currPlayer
 			currPlayer->socket.Open();
@@ -154,6 +155,7 @@ void NetworkServer::networkIncomingPlayers(int p, long &elapsed) {
 		RecvPacket(&pkt, &(clients[p]->socket), &ip);
 
 		int gameClock;
+		clients[p]->lastPktRecv = global::elapsed_ms();
 
 		switch (pkt.header.type) {
 		case OBJECT_SEND :
@@ -168,10 +170,7 @@ void NetworkServer::networkIncomingPlayers(int p, long &elapsed) {
 			clients[p]->playerDelay = *(int*)(pkt.data);
 			break;
 		case DISCONNECT :
-			printf("Player #%i is Disconnecting!\n", clients[p]->playerID);
-			_waitSet->Remove(&clients[p]->socket);
-			clients[p]->socket.Close();
-			clients.erase(clients.begin()+p);
+			playerDisconnect(p);
 			break;
 		case LEVEL_CLEAR :
 			emptyWorld();
@@ -278,6 +277,7 @@ void NetworkServer::update(long elapsed) {
 
 	updateRxTxData(elapsed);
 	checkStateChange();
+	checkClientTimeout();
 
 	// Update Physics Engine
 	static int physicsDelay = 0;
@@ -334,6 +334,29 @@ void NetworkServer::update(long elapsed) {
 		}
 	}
 #endif
+}
+
+void NetworkServer::playerDisconnect(int clientID) {
+	printf("%s (C#%i P#%i) is Disconnecting!\n",
+			clients[clientID]->playerName,
+			clientID,
+			clients[clientID]->playerID);
+	_waitSet->Remove(&clients[clientID]->socket);
+	clients[clientID]->socket.Close();
+	clients.erase(clients.begin() + clientID);
+}
+
+void NetworkServer::checkClientTimeout() {
+	int minLastPktRecv = global::elapsed_ms() - CLIENT_TIMEOUT;
+	unsigned int i = 0;
+	while(i < clients.size()) {
+		if(clients[i]->lastPktRecv < minLastPktRecv) {
+			printf("Client Timed Out! ");
+			playerDisconnect(i);
+		}
+		else
+			++i;
+	}
 }
 
 void NetworkServer::checkStateChange() {

@@ -2,21 +2,21 @@
 #include "../helper/GLSL_helper.h"
 
 namespace shader{
-  
+
   GLint current_shader = 0;
-  
+
   void reset()
   {
     glUseProgram(0);
     current_shader = 0;
   }
-  
+
   void setProgram(GLint program)
   {
     glUseProgram(program);
     current_shader = program;
   }
-  
+
 };
 
 Shader::Shader()
@@ -41,39 +41,39 @@ int Shader::compile(const GLchar *vert, const GLchar *frag)
   //printf("FRAGMNET SHADER##################\n%s\n\n", frag);
   GLuint VertVS, FragFS; //handles to shader object
 	GLint vCompiled, fCompiled, linked; //status of shader
-	
+
 	GLint shadeProg = -1;
 	VertVS = glCreateShader(GL_VERTEX_SHADER);
 	FragFS = glCreateShader(GL_FRAGMENT_SHADER);
-	
+
 	//load the source
 	glShaderSource(VertVS, 1, &vert, NULL);
 	glShaderSource(FragFS, 1, &frag, NULL);
-	
+
 	//compile vertex shader and print log
 	glCompileShader(VertVS);
 	/* check shader status requires helper functions */
 	printOpenGLError();
 	glGetShaderiv(VertVS, GL_COMPILE_STATUS, &vCompiled);
 	printShaderInfoLog(VertVS);
-	
+
 	//compile shader and print log
 	glCompileShader(FragFS);
 	/* check shader status requires helper functions */
 	printOpenGLError();
 	glGetShaderiv(FragFS, GL_COMPILE_STATUS, &fCompiled);
 	printShaderInfoLog(FragFS);
-	
+
 	if (!vCompiled || !fCompiled) {
 		printf("Error compiling the shader vertex: %d frag: %d\n", vCompiled, fCompiled);
 		return -1;
 	}
-	
+
 	//create a program object and attach the compiled shader
 	shadeProg = glCreateProgram();
 	glAttachShader(shadeProg, VertVS);
 	glAttachShader(shadeProg, FragFS);
-	
+
 	glLinkProgram(shadeProg);
 	/* check shader status requires helper functions */
 	printOpenGLError();
@@ -83,7 +83,7 @@ int Shader::compile(const GLchar *vert, const GLchar *frag)
   printf("test? %d\n", shadeProg);
   printf("test? %d\n", shader_program);
   shader_program = shadeProg;
-  
+
 	return shadeProg;
 }
 
@@ -93,10 +93,10 @@ int DefaultShader::load(string file)
   string fragfile = file;
   vertfile.append(".vert");
   fragfile.append(".frag");
-  
+
   printf("Loading %s\n", vertfile.c_str());
   printf("Loading %s\n", fragfile.c_str());
-  
+
 	//install the shader
 	if (compile(textFileRead(vertfile), textFileRead(fragfile)) == -1) {
 		printf("Error installing shader!\n");
@@ -119,11 +119,11 @@ void PassShader::setTextures(GLuint *tex, int count)
 
 void PassShader::update()
 {
-  int loc = glGetUniformLocation(shader_program, "texture0");
-	glUniform1i(loc, 0);
-	
 	glActiveTextureARB( GL_TEXTURE0 );
 	glBindTexture(GL_TEXTURE_2D, textures[0] );
+
+	int loc = glGetUniformLocation(shader_program, "texture0");
+	glUniform1i(loc, 0);
 }
 
 void PassShader::enable()

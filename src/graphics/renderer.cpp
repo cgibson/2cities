@@ -10,7 +10,7 @@ using namespace enumeration;
 
 Renderer::Renderer()
 {
-  
+
 	// no need to init camera here anymore, it knows how to initialize itself
 }
 
@@ -44,7 +44,7 @@ void Renderer::draw_screen()
 {
   gfx::simpleScreenFillShader.enable();
   gfx::simpleScreenFillShader.update();
-  
+
   glBegin(GL_QUADS);
 	glColor4f(1,1,1,1);
     glTexCoord2f(0,0);
@@ -66,20 +66,20 @@ void Renderer::draw()
     gfx::fbo->enable();
     draw_diffusePass();
     gfx::fbo->disable();
-    
+
     shader::reset();
-    
-    // clear the current 
+
+    // clear the current
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
+
     // draw second pass
     draw_screen();
-    
-  }else{  
+
+  }else{
     draw_diffusePass();
   }
-  
-  
+
+
 }
 
 void Renderer::draw_diffusePass()
@@ -97,7 +97,7 @@ void Renderer::draw_diffusePass()
   do_lights(gfx::forceBlockShader);
 
   glPushMatrix();
-  
+
 	if (global::stateManager->currentState->stateType() == CARNAGE_STATE)
 	{
 		skybox.draw(light.position[0], light.position[1], light.position[2]);
@@ -120,7 +120,7 @@ void Renderer::draw_diffusePass()
 */
   //TODO: Remove END
 
-  
+
   int loc;
 
   gfx::gridShader.enable();
@@ -133,7 +133,7 @@ void Renderer::draw_diffusePass()
     glVertex3f( 100, 0,  100);
     glVertex3f( 100, 0, -100);
   glEnd();
-  
+
   shader::reset();
 
   //if(gfx::draw_axis && true)
@@ -213,7 +213,7 @@ void Renderer::draw_diffusePass()
             break;
         }
       }
-      
+
       if(curType != DUMMY_SPHERE)
       {
         blueprint = global::factory->getBlueprint(curType);
@@ -235,9 +235,9 @@ void Renderer::draw_diffusePass()
 	}
 
   shader::reset();
-  
+
   glUseProgram(0);
-  
+
   if(curstate->stateType() == BUILD_STATE)
   {
 
@@ -245,8 +245,8 @@ void Renderer::draw_diffusePass()
     if(BuildStateGlobals::renderPlane)
     {
       gfx::modelHandler.drawPlane(
-                          BuildStateGlobals::planeNormal, 
-                          BuildStateGlobals::planeLocation, 
+                          BuildStateGlobals::planeNormal,
+                          BuildStateGlobals::planeLocation,
                           BuildStateGlobals::planeSize);
     }
   }

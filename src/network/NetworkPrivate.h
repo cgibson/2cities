@@ -33,7 +33,7 @@ public:
 	virtual bool serverConnected() { return 1; };
 
 	// Player Detail Functions
-	virtual void sendPlayerReady(int readyFlag);
+	virtual void setPlayerReady(int readyFlag);
 
 	// Communication
 	//virtual void sendMsg(char *msgStr) {};

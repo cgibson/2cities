@@ -1,5 +1,9 @@
 #include "NetworkServer.h"
 
+#ifdef CLIENT
+	#include "../graphics/graphics.h"
+#endif
+
 /*******************************************
  * HELPER FUNCTIONS
  *******************************************/
@@ -99,7 +103,7 @@ void NetworkServer::update(long elapsed) {
 				global::pbs_sent,
 				global::pbs_recv,
 				_serverObjs.size(),
-				(global::elapsed_ms()-timeToStateChange)/1000);
+				(timeToStateChange - global::elapsed_ms()) / 1000);
 		for(unsigned int p=0; p<clients.size(); p++) {
 			printf("P%i(%4i ms) ", clients[p]->playerID, clients[p]->playerDelay);
 		}
@@ -261,6 +265,10 @@ void NetworkServer::networkIncomingPlayers(int p, long &elapsed) {
 			clients[p]->playerReady = *(int*)(pkt.data);
 			printf("PLAYER_READY: %i\n", clients[p]->playerReady);
 			break;
+		case PLAYER_NAME :
+			strncpy(clients[p]->playerName, (char *)(pkt.data), 16);
+			printf("PLAYER_NAME: %s\n", clients[p]->playerName);
+			break;
 		case CAMLOC_MYLOC :
 			recvPlayerCamera(clients[p]->camPos, clients[p]->camView, pkt.data);
 #ifdef CLIENT
@@ -394,8 +402,9 @@ void NetworkServer::checkStateChange() {
 		}
 	}
 
-	if(playerCount != 1 && playerCount != 2) {
-		timeToStateChangeSet = false;
+	timeToStateChangeSet = (playerCount > 0);
+
+	if(!timeToStateChangeSet) {
 		switch (currState) {
 		case BUILD_STATE :
 			timeToStateChange = global::elapsed_ms() + net::TIME_IN_BUILD_STATE * 1000;
@@ -403,33 +412,36 @@ void NetworkServer::checkStateChange() {
 		case CARNAGE_STATE :
 			timeToStateChange = global::elapsed_ms() + net::TIME_IN_CARNAGE_STATE * 1000;
 			break;
+		case RESULTS_STATE :
+			timeToStateChange = global::elapsed_ms() + net::TIME_IN_RESULTS_STATE * 1000;
+			break;
 		default :
-			timeToStateChange = global::elapsed_ms() - 1;
+			timeToStateChange = global::elapsed_ms() - 9999999;
 		}
-	}
-	else {
-		timeToStateChangeSet = true;
 	}
 
 	bool stateChange = ((playerCount == readyCount && playerCount > 0) ||
-			(timeToStateChangeSet && global::elapsed_ms() >= timeToStateChange));
+			(timeToStateChangeSet && (timeToStateChange - global::elapsed_ms()) <= 0));
 	if(stateChange) {
-		for(unsigned int i=0; i<clients.size(); ++i) {
+		// Clear Ready Flags
+		for(unsigned int i=0; i<clients.size(); ++i)
 			clients[i]->playerReady = 0;
-		}
 
+		// Change State to next in line.
 		switch (currState) {
 		case BUILD_STATE :
 			global::stateManager->changeCurrentState(CARNAGE_STATE);
-			timeToStateChange = global::elapsed_ms() + net::TIME_IN_CARNAGE_STATE * 1000;
 			break;
 		case CARNAGE_STATE :
-			global::stateManager->changeCurrentState(BUILD_STATE);
-			timeToStateChange = global::elapsed_ms() + net::TIME_IN_BUILD_STATE * 1000;
+			global::stateManager->changeCurrentState(RESULTS_STATE);
+			break;
+		case RESULTS_STATE :
+			global::stateManager->changeCurrentState(MENU_STATE);
 			break;
 		default :
 			printf("What State am I In?");
 		}
+		timeToStateChangeSet = false;
 	}
 }
 
@@ -494,12 +506,19 @@ void NetworkServer::sendMsg(char *msgStr) {
 }
 
 void NetworkServer::recvMsg(NetworkPacket &pkt) {
-	printf("MSG: %s\n", (char *)pkt.data);
+#ifdef CLIENT
+	gfx::hud.console.info("%s", (char *)pkt.data);
+#else
+	printf("%s\n", (char *)pkt.data);
+#endif
 
-	// TODO Send to all clients
+	for(unsigned int p=0; p<clients.size(); p++) {
+		if(!clients[p]->isLocal)
+			SendPacket(pkt, &(clients[p]->socket), clients[p]->ip);
+	}
 }
 
-void NetworkServer::sendPlayerReady(int readyFlag) {
+void NetworkServer::setPlayerReady(int readyFlag) {
 	clients[myClientID]->playerReady = 1;
 }
 

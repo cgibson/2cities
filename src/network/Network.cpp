@@ -7,17 +7,18 @@ namespace net{
 	const unsigned int OBJECT_BATCHSEND_SIZE = 10;
 
 	unsigned int CLIENT_SEND_MAX_PACKETS_PER_CYCLE = 10;
-	unsigned int CLIENT_RECV_MAX_PACKETS_PER_CYCLE = 100;
+	unsigned int CLIENT_RECV_MAX_PACKETS_PER_CYCLE = 200;
 
-	unsigned int SERVER_SEND_MAX_PACKETS_PER_MS = 5;
+	unsigned int SERVER_SEND_MAX_PACKETS_PER_MS = 1;
 	unsigned int SERVER_RECV_MAX_PACKETS_PER_CYCLE = 15;
 
 	unsigned int SERVER_PHYSICS_UPDATE_RATE = 1;
 
 	const unsigned int SERVER_PORT_DEFAULT = 5060;
 
-	int TIME_IN_BUILD_STATE = 300; // in sec
+	int TIME_IN_BUILD_STATE   = 300; // in sec
 	int TIME_IN_CARNAGE_STATE = 600; // in sec
+	int TIME_IN_RESULTS_STATE = 900; // in sec
 
 	NetworkPacket::NetworkPacket() {
 			dataSize = 0;

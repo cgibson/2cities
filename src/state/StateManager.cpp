@@ -137,7 +137,7 @@ void StateManager::stateConsoleCmds(int argc, char *argv[])
 		}
 	}
 	if(!strcmp(argv[0], "ready") || !strcmp(argv[0], "r")) {
-		global::networkManager->network->sendPlayerReady(1);
+		global::networkManager->network->setPlayerReady(1);
 		gfx::hud.console.info("I'm Ready!");
 	}
 #endif

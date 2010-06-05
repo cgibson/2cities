@@ -1,6 +1,13 @@
 #include "NetworkSystem.h"
 #include "../state/CarnageState.h"
 
+#ifdef CLIENT
+	#include "../graphics/graphics.h"
+#endif
+
+/*******************************************
+ * CONSTRUCTORS / DESTRUCTORS
+ *******************************************/
 NetworkSystem::NetworkSystem() {
 	_pktCountRecv = _pktCountSent = _pktPeriod = 0;
 
@@ -11,6 +18,9 @@ NetworkSystem::~NetworkSystem() {
 	closeSockets();
 };
 
+/*******************************************
+ * Player Details
+ *******************************************/
 int NetworkSystem::getMyPlayerID() {
 	if(clients.size() == 0)
 		return 0;
@@ -48,17 +58,95 @@ int NetworkSystem::getPlayerDamage(int playerID) {
 	return -1;
 }
 
+void NetworkSystem::setMyPlayerName(char *newName) {
+	strncpy(clients[myClientID]->playerName, newName, 15);
+	clients[myClientID]->playerName[15] = '\0';
+}
+
+/*******************************************
+ * Server/Connect Send/Recv
+ *******************************************/
 void NetworkSystem::sendServerLagReq(ting::UDPSocket *socketPtr, ting::IPAddress destIP) {
 	lagCalc_StartTime = global::elapsed_ms();
 	NetworkPacket tmpPkt(LAG_REQ, (unsigned char *)&lagCalc_StartTime, sizeof(int));
 	SendPacket(tmpPkt, socketPtr, destIP);
 }
 
-/* Method to take a WorldObject* and update/add it to the main vector (based on ID field)
- *
- * Passed Object Pointer must remain alive past function call and shouldn't be deleted
- * by calling function.
- */
+void NetworkSystem::updateRxTxData(long elapsed) {
+	_pktPeriod += elapsed;
+	if(_pktPeriod > 250) {
+		global::pbs_recv = _pktCountRecv * 4;
+		global::pbs_sent = _pktCountSent * 4;
+
+		//printf("pbs> Recv: %i Sent: %i\n",global::pbs_recv,global::pbs_sent);
+
+		_pktCountRecv = 0;
+		_pktCountSent = 0;
+		_pktPeriod = 0;
+	}
+}
+
+void NetworkSystem::recvMsg(NetworkPacket &pkt) {
+#ifdef CLIENT
+	gfx::hud.console.info("%s", (char *)pkt.data);
+#else
+	printf("%s\n", (char *)pkt.data);
+#endif
+}
+
+/*******************************************
+ * Helper/Main Send/Recv Functions
+ *******************************************/
+// Creates Buffer required for send, sends packet, and cleans up
+int NetworkSystem::SendPacket(NetworkPacket &pkt, ting::UDPSocket *socket, ting::IPAddress  destIP_P) {
+	if(socket->IsNotValid()) {
+		printf("SendPacket> Socket IsNotValid\n");
+		return -1;
+	}
+
+	int bufSize = pkt.dataSize + sizeof(NetworkPacketHeader);
+	ting::u8 strPtr[bufSize];
+	ting::Buffer<ting::u8> buf(strPtr, sizeof(strPtr));
+	memcpy(buf.Buf(), &(pkt.header), sizeof(NetworkPacketHeader));
+	memcpy(buf.Buf() + sizeof(NetworkPacketHeader), pkt.data, pkt.dataSize);
+
+	int sentSize = socket->Send(buf, destIP_P);
+	_pktCountSent++;
+
+	return sentSize;
+}
+
+// Creates Buffer required for recv, recv packet, and cleans up
+// Note: ipPtr's addresses will be updated with packets source's information
+int NetworkSystem::RecvPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ting::IPAddress *srcIP_P) {
+	if(socket->IsNotValid()) {
+		printf("RecvPacket> Socket IsNotValid\n");
+		return -1;
+	}
+
+	ting::u8 strPtr[2000];
+	ting::Buffer<ting::u8> buf(strPtr, sizeof(strPtr));
+
+	unsigned int recvSize = socket->Recv(buf, *srcIP_P);
+	_pktCountRecv++;
+
+	// Check if packet can possibly be valid
+	if(recvSize <  sizeof(NetworkPacketHeader)) {
+		printf("** ReadBuffer: Received Bad Packet! (too small)\n");
+		return -1;
+	}
+
+	*pktPtr = NetworkPacket(&buf, recvSize);
+
+	return recvSize;
+}
+
+/*******************************************
+ * vector update/remove helper Functions
+ *******************************************/
+
+// Method to take a WorldObject* and update/add it to the main vector (based on ID field.)
+// Passed Object Pointer must remain alive past function call and shouldn't be deleted by calling function.
 void NetworkSystem::updateObjectVector(vector<WorldObject *> *objVec, WorldObject *objPtr) {
     // *** Binary Search Code ***
 	int locBeg = 0;
@@ -111,20 +199,6 @@ void NetworkSystem::updateObjectLocal(WorldObject *objPtr) {
 	updateObjectVector(currObjects, objPtr);
 }
 
-void NetworkSystem::updateRxTxData(long elapsed) {
-	_pktPeriod += elapsed;
-	if(_pktPeriod > 250) {
-		global::pbs_recv = _pktCountRecv * 4;
-		global::pbs_sent = _pktCountSent * 4;
-
-		//printf("pbs> Recv: %i Sent: %i\n",global::pbs_recv,global::pbs_sent);
-
-		_pktCountRecv = 0;
-		_pktCountSent = 0;
-		_pktPeriod = 0;
-	}
-}
-
 /* Method to take a WorldObjectID and remove it from a vector
  *
  * NOTE: Currently search implementation could be replaced with binary search inefficient **
@@ -149,52 +223,9 @@ void NetworkSystem::removeObjectLocal(unsigned int worldObjectID) {
 	removeObjectVector(currObjects, worldObjectID);
 }
 
-/* Creates Buffer required for send, sends packet, and cleans up
- */
-int NetworkSystem::SendPacket(NetworkPacket &pkt, ting::UDPSocket *socket, ting::IPAddress  destIP_P) {
-	if(socket->IsNotValid()) {
-		printf("SendPacket> Socket IsNotValid\n");
-		return -1;
-	}
-
-	int bufSize = pkt.dataSize + sizeof(NetworkPacketHeader);
-	ting::u8 strPtr[bufSize];
-	ting::Buffer<ting::u8> buf(strPtr, sizeof(strPtr));
-	memcpy(buf.Buf(), &(pkt.header), sizeof(NetworkPacketHeader));
-	memcpy(buf.Buf() + sizeof(NetworkPacketHeader), pkt.data, pkt.dataSize);
-
-	int sentSize = socket->Send(buf, destIP_P);
-	_pktCountSent++;
-
-	return sentSize;
-}
-
-/* Creates Buffer required for recv, recv packet, and cleans up
- * Note: ipPtr's addresses will be updated with packets source's information
- */
-int NetworkSystem::RecvPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ting::IPAddress *srcIP_P) {
-	if(socket->IsNotValid()) {
-		printf("RecvPacket> Socket IsNotValid\n");
-		return -1;
-	}
-
-	ting::u8 strPtr[2000];
-	ting::Buffer<ting::u8> buf(strPtr, sizeof(strPtr));
-
-	unsigned int recvSize = socket->Recv(buf, *srcIP_P);
-	_pktCountRecv++;
-
-	// Check if packet can possibly be valid
-	if(recvSize <  sizeof(NetworkPacketHeader)) {
-		printf("** ReadBuffer: Received Bad Packet! (too small)\n");
-		return -1;
-	}
-
-	*pktPtr = NetworkPacket(&buf, recvSize);
-
-	return recvSize;
-}
-
+/*******************************************
+ * Object Sending/Recv
+ *******************************************/
 void NetworkSystem::buildBatchPacket(NetworkPacket *pkt, WorldObject *objs[], unsigned int size) {
 	if (size * sizeof(WorldObject) > 1500) {
 		printf("buildBatchPacket trying to add too much!\n");
@@ -233,6 +264,9 @@ void NetworkSystem::decodeObjectSend(NetworkPacket &pkt, long interpValue) {
 	}
 }
 
+/*******************************************
+ * Player Camera Tools Send/Recv
+ *******************************************/
 int NetworkSystem::makePlayerCamera(Vector  camPos, Vector  camView, unsigned char *bufPtr) {
 	int currPos = 0;
 	int currISize;
@@ -280,7 +314,9 @@ void NetworkSystem::updOPlayerCamera() {
 	}
 }
 
-// Clear InGameState objects
+/*******************************************
+ * OBJECT/LEVEL/WORLD FUNCTIONS
+ *******************************************/
 void NetworkSystem::emptyWorld() {
 	global::stateManager->currentState->objects.clear();
 }

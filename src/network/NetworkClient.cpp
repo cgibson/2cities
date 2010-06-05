@@ -69,30 +69,36 @@ void NetworkClient::networkIncoming(long &elapsed) {
 	ting::IPAddress sourceIP;
 	NetworkPacket pkt;
 	unsigned int pktsRecv = 0;
+	NetworkPacket tmpPkt;
 
 	while(isConnected && waitSet->WaitWithTimeout(0) && pktsRecv < SERVER_RECV_MAX_PACKETS_PER_CYCLE) {
 		RecvPacket(&pkt, &socket, &sourceIP);
 		int pktRecvTime = global::elapsed_ms();
 
-		if(pkt.header.type == OBJECT_BATCHSEND || pkt.header.type == OBJECT_SEND) {
+		switch(pkt.header.type) {
+		case OBJECT_BATCHSEND :
+		case OBJECT_SEND :
 			// TODO timestamp based interpolation timing
 			decodeObjectSend(pkt, 0);
-		}
-		else if(pkt.header.type == OBJECT_KILL) {
+			break;
+		case OBJECT_KILL :
 			removeObjectLocal(*(unsigned int*)(pkt.data));
-		}
-		else if(pkt.header.type == LAG_REPLY) {
+			break;
+		case LAG_REPLY :
 			serverDelay = (pktRecvTime - lagCalc_StartTime)/2;
-			NetworkPacket tmpPkt(LAG_RESULT, (unsigned char *)&serverDelay, sizeof(int));
+			tmpPkt = NetworkPacket(LAG_RESULT, (unsigned char *)&serverDelay, sizeof(int));
 			SendPacket(tmpPkt, &socket, serverIP);
-		}
-		else if(pkt.header.type == LEVEL_CLEAR) {
+			break;
+		case LEVEL_CLEAR :
 			global::stateManager->currentState->objects.clear();
-		}
-		else if(pkt.header.type == STATUS_UPDATE ) {
+			break;
+		case STATUS_UPDATE :
 			recvStatusUpdate(pkt);
-		}
-		else {
+			break;
+		case TEXT_MSG :
+			recvMsg(pkt);
+			break;
+		default :
 			printf("Received an unknown packet type!\n");
 		}
 		pktsRecv++;
@@ -253,16 +259,27 @@ void NetworkClient::loadLevel(const char * file) {
 /*******************************************
  * PLAYER INTERACTION FUNCTIONS
  *******************************************/
-void NetworkClient::sendPlayerReady(int readyFlag) {
+void NetworkClient::setPlayerReady(int readyFlag) {
 	if(isConnected) {
 		NetworkPacket tmpPkt(PLAYER_READY, (unsigned char *)&readyFlag, sizeof(int));
 		SendPacket(tmpPkt, &socket, serverIP);
 	}
 }
 
+void NetworkClient::setMyPlayerName(char *newName) {
+	NetworkPacket tmpPkt(PLAYER_NAME, (unsigned char *)(newName) , strlen(newName)+1);
+	SendPacket(tmpPkt, &socket, serverIP);
+}
+
 void NetworkClient::sendMsg(char *msgStr) {
 	if(isConnected) {
-		NetworkPacket tmpPkt(TEXT_MSG, (unsigned char *)msgStr, strlen(msgStr)+1);
+		char *myName = clients[myClientID]->playerName;
+		int myNameLen = strlen(myName);
+		NetworkPacket tmpPkt(TEXT_MSG, (unsigned char *)(msgStr) , 0);
+		tmpPkt.dataSize = sprintf((char *)(tmpPkt.data),"%s: %s",clients[myClientID]->playerName, msgStr);
+		tmpPkt.data[tmpPkt.dataSize] = '\0';
+		tmpPkt.dataSize++;
+
 		SendPacket(tmpPkt, &socket, serverIP);
 		printf("Sent TextMsg.\n");
 	}

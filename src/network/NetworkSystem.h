@@ -50,7 +50,7 @@ protected:
 	void sendServerLagReq(ting::UDPSocket *socketPtr, ting::IPAddress destIP);
 
 	// Communication
-	virtual void recvMsg(NetworkPacket &pktPtr) {};
+	virtual void recvMsg(NetworkPacket &pkt);
 
 	// Object Control
 	virtual void addObjectPhys(WorldObject *objPtr) {};
@@ -92,7 +92,6 @@ public:
 	virtual void serverDisconnect() {};
 	virtual bool serverConnected() { return 0; };
 	virtual int  getServerDelay() { return 0; };
-
 	        int  getTimeToStateChange() { return global::elapsed_ms() - timeToStateChange; };
 
 	// Player Detail Functions
@@ -104,7 +103,8 @@ public:
 	        int  getPlayerDamage(int playerID);
 	virtual PlayerColor getPlayerColor(int clientID) { return (PlayerColor)myClientID; };
 
-	virtual void sendPlayerReady(int readyFlag) {};
+	virtual void setPlayerReady(int readyFlag) {};
+	virtual void setMyPlayerName(char *newName);
 
 	// Communication
 	virtual void sendMsg(char *msgStr) {};

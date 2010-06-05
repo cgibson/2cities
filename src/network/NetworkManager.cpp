@@ -39,6 +39,7 @@ void NetworkManager::initialize() {
 	gfx::hud.console.registerCmd("nr",         NetworkManager::consoleNetworkRates);
 
 	gfx::hud.console.registerCmd("players",    NetworkManager::consolePlayers);
+	gfx::hud.console.registerCmd("me",         NetworkManager::consoleMe);
 
 	gfx::hud.console.registerCmd("nettest",    NetworkManager::consoleNetworkTests);
 	gfx::hud.console.registerCmd("nt",         NetworkManager::consoleNetworkTests);
@@ -181,6 +182,14 @@ void NetworkManager::consolePlayers(int argc, char *argv[]) {
 				clients[i]->playerScore,
 				clients[i]->playerDamage,
 				clients[i]->playerName);
+#endif
+}
+
+void NetworkManager::consoleMe(int argc, char *argv[]) {
+#ifdef CLIENT
+	if(argc == 3 && !strcmp(argv[1],"name")) {
+		global::networkManager->network->setMyPlayerName(argv[2]);
+	}
 #endif
 }
 

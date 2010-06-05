@@ -79,6 +79,6 @@ void NetworkPrivate::loadLevel(const char * file) {
 /*******************************************
  * PLAYER INTERACTION FUNCTIONS
  *******************************************/
-void NetworkPrivate::sendPlayerReady(int readyFlag) {
+void NetworkPrivate::setPlayerReady(int readyFlag) {
 	global::stateManager->switchToCarnage();	// TODO REMOVE. TEMP FLOW CODE
 }

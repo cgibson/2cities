@@ -34,8 +34,6 @@ protected:
 
 	virtual void closeSockets();
 
-	//virtual void recvMsg(NetworkPacket &pktPtr) {};
-
 	virtual void addObjectPhys(WorldObject *objPtr) { updateObjectLocal(objPtr); };
 	//virtual void reqUpdateObj(unsigned int objID) {};
 
@@ -60,11 +58,8 @@ public:
 	virtual int  getServerDelay();
 
 	// Player Detail Functions
-	//      int  getPlayerID() { return myClientID; };
-	//virtual int  getPlayerScore(int playerID) { return 0; };
-	//virtual PlayerColor getPlayerColor() { return (PlayerColor)myClientID; };
-
-	virtual void sendPlayerReady(int readyFlag);
+	virtual void setPlayerReady(int readyFlag);
+	virtual void setMyPlayerName(char *newName);
 
 	// Communication
 	virtual void sendMsg(char *msgStr);

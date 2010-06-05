@@ -131,7 +131,7 @@ void BuildState::updateInput(long milli_time) {
 	// General Keyboard Layout
 	if(io::keys['r']) {
 	  io::keys['r'] = false;
-	  networkManager->network->sendPlayerReady(1);
+	  networkManager->network->setPlayerReady(1);
 	}
 
 	if(io::keys[27]) {

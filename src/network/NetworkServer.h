@@ -68,7 +68,8 @@ public:
 	virtual bool serverConnected() { return 1; };
 	virtual int  getServerDelay() { return 0; };
 
-	virtual void sendPlayerReady(int readyFlag);
+	// Player Details
+	virtual void setPlayerReady(int readyFlag);
 
 	// Communication
 	virtual void sendMsg(char *msgStr);
@@ -94,13 +95,6 @@ public:
 
 	// Priority (to be reduced each send down to zero)
 	int    priority;
-
-	NetworkObjectState() {
-		objPtr     = NULL;
-		lastUpdate = 0;
-		lastPos    = Vector(0,0,0);
-		initPos    = Vector(0,0,0);
-	}
 
 	NetworkObjectState(WorldObject * newObj, int initPriority = 2) {
 		objPtr     = newObj;

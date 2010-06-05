@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "../scene/WorldObject.h"
+#include "WorldObjectState.h"
 
 #include "../physics/Physics.h"
 
@@ -48,6 +49,8 @@ protected:
 
 	void checkStateChange();
 	void checkClientTimeout();
+	int  checkWinCondition();
+
 	void playerDisconnect(int clientID);
 
 	void sendStatusUpdates();
@@ -80,29 +83,6 @@ public:
 	// Load a stored lvl
 	virtual void emptyWorld();
 	virtual void loadLevel(const char * file);
-};
-
-class NetworkObjectState {
-public:
-	WorldObject *objPtr;
-
-	// Initial Details
-	Vector initPos;
-
-	// Delta Details
-	int    lastUpdate;
-	Vector lastPos;
-
-	// Priority (to be reduced each send down to zero)
-	int    priority;
-
-	NetworkObjectState(WorldObject * newObj, int initPriority = 2) {
-		objPtr     = newObj;
-		initPos    = newObj->getPosition();
-		lastPos    = initPos;
-		lastUpdate = newObj->getTimeStamp();
-		priority   = initPriority;
-	}
 };
 
 #endif

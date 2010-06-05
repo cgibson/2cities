@@ -20,6 +20,8 @@ class NetworkPrivate : public NetworkSystem {
 protected:
 	Physics physicsEngine;
 
+	virtual void addObjectPhys(WorldObject *objPtr);
+
 public:
 	NetworkPrivate();
 	~NetworkPrivate();

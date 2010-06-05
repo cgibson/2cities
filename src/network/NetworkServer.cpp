@@ -5,26 +5,6 @@
 #endif
 
 /*******************************************
- * HELPER FUNCTIONS
- *******************************************/
-bool NetworkPrioritySort(NetworkObjectState objSt1, NetworkObjectState objSt2) {
-	if(objSt1.priority != objSt2.priority)
-		return (objSt1.priority > objSt2.priority);
-
-	double obj1Vel = objSt1.objPtr->getVelocity().mag();
-	double obj2Vel = objSt2.objPtr->getVelocity().mag();
-	if(abs(obj1Vel - obj2Vel) > 0.5f) //(5*net::timeElapsed/1000.0f))
-		return (obj1Vel > obj2Vel);
-
-	double obj1PosDelta = (objSt1.objPtr->getPosition() - objSt1.lastPos).mag();
-	double obj2PosDelta = (objSt2.objPtr->getPosition() - objSt2.lastPos).mag();
-	if(abs(obj1PosDelta - obj2PosDelta) > 0.5f) //(5*net::timeElapsed/1000.0f))
-		return (obj1PosDelta > obj2PosDelta);
-
-	return (objSt1.lastUpdate < objSt2.lastUpdate);
-}
-
-/*******************************************
  * CONSTRUCTORS / DESTRUCTORS
  *******************************************/
 NetworkServer::NetworkServer() {
@@ -97,7 +77,23 @@ void NetworkServer::update(long elapsed) {
 
 #ifdef SERVER
 		// Print Server Stats for Dedicated Server Only
-		printf("\015 LCycle(%4i) Phys(%4li) tx(%5i) rx(%5i) objs(%4i) ttsc(%4i) | ",
+		switch (global::stateManager->currentState->stateType()) {
+		case MENU_STATE :
+			printf("\015   MENU ");
+			break;
+		case BUILD_STATE :
+			printf("\015  BUILD ");
+			break;
+		case CARNAGE_STATE :
+			printf("\015   CARN ");
+			break;
+		case RESULTS_STATE :
+			printf("\015 RESULT ");
+			break;
+		default :
+			printf("\015    N/A ");
+		}
+		printf("LCycle(%4i) Phys(%4li) tx(%5i) rx(%5i) objs(%4i) ttsc(%4i) | ",
 				(net::SERVER_PHYSICS_UPDATE_RATE - physicsDelay),
 				(global::elapsed_ms() - currClockTime),
 				global::pbs_sent,
@@ -406,6 +402,9 @@ void NetworkServer::checkStateChange() {
 
 	if(!timeToStateChangeSet) {
 		switch (currState) {
+		case MENU_STATE :
+			timeToStateChangeSet = false;
+			break;
 		case BUILD_STATE :
 			timeToStateChange = global::elapsed_ms() + net::TIME_IN_BUILD_STATE * 1000;
 			break;
@@ -416,12 +415,15 @@ void NetworkServer::checkStateChange() {
 			timeToStateChange = global::elapsed_ms() + net::TIME_IN_RESULTS_STATE * 1000;
 			break;
 		default :
-			timeToStateChange = global::elapsed_ms() - 9999999;
+			timeToStateChangeSet = false;
 		}
 	}
 
-	bool stateChange = ((playerCount == readyCount && playerCount > 0) ||
-			(timeToStateChangeSet && (timeToStateChange - global::elapsed_ms()) <= 0));
+	bool stateChange = false;
+	stateChange |= (playerCount == readyCount && playerCount > 0);
+	stateChange |= (timeToStateChangeSet && (timeToStateChange - global::elapsed_ms()) <= 0);
+	//stateChange |= (currState == CARNAGE_STATE && checkWinCondition());
+
 	if(stateChange) {
 		// Clear Ready Flags
 		for(unsigned int i=0; i<clients.size(); ++i)
@@ -429,6 +431,9 @@ void NetworkServer::checkStateChange() {
 
 		// Change State to next in line.
 		switch (currState) {
+		case MENU_STATE :
+			global::stateManager->changeCurrentState(BUILD_STATE);
+			break;
 		case BUILD_STATE :
 			global::stateManager->changeCurrentState(CARNAGE_STATE);
 			break;
@@ -443,6 +448,18 @@ void NetworkServer::checkStateChange() {
 		}
 		timeToStateChangeSet = false;
 	}
+}
+
+int NetworkServer::checkWinCondition() {
+	for(unsigned int i=0; i<clients.size(); ++i) {
+		if(clients[i]->playerType == Client::PLAYER) {
+			if(clients[i]->playerDamage >= 95) {
+				return clients[i]->playerID;
+			}
+		}
+	}
+
+	return false;
 }
 
 /*******************************************

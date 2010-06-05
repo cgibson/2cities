@@ -274,7 +274,6 @@ void NetworkClient::setMyPlayerName(char *newName) {
 void NetworkClient::sendMsg(char *msgStr) {
 	if(isConnected) {
 		char *myName = clients[myClientID]->playerName;
-		int myNameLen = strlen(myName);
 		NetworkPacket tmpPkt(TEXT_MSG, (unsigned char *)(msgStr) , 0);
 		tmpPkt.dataSize = sprintf((char *)(tmpPkt.data),"%s: %s",clients[myClientID]->playerName, msgStr);
 		tmpPkt.data[tmpPkt.dataSize] = '\0';

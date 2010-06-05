@@ -59,7 +59,16 @@ void NetworkPrivate::update(long milli_time) {
  *******************************************/
 void NetworkPrivate::addObject(WorldObject *newObj) {
 	newObj->setID(nextNewObjID++);
-	physicsEngine.addWorldObject(newObj);
+	addObjectPhys(newObj);
+}
+
+void NetworkPrivate::addObjectPhys(WorldObject *objPtr) {
+	objPtr->setTimeStamp(global::elapsed_ms());
+
+	// TODO Add ObjectState to Tracker
+	// NetworkObjectState newObjState(objPtr, 4);
+
+	physicsEngine.addWorldObject(objPtr);
 }
 
 void NetworkPrivate::emptyWorld() {

@@ -26,5 +26,5 @@ void BlackHole::draw()
 
 void BlackHole::think(int elapsedTime)
 {
-  printf("BlackHole %d is thinking\n", getID());
+  // TODO add logic to cause black hole to move objects.
 }

@@ -338,6 +338,12 @@ void BuildState::mouseDownHandler()
 	counter++;
 }
 
+/*// 
+bool BuildState::isOutOfResources()
+{
+	
+}*/
+
 // 2 things are required for co to be inside of a rectangle
 bool BuildState::isInsideRect(CustomObject A, int excluded)
 {
@@ -369,10 +375,22 @@ bool BuildState::isInsideRect(CustomObject A, int excluded)
 
 bool BuildState::isOutsideMap(Point p)
 {
-	if(p.getx() > (global::map_width / 2) || p.getx() < 5)
-		return true;
-	if(p.getz() > (global::map_height / 2) || p.getz() < -(global::map_height / 2))
-		return true;
+	// IF player 0 (positive x) (blue)
+	if(global::networkManager->network->getMyPlayerID() == 2)
+	{	
+		if(p.getx() > (global::map_width / 2.0) || p.getx() < 5)
+			return true;
+		if(p.getz() > (global::map_height / 2.0) || p.getz() < -(global::map_height / 2))
+			return true;
+	}
+	// IF player 1 (negative x) (red)
+	else
+	{
+		if(p.getx() < -(global::map_width / 2.0) || p.getx() > -5)
+			return true;
+		if(p.getz() > (global::map_height / 2.0) || p.getz() < -(global::map_height / 2))
+			return true;
+	}
 	return false;
 }
 

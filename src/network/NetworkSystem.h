@@ -109,6 +109,8 @@ public:
 
 	virtual void setPlayerReady(int readyFlag) {};
 	virtual void setMyPlayerName(char *newName);
+	virtual void setMyPlayerScore(int newScore) {};
+	virtual void setMyPlayerDamage(int newDamage) {};
 
 	// Communication
 	virtual void sendMsg(char *msgStr) {};

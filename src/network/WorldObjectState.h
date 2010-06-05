@@ -66,8 +66,33 @@ public:
 		priority = -1;
 	}
 
-	static void updateVector(std::vector<WorldObjectState> &objVec, WorldObject *objPtr) {
+	static void updateVector(std::vector<WorldObjectState> *objVec, WorldObjectState *objPtr) {
+		unsigned int i = 0;
 
+		// *** Linear Search Code ***
+		while (i < objVec->size() && (*objVec)[i].objID != objPtr->objID) { i++; }
+
+		// *** Add, Insert, Update Code ***
+		// ObjID Not Found (and at end)... Push_back
+		if (i == objVec->size()) {
+			objVec->push_back(*objPtr);
+		}
+		// ObjID Found, Replace Data
+		else {
+			(*objVec)[i].update();
+		}
+	}
+
+	static void removeVector(std::vector<WorldObjectState> *objVec, unsigned int objID) {
+		unsigned int i=0;
+
+		// *** Linear Search Code ***
+		while (i < objVec->size() && (*objVec)[i].objID != objID) { i++; }
+
+		// ObjID found, erase entry
+		if (i < objVec->size()) {
+			(*objVec)[i].kill();
+		}
 	}
 
 	static bool NetworkPrioritySort(WorldObjectState objSt1, WorldObjectState objSt2) {

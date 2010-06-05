@@ -32,8 +32,8 @@ class Physics
     int isUniqueID(int id);
   public:
     std::vector<PhysicsBody *> physicsBodies;
-    static void tickCallback(btDynamicsWorld *dWorld,
-      btScalar timeChange);
+//    static void tickCallback(btDynamicsWorld *dWorld,
+//      btScalar timeChange);
     void addWorldObject(WorldObject *newObject);
     std::vector<WorldObject *> getWorldObjects();
     

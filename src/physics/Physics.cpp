@@ -1,6 +1,7 @@
 #include "Physics.h"
 #include "../system/global.h"
 #include "../scene/Tesselator.h"
+#include "ActionHandler.h"
 
 using namespace std;
 //void Physics::emptyWorld()
@@ -49,7 +50,9 @@ void Physics::initPhysics()
   world->addRigidBody(groundBody);
   groundBody->setActivationState(ISLAND_SLEEPING);
   nextBlockNumber = 0;
-  world->setInternalTickCallback(&tickCallback);
+  ActionHandler * action = new ActionHandler(this);
+  world->addAction(action);
+//  world->setInternalTickCallback(&tickCallback);
 }
 
 void Physics::update(int timeChange)
@@ -57,7 +60,7 @@ void Physics::update(int timeChange)
 //  printf("Updating by: %d milliseconds.\n", timeChange);
   vector<WorldObject> changed;
   if (timeChange)
-    world->stepSimulation(btScalar(timeChange / 1000.0), 1, btScalar(1 / 25.0));
+    world->stepSimulation(btScalar(timeChange / 1000.0), 1, btScalar(1 / 60.0));
   unsigned int i;
   int result;
   for (i = 0; i < physicsBodies.size(); i++)
@@ -91,13 +94,13 @@ int Physics::isUniqueID(int id)
   return result;
 }
 
-void Physics::tickCallback(btDynamicsWorld *dWorld, btScalar timeChange)
+/*void Physics::tickCallback(btDynamicsWorld *dWorld, btScalar timeChange)
 {
 //  for (int i = 0; i < physicsBodies.size(); i++)
   {
 //    global::physicsBodies[i]->getWorldObject()->think();
   }
-}
+}*/
 
 void Physics::addWorldObject(WorldObject *worldObject)
 {

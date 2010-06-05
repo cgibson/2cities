@@ -56,17 +56,6 @@ namespace Tesselator
     //networkManager->network->addObject(obj);
     return obj;
   }
-  
-/*  void placeSimpleEdge(Vector spot, Quaternion quat)
-  {
-    
-  }
-  void placeSimpleCorner(Vector spot, Quaternion quat)
-  {
-    placeSimpleEdge(spot, quat);
-    for (int i = 1);
-  }
-  void placeSimpleColumn(Vector spot)*/
   vector<WorldObject *> placeSolidSegment(Vector spot, int bits)
   {
     vector<WorldObject *> result;

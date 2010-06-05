@@ -36,11 +36,11 @@ void ObjectFactory::makeBlock(int key, bool special)
     {
       for (j = 0; j < floorSize; j++)
       {
-//      WorldObject *anObject = new WorldObject(blockNumberBase +
-        BlackHole *anObject = new BlackHole(blockNumberBase +
+      WorldObject *anObject = new WorldObject(blockNumberBase +
+//        BlackHole *anObject = new BlackHole(blockNumberBase +
                                          blockSetHeight * floorSize * floorSize +
                                          i * floorSize + j,
-                                       0, enumeration::DUMMY_CONE);
+                                       0, enumeration::BALLHEMOTH);
         anObject->setPosition(Vector(i - floorSize / 2.0, blockSetHeight + .5, j - floorSize / 2.0));
         networkManager->network->addObject(anObject);
       }
@@ -64,7 +64,7 @@ void ObjectFactory::loadConfig(char* filename)
   setBlueprint(DUMMY_BLOCK, 1.0f, YELLOW_MAT, SMALL_CUBE, Vector(1.0f, 1.0f, 1.0f));
   
   // dummy sphere
-  setBlueprint(DUMMY_SPHERE, 10.0f, BLUE_MAT, SMALL_SPHERE, Vector(0.5f, 0.5f, 0.5f));
+  setBlueprint(DUMMY_SPHERE, 10.0f, BLUE_MAT, SMALL_SPHERE, Vector(0.3f, 0.3f, 0.3f));
   io::register_key_down(ObjectFactory::makeBlock);
   
   // dummy block
@@ -106,6 +106,7 @@ void ObjectFactory::loadConfig(char* filename)
   setBlueprint(BLOCK_1_2_1, 2.0f, GREEN_MAT, BLOCK_1_2_1_SHAPE, Vector(1.0f, 2.0f, 1.0f));
   setBlueprint(BLOCK_2_4_2, 16.0f, YELLOW_MAT, BLOCK_2_4_2_SHAPE, Vector(1.0f, 4.0f, 1.0f));
   setBlueprint(BLOCK_5_1_5, 25.0f, YELLOW_MAT, BLOCK_5_1_5_SHAPE, Vector(5.0f, 1.0f, 5.0f));
+  setBlueprint(BALLHEMOTH, 100.0f, GREEN_MAT, LARGE_SPHERE, Vector(2.2f, 2.2f, 2.2f));
 }
 
 

@@ -73,7 +73,7 @@ void WorldObject::draw() {
     {
       gfx::modelHandler.drawShadedCube(1.0);
     }
-    else if (sh <= SHAPE_SPHERE_MIN && sh < SHAPE_SPHERE_MAX)
+    else if (sh >= SHAPE_SPHERE_MIN && sh < SHAPE_SPHERE_MAX)
     {
       glutSolidSphere(1.0, 10, 10);
     }

@@ -29,6 +29,8 @@ public:
 	virtual void initialize() {};
 	virtual void update(long milli_time);
 
+	virtual Physics *getPhysicsPtr() { return &physicsEngine; }
+
 	// Server Details
 
 	// Connection Based Functions

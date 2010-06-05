@@ -7,6 +7,8 @@
 
 #include "../scene/WorldObject.h"
 
+#include "../physics/Physics.h"
+
 #include "../../include/ting/Socket.hpp"
 #include "../../include/ting/WaitSet.hpp"
 
@@ -82,6 +84,8 @@ public:
 
 	virtual void initialize() {};
 	virtual void update(long elapsed) {};
+
+	virtual Physics *getPhysicsPtr() { return NULL; }
 
 	// Server Details
 	virtual void dedicatedServer(bool toggle) {};

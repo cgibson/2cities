@@ -62,6 +62,8 @@ public:
 	void initialize() {};
 	void update(long milli_time);
 
+	virtual Physics *getPhysicsPtr() { return &physicsEngine; }
+
 	// Server Details
 	virtual void dedicatedServer(bool toggle) {	_dedicatedServer = toggle; }
 	virtual bool dedicatedServer(void) { return _dedicatedServer; }

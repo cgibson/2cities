@@ -1,6 +1,8 @@
 #include "skyscraper.h"
 #include "graphics.h"
 
+int Skyscraper::displayList = -1;
+
 const int Skyscraper::MIN_WIDTH = 5;
 const int Skyscraper::MAX_WIDTH = 10;
 const int Skyscraper::MIN_HEIGHT = 5;
@@ -29,85 +31,81 @@ Skyscraper::~Skyscraper()
 
 void Skyscraper::init()
 {
-	// compile a display list for the building's geometry
-	_displayList = glGenLists(1);
-
-	if(!_displayList)
+	// generate the display list if we haven't already
+	if (displayList < 0)
 	{
-		fprintf(stderr, "Error: unable to generate skyscraper display list\n");
-		exit(EXIT_FAILURE);
+		displayList = glGenLists(1);
+
+		if(!displayList)
+		{
+			fprintf(stderr, "Error: unable to generate skyscraper display list\n");
+			exit(EXIT_FAILURE);
+		}
+
+		// compile the display list
+		glNewList(displayList, GL_COMPILE);
+			glBegin(GL_QUADS);
+				// front face
+				glNormal3f(0.0, 0.0, 1.0);
+				glTexCoord2f(0.0, 0.0);
+				glVertex3f(-0.5, 0.0, 0.5);
+				glTexCoord2f(1.0, 0.0);
+				glVertex3f(0.5, 0.0, 0.5);
+				glTexCoord2f(1.0, 1.0);
+				glVertex3f(0.5, 1.0, 0.5);
+				glTexCoord2f(0.0, 1.0);
+				glVertex3f(-0.5,  1.0, 0.5);
+
+				// back face
+				glNormal3f(0.0, 0.0, -1.0);
+				glTexCoord2f(0.0, 0.0);
+				glVertex3f(0.5, 0.0, -0.5);
+				glTexCoord2f(1.0, 0.0);
+				glVertex3f(-0.5, 0.0, -0.5);
+				glTexCoord2f(1.0, 1.0);
+				glVertex3f(-0.5, 1.0, -0.5);
+				glTexCoord2f(0.0, 1.0);
+				glVertex3f(0.5,  1.0, -0.5);
+
+				// left face
+				glNormal3f(-1.0, 0.0, 0.0);
+				glTexCoord2f(0.0, 0.0);
+				glVertex3f(-0.5, 0.0, -0.5);
+				glTexCoord2f(1.0, 0.0);
+				glVertex3f(-0.5, 0.0, 0.5);
+				glTexCoord2f(1.0, 1.0);
+				glVertex3f(-0.5, 1.0, 0.5);
+				glTexCoord2f(0.0, 1.0);
+				glVertex3f(-0.5, 1.0, -0.5);
+
+				// right face
+				glNormal3f(1.0, 0.0, 0.0);
+				glTexCoord2f(0.0, 0.0);
+				glVertex3f(0.5, 0.0, 0.5);
+				glTexCoord2f(1.0, 0.0);
+				glVertex3f(0.5, 0.0, -0.5);
+				glTexCoord2f(1.0, 1.0);
+				glVertex3f(0.5, 1.0, -0.5);
+				glTexCoord2f(0.0, 1.0);
+				glVertex3f(0.5, 1.0, 0.5);
+
+				// top face
+				glNormal3f(0.0, 1.0, 0.0);
+				glTexCoord2f(0.0, 0.0);
+				glVertex3f(-0.5, 1.0, 0.5);
+				glTexCoord2f(1.0, 0.0);
+				glVertex3f(0.5, 1.0, 0.5);
+				glTexCoord2f(1.0, 1.0);
+				glVertex3f(0.5, 1.0, -0.5);
+				glTexCoord2f(0.0, 1.0);
+				glVertex3f(-0.5, 1.0, -0.5);
+
+				// bottom face
+				// don't bother (can't see it!)
+
+			glEnd();
+		glEndList();
 	}
-
-	// shorthand because it makes things easier
-	float b = _width / 2.0;
-	//float w = _width;
-	float h = _height;
-	float s = 1.0;
-	float t = 1.0;
-
-	// compile the display list
-	glNewList(_displayList, GL_COMPILE);
-		glBegin(GL_QUADS);
-			// front face
-			glNormal3f(0.0, 0.0, 1.0);
-			glTexCoord2f(0.0, 0.0);
-			glVertex3f(-b, 0.0, b);
-			glTexCoord2f(s, 0.0);
-			glVertex3f(b, 0.0, b);
-			glTexCoord2f(s, t);
-			glVertex3f(b, h, b);
-			glTexCoord2f(0.0, t);
-			glVertex3f(-b,  h, b);
-
-			// back face
-			glNormal3f(0.0, 0.0, -1.0);
-			glTexCoord2f(0.0, 0.0);
-			glVertex3f(b, 0.0, -b);
-			glTexCoord2f(s, 0.0);
-			glVertex3f(-b, 0.0, -b);
-			glTexCoord2f(s, t);
-			glVertex3f(-b, h, -b);
-			glTexCoord2f(0.0, t);
-			glVertex3f(b,  h, -b);
-
-			// left face
-			glNormal3f(-1.0, 0.0, 0.0);
-			glTexCoord2f(0.0, 0.0);
-			glVertex3f(-b, 0.0, -b);
-			glTexCoord2f(s, 0.0);
-			glVertex3f(-b, 0.0,  b);
-			glTexCoord2f(s, t);
-			glVertex3f(-b, h,  b);
-			glTexCoord2f(0.0, t);
-			glVertex3f(-b, h, -b);
-
-			// right face
-			glNormal3f(1.0, 0.0, 0.0);
-			glTexCoord2f(0.0, 0.0);
-			glVertex3f(b, 0.0, b);
-			glTexCoord2f(s, 0.0);
-			glVertex3f(b, 0.0, -b);
-			glTexCoord2f(s, t);
-			glVertex3f(b, h, -b);
-			glTexCoord2f(0.0, t);
-			glVertex3f(b, h, b);
-
-			// top face
-			glNormal3f(0.0, 1.0, 0.0);
-			glTexCoord2f(0.0, 0.0);
-			glVertex3f(-b, h, b);
-			glTexCoord2f(s, 0.0);
-			glVertex3f(b, h, b);
-			glTexCoord2f(s, t);
-			glVertex3f(b, h, -b);
-			glTexCoord2f(0.0, t);
-			glVertex3f(-b, h, -b);
-
-			// bottom face
-			// don't bother (can't see it!)
-
-		glEnd();
-	glEndList();
 }
 
 void Skyscraper::draw()
@@ -118,6 +116,7 @@ void Skyscraper::draw()
 
 	glPushMatrix();
 		glTranslatef(_center.x(), 0.0, _center.z());
-		glCallList(_displayList);
+		glScalef(_width, _height, _width);
+		glCallList(displayList);
 	glPopMatrix();
 }

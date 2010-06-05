@@ -36,7 +36,8 @@ private:
 	Vector _aabbMin;
 	Vector _aabbMax;
 	float _rand_offset;
-	GLuint _displayList;
+
+	static int displayList;
 
 	static const int MIN_WIDTH;
 	static const int MAX_WIDTH;

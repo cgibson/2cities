@@ -28,7 +28,10 @@ StateManager::StateManager()
  */
 void StateManager::changeCurrentState(enum E_STATE newState)
 {
-    //InGameState *oldInGameState = global::stateManager->currentState;
+//#ifdef CLIENT
+    InGameState *oldState = global::stateManager->currentState;
+//#endif
+
 	//global::networkManager->network->emptyWorld();
     switch(newState)
     {
@@ -56,6 +59,20 @@ void StateManager::changeCurrentState(enum E_STATE newState)
 		currentState = new CarnageState();
 		currentState->initialize();
 #ifdef CLIENT
+/*
+    	if(oldState->objects.size() > 0) {
+    	// TODO iterator through all objects
+    		CustomObject * currObject = oldState->objects[0];
+    		// TODO push on big vector
+    		vector<WorldObject *> newVec = Tesselator::placeBuilding(
+    				currObject->get_min(),
+    				currObject->get_max(),
+    				currObject->getBuildingType());
+
+    		// TODO call with BFV
+    		global::networkManager->network->loadlevel(newVec);
+    	}
+*/
 		gfx::hud.swapUI(Hud::CARNAGE);
 		global::soundManager->stopPlayingMusic();
         global::soundManager->playCarnageSong();

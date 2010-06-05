@@ -21,6 +21,8 @@ class MenuState: public InGameState
 
         void initialize();
         
+        virtual enum E_STATE stateType() {return MENU_STATE;}
+
     protected:
 		static const int MUSIC_DELAY;
 };

@@ -23,7 +23,7 @@ const int CarnageState::RECHARGE_TIME = 1000; // in milliseconds
 const int CarnageState::MUSIC_DELAY = 1000;
 
 CarnageState::CarnageState() {
-	
+
 }
 
 CarnageState::~CarnageState() {}
@@ -37,13 +37,14 @@ void CarnageState::initialize() {
     ammo_recharge = 0;
     music_delay = 0;
     ammo_type = FRACTAL_BOMB;
-    realStateType = enumeration::CARNAGE_STATE;
 
    // initialize our camera (orbital)
    if (global::camera != NULL) delete global::camera;
    global::camera = new OrbitalCamera();
    global::camera->init(Vector(30.0, 30.0, 30.0), Vector(0.0, 5.0, 0.0));
 #endif
+
+   realStateType = enumeration::CARNAGE_STATE;
 }
 
 void CarnageState::update(long milli_time) {

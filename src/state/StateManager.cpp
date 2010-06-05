@@ -117,6 +117,12 @@ void StateManager::stateConsoleCmds(int argc, char *argv[])
 				global::stateManager->changeCurrentState(enumeration::MENU_STATE);
 				return;
 			}
+			if(!strcmp(argv[1], "results") || !strcmp(argv[1], "r"))
+			{
+				gfx::hud.console.info("changing to Results State (sub-carnage state)");
+				global::stateManager->changeCurrentState(enumeration::RESULTS_STATE);
+				return;
+			}
 			if(!strcmp(argv[1], "carnage") || !strcmp(argv[1], "c"))
 			{
 				gfx::hud.console.info("changing to Carnage State");

@@ -38,14 +38,13 @@ class CarnageState: public InGameState
         Vector getOppView() {return oppView;}
         int getRechargeTimeLeft() const { return ammo_recharge; }
 
-        virtual enum E_STATE stateType() { return CARNAGE_STATE; }
+        virtual enum E_STATE stateType() {return realStateType;}
 
 		static const int RECHARGE_TIME;
 		static const int MUSIC_DELAY;
 
     protected:
         int ammo_recharge;
-        int music_delay;
         ObjectType ammo_type;
 
         //Opponents' camera position and view vectors.

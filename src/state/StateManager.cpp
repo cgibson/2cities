@@ -6,17 +6,11 @@
 
 #include "BuildState.h"
 #include "CarnageState.h"
+#include "MenuState.h"
 #include "../system/global.h"
 #include "../system/enum.h"
 
 using namespace enumeration;
-
-/**
- * Represents the global game state.
- *
- * @author Kennedy Owen
- * @version 20 April 2010
- */
 
 /**
  * Initialize the current state to an (assumed) new CarnageState.
@@ -39,6 +33,8 @@ void StateManager::changeCurrentState(enum E_STATE newState)
     switch(newState)
     {
     case MENU_STATE:
+		currentState = new MenuState();
+		currentState->initialize();
 #ifdef CLIENT
         gfx::hud.swapUI(Hud::MENU);
         //TODO: Add Menu State creation, initialization here
@@ -54,6 +50,7 @@ void StateManager::changeCurrentState(enum E_STATE newState)
         global::soundManager->stopPlayingMusic();
         global::soundManager->playBuildSong();
 #endif
+		currentState->objects.empty();
         break;
     case CARNAGE_STATE:
 		currentState = new CarnageState();
@@ -63,19 +60,20 @@ void StateManager::changeCurrentState(enum E_STATE newState)
 		global::soundManager->stopPlayingMusic();
         global::soundManager->playCarnageSong();
 #endif
+		currentState->objects.empty();
         break;
     case RESULTS_STATE:
+		currentState->setRealStateType(enumeration::RESULTS_STATE);
 #ifdef CLIENT
 		gfx::hud.swapUI(Hud::RESULTS);
 		global::soundManager->stopPlayingMusic();
-		//TODO: Add Results creation, initialization here;
-		//Decide which results song to play, too.
+		global::soundManager->playResultWinSong();
 #endif
         break;
     default:
+		currentState->objects.empty();
         break;
     }
-    currentState->objects.empty();
     //delete oldInGameState;
 }
 
@@ -91,7 +89,7 @@ void StateManager::switchToCarnage() {
  * Register console command for changing states.
  */
 void StateManager::initialize()
-{
+{	
 #ifdef CLIENT
 	//FULL COMMANDS
 	gfx::hud.console.registerCmd("changestate", StateManager::stateConsoleCmds);
@@ -113,6 +111,12 @@ void StateManager::stateConsoleCmds(int argc, char *argv[])
 	{
 		if(argc == 2)
 		{
+			if(!strcmp(argv[1], "menu") || !strcmp(argv[1], "m"))
+			{
+				gfx::hud.console.info("changing to Menu State");
+				global::stateManager->changeCurrentState(enumeration::MENU_STATE);
+				return;
+			}
 			if(!strcmp(argv[1], "carnage") || !strcmp(argv[1], "c"))
 			{
 				gfx::hud.console.info("changing to Carnage State");

@@ -84,6 +84,7 @@ void BuildState::initialize() {
 #ifdef CLIENT
 	gfx::hud.console.registerCmd("save_level", BuildState::save_level);
 	music_delay = 0;
+	realStateType = enumeration::BUILD_STATE;
 #endif
 
 	DELETE_MODE = false;

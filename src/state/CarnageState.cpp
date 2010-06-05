@@ -14,8 +14,10 @@
 #include "../graphics/orbitalcamera.h"
 #include "../helper/Vector.h"
 #include "../scene/CustomObject.h"
+#include "../system/enum.h"
 
 using namespace global;
+using namespace enumeration;
 
 const int CarnageState::RECHARGE_TIME = 1000; // in milliseconds
 const int CarnageState::MUSIC_DELAY = 1000;
@@ -35,6 +37,7 @@ void CarnageState::initialize() {
     ammo_recharge = 0;
     music_delay = 0;
     ammo_type = FRACTAL_BOMB;
+    realStateType = enumeration::CARNAGE_STATE;
 
    // initialize our camera (orbital)
    if (global::camera != NULL) delete global::camera;
@@ -126,7 +129,6 @@ void CarnageState::updateInput(long milli_time) {
    }
 #endif
 }
-
 
 
 

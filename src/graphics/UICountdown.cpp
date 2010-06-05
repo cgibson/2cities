@@ -6,6 +6,7 @@ UICountdown::UICountdown()
 	_explainLabel = NULL;
 	_timeLabel = NULL;
 	_seconds = 0;
+	_dirtyFlag = true;
 }
 
 UICountdown::~UICountdown()
@@ -38,15 +39,13 @@ void UICountdown::update(int ms)
 	// update the base class
 	UIControl::update(ms);
 
-	// update this class
-
-	// TODO: eventually fetch the actual score from the game state here
-	static int accum = 0;
-	accum += ms;
-	_seconds = accum / 1000;
-	_seconds = _seconds % 600;
-	printTimeToBuffer();
-	_timeLabel->text(_timeBuf);
+	// update this class (but only if the value changed)
+	if (_dirtyFlag)
+	{
+		printTimeToBuffer();
+		_timeLabel->text(_timeBuf);
+		_dirtyFlag = false;
+	}
 
 	// update our children
 	updateChildren(ms);

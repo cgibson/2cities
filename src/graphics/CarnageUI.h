@@ -37,6 +37,7 @@ public:
 
 private:
 	UIIcon *_reticle;
+	bool _reticleTintSet;
 	UIScoreDisplay *_redScore;
 	UIScoreDisplay *_blueScore;
 	UILabel *_redDestructLabel;
@@ -51,6 +52,8 @@ private:
 	UILabel *_airstrikeClip;
 	UILabel *_shapeshifterClip;
 	UILabel *_clusterbombClip;
+	UILabel *_identifyLabel;
+	bool _identifySet;
 	char _redDestructBuf[10];
 	char _blueDestructBuf[10];
 	UICountdown *_countdown;

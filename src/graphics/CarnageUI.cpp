@@ -4,6 +4,7 @@ CarnageUI::CarnageUI()
 	: GameUI()
 {
     _reticle = NULL;
+    _reticleTintSet = false;
     _redScore = NULL;
     _blueScore = NULL;
     _redDestructLabel = NULL;
@@ -19,6 +20,8 @@ CarnageUI::CarnageUI()
 	_airstrikeClip = NULL;
 	_shapeshifterClip = NULL;
 	_clusterbombClip = NULL;
+	_identifyLabel = NULL;
+	_identifySet = false;
 }
 
 CarnageUI::~CarnageUI()
@@ -39,6 +42,7 @@ CarnageUI::~CarnageUI()
 	if (_airstrikeClip != NULL) delete _airstrikeClip;
 	if (_shapeshifterClip != NULL) delete _shapeshifterClip;
 	if (_clusterbombClip != NULL) delete _clusterbombClip;
+	if (_identifyLabel != NULL) delete _identifyLabel;
 }
 
 void CarnageUI::init()
@@ -48,9 +52,6 @@ void CarnageUI::init()
 	_reticle = new UIIcon();
 	_reticle->init("resources/textures/reticle.bmp", "resources/textures/reticle_alpha.bmp");
 	_reticle->pos(global::width / 2 - _reticle->width() / 2, global::height / 2 - _reticle->height() / 2);
-	_reticle->tint(true);
-	_reticle->tintclr(1.0, 0.0, 0.0); // TODO: change this to the actual player's color!
-	_reticle->parent(_window);
 
 	_ammoSelect = new UIWheelChooser();
 	_ammoSelect->init(7, 64);
@@ -189,6 +190,10 @@ void CarnageUI::init()
 	_countdown->size(240, 75);
 	_countdown->bgclr(1.0, 1.0, 1.0, 0.5);
 	_countdown->parent(_window);
+
+	_identifyLabel = new UILabel();
+	_identifyLabel->init("resources/fonts/sui_generis_free.ttf", 18, UILabel::RIGHT);
+	_identifyLabel->pos(global::width - 20, 20);
 }
 
 void CarnageUI::update(int ms)
@@ -199,6 +204,20 @@ void CarnageUI::update(int ms)
 
 	// keep the reticle centered
 	_reticle->pos(global::width / 2 - _reticle->width() / 2, global::height  / 2 - _reticle->height() / 2);
+	if (!_reticleTintSet && global::networkManager->network->getMyPlayerID() == 1)
+	{
+		_reticle->tint(true);
+		_reticle->tintclr(1.0, 0.0, 0.0);
+		_reticleTintSet = true;
+		_reticle->parent(_window);
+	}
+	else if (!_reticleTintSet && global::networkManager->network->getMyPlayerID() == 2)
+	{
+		_reticle->tint(true);
+		_reticle->tintclr(0.0, 0.0, 1.0);
+		_reticleTintSet = true;
+		_reticle->parent(_window);
+	}
 
 	// keep the progress bars sized and aligned correctly
 	_redDestructProgress->pos(330, global::height - 21);
@@ -209,6 +228,23 @@ void CarnageUI::update(int ms)
 
 	// keep the ammo selector "centered" in the middle of the screen (horizontally)
 	_ammoSelect->pos(global::width / 2, global::height - 115);
+
+	// keep identifier label right-aligned
+	_identifyLabel->pos(global::width - 20, 20);
+	if (!_identifySet && global::networkManager->network->getMyPlayerID() == 1)
+	{
+		_identifyLabel->fgclr(1.0, 0.0, 0.0, 1.0);
+		_identifyLabel->text("You are RED.");
+		_identifySet = true;
+		_identifyLabel->parent(_window);
+	}
+	else if (!_identifySet && global::networkManager->network->getMyPlayerID() == 2)
+	{
+		_identifyLabel->fgclr(0.0, 0.0, 1.0, 1.0);
+		_identifyLabel->text("You are BLUE.");
+		_identifySet = true;
+		_identifyLabel->parent(_window);
+	}
 
 	// TODO: actually get destruction percentage from game state here
 
@@ -250,6 +286,9 @@ void CarnageUI::update(int ms)
 	_ballhemothRecharge->percent((int)percent);
 	_ballhemothRecharge->fgclr(1.0 - (percent / 100.0), (percent / 100.0),
 		_ballhemothRecharge->fgb(), 1.0);
+
+	// update the time remaining display
+	_countdown->seconds(global::networkManager->network->getTimeToStateChange() / 1000 * -1);
 }
 
 void CarnageUI::draw()

@@ -25,10 +25,15 @@ public:
 	void update(int ms);
 	void draw();
 
+	// property accessors
+	int seconds() const { return _seconds; }
+	void seconds(int seconds) { if (seconds != _seconds) { _seconds = seconds; _dirtyFlag = true; } }
+
 private:
 	UILabel *_explainLabel;
 	UILabel *_timeLabel;
 	int _seconds;
+	bool _dirtyFlag;
 	char _timeBuf[20];
 	void printTimeToBuffer();
 };

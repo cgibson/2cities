@@ -223,14 +223,6 @@ void BuildUI::keyDown(int key, bool special)
 {
 	if (!special)
 	{
-		// DEBUG DEBUG DEBUG
-		/*std::vector<Client *> clients = global::networkManager->network->getPlayers();
-		printf("# of clients = %d\n", (int)clients.size());
-		for (int i = 0; i < (int)clients.size(); i++)
-		{
-			clients[i]->print();
-		}*/
-
 		switch (key)
 		{
 			case '1':

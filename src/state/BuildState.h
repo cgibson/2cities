@@ -30,6 +30,8 @@ namespace BuildStateGlobals
 class BuildState : public InGameState
 {
 	public:
+	   Tesselation currBuildingType;
+
 	   BuildState();
        virtual ~BuildState();
 

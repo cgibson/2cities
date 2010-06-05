@@ -87,6 +87,7 @@ void BuildState::initialize() {
 	realStateType = enumeration::BUILD_STATE;
 #endif
 
+	currBuildingType = TESS_STONEHENGE;
 	DELETE_MODE = false;
 	MOUSE_DOWN = false;
 	counter = 0;
@@ -256,6 +257,7 @@ void BuildState::mouseDownHandler()
 			// 3. create object
 			int objID = currState->objects.size();
 			currState->objects.push_back(new CustomObject(objID, 0, CUSTOM_BLOCK, firstPoint, secondPoint ) );
+			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->setBuildingType(currBuildingType);
 			placeY(objID, pp_index);
 			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->orientRect(firstPoint, secondPoint);
 		}

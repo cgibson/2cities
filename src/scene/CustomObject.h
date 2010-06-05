@@ -32,6 +32,7 @@ class CustomObject : public WorldObject
 {
     protected:
         Point max, min;
+        Tesselation buildingType;
 
     public:
         CustomObject(unsigned int newid, unsigned int newplayerid, ObjectType newtype, Point newmax, Point newmin) : WorldObject(newid, newplayerid, newtype)
@@ -41,6 +42,7 @@ class CustomObject : public WorldObject
             //type = newtype;
 				max = newmax;
 				min = newmin;
+				buildingType = TESS_NONE;
         }
         
         virtual void draw();
@@ -63,8 +65,10 @@ class CustomObject : public WorldObject
 
 		  Point get_max(){return Point(get_max_x(), get_max_y(), get_max_z());}
 		  Point get_min(){return Point(get_min_x(), get_min_y(), get_min_z());}
+		  Tesselation getBuildingType() { return buildingType; };
 		  void set_max(Point newmax);
 		  void set_min(Point newmin);
+		  void setBuildingType(Tesselation newTess) { buildingType = newTess; };
 
         void draw_rectangle3D();
 		  void draw_rectangle2D();

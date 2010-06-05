@@ -51,6 +51,7 @@ private:
 	UILabel *_bubbleMult;
 	UIButton *_readyButton;
 	UILabel *_otherPlayerReady;
+	bool _parentedOtherPlayerReady;
 	char _redFullBuf[10];
 	char _blueFullBuf[10];
 };

@@ -17,6 +17,7 @@ BuildUI::BuildUI()
 	_bubbleMult = NULL;
 	_readyButton = NULL;
 	_otherPlayerReady = NULL;
+	_parentedOtherPlayerReady = false;
 }
 
 BuildUI::~BuildUI()
@@ -136,7 +137,6 @@ void BuildUI::init()
 	_otherPlayerReady->init("resources/fonts/sui_generis_free.ttf", 18, UILabel::LEFT);
 	_otherPlayerReady->text("Other player is ready!");
 	_otherPlayerReady->pos(20, 34);
-	_otherPlayerReady->parent(_window);
 }
 
 void BuildUI::update(int ms)
@@ -174,9 +174,18 @@ void BuildUI::update(int ms)
 	_blueFullLabel->text(_blueFullBuf);
 	_blueFullLabel->pos(_blueFullProgress->percentX() + 5, 4);
 
-	// TODO: remove parenting the _otherPlayerReady label in the init() function
-	// and instead parent it here when we detect that the game state says the
-	// other player is ready
+	// check if the other player is ready and display flasher if they are
+	std::vector<Client *> clients = global::networkManager->network->getPlayers();
+	if (clients.size() >= 2)
+	{
+		int myPlayerID = global::networkManager->network->getMyPlayerID();
+		if ((myPlayerID == 1 && global::networkManager->network->getPlayerReady(2) && !_parentedOtherPlayerReady) ||
+			 (myPlayerID == 2 && global::networkManager->network->getPlayerReady(1) && !_parentedOtherPlayerReady))
+		{
+			_otherPlayerReady->parent(_window);
+			_parentedOtherPlayerReady = true;
+		}
+	}
 
 	GameUI::update(ms);
 
@@ -207,13 +216,21 @@ void BuildUI::draw()
 void BuildUI::ready()
 {
 	gfx::hud.swapUI(Hud::WAITING);
-	//TODO more things?
+	global::networkManager->network->setPlayerReady(1);
 }
 
 void BuildUI::keyDown(int key, bool special)
 {
 	if (!special)
 	{
+		// DEBUG DEBUG DEBUG
+		/*std::vector<Client *> clients = global::networkManager->network->getPlayers();
+		printf("# of clients = %d\n", (int)clients.size());
+		for (int i = 0; i < (int)clients.size(); i++)
+		{
+			clients[i]->print();
+		}*/
+
 		switch (key)
 		{
 			case '1':

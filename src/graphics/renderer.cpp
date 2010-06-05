@@ -60,7 +60,8 @@ void Renderer::draw_screen()
 
 void Renderer::draw()
 {
-  if(gfx::renderState == FULL)
+  if((gfx::renderState == FULL) && 
+      (global::stateManager->currentState->stateType() != BUILD_STATE))
   {
 	// render the scene into the FBO (first pass)
 	glEnable(GL_DEPTH_TEST);

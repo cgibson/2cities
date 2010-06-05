@@ -30,6 +30,7 @@ Point::Point(GLdouble clicked_x, GLdouble clicked_y)
 	winX = (float)clicked_x;
 	winY = (float)viewport[3] - (float)clicked_y;
 
+/*
   if(gfx::renderState == FULL)
   {
     gfx::fbo->enable();
@@ -38,9 +39,12 @@ Point::Point(GLdouble clicked_x, GLdouble clicked_y)
 	  gluUnProject( winX, winY, winZ, modelview_matrix, projection_matrix, viewport, &posX, &posY, &posZ);
     gfx::fbo->disable();
   }else{
+*/
 	  glReadPixels( clicked_x, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
 	  gluUnProject( winX, winY, winZ, modelview_matrix, projection_matrix, viewport, &posX, &posY, &posZ);
+/*  
   }
+*/
 	/*printf("winX = %f, winY = %f, winZ = %f\n", winX, winY, winZ);
 	int i, j;	
 	printf("modelview:\n");	

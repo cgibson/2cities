@@ -30,58 +30,62 @@ using namespace enumeration;
  */
 class CustomObject : public WorldObject
 {
-    protected:
-        Point max, min;
-        Tesselation buildingType;
+	protected:
+	Point max, min;
+	Tesselation buildingType;
+	int buildingCost;
 
-    public:
-        CustomObject(unsigned int newid, unsigned int newplayerid, ObjectType newtype, Point newmax, Point newmin) : WorldObject(newid, newplayerid, newtype)
-        {
-				//id = newid;
-            //playerid = newplayerid;
-            //type = newtype;
-				max = newmax;
-				min = newmin;
-				buildingType = TESS_NONE;
-        }
-        
-        virtual void draw();
-        virtual void update(int elapsedTime);
-        virtual void think(int elapsedTime);
+	public:
+	CustomObject(unsigned int newid, unsigned int newplayerid, ObjectType newtype, Point newmax, Point newmin) : WorldObject(newid, newplayerid, newtype)
+	{
+		//id = newid;
+		//playerid = newplayerid;
+		//type = newtype;
+		max = newmax;
+		min = newmin;
+		buildingType = TESS_NONE;
+	}
 
-		  int get_max_x(){return max.getx();}
-		  int get_max_y(){return max.gety();}
-		  int get_max_z(){return max.getz();}
-		  int get_min_x(){return min.getx();}
-		  int get_min_y(){return min.gety();}
-		  int get_min_z(){return min.getz();}
+	virtual void draw();
+	virtual void update(int elapsedTime);
+	virtual void think(int elapsedTime);
 
-		  void set_max_x(int x){max.setx(x);}
-		  void set_max_y(int y){max.sety(y);}
-		  void set_max_z(int z){max.setz(z);}
-		  void set_min_x(int x){min.setx(x);}
-		  void set_min_y(int y){min.sety(y);}
-		  void set_min_z(int z){min.setz(z);}
+	int get_max_x(){return max.getx();}
+	int get_max_y(){return max.gety();}
+	int get_max_z(){return max.getz();}
+	int get_min_x(){return min.getx();}
+	int get_min_y(){return min.gety();}
+	int get_min_z(){return min.getz();}
 
-		  Point get_max(){return Point(get_max_x(), get_max_y(), get_max_z());}
-		  Point get_min(){return Point(get_min_x(), get_min_y(), get_min_z());}
-		  Tesselation getBuildingType() { return buildingType; };
-		  void set_max(Point newmax);
-		  void set_min(Point newmin);
-		  void setBuildingType(Tesselation newTess) { buildingType = newTess; };
+	void set_max_x(int x){max.setx(x);updateCost();}
+	void set_max_y(int y){max.sety(y);updateCost();}
+	void set_max_z(int z){max.setz(z);updateCost();}
+	void set_min_x(int x){min.setx(x);updateCost();}
+	void set_min_y(int y){min.sety(y);updateCost();}
+	void set_min_z(int z){min.setz(z);updateCost();}
 
-        void draw_rectangle3D();
-		  void draw_rectangle2D();
-		  void adjust_bases();
-		  void print_rectangle();
-   	  Face check_click(Point click);
-   	  int compute_area();
-   	  int compute_volume();
-   	  bool encapsulates(Point max_testpt, Point min_testpt);
-		  int distance2Face(Face f, Point pt);
-		  Point whichPoint(Face f);
-		  bool semiEncapsulates(Face f, Point max_testpt, Point min_testpt);
-		  void orientRect(Point p1, Point p2);
+	Point get_max(){return Point(get_max_x(), get_max_y(), get_max_z());}
+	Point get_min(){return Point(get_min_x(), get_min_y(), get_min_z());}
+	void set_max(Point newmax);
+	void set_min(Point newmin);
+
+	int getCost() { return buildingCost; };
+	int updateCost();
+	Tesselation getBuildingType() { return buildingType; };	
+	void setBuildingType(Tesselation newTess) { buildingType = newTess; };
+
+	void draw_rectangle3D();
+	void draw_rectangle2D();
+	void adjust_bases();
+	void print_rectangle();
+	Face check_click(Point click);
+	int compute_area();
+	int compute_volume();
+	bool encapsulates(Point max_testpt, Point min_testpt);
+	int distance2Face(Face f, Point pt);
+	Point whichPoint(Face f);
+	bool semiEncapsulates(Face f, Point max_testpt, Point min_testpt);
+	void orientRect(Point p1, Point p2);
 };
 
 #endif

@@ -31,6 +31,23 @@ void CustomObject::set_min(Point newmin)
 	set_min_z(newmin.getz());
 }
 
+int CustomObject::updateCost()
+{
+	if(buildingType == TESS_STONEHENGE)
+	{
+		buildingCost = compute_volume() * 10;
+	}
+	else if(buildingType == TESS_SIMPLE)
+	{
+		buildingCost = compute_volume() * 5;
+	}
+	else if(buildingType == TESS_SOLID)
+	{
+		buildingCost = compute_volume() * 20;
+	}
+	return buildingCost;
+}
+
 void CustomObject::print_rectangle()
 {
 	printf("---\nmin: %s\n", min.str());

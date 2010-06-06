@@ -14,7 +14,7 @@ void main()
     vec2 texLookup;
     vec4 col = texture2D(texture0, gl_TexCoord[0].st);
     vec4 glowcol = texture2D(texture1, gl_TexCoord[0].st);
-    vec4 normals = texture2D(texture2, gl_TexCoord[0].st);
+    //vec4 dist = texture2D(texture2, gl_TexCoord[0].st);
     
     //gl_FragColor = normals;
     
@@ -48,5 +48,5 @@ void main()
 	{
 	  gl_FragColor = sum*sum*0.0075*add + col;
 	}
-	
+	//gl_FragColor = dist;
 }

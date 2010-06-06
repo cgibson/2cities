@@ -11,6 +11,7 @@
 #include "../physics/Physics.h"
 #include "../system/enum.h"
 #include "../helper/Vector.h"
+#include "../graphics/Material.h"
 
 #include "../scene/ComplexObject.h"
 
@@ -50,6 +51,9 @@ class CarnageState: public InGameState
         WorldObject *opponent;
         WorldObject *opponentCannon;
         WorldObject *playerCannon;
+        
+        Material *opponentMat;
+        Material *playerMat;
 
     protected:
         int ammo_recharge;

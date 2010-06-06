@@ -265,12 +265,12 @@ void Renderer::draw_diffusePass()
         {
           case DUMMY_BLOCK: case BLOCK_1_2_1: case BLOCK_2_4_2: case BLOCK_5_1_5:
             gfx::forceBlockShader.enable();
-            if((*objIt)->getPlayerID() == 0)
+            if((*objIt)->getPlayerID() == 1)
             {
-              curMat = gfx::materials[GREEN_PLAYER];
-		    }else{
-			  curMat = gfx::materials[BLUE_PLAYER];
-		    }
+              curMat = gfx::materials[BLUE_PLAYER];
+						}else{
+							curMat = gfx::materials[GREEN_PLAYER];
+						}
             curMat.applyMaterial(gfx::forceBlockShader, "");
             break;
           case DUMMY_SPHERE: case CUSTOM_BLOCK:
@@ -332,7 +332,7 @@ void Renderer::draw_diffusePass()
     case CARNAGE_STATE:
       cs = (CarnageState*)curstate;
       gfx::simpleShader.enable();
-			gfx::materials[YELLOW_MAT].applyMaterial(gfx::simpleShader, "");
+			cs->opponentMat->applyMaterial(gfx::simpleShader, "");
 			
 			cs->opponent->draw();
 			
@@ -355,6 +355,8 @@ void Renderer::draw_diffusePass()
 				glLoadIdentity();
 
 				glTranslatef(0,-1,0);
+				
+				cs->playerMat->applyMaterial(gfx::simpleShader, "");
 				cs->playerCannon->draw();
 			glPopMatrix();
 			

@@ -56,6 +56,18 @@ void CarnageState::initialize() {
    playerCannon = global::factory->makeObject(SMOOTH);
 	 playerCannon->setPosition(Vector(0, 0, 0));
 	 playerCannon->setVelocity(Vector(0, 0, 0));
+	 
+	 int id = global::networkManager->network->getMyPlayerID();
+	 
+	 if(id == 1)
+	 {
+		 playerMat = gfx::materials + BLUE_MAT;
+		 opponentMat = gfx::materials + GREEN_MAT;
+	 }else{
+		 playerMat = gfx::materials + GREEN_MAT;
+		 opponentMat = gfx::materials + BLUE_MAT;
+	 }
+	 
 #endif
 
    realStateType = enumeration::CARNAGE_STATE;

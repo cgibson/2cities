@@ -9,10 +9,11 @@ varying vec3 lightPos;
 
 void main()
 {
-	v = vec3(gl_ModelViewMatrix * gl_Vertex);
+	vec3 pos = vec3(gl_ModelViewMatrix * gl_Vertex);
+	v = vec3(gl_ModelViewProjectionMatrix * gl_Vertex);
     // just pass through the vertex position
     gl_Position = ftransform();
-    lightPos = light_position - v;
+    lightPos = light_position - pos;
     
     normal = normalize(gl_NormalMatrix * gl_Normal);
     

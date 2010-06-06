@@ -19,7 +19,15 @@ uniform vec4 light_ambient;
 
 varying vec3 lightPos;
 varying vec3 N;
-varying vec3 v; 
+varying vec3 v;  
+varying vec3 pos;  
+  
+float linearize(float z)
+{
+  float n = 20;
+  float f = 100.0;
+  return (z - n) / (f - n);
+}
 
 #define Integral(x, p, notp) ((floor(x)*(p)) + max(fract(x)-(notp), 0.0))
   
@@ -101,5 +109,6 @@ void main (void)
     
     gl_FragData[0] = phong;
     gl_FragData[1] = vec4(0,0,0,1);
-    gl_FragData[2] = vec4(N, 1);
+    gl_FragData[2] = vec4(linearize( length(pos)));
+    gl_FragData[2].a = 1.0;
   }

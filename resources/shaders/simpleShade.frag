@@ -25,7 +25,7 @@ uniform vec4 light_ambient;
 
 varying vec3 lightPos;
 varying vec3 N;
-varying vec3 v; 
+varying vec3 v;
   
 void main (void) 
 {
@@ -55,5 +55,5 @@ void main (void)
     
     gl_FragData[0] = finalColor;
     gl_FragData[1] = vec4(0,0,0,1);
-    gl_FragData[2] = vec4(0,0,0, 1);
+    gl_FragData[2] = vec4(0,0,0,1);
   }

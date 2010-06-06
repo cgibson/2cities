@@ -15,6 +15,14 @@ uniform float material_shininess;
 
 varying vec3 normal;
 varying vec3 lightPos;
+varying vec3 v;
+
+float linearize(float z)
+{
+  float n = 20;
+  float f = 100.0;
+  return (z - n) / (f - n);
+}
 
 void main()
 {   
@@ -44,6 +52,6 @@ void main()
     
     // set the fragment color
     gl_FragData[0] = final + phong;
-    gl_FragData[1] = ((max(force, 1.0) * 0.05 * vec4(1,0,0,1)) + (max(shock, 1.0) * 0.05 * vec4(1,1,1,1))) + vec4(0,0,0,1);
-    gl_FragData[2] = vec4(normal, 1);
+    gl_FragData[1] = ((clamp(force - 0.3, 0.0, 1.0) * 0.2 * vec4(1,0,0,1)) + (max(shock, 1.0) * 0.05 * vec4(1,1,1,1))) + vec4(0,0,0,1);
+    gl_FragData[1] *= clamp(linearize( length(v)), 0.0, 1.0) * 0.5 + 1;
 }

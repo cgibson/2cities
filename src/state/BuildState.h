@@ -15,6 +15,7 @@ namespace BuildStateGlobals
 	extern bool DELETE_MODE;
 	extern bool MOUSE_DOWN;
 	extern int LAST_BUTTON;
+	extern int INITIAL_RESOURCES;
 	extern int blocksize, rect_element, counter;
 	extern Face pp_face;
 	extern int pp_index;
@@ -30,14 +31,15 @@ namespace BuildStateGlobals
 class BuildState : public InGameState
 {
 	public:
-	   Tesselation currBuildingType;
+		Tesselation currBuildingType;
+		int currResources;
 
 	   BuildState();
        virtual ~BuildState();
 
-       void initialize();
-       void update(long milli_time);
-       void updateInput(long milli_time);
+		void initialize();
+		void update(long milli_time);
+		void updateInput(long milli_time);
 
 		static void keyDownHandler(int key, bool special);
 		static void mouseDownToggle(int button);
@@ -48,28 +50,24 @@ class BuildState : public InGameState
 
 		void mouseDownHandler();
 
-		void recursive_bump(int bottom, int delta_height);
-		void blockalize_face(int index, Face f, bool pull);
-		bool inPullPath(int reMax, int reMin, int iMax, int iMin);
-		bool check_pull(int index, Face f, bool move);
-		void recursive_push(Face f, int bottom);
-		void adjust_face(int index, Face f, Point mouse_pos, bool pull);
+		bool adjust_face(int index, Face f, Point mouse_pos);
 		void new_push_pull(Point mouse_pos);
 		Point adjustPointForBlocksize(Point click);
-		void placeY(int rect_index, int below_index);
 		void evaluateClick(Point click);
 		void get_pp_plane(Face f);
 		bool isValidClick(Point click, int button);
-		void checkRectBase(int index);
 		Face whichFaceIsAdjusted(Point lastMax, Point lastMin, int index);
 		bool isOutsideMap(Point p);
-		bool isInsideRect(CustomObject co, int excluded);
+		bool isInsideRect(CustomObject co, unsigned int excluded);
+		bool isOutOfResources(CustomObject modifiedObject, int index);
+		bool isPastBounds(CustomObject modifiedObject);
+		void updateResources();
 
-       virtual enum E_STATE stateType() { return BUILD_STATE; }
+		virtual enum E_STATE stateType() { return BUILD_STATE; }
 
-       static const int MUSIC_DELAY;
+		static const int MUSIC_DELAY;
 
-       int music_delay;
+		int music_delay;
 
 private:
 	bool cameraSetupComplete;

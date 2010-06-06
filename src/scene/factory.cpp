@@ -5,6 +5,10 @@
 #include "../system/io.h"
 #include "../network/NetworkManager.h"
 #include "../scene/BlackHole.h"
+#include "../scene/Shotgun.h"
+#include "../scene/AirStrike.h"
+#include "../scene/ClusterBomb.h"
+#include "../scene/ShapeShifter.h"
 #include "../scene/ComplexObject.h"
 ///////////////////////////////
 
@@ -74,39 +78,36 @@ void ObjectFactory::loadConfig(char* filename)
   setBlueprint(DUMMY_CONE, 1.0f, YELLOW_MAT, SMALL_CONE, Vector(1.0f, 1.0f, 1.0f));
   
   // recognizer
-  //TODO: change this to an appropriate blueprint
   setBlueprint(RECOGNIZER, 1000.0f, YELLOW_MAT, RECOGNIZER_SHAPE, Vector(8.0f, 8.0f, 8.0f));
   
   // smooth cannon
-  //TODO: change this to an appropriate blueprint
-  setBlueprint(SMOOTH, 1000.0f, YELLOW_MAT, SMOOTH_CANNON_SHAPE, Vector(5.0f, 5.0f, 5.0f));
+  setBlueprint(SMOOTH, 10.0f, YELLOW_MAT, SMOOTH_CANNON_SHAPE, Vector(5.0f, 5.0f, 5.0f));
   
   // twist cannon
-  //TODO: change this to an appropriate blueprint
-  setBlueprint(TWIST, 1000.0f, YELLOW_MAT, TWIST_CANNON_SHAPE, Vector(1.0f, 1.0f, 1.0f));
+  setBlueprint(TWIST, 10.0f, YELLOW_MAT, TWIST_CANNON_SHAPE, Vector(1.0f, 1.0f, 1.0f));
   
   // buster cannon
-  //TODO: change this to an appropriate blueprint
-  setBlueprint(BUSTER, 1000.0f, YELLOW_MAT, BUSTER_CANNON_SHAPE, Vector(1.0f, 1.0f, 1.0f));
+  setBlueprint(BUSTER, 10.0f, YELLOW_MAT, BUSTER_CANNON_SHAPE, Vector(1.0f, 1.0f, 1.0f));
   
   // fractal bomb
-  //TODO: change this to an appropriate blueprint
   setBlueprint(FRACTAL_BOMB, 10.0f, YELLOW_MAT, FRACTAL_BOMB_SHAPE, Vector(0.5f, 0.5f, 0.5f));
   
   // warped cube
-  //TODO: change this to an appropriate blueprint
-  setBlueprint(WARPED_CUBE, 1000.0f, YELLOW_MAT, WARPED_CUBE_SHAPE, Vector(1.0f, 1.0f, 1.0f));
+  setBlueprint(WARPED_CUBE, 10.0f, YELLOW_MAT, WARPED_CUBE_SHAPE, Vector(1.0f, 1.0f, 1.0f));
   
   // drill cone
-  //TODO: change this to an appropriate blueprint
-  setBlueprint(DRILL_CONE, 1000.0f, YELLOW_MAT, DRILL_CONE_SHAPE, Vector(1.0f, 1.0f, 1.0f));
+  setBlueprint(DRILL_CONE, 10.0f, YELLOW_MAT, DRILL_CONE_SHAPE, Vector(1.0f, 1.0f, 1.0f));
   
   setBlueprint(DUMMY_CYLINDER, 1.0f, YELLOW_MAT, SMALL_CYLINDER, Vector(1.0f, 1.0f, 1.0f));
-  setBlueprint(BLACK_HOLE, 100.0f, YELLOW_MAT, SMALL_SPHERE, Vector(0.5f, 0.0f, 0.f));
   setBlueprint(BLOCK_1_2_1, 2.0f, GREEN_MAT, BLOCK_1_2_1_SHAPE, Vector(1.0f, 2.0f, 1.0f));
   setBlueprint(BLOCK_2_4_2, 16.0f, YELLOW_MAT, BLOCK_2_4_2_SHAPE, Vector(1.0f, 4.0f, 1.0f));
   setBlueprint(BLOCK_5_1_5, 25.0f, YELLOW_MAT, BLOCK_5_1_5_SHAPE, Vector(5.0f, 1.0f, 5.0f));
   setBlueprint(BALLHEMOTH, 100.0f, GREEN_MAT, LARGE_SPHERE, Vector(2.2f, 2.2f, 2.2f));
+  setBlueprint(SHOTGUN, 50.0f, YELLOW_MAT, SMALL_SPHERE, Vector(0.3f, 0.3f, 0.3f));
+  setBlueprint(AIR_STRIKE, 10.0f, BLUE_MAT, SMALL_CUBE, Vector(1.0f, 1.0f, 1.0f));
+  setBlueprint(CLUSTER_BOMB, 100.0f, BLUE_MAT, SMALL_SPHERE, Vector(0.3f, 0.3f, 0.3f));
+  setBlueprint(SHAPE_SHIFTER, 1.0f, BLUE_MAT, SMALL_CUBE, Vector(1.0f, 1.0f, 1.0f));
+  setBlueprint(BLACK_HOLE, 1000.0f, YELLOW_MAT, SMALL_SPHERE, Vector(0.5f, 0.0f, 0.f));
 }
 
 
@@ -199,6 +200,18 @@ WorldObject* ObjectFactory::makeObject(ObjectType type) {
 	case BLACK_HOLE :
 		retObjPtr = new BlackHole();
 		break;
+  case SHOTGUN :
+    retObjPtr = new Shotgun();
+    break;
+  case AIR_STRIKE :
+    retObjPtr = new AirStrike();
+    break;
+  case SHAPE_SHIFTER :
+    retObjPtr = new ShapeShifter();
+    break;
+  case CLUSTER_BOMB :
+    retObjPtr = new ClusterBomb();
+    break;
 
 	// Explicitly listing the dummy objects although not needed due to default
 	case DUMMY_SPHERE :

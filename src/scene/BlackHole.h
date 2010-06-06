@@ -4,11 +4,18 @@
 
 class BlackHole : public WorldObject
 {
+//  private btGhostBody *
   public:
 	BlackHole();
 	BlackHole(int, int, ObjectType);
-    virtual void draw();
-    virtual void think(int elapsedTime);
+  
+  
+  
+//  btGhostBody * initBlackHole();
+  
+  
+  virtual void draw();
+  virtual void think(int elapsedTime);
 };
 
 #endif

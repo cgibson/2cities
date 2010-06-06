@@ -15,6 +15,7 @@
 #include "../math/quaternion.h"
 #include "../scene/factory.h"
 #include "../scene/WorldObject.h"
+#include "../scene/Tesselator.h"
 
 /**
  * Incomplete CustomObject class.
@@ -66,6 +67,8 @@ class CustomObject : public WorldObject
 
 	Point get_max(){return Point(get_max_x(), get_max_y(), get_max_z());}
 	Point get_min(){return Point(get_min_x(), get_min_y(), get_min_z());}
+	Vector get_max_vector(){return Vector(get_max_x(), get_max_y(), get_max_z());}
+	Vector get_min_vector(){return Vector(get_min_x(), get_min_y(), get_min_z());}
 	void set_max(Point newmax);
 	void set_min(Point newmin);
 

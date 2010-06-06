@@ -9,6 +9,7 @@
 #include "MenuState.h"
 #include "../system/global.h"
 #include "../system/enum.h"
+#include "../scene/Tesselator.h"
 
 using namespace enumeration;
 
@@ -28,9 +29,9 @@ StateManager::StateManager()
  */
 void StateManager::changeCurrentState(enum E_STATE newState)
 {
-//#ifdef CLIENT
+#ifdef CLIENT
     InGameState *oldState = global::stateManager->currentState;
-//#endif
+#endif
 
 	//global::networkManager->network->emptyWorld();
     switch(newState)
@@ -58,20 +59,30 @@ void StateManager::changeCurrentState(enum E_STATE newState)
 		currentState = new CarnageState();
 		currentState->initialize();
 #ifdef CLIENT
-/*
-    	if(oldState->objects.size() > 0) {
-    	// TODO iterator through all objects
-    		CustomObject * currObject = oldState->objects[0];
-    		// TODO push on big vector
-    		vector<WorldObject *> newVec = Tesselator::placeBuilding(
-    				currObject->get_min(),
-    				currObject->get_max(),
-    				currObject->getBuildingType());
+
+    	if(oldState->objects.size() > 0)
+    	{
+			//big fuggen vector
+			vector<WorldObject *> bfv;
+			vector<WorldObject *> temp;
+			CustomObject *currObject;
+			// TODO iterator through all objects
+			for(int i = 0; i < oldState->objects.size(); i++)
+			{
+				currObject = (CustomObject *)oldState->objects[i];
+				// TODO push on big vector
+				temp = Tesselator::placeBuilding(currObject->get_min_vector(),
+					currObject->get_max_vector(),
+					currObject->getBuildingType());
+    			for(int j = 0; j < temp.size(); j++)
+    			{
+					bfv.push_back(temp[j]);
+				}
+			}
 
     		// TODO call with BFV
-    		global::networkManager->network->loadlevel(newVec);
+    		global::networkManager->network->loadLevel(bfv);
     	}
-*/
 		gfx::hud.swapUI(Hud::CARNAGE);
 		global::soundManager->stopPlayingMusic();
         global::soundManager->playCarnageSong();

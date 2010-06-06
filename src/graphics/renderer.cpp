@@ -8,9 +8,11 @@
 
 using namespace enumeration;
 
+const int Renderer::min_test = 2;
+const int Renderer::max_test = 8;
+
 Renderer::Renderer()
 {
-
 	// no need to init camera here anymore, it knows how to initialize itself
 }
 
@@ -18,11 +20,73 @@ void Renderer::init()
 {
   init_lights();
   skybox.init();
+  
+  // use for adaptive bloom
+  test_count = 3;
+	fpsQueue = new LimitedQueue(50);
+	
+	    
+	gfx::simpleScreenFillShader.enable();
+	
+	int loc = glGetUniformLocation(gfx::simpleScreenFillShader.getProgram(), "test_count");
+	glUniform1i(loc, test_count);
+	
+	printf("TEST LOC: %d\n", loc);
+	
+	shader::reset();
+    
+}
+
+void Renderer::updateBloom(int elapsed)
+{
+	
+	fpsQueue->add(elapsed);
+	
+	float average = 0;
+	for(int i = 0; i < fpsQueue->size(); i++)
+	{
+		average += (float)fpsQueue->get(i);
+	}
+	
+	average /= fpsQueue->size();
+	
+	average = 1000.0 / average;
+	
+	if((average < 25.0) && (test_count > min_test) && (fpsQueue->size() > 1))
+	{
+		test_count--;
+		printf("frame average: %.1f, so lowered tests to %d\n", average, test_count);
+		
+		gfx::simpleScreenFillShader.enable();
+		
+		int loc = glGetUniformLocation(gfx::simpleScreenFillShader.getProgram(), "test_count");
+    glUniform1i(loc, test_count);
+    
+    printf("LOCATION: %d\n", loc);
+		
+		shader::reset();
+		
+	}else if((average > 60.0) && (test_count < max_test) && (fpsQueue->size() > 1))
+	{
+		test_count++;
+		printf("frame average: %.1f, so raised tests to %d\n", average, test_count);
+		
+		gfx::simpleScreenFillShader.enable();
+		
+		int loc = glGetUniformLocation(gfx::simpleScreenFillShader.getProgram(), "test_count");
+    glUniform1i(loc, test_count);
+    printf("LOCATION: %d\n", loc);
+		
+		shader::reset();
+	}
 }
 
 void Renderer::update(int elapsed)
 {
 	skybox.update(elapsed);
+	
+	if(global::stateManager->currentState->stateType() == CARNAGE_STATE)
+		updateBloom(elapsed);
 }
 
 void Renderer::do_lights(Shader sh)
@@ -61,7 +125,7 @@ void Renderer::draw_screen()
 void Renderer::draw()
 {
   if((gfx::renderState == FULL) &&
-      (global::stateManager->currentState->stateType() != BUILD_STATE))
+      (global::stateManager->currentState->stateType() == CARNAGE_STATE))
   {
 	// render the scene into the FBO (first pass)
 	glEnable(GL_DEPTH_TEST);

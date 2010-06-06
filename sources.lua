@@ -51,6 +51,7 @@ client_srcs = {
     "helper/FBOHelper.cpp",
     "helper/luahelper.cpp",
     "helper/texloader.cpp",
+    "helper/queue.cpp",
     "math/quaternion.cpp",
     "network/Network.cpp",
 	"network/NetworkSystem.cpp",
@@ -87,6 +88,7 @@ client_srcs = {
 
 server_srcs = {
     "helper/Vector.cpp",
+    "helper/queue.cpp",
     "math/quaternion.cpp",
     "network/Network.cpp",
     "network/NetworkSystem.cpp",

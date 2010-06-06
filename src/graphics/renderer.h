@@ -21,6 +21,7 @@
 #include "../state/CarnageState.h"
 #include "skybox.h"
 #include "shader.h"
+#include "../helper/queue.h"
 
 using namespace std;
 
@@ -41,7 +42,7 @@ private:
   void update_view();
   void init_lights();
   void do_lights(Shader sh);
-
+  void updateBloom(int elapsed);
   Vector eye, lookAt;
 
   Lighting light;
@@ -49,6 +50,12 @@ private:
   Skybox skybox;
   
   bool use_fbo;
+  
+  LimitedQueue *fpsQueue;
+  
+  static const int min_test;
+  static const int max_test;
+  int test_count;
 };
 
 #endif

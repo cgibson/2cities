@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include "InGameState.h"
 #include "../system/enum.h"
-#include "../graphics/orbitalcamera.h"
+#include "../graphics/cinematiccamera.h"
 
 using namespace std;
 

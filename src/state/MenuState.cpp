@@ -13,6 +13,9 @@
 #include "../system/global.h"
 #include "../system/enum.h"
 #include "../system/io.h"
+#ifdef CLIENT
+#include "../graphics/graphics.h"
+#endif
 
 using namespace global;
 using namespace enumeration;
@@ -21,7 +24,7 @@ const int MenuState::MUSIC_DELAY = 1000;
 
 MenuState::MenuState()
 {
-
+	// nothing yet
 }
 
 MenuState::~MenuState() {}
@@ -32,14 +35,10 @@ void MenuState::initialize() {
 
 	// create the camera
 	if (global::camera != NULL) delete global::camera;
-	global::camera = new OrbitalCamera();
-	global::camera->init(Vector(30.0, 30.0, 30.0), Vector(0.0, 5.0, 0.0));
-	OrbitalCamera *cam = static_cast<OrbitalCamera *>(global::camera);
-	cam->shiftCaptureMode(true);
+	global::camera = new CinematicCamera();
+	global::camera->init(Vector(30.0, 15.0, 30.0), Vector(0.0, 10.0, 0.0));
 
 	io::capture_mouse();
-
-	// TODO: register io event hooks
 #endif
 }
 

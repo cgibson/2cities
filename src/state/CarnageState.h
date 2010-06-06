@@ -12,7 +12,6 @@
 #include "../system/enum.h"
 #include "../helper/Vector.h"
 
-#include "../graphics/ShockwaveEffect.h"
 #include "../scene/ComplexObject.h"
 
 using namespace std;
@@ -47,7 +46,7 @@ class CarnageState: public InGameState
         //Opponents' camera position and view vectors.
         Vector oppPos;
         Vector oppView;
-        
+
         WorldObject *opponent;
         WorldObject *opponentCannon;
         WorldObject *playerCannon;

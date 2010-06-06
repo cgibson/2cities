@@ -12,6 +12,9 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include "../system/global.h"
+#include "../graphics/camera.h"
+#include "../helper/Vector.h"
 #include "../system/enum.h"
 #include "Effect.h"
 
@@ -20,12 +23,13 @@ public:
     ShockwaveEffect();
     ~ShockwaveEffect();
 
-    void init(int durationInMS, float maxSize);
+    void init(int durationInMS, float maxSize, bool billboard);
     void update(int ms);
     void draw();
 
 private:
 	float _maxSize;
+	bool _billboard;
 };
 
 #endif

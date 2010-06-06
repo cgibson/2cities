@@ -1,7 +1,9 @@
 #include "MenuUI.h"
+#include "graphics.h"
 
 const float MenuUI::SPRING = 10.0;
 const float MenuUI::FRICTION = 0.5;
+const int MenuUI::INTRO_DURATION_MS = 3000;
 
 MenuUI::MenuUI()
 	: GameUI()
@@ -17,6 +19,10 @@ MenuUI::MenuUI()
 	_velocity = 0.0;
 	_offset = 0.0;
 	_choiceMade = false;
+	_intro = true;
+	_introStart = -1;
+	_introPos = 0;
+	_firedShockwave = false;
 }
 
 MenuUI::~MenuUI()
@@ -86,9 +92,41 @@ void MenuUI::update(int ms)
 	_ipLabel->pos(global::width / 2 - 8, global::height / 2 - 250);
 	_ipInput->pos(global::width / 2 + 8, global::height / 2 - 250);
 
-	// TODO: replace this with "in" animation
-	_twoLabel->pos(global::width / 2 - 75, global::height / 2 + 100);
-	_citiesLabel->pos(global::width / 2 - 30, global::height / 2 + 100);
+	if (_intro)
+	{
+		// we're doing the intro animation
+
+		// have we set the start time yet?
+		if (_introStart < 0) _introStart = global::elapsed_ms();
+
+		// compute our t (0 -> 1) over the duration
+		float t = (float)(global::elapsed_ms() - _introStart) / INTRO_DURATION_MS;
+
+		if (t > 1.0) _intro = false; // all done!
+
+		// compute our new bounce location
+		_introPos = introBounce(t);
+
+		// position the logo elements
+		_twoLabel->pos(global::width / 2 - 75 - _introPos, global::height / 2 + 100);
+		_citiesLabel->pos(global::width / 2 - 30 + _introPos, global::height / 2 + 100);
+
+		// time to fire the shockwave?
+		if (!_firedShockwave && t >= 1 / 2.75)
+		{
+			ShockwaveEffect *fx = new ShockwaveEffect();
+			fx->init(4000, 45.0, true);
+			fx->position(Vector(0.0, 21.0, 0.0));
+			gfx::fxManager.addEffect(fx);
+			_firedShockwave = true;
+		}
+	}
+	else
+	{
+		// keep the logo centered
+		_twoLabel->pos(global::width / 2 - 75, global::height / 2 + 100);
+		_citiesLabel->pos(global::width / 2 - 30, global::height / 2 + 100);
+	}
 
 	// animate the start game choice (host/join game)
 
@@ -143,7 +181,6 @@ void MenuUI::keyDown(int key, bool special)
 		{
 			case 27: // escape
 				_choiceMade = false;
-				// TODO: hide ip text box
 				break;
 
 			case '\r':
@@ -224,7 +261,6 @@ void MenuUI::mouseDown(int button)
 	else if (button == MOUSE_RIGHT)
 	{
 		_choiceMade = false;
-		// TODO: hide ip address text box
 	}
 }
 
@@ -297,4 +333,27 @@ void MenuUI::removeIPchar()
 	ip[len - 1] = '\0';
 	_ipInput->text(ip);
 	free(ip);
+}
+
+float MenuUI::introBounce(float t)
+{
+	float d = global::width / 2 - 332 - 75;
+
+	if (t < 1 / 2.75)
+	{
+		return -d * (7.5625 * t * t) + d;
+	}
+	else if (t < 2 / 2.75)
+	{
+		t = t - 1.5 / 2.75;
+        return -d * (7.5625 * t * t + 0.75) + d;
+	}
+	else if (t < 2.5 / 2.75)
+	{
+		t = t - 2.25 / 2.75;
+		return -d * (7.5625 * t * t + 0.9375) + d;
+	}
+
+	t = t - 2.625 / 2.75;
+	return -d * (7.5625 * t * t + 0.984375) + d;
 }

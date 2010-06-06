@@ -14,6 +14,7 @@
 
 #include "../system/global.h"
 #include "../system/io.h"
+#include "../graphics/ShockwaveEffect.h"
 #include "GameUI.h"
 #include "UILabel.h"
 
@@ -44,6 +45,10 @@ private:
 	bool _choiceMade;
 	float _ipAlpha;
 	float _ipAlphaVel;
+	bool _intro;
+	int _introStart;
+	float _introPos;
+	bool _firedShockwave;
 
 	void prevChoice();
 	void nextChoice();
@@ -54,8 +59,11 @@ private:
 	void addIPchar(char c);
 	void removeIPchar();
 
+	float introBounce(float t);
+
 	static const float SPRING;
 	static const float FRICTION;
+	static const int INTRO_DURATION_MS;
 };
 
 #endif

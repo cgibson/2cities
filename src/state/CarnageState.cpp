@@ -122,13 +122,6 @@ void CarnageState::updateInput(long milli_time) {
 	  io::keys['c'] = false;
 	  networkManager->network->serverConnect("127.0.0.1", 5060);
    }
-   if (io::keys[';']) {
-	   io::keys[';'] = false;
-	   ShockwaveEffect *fx = new ShockwaveEffect();
-	   fx->init(4000, 50.0);
-	   fx->position(Vector(0.0, 5.0, 0.0));
-	   gfx::fxManager.addEffect(fx);
-   }
 
 	//stop music
 	if(io::keys['['])

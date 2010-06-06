@@ -44,7 +44,7 @@ void Renderer::draw_screen()
 {
   gfx::simpleScreenFillShader.update();
   gfx::simpleScreenFillShader.enable();
-  
+
   glBegin(GL_QUADS);
 	glColor4f(1,1,1,1);
     glTexCoord2f(0,0);
@@ -60,7 +60,7 @@ void Renderer::draw_screen()
 
 void Renderer::draw()
 {
-  if((gfx::renderState == FULL) && 
+  if((gfx::renderState == FULL) &&
       (global::stateManager->currentState->stateType() != BUILD_STATE))
   {
 	// render the scene into the FBO (first pass)
@@ -76,10 +76,10 @@ void Renderer::draw()
 
     // draw second pass
     draw_screen();
-    
+
     shader::reset();
     //draw_diffusePass();
-    
+
 
   }else{
     draw_diffusePass();
@@ -104,7 +104,8 @@ void Renderer::draw_diffusePass()
 
   glPushMatrix();
 
-	if (global::stateManager->currentState->stateType() == CARNAGE_STATE)
+	if (global::stateManager->currentState->stateType() == CARNAGE_STATE ||
+		global::stateManager->currentState->stateType() == MENU_STATE)
 	{
 		skybox.draw(light.position[0], light.position[1], light.position[2]);
 	}

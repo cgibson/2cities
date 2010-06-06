@@ -39,6 +39,7 @@ client_srcs = {
     "graphics/camera.cpp",
     "graphics/freelookcamera.cpp",
     "graphics/orbitalcamera.cpp",
+    "graphics/cinematiccamera.cpp",
     "graphics/skybox.cpp",
     "graphics/skyscraper.cpp",
     "graphics/EffectManager.cpp",

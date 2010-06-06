@@ -70,8 +70,6 @@ void UIWheelChooser::update(int ms)
 	for (int i = 0; i < _numItems; i++)
 	{
 		// calculate the distance from the selected item
-		//float idealDist = (i * _bucketWidth) - idealOffset;
-		//if (idealDist < 0) idealDist *= -1;
 		float actualDist = (i * _bucketWidth) - _offset;
 		if (actualDist < 0) actualDist *= -1;
 
@@ -87,7 +85,6 @@ void UIWheelChooser::update(int ms)
 		{
 			// if less than a bucket width away, but at least 3 pixels away, size is proportional
 			float ratio = (_bucketWidth - actualDist) / (float)(_bucketWidth);
-			//printf("ratio = %f\n", ratio);
 			_icons[i]->size(halfWidth * ratio + halfWidth, halfHeight * ratio + halfHeight);
 		}
 		else

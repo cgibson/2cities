@@ -21,15 +21,25 @@ const int MenuState::MUSIC_DELAY = 1000;
 
 MenuState::MenuState()
 {
-	
+
 }
 
 MenuState::~MenuState() {}
 
 void MenuState::initialize() {
 #ifdef CLIENT
-    io::capture_mouse();
     realStateType = enumeration::MENU_STATE;
+
+	// create the camera
+	if (global::camera != NULL) delete global::camera;
+	global::camera = new OrbitalCamera();
+	global::camera->init(Vector(30.0, 30.0, 30.0), Vector(0.0, 5.0, 0.0));
+	OrbitalCamera *cam = static_cast<OrbitalCamera *>(global::camera);
+	cam->shiftCaptureMode(true);
+
+	io::capture_mouse();
+
+	// TODO: register io event hooks
 #endif
 }
 
@@ -51,7 +61,7 @@ void MenuState::updateInput(long milli_time) {
 		printf("Stopping the menu state music.\n");
 		global::soundManager->stopPlayingMusic();
 	}
-	
+
 	//play music for menu state
 	if(io::keys[']'] && music_delay <= 0)
 	{
@@ -59,15 +69,9 @@ void MenuState::updateInput(long milli_time) {
 		global::soundManager->playMenuSong();
 		music_delay = MUSIC_DELAY;
 	}
-   
+
    // TODO END DEMO CODE
 
-   // General Keyboard Layout
-   if(io::keys[27]) {
-	  networkManager->network->serverDisconnect();
-      exit(0);
-   }
-   
 #endif
 }
 

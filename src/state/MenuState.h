@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include "InGameState.h"
 #include "../system/enum.h"
+#include "../graphics/orbitalcamera.h"
 
 using namespace std;
 
@@ -20,7 +21,7 @@ class MenuState: public InGameState
         void updateInput(long milli_time);
 
         void initialize();
-        
+
         virtual enum E_STATE stateType() {return MENU_STATE;}
 
     protected:

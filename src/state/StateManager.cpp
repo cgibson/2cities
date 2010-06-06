@@ -23,7 +23,7 @@ StateManager::StateManager()
 /**
  * Changes the current in-game state and reregisters the GLUT
  * keyboard and mouse function registration to the newer state.
- * 
+ *
  * @param newState the newer state
  */
 void StateManager::changeCurrentState(enum E_STATE newState)
@@ -40,7 +40,6 @@ void StateManager::changeCurrentState(enum E_STATE newState)
 		currentState->initialize();
 #ifdef CLIENT
         gfx::hud.swapUI(Hud::MENU);
-        //TODO: Add Menu State creation, initialization here
         global::soundManager->stopPlayingMusic();
         global::soundManager->playMenuSong();
 #endif
@@ -106,7 +105,7 @@ void StateManager::switchToCarnage() {
  * Register console command for changing states.
  */
 void StateManager::initialize()
-{	
+{
 #ifdef CLIENT
 	//FULL COMMANDS
 	gfx::hud.console.registerCmd("changestate", StateManager::stateConsoleCmds);

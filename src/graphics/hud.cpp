@@ -8,6 +8,7 @@ Hud::Hud()
     _carnageUI = NULL;
     _buildUI = NULL;
     _waitingUI = NULL;
+    _menuUI = NULL;
 }
 
 Hud::~Hud()
@@ -15,6 +16,7 @@ Hud::~Hud()
 	if (_carnageUI != NULL) delete _carnageUI;
 	if (_buildUI != NULL) delete _buildUI;
 	if (_waitingUI != NULL) delete _waitingUI;
+	if (_menuUI != NULL) delete _menuUI;
 }
 
 void Hud::init()
@@ -28,6 +30,8 @@ void Hud::init()
 	_buildUI->init();
 	_waitingUI = new WaitingUI();
 	_waitingUI->init();
+	_menuUI = new MenuUI();
+	_menuUI->init();
 
 	// register game ui event handler wrappers
 	io::register_key_down(GameUI::key_down_handler);
@@ -100,7 +104,7 @@ void Hud::swapUI(UiType which)
 			break;
 
 		case MENU:
-
+			_currentUI = _menuUI;
 			break;
 
 		case BUILD:

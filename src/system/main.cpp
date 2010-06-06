@@ -66,7 +66,7 @@ void initSound()
 	//Here's where sound is initialized. Note that it adds extra cleanup
 	//when exiting the game, causing a significantly slower exit time.
 	global::soundManager->initialize();
-	
+
 	//Here's where the sound (could) initially start playing.
 	//global::soundManager->playCarnageSong();
 }
@@ -77,7 +77,7 @@ void initialize()
   global::width = 1024;
   global::height = 768;
   global::app_title = (char*)malloc(sizeof(char) * 80);
-  sprintf(global::app_title, "2Cities : The Game");
+  sprintf(global::app_title, "Two Cities");
 
   // initialize SDL (timer and sound in the future)
   if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0)
@@ -98,7 +98,7 @@ void initialize()
   initState();
 
   global::networkManager->initialize();
-  
+
   //Here's where the modelManager would read in all models.
   //Commented out because of deconstructor taking extra time to
   //free everything that was malloc'd upon game exit.
@@ -114,7 +114,7 @@ void initialize()
  */
 int main(int argc, char** argv)
 {
-	beginState = BUILD_STATE;
+	beginState = MENU_STATE;
 	global::fullscreen = false;
 
 	for (int i = 0; i < argc; i++)
@@ -137,8 +137,8 @@ int main(int argc, char** argv)
 		{
 			gfx::renderState = FULL;
 		}
-		
-		
+
+
 	}
 
   glutInit(&argc, argv);

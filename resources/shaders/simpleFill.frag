@@ -25,8 +25,8 @@ void main()
     int min = -test_count;
     int max = test_count;
     
-    float change = 0.004 * (3.0 / test_count);
-    float add = 3.0 / test_count;
+    float change = 0.004 * (3.0 / float(test_count));
+    float add = 3.0 / float(test_count);
     
     for(int i = min; i <= max; i++)
     {

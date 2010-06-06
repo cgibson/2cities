@@ -8,7 +8,7 @@
 
 using namespace enumeration;
 
-const int Renderer::min_test = 2;
+const int Renderer::min_test = 1;
 const int Renderer::max_test = 8;
 
 Renderer::Renderer()

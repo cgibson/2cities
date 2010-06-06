@@ -9,11 +9,17 @@
  *******************************************/
 NetworkServer::NetworkServer() {
 	PRINTINFO("Network Initializing...");
-	ting::SocketLib socketsLib;
-	serverSocket.Open(net::SERVER_PORT_DEFAULT);
 
-	_waitSet = new ting::WaitSet(10);
-	_waitSet->Add(&serverSocket, ting::Waitable::READ);
+	try {
+		ting::SocketLib socketsLib;
+		serverSocket.Open(net::SERVER_PORT_DEFAULT);
+
+		_waitSet = new ting::WaitSet(10);
+		_waitSet->Add(&serverSocket, ting::Waitable::READ);
+	} catch(ting::Socket::Exc &e) {
+		std::cout << "Network error: " << e.What() << std::endl;
+		exit(0); // TODO do something more
+	}
 
 #ifdef CLIENT
 	_dedicatedServer = false;
@@ -35,6 +41,7 @@ NetworkServer::NetworkServer() {
 #endif
 	timeToStateChange = global::elapsed_ms() - 1; // Will be a long time until it circles around;
 	timeToStateChangeSet = false;
+	timeToStateChangePause = false;
 	PRINTINFO("Network Initialized!\n");
 
 	PRINTINFO("Network Initializing PhysicsEngine...");
@@ -116,7 +123,7 @@ void NetworkServer::update(long elapsed) {
 				unsigned int removeID = PhysEngObjs[i]->getID();
 				// Local Removal
 				physicsEngine.removeWorldObject(removeID);
-				removeObjectVector(&_serverObjs,removeID);
+				WorldObjectState::removeVector(&_serverObjs,removeID);
 				removeObjectLocal(removeID);
 
 				// Send to Clients
@@ -127,14 +134,23 @@ void NetworkServer::update(long elapsed) {
 				}
 			}
 			else {
-				updateObjectVector(&_serverObjs,new WorldObject(*PhysEngObjs[i]));
+				// Needed to add new items
+				WorldObjectState::updateVector(&_serverObjs,PhysEngObjs[i]);
 			}
 		}
 	}
 	else {
 		physicsDelay -= elapsed;
+/*
+		// WO* instead of _SO is already tied to PhysObj to just refresh sorting items
+		for(unsigned int i=0; i<_serverObjs.size(); ++i) {
+			_serverObjs[i].update();
+		}
+*/
 	}
 
+
+	WorldObjectState::sortVector(&_serverObjs);
 	networkOutgoing(elapsed);
 #ifdef SERVER
 			}
@@ -298,15 +314,18 @@ void NetworkServer::networkOutgoing(long &elapsed) {
 		const int sendSize = min(objsSize, (int)(SERVER_SEND_MAX_PACKETS_PER_MS * elapsed * OBJECT_BATCHSEND_SIZE));
 		if (sendSize > 0 && ((clients.size() > 1 || (_dedicatedServer == true && clients.size() > 0)))) {
 			unsigned int currObj = _sendObjNext;
+			int currTime = global::elapsed_ms();
 			while(currObj < _sendObjNext + sendSize) {
 				// Update Locally
 				for(int o=0; o<10; o++)
-					updateObjectLocal(new WorldObject(*_serverObjs[(currObj+o)%objsSize]));
+					updateObjectLocal(new WorldObject(*_serverObjs[(currObj+o)%objsSize].objPtr));
 
 				// Build Batch Packet
 				WorldObject *objPtrGroup[OBJECT_BATCHSEND_SIZE];
-				for(unsigned int o=0; o<OBJECT_BATCHSEND_SIZE; o++)
-					objPtrGroup[o] = _serverObjs[(currObj+o)%objsSize];
+				for(unsigned int o=0; o<OBJECT_BATCHSEND_SIZE; o++) {
+					objPtrGroup[o] = _serverObjs[(currObj+o)%objsSize].objPtr;
+					_serverObjs[(currObj+o)%objsSize].sent(currTime);
+				}
 				NetworkPacket pkt;
 				buildBatchPacket(&pkt, objPtrGroup, OBJECT_BATCHSEND_SIZE);
 
@@ -317,11 +336,13 @@ void NetworkServer::networkOutgoing(long &elapsed) {
 				}
 				currObj += OBJECT_BATCHSEND_SIZE;
 			}
-
+/*
 			if(objsSize == 0)
 				_sendObjNext = 0;
 			else
 				_sendObjNext = (_sendObjNext + sendSize)%objsSize;
+*/
+			_sendObjNext = 0;
 		}
 	} catch(ting::Socket::Exc &e){
 		std::cout << "Network error: " << e.What() << std::endl;
@@ -355,7 +376,7 @@ void NetworkServer::checkClientTimeout() {
 	int minLastPktRecv = global::elapsed_ms() - CLIENT_TIMEOUT;
 	unsigned int i = 0;
 	while(i < clients.size()) {
-		if(clients[i]->lastPktRecv < minLastPktRecv) {
+		if(!clients[i]->isLocal && clients[i]->lastPktRecv < minLastPktRecv) {
 			printf("Client Timed Out! ");
 			playerDisconnect(i);
 		}
@@ -386,7 +407,6 @@ void NetworkServer::sendStatusUpdates() {
 }
 
 void NetworkServer::checkStateChange() {
-	State currState = global::stateManager->currentState->stateType();
 	int readyCount = 0;
 	int playerCount = 0;
 
@@ -398,31 +418,45 @@ void NetworkServer::checkStateChange() {
 		}
 	}
 
-	timeToStateChangeSet = (playerCount > 0);
+	State currState = global::stateManager->currentState->stateType();
 
-	if(!timeToStateChangeSet) {
+	// If timer is not set, then set it.
+	if(!timeToStateChangeSet || (playerCount == 0)) {
 		switch (currState) {
 		case MENU_STATE :
+			timeToStateChange = global::elapsed_ms() + 9999 * 1000;
 			timeToStateChangeSet = false;
+			timeToStateChangePause = true;
 			break;
 		case BUILD_STATE :
-			timeToStateChange = global::elapsed_ms() + net::TIME_IN_BUILD_STATE * 1000;
+			//timeToStateChange = global::elapsed_ms() + net::TIME_IN_BUILD_STATE * 1000;
+			//timeToStateChangeSet = true;
+
+			timeToStateChange = global::elapsed_ms() + 9999 * 1000;
+			timeToStateChangeSet = false;
+			timeToStateChangePause = true;
 			break;
 		case CARNAGE_STATE :
 			timeToStateChange = global::elapsed_ms() + net::TIME_IN_CARNAGE_STATE * 1000;
+			timeToStateChangeSet = true;
 			break;
 		case RESULTS_STATE :
 			timeToStateChange = global::elapsed_ms() + net::TIME_IN_RESULTS_STATE * 1000;
+			timeToStateChangeSet = true;
 			break;
 		default :
+			timeToStateChange = global::elapsed_ms() + 9999 * 1000;
 			timeToStateChangeSet = false;
+			timeToStateChangePause = true;
 		}
 	}
 
 	bool stateChange = false;
 	stateChange |= (playerCount == readyCount && playerCount > 0);
-	stateChange |= (timeToStateChangeSet && (timeToStateChange - global::elapsed_ms()) <= 0);
-	//stateChange |= (currState == CARNAGE_STATE && checkWinCondition());
+	stateChange |= (timeToStateChangeSet && (timeToStateChange - global::elapsed_ms()) <= 0 && !timeToStateChangePause);
+	stateChange |= (currState == CARNAGE_STATE && checkWinCondition());
+	stateChange |= (currState == RESULTS_STATE && playerCount == 0);
+	stateChange |= (currState == MENU_STATE);  // Should only happen in CLIENT build
 
 	if(stateChange) {
 		// Clear Ready Flags
@@ -441,12 +475,18 @@ void NetworkServer::checkStateChange() {
 			global::stateManager->changeCurrentState(RESULTS_STATE);
 			break;
 		case RESULTS_STATE :
-			global::stateManager->changeCurrentState(MENU_STATE);
+			if(playerCount != readyCount && playerCount > 0) {
+				// TODO send disconnect command to clients (kick 'em out)
+			}
+
+			emptyWorld();
+			global::stateManager->changeCurrentState(BUILD_STATE);
 			break;
 		default :
 			printf("What State am I In?");
 		}
 		timeToStateChangeSet = false;
+		timeToStateChangePause = false;
 	}
 }
 
@@ -480,9 +520,11 @@ void NetworkServer::addObject(WorldObject *objPtr) {
 
 void NetworkServer::addObjectPhys(WorldObject *objPtr) {
 	objPtr->setTimeStamp(global::elapsed_ms());
+	//objPtr->print();
 	
-	// TODO Add ObjectState to Tracker
-	// NetworkObjectState newObjState(objPtr, 4);
+	// Add ObjectState to Tracker
+	WorldObjectState newObjState(objPtr, 10);
+	_serverObjs.push_back(newObjState);
 	
 	physicsEngine.addWorldObject(objPtr);
 }

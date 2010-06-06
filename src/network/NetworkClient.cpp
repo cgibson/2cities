@@ -139,7 +139,11 @@ void NetworkClient::closeSockets() {
 }
 
 bool NetworkClient::serverConnect(const char * ip, unsigned int port) {
-	serverIP = ting::IPAddress(ip, port);
+	try {
+		serverIP = ting::IPAddress(ip, port);
+	} catch(ting::Socket::Exc &e) {
+		return false;
+	}
 
 //	if(isConnected)
 //		serverDisconnect();

@@ -30,7 +30,7 @@ protected:
 	ting::UDPSocket serverSocket;
 	ting::WaitSet *_waitSet;
 
-	vector<WorldObject *> _serverObjs;
+	vector<WorldObjectState> _serverObjs;
 
 	bool _dedicatedServer;
 	unsigned int _sendObjNext;

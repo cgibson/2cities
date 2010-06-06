@@ -38,6 +38,7 @@ protected:
 	unsigned int nextNewObjID;
 	int  timeToStateChange;
     bool timeToStateChangeSet;
+    bool timeToStateChangePause;
 
 	// Variables for rx/tx rates (counted over ~250ms period)
 	int  _pktCountRecv;

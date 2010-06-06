@@ -3,6 +3,7 @@
 
 #include <math.h>
 #include <vector>
+#include <algorithm>
 
 class WorldObjectState {
 public:
@@ -22,6 +23,7 @@ public:
 
 	// Priority (to be reduced each send down to zero)
 	int    priority;
+	int    lastSent;
 
 	WorldObjectState(WorldObject * newObj, int initPriority = 2) {
 		objPtr       = newObj;
@@ -35,19 +37,16 @@ public:
 		lastPosDelta = 0;
 
 		lastUpdate   = newObj->getTimeStamp();
+		lastSent     = newObj->getTimeStamp();
 		priority     = initPriority;
 	}
 
 	void update(WorldObject * newObj) {
 		// Don't need to import data as its already itself
 		objPtr->import(*newObj);	// TODO breaks polymorphism
-
-		velMag       = newObj->getForce().x();
-		initPosDelta = (newObj->getPosition() - initPos).mag();
-		lastPosDelta = (newObj->getPosition() - lastPos).mag();
-		lastPos      = newObj->getPosition();
-		lastUpdate   = newObj->getTimeStamp();
-		priority     = std::max(0, priority - 1);
+		lastUpdate   = objPtr->getTimeStamp();
+			
+		update();
 	}
 
 	void update() {
@@ -56,8 +55,6 @@ public:
 			initPosDelta = (objPtr->getPosition() - initPos).mag();
 			lastPosDelta = (objPtr->getPosition() - lastPos).mag();
 			lastPos      = objPtr->getPosition();
-			lastUpdate   = objPtr->getTimeStamp();
-			priority     = std::max(0, priority - 1);
 		}
 	}
 
@@ -66,20 +63,27 @@ public:
 		priority = -1;
 	}
 
-	static void updateVector(std::vector<WorldObjectState> *objVec, WorldObjectState *objPtr) {
+	void sent(int currTime) {
+		priority = std::max(0, priority - 1);
+		lastSent = currTime;
+	}
+
+	static void updateVector(std::vector<WorldObjectState> *objVec, WorldObject *objPtr) {
 		unsigned int i = 0;
 
 		// *** Linear Search Code ***
-		while (i < objVec->size() && (*objVec)[i].objID != objPtr->objID) { i++; }
+		while (i < objVec->size() && (*objVec)[i].objID != objPtr->getID()) { i++; }
 
 		// *** Add, Insert, Update Code ***
 		// ObjID Not Found (and at end)... Push_back
 		if (i == objVec->size()) {
-			objVec->push_back(*objPtr);
+			objVec->push_back(WorldObjectState(objPtr));
+			//printf("Added Object\n");
 		}
 		// ObjID Found, Replace Data
 		else {
 			(*objVec)[i].update();
+			//printf("Updated Object\n");
 		}
 	}
 
@@ -91,8 +95,17 @@ public:
 
 		// ObjID found, erase entry
 		if (i < objVec->size()) {
-			(*objVec)[i].kill();
+			//(*objVec)[i].kill(); // TODO
+			objVec->erase(objVec->begin()+i);
+			//printf("Killed Object\n");
 		}
+	}
+
+	static void sortVector(std::vector<WorldObjectState> *objVec) {
+		//printf("Sorting Server Vector\n");
+		std::sort((*objVec).begin(),(*objVec).end(), WorldObjectState::NetworkPrioritySort);
+//		if((*objVec).size() > 0 && (*objVec)[0].priority > 0)
+//			printf("Obj 0 priority\n", (*objVec)[0].priority);
 	}
 
 	static bool NetworkPrioritySort(WorldObjectState objSt1, WorldObjectState objSt2) {
@@ -105,7 +118,7 @@ public:
 		if(abs(objSt1.lastPosDelta - objSt2.lastPosDelta) > 0.5f) //(5*net::timeElapsed/1000.0f))
 			return (objSt1.lastPosDelta > objSt2.lastPosDelta);
 
-		return (objSt1.lastUpdate < objSt2.lastUpdate);
+		return (objSt1.lastSent < objSt2.lastSent);
 	}
 };
 

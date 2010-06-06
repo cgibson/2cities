@@ -13,6 +13,7 @@
 #include "../helper/Vector.h"
 
 #include "../graphics/ShockwaveEffect.h"
+#include "../scene/ComplexObject.h"
 
 using namespace std;
 
@@ -43,13 +44,17 @@ class CarnageState: public InGameState
 		static const int RECHARGE_TIME;
 		static const int MUSIC_DELAY;
 
-    protected:
-        int ammo_recharge;
-        ObjectType ammo_type;
-
         //Opponents' camera position and view vectors.
         Vector oppPos;
         Vector oppView;
+        
+        WorldObject *opponent;
+        WorldObject *opponentCannon;
+        WorldObject *playerCannon;
+
+    protected:
+        int ammo_recharge;
+        ObjectType ammo_type;
 
 	private:
 		bool cameraSetupComplete;

@@ -37,11 +37,25 @@ void CarnageState::initialize() {
     ammo_recharge = 0;
     music_delay = 0;
     ammo_type = FRACTAL_BOMB;
+    
+    oppPos = Vector(0,0,0);
+    oppView = Vector(0,0,0);
 
    // initialize our camera (orbital)
    if (global::camera != NULL) delete global::camera;
    global::camera = new OrbitalCamera();
    global::camera->init(Vector(30.0, 30.0, 30.0), Vector(0.0, 5.0, 0.0));
+   
+   // initialize opponent vehicle
+   opponent = global::factory->makeObject(RECOGNIZER);
+	 opponent->setPosition(Vector(0, 0, 0));
+	 opponent->setVelocity(Vector(0, 0, 0));
+	 
+   //opponentCannon = new ComplexObject(SMOOTH_CANNON);
+   //playerCannon = new ComplexObject(SMOOTH_CANNON);
+   playerCannon = global::factory->makeObject(SMOOTH);
+	 playerCannon->setPosition(Vector(0, 0, 0));
+	 playerCannon->setVelocity(Vector(0, 0, 0));
 #endif
 
    realStateType = enumeration::CARNAGE_STATE;
@@ -72,6 +86,13 @@ void CarnageState::update(long milli_time) {
 		}
 		cameraSetupComplete = true;
 	}
+	
+	// update opponent and its cannon
+	opponent->setPosition(oppPos);
+	Vector dir = oppView;
+	dir.norm();
+	Quaternion quat = Quaternion::GenerateRotationFromDirectionVector(dir);
+	opponent->setOrientation(quat);
 #endif
 
    updateInput(milli_time);

@@ -75,11 +75,11 @@ void ObjectFactory::loadConfig(char* filename)
   
   // recognizer
   //TODO: change this to an appropriate blueprint
-  setBlueprint(RECOGNIZER, 1000.0f, YELLOW_MAT, RECOGNIZER_SHAPE, Vector(1.0f, 1.0f, 1.0f));
+  setBlueprint(RECOGNIZER, 1000.0f, YELLOW_MAT, RECOGNIZER_SHAPE, Vector(8.0f, 8.0f, 8.0f));
   
   // smooth cannon
   //TODO: change this to an appropriate blueprint
-  setBlueprint(SMOOTH, 1000.0f, YELLOW_MAT, SMOOTH_CANNON_SHAPE, Vector(1.0f, 1.0f, 1.0f));
+  setBlueprint(SMOOTH, 1000.0f, YELLOW_MAT, SMOOTH_CANNON_SHAPE, Vector(5.0f, 5.0f, 5.0f));
   
   // twist cannon
   //TODO: change this to an appropriate blueprint

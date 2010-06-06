@@ -16,6 +16,8 @@ public:
   float getI();
   float getJ();
   float getK();
+  
+  static Quaternion GenerateRotationFromDirectionVector(Vector vDirection);
 
   char *str();
 private:

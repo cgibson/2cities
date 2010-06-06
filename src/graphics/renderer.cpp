@@ -246,25 +246,62 @@ void Renderer::draw_diffusePass()
       (*objIt)->draw();
 	  }
 	}
-
   shader::reset();
 
   glUseProgram(0);
 
-  if(curstate->stateType() == BUILD_STATE)
+	CarnageState *cs;
+  
+  switch(curstate->stateType())
   {
+    case BUILD_STATE:
+			//BuildState *bs = (BuildState*)curstate;
+			if(BuildStateGlobals::renderPlane)
+			{
+				gfx::modelHandler.drawPlane(
+														BuildStateGlobals::planeNormal,
+														BuildStateGlobals::planeLocation,
+														BuildStateGlobals::planeSize);
+			}
+    break;
+    case CARNAGE_STATE:
+      cs = (CarnageState*)curstate;
+      gfx::simpleShader.enable();
+			gfx::materials[YELLOW_MAT].applyMaterial(gfx::simpleShader, "");
+			
+			cs->opponent->draw();
+			
+			// render current cannon
+			glPushMatrix();
+				glClear(GL_DEPTH_BUFFER_BIT);
+				glMatrixMode(GL_PROJECTION);
+				glLoadIdentity();
+				glMatrixMode(GL_PROJECTION);
+				glLoadIdentity();
+				gluPerspective(45.0, 
+											(float)global::width / global::height, 
+											1.0, 500.0);
+				gluLookAt(0, 0, 2,
+									0, 0, 5,
+									0, 1, 0);
+				glMatrixMode(GL_MODELVIEW);
 
-    //BuildState *bs = (BuildState*)curstate;
-    if(BuildStateGlobals::renderPlane)
-    {
-      gfx::modelHandler.drawPlane(
-                          BuildStateGlobals::planeNormal,
-                          BuildStateGlobals::planeLocation,
-                          BuildStateGlobals::planeSize);
-    }
+				glMatrixMode(GL_MODELVIEW);
+				glLoadIdentity();
+
+				glTranslatef(0,-1,0);
+				cs->playerCannon->draw();
+			glPopMatrix();
+			
+    break;
+    default: break;
   }
+  
+  shader::reset();
 
   glPopMatrix();
+  
+
 
 }
 

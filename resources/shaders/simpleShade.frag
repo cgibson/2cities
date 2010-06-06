@@ -35,7 +35,7 @@ void main (void)
     
     vec3 reflection = normalize( -reflect(view_vec,normal) );
 
-    vec4 finalColor = vec4(0.0, 0.0, 0.0, 0.0);
+    vec4 finalColor = vec4(0.0, 0.0, 0.0, 1.0);
 
     float NdotL = clamp(dot(normal,light_vec), 0.0, 1.0);
 

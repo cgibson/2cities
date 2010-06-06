@@ -217,6 +217,8 @@ void BuildUI::ready()
 {
 	gfx::hud.swapUI(Hud::WAITING);
 	global::networkManager->network->setPlayerReady(1);
+	io::unregister_mouse_down(BuildState::mouseDownToggle);
+	io::unregister_mouse_up(BuildState::mouseUpToggle);
 }
 
 void BuildUI::keyDown(int key, bool special)

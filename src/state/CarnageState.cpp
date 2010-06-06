@@ -23,7 +23,7 @@ const int CarnageState::RECHARGE_TIME = 1000; // in milliseconds
 const int CarnageState::MUSIC_DELAY = 1000;
 
 CarnageState::CarnageState() {
-
+	cameraSetupComplete = false;
 }
 
 CarnageState::~CarnageState() {}
@@ -53,6 +53,27 @@ void CarnageState::update(long milli_time) {
 	ammo_recharge = (ammo_recharge < 0) ? 0 : ammo_recharge; // clamp to 0
 	music_delay -= milli_time;
 	music_delay = (music_delay < 0) ? 0 : music_delay; // clamp to 0
+
+	// keep the camera centered on the proper half of the playing field
+#ifdef CLIENT
+	int playerID = global::networkManager->network->getMyPlayerID();
+	if (!cameraSetupComplete && (playerID == 1 || playerID == 2))
+	{
+		OrbitalCamera *cam = static_cast<OrbitalCamera *>(global::camera);
+		if (playerID == 1) // red
+		{
+			// center on BLUE'S base! (positive x)
+			cam->center(Vector(global::map_width / 4.0, 5.0, 0.0));
+		}
+		else // blue
+		{
+			// center on RED'S base! (negative x)
+			cam->center(Vector(-global::map_width / 4.0, 5.0, 0.0));
+		}
+		cameraSetupComplete = true;
+	}
+#endif
+
    updateInput(milli_time);
 #endif
 }
@@ -94,7 +115,7 @@ void CarnageState::updateInput(long milli_time) {
 		printf("Stopping the carnage state music.\n");
 		global::soundManager->stopPlayingMusic();
 	}
-	
+
 	//play music for carnage state
 	if(io::keys[']'] && music_delay <= 0)
 	{
@@ -102,14 +123,14 @@ void CarnageState::updateInput(long milli_time) {
 		global::soundManager->playCarnageSong();
 		music_delay = MUSIC_DELAY;
 	}
-	
+
 	if(io::keys['n'] && music_delay <= 0)
 	{
 		printf("Playing the next carnage state song\n");
 		global::soundManager->playNextCarnageSong();
 		music_delay = MUSIC_DELAY;
 	}
-   
+
    // TODO END DEMO CODE
 
    // General Keyboard Layout

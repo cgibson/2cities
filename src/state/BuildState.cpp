@@ -30,7 +30,7 @@ namespace BuildStateGlobals
 	int blocksize, pp_index, counter;
 	Face pp_face;
 	Point firstPoint, secondPoint;
-	
+
 	bool renderPlane = false;
 	Vector planeNormal = Vector(1,0,0);
 	Vector planeLocation = Vector(0,5,0);
@@ -52,7 +52,7 @@ using namespace BuildStateGlobals;
 const int BuildState::MUSIC_DELAY = 1000;
 
 BuildState::BuildState() {
-   //initialize();
+	cameraSetupComplete = false;
 }
 
 BuildState::~BuildState() {}
@@ -66,11 +66,11 @@ void BuildState::save_level(const char * fileName)
    for(unsigned int i = 0; i < currState->objects.size(); i++)
    {
       // write rectangle's max and min to file
-      myfile << (static_cast<CustomObject*>(currState->objects[i])->get_min_x()) << " " << 
-					 (static_cast<CustomObject*>(currState->objects[i])->get_min_y()) << " " << 
-					 (static_cast<CustomObject*>(currState->objects[i])->get_min_z()) << " " << 
-					 (static_cast<CustomObject*>(currState->objects[i])->get_max_x()) << " " << 
-					 (static_cast<CustomObject*>(currState->objects[i])->get_max_y()) << " " << 
+      myfile << (static_cast<CustomObject*>(currState->objects[i])->get_min_x()) << " " <<
+					 (static_cast<CustomObject*>(currState->objects[i])->get_min_y()) << " " <<
+					 (static_cast<CustomObject*>(currState->objects[i])->get_min_z()) << " " <<
+					 (static_cast<CustomObject*>(currState->objects[i])->get_max_x()) << " " <<
+					 (static_cast<CustomObject*>(currState->objects[i])->get_max_y()) << " " <<
 					 (static_cast<CustomObject*>(currState->objects[i])->get_max_z()) << " 2" << endl;
    }
 }
@@ -122,6 +122,25 @@ void BuildState::initialize() {
 void BuildState::update(long milli_time) {
 	music_delay -= milli_time;
 	music_delay = (music_delay < 0) ? 0 : music_delay; // clamp to 0
+
+	// keep the camera centered on the proper half of the playing field
+#ifdef CLIENT
+	int playerID = global::networkManager->network->getMyPlayerID();
+	if (!cameraSetupComplete && (playerID == 1 || playerID == 2))
+	{
+		OrbitalCamera *cam = static_cast<OrbitalCamera *>(global::camera);
+		if (playerID == 1) // red (negative x)
+		{
+			cam->center(Vector(-global::map_width / 4.0, 5.0, 0.0));
+		}
+		else // blue (positive x)
+		{
+			cam->center(Vector(global::map_width / 4.0, 5.0, 0.0));
+		}
+		cameraSetupComplete = true;
+	}
+#endif
+
    updateInput(milli_time);
 }
 
@@ -147,7 +166,7 @@ void BuildState::updateInput(long milli_time) {
 		printf("Stopping the build state music.\n");
 		global::soundManager->stopPlayingMusic();
 	}
-	
+
 	//play music for carnage state
 	if(io::keys[']'] && music_delay <= 0)
 	{
@@ -155,7 +174,7 @@ void BuildState::updateInput(long milli_time) {
 		global::soundManager->playBuildSong();
 		music_delay = MUSIC_DELAY;
 	}
-	
+
 	if(io::keys['n'] && music_delay <= 0)
 	{
 		printf("Playing the next build state song\n");
@@ -167,10 +186,10 @@ void BuildState::updateInput(long milli_time) {
 
 bool BuildState::isValidClick(Point click, int button)
 {
-	// check if firstPoint intersects with any existing rectangles	
-	evaluateClick(click);	
+	// check if firstPoint intersects with any existing rectangles
+	evaluateClick(click);
 
-	// right mouse valid clicks are on the ground only	
+	// right mouse valid clicks are on the ground only
 	if(button == GLUT_RIGHT_BUTTON)
 	{
 		if(!isOutsideMap(click) && click.gety() < 1)
@@ -236,10 +255,10 @@ void BuildState::mouseDownHandler()
 			click.set(Point(io::mouse_x, io::mouse_y));
 			click.round();
 			// check x
-			// IF the click is at least blocksize distance from the firstPoint 	
+			// IF the click is at least blocksize distance from the firstPoint
 			if( fabs(click.getx() - secondPoint.getx()) > blocksize )
 			{
-				// IF the click has a greater x value that the first point				
+				// IF the click has a greater x value that the first point
 				if(click.getx() > secondPoint.getx())
 					// increment second point by blocksize
 					secondPoint.setx(secondPoint.getx() + blocksize);
@@ -274,7 +293,7 @@ void BuildState::mouseDownHandler()
 				// IF the new location of the mouse and the old location of the second point have a greater x distance between them than blocksize
 				if( fabs(click.getx() - secondPoint.getx()) > blocksize )
 				{
-					// IF the click is greater than theold location of the second point				
+					// IF the click is greater than theold location of the second point
 					if(click.getx() > secondPoint.getx())
 						secondPoint.setx(secondPoint.getx() + blocksize);
 					else
@@ -288,7 +307,7 @@ void BuildState::mouseDownHandler()
 					else
 						secondPoint.setz(secondPoint.getz() - blocksize);
 				}
-			
+
 				// 2. update object (send fp and secondPoint)
 				CustomObject co = CustomObject(0, 0, CUSTOM_BLOCK, Point(), Point());
 				co.orientRect(firstPoint, secondPoint);
@@ -304,7 +323,7 @@ void BuildState::mouseDownHandler()
 		if(pp_index != -1)
 		{
 			// get push/pull plane
-			get_pp_plane(pp_face);			
+			get_pp_plane(pp_face);
 			new_push_pull(Point(io::mouse_x, io::mouse_y));
 		}
 	}
@@ -318,9 +337,9 @@ void BuildState::mouseDownHandler()
 		Point click;
 		click.set(Point(io::mouse_x, io::mouse_y));
 		click.round();
-		
+
 		// check if outside map dimensions
-		Point newMax = Point(static_cast<CustomObject*>(currState->objects[pp_index])->get_max_x() + click.getx() - secondPoint.getx(), 
+		Point newMax = Point(static_cast<CustomObject*>(currState->objects[pp_index])->get_max_x() + click.getx() - secondPoint.getx(),
 									static_cast<CustomObject*>(currState->objects[pp_index])->get_max_y(),
 									static_cast<CustomObject*>(currState->objects[pp_index])->get_max_z() + click.getz() - secondPoint.getz());
 		Point newMin = Point(static_cast<CustomObject*>(currState->objects[pp_index])->get_min_x() + click.getx() - secondPoint.getx(),
@@ -340,10 +359,10 @@ void BuildState::mouseDownHandler()
 	counter++;
 }
 
-/*// 
+/*//
 bool BuildState::isOutOfResources()
 {
-	
+
 }*/
 
 // 2 things are required for co to be inside of a rectangle
@@ -360,15 +379,15 @@ bool BuildState::isInsideRect(CustomObject A, int excluded)
 			cond1 = A.get_max_z() < static_cast<CustomObject*>(currState->objects[i])->get_min_z();
 			// condition 2: A's right is left of i's left
 			cond2 = A.get_min_z() > static_cast<CustomObject*>(currState->objects[i])->get_max_z();
-			// condition 3: A's top is below i's bottum		
+			// condition 3: A's top is below i's bottum
 			cond3 = A.get_min_x() > static_cast<CustomObject*>(currState->objects[i])->get_max_x();
 			// condition 4: A's bottom is above i's top
 			cond4 = A.get_max_x() < static_cast<CustomObject*>(currState->objects[i])->get_min_x();
-			
+
 			if(!cond1 && !cond2 && !cond3 && !cond4)
 			{
-				//printf("is inside rectangle. excluded=%d, i=%d\n", excluded, i);				
-				return true; 
+				//printf("is inside rectangle. excluded=%d, i=%d\n", excluded, i);
+				return true;
 			}
 		}
 	}
@@ -379,7 +398,7 @@ bool BuildState::isOutsideMap(Point p)
 {
 	// IF player 0 (positive x) (blue)
 	if(global::networkManager->network->getMyPlayerID() == 2)
-	{	
+	{
 		if(p.getx() > (global::map_width / 2.0) || p.getx() < 5)
 			return true;
 		if(p.getz() > (global::map_height / 2.0) || p.getz() < -(global::map_height / 2))
@@ -396,7 +415,7 @@ bool BuildState::isOutsideMap(Point p)
 	return false;
 }
 
-// given the current location of the mouse and the pp_face 
+// given the current location of the mouse and the pp_face
 // determines the plane that gluUnproject samples against
 void BuildState::get_pp_plane(Face f)
 {
@@ -430,7 +449,7 @@ void BuildState::get_pp_plane(Face f)
 void BuildState::evaluateClick(Point click)
 {
 	InGameState *currState = global::stateManager->currentState;
-	unsigned int i = 0;	
+	unsigned int i = 0;
 
 	// FOR all objects
 	while (i < currState->objects.size() && pp_face == NOTHING)
@@ -440,22 +459,22 @@ void BuildState::evaluateClick(Point click)
 		{
 			pp_index = i;
 			/* check if click is on edge
-			if(click.getx() == static_cast<CustomObject*>(currState->objects[pp_index])->get_max_x() && 
+			if(click.getx() == static_cast<CustomObject*>(currState->objects[pp_index])->get_max_x() &&
 				click.getz() == static_cast<CustomObject*>(currState->objects[pp_index])->get_max_z())
 			{
 				firstPoint.setz(firstPoint.getz() - 1);
 			}
-			else if(click.getx() == static_cast<CustomObject*>(currState->objects[pp_index])->get_max_x() && 
+			else if(click.getx() == static_cast<CustomObject*>(currState->objects[pp_index])->get_max_x() &&
 				click.getz() == static_cast<CustomObject*>(currState->objects[pp_index])->get_min_z())
 			{
 				firstPoint.setx(firstPoint.getx() - 1);
 			}
-			else if(click.getx() == static_cast<CustomObject*>(currState->objects[pp_index])->get_min_x() && 
+			else if(click.getx() == static_cast<CustomObject*>(currState->objects[pp_index])->get_min_x() &&
 				click.getz() == static_cast<CustomObject*>(currState->objects[pp_index])->get_min_z())
 			{
 				firstPoint.setz(firstPoint.getz() + 1);
 			}
-			else if(click.getx() == static_cast<CustomObject*>(currState->objects[pp_index])->get_min_x() && 
+			else if(click.getx() == static_cast<CustomObject*>(currState->objects[pp_index])->get_min_x() &&
 				click.getz() == static_cast<CustomObject*>(currState->objects[pp_index])->get_max_z())
 			{
 				firstPoint.setx(firstPoint.getx() + 1);
@@ -463,7 +482,7 @@ void BuildState::evaluateClick(Point click)
 		}
 		i++;
 	}
-	
+
 	/*if(pp_face == NOTHING)
 		printf("clicked nothing, currState->objects.size() = %d\n", currState->objects.size());
 	else
@@ -494,15 +513,15 @@ void BuildState::adjust_face(int index, Face f, Point click, bool pull)
 		// IF the new location of the mouse and the old location of the second point have a greater x distance between them than blocksize
 		if( fabs(click.getx() - static_cast<CustomObject*>(objects[index])->get_max_x()) > blocksize )
 		{
-			// IF the click is greater than the old location of the second point (PULL)				
+			// IF the click is greater than the old location of the second point (PULL)
 			if(click.getx() > static_cast<CustomObject*>(objects[index])->get_max_x())
 			{
 				// IF new point is not outside map
 				if(!isOutsideMap(Point(static_cast<CustomObject*>(objects[index])->get_max_x() + blocksize, static_cast<CustomObject*>(objects[index])->get_max_y(), static_cast<CustomObject*>(objects[index])->get_max_z())))
-				{					
+				{
 					// IF new point is not inside another rect
 					CustomObject co = CustomObject(0, 0, CUSTOM_BLOCK, Point(static_cast<CustomObject*>(objects[index])->get_max_x() + blocksize, 0, static_cast<CustomObject*>(objects[index])->get_max_z()), static_cast<CustomObject*>(objects[index])->get_min());
-					if(!isInsideRect(co, index))					
+					if(!isInsideRect(co, index))
 						static_cast<CustomObject*>(objects[index])->set_max_x(static_cast<CustomObject*>(objects[index])->get_max_x() + blocksize);
 				}
 			}
@@ -532,13 +551,13 @@ void BuildState::adjust_face(int index, Face f, Point click, bool pull)
 		{
 			if(click.getz() > static_cast<CustomObject*>(objects[index])->get_max_z())
 			{
-				if(!isOutsideMap(Point(static_cast<CustomObject*>(objects[index])->get_max_x(), static_cast<CustomObject*>(objects[index])->get_max_y(), static_cast<CustomObject*>(objects[index])->get_max_z() + blocksize)))	
-				{					
+				if(!isOutsideMap(Point(static_cast<CustomObject*>(objects[index])->get_max_x(), static_cast<CustomObject*>(objects[index])->get_max_y(), static_cast<CustomObject*>(objects[index])->get_max_z() + blocksize)))
+				{
 					// IF new point is not inside another rect
 					CustomObject co = CustomObject(0, 0, CUSTOM_BLOCK, Point(static_cast<CustomObject*>(objects[index])->get_max_x(), 0, static_cast<CustomObject*>(objects[index])->get_max_z() + blocksize), static_cast<CustomObject*>(objects[index])->get_min());
-					if(!isInsideRect(co, index))					
+					if(!isInsideRect(co, index))
 						static_cast<CustomObject*>(objects[index])->set_max_z(static_cast<CustomObject*>(objects[index])->get_max_z() + blocksize);
-				}				
+				}
 			}
 			else
 				static_cast<CustomObject*>(objects[index])->set_max_z(static_cast<CustomObject*>(objects[index])->get_max_z() - blocksize);
@@ -562,10 +581,10 @@ void BuildState::adjust_face(int index, Face f, Point click, bool pull)
 			if(click.getx() > static_cast<CustomObject*>(objects[index])->get_min_x())
 				static_cast<CustomObject*>(objects[index])->set_min_x(static_cast<CustomObject*>(objects[index])->get_min_x() + blocksize);
 			else if(!isOutsideMap(Point(static_cast<CustomObject*>(objects[index])->get_min_x() - blocksize, static_cast<CustomObject*>(objects[index])->get_min_y(), static_cast<CustomObject*>(objects[index])->get_min_z())))
-			{					
+			{
 				// IF new point is not inside another rect
 				CustomObject co = CustomObject(0, 0, CUSTOM_BLOCK, static_cast<CustomObject*>(objects[index])->get_max(), Point(static_cast<CustomObject*>(objects[index])->get_min_x() - blocksize, 0, static_cast<CustomObject*>(objects[index])->get_min_z()));
-				if(!isInsideRect(co, index))					
+				if(!isInsideRect(co, index))
 					static_cast<CustomObject*>(objects[index])->set_min_x(static_cast<CustomObject*>(objects[index])->get_min_x() - blocksize);
 			}
 
@@ -588,12 +607,12 @@ void BuildState::adjust_face(int index, Face f, Point click, bool pull)
 			if(click.getz() > static_cast<CustomObject*>(objects[index])->get_min_z())
 				static_cast<CustomObject*>(objects[index])->set_min_z(static_cast<CustomObject*>(objects[index])->get_min_z() + blocksize);
 			else if(!isOutsideMap(Point(static_cast<CustomObject*>(objects[index])->get_min_x(), static_cast<CustomObject*>(objects[index])->get_min_y(), static_cast<CustomObject*>(objects[index])->get_min_z() - blocksize)))
-			{					
+			{
 				// IF new point is not inside another rect
 				CustomObject co = CustomObject(0, 0, CUSTOM_BLOCK, static_cast<CustomObject*>(objects[index])->get_max(), Point(static_cast<CustomObject*>(objects[index])->get_min_x(), 0, static_cast<CustomObject*>(objects[index])->get_min_z() - blocksize));
-				if(!isInsideRect(co, index))					
+				if(!isInsideRect(co, index))
 					static_cast<CustomObject*>(objects[index])->set_min_z(static_cast<CustomObject*>(objects[index])->get_min_z() - blocksize);
-			}			
+			}
 
 			if(static_cast<CustomObject*>(objects[index])->get_min_z() >= static_cast<CustomObject*>(objects[index])->get_max_z())
 			{
@@ -626,7 +645,7 @@ void BuildState::new_push_pull(Point mouse_pos)
 		//if(old_height != static_cast<CustomObject*>(objects[pp_index])->get_max_y())
 			//recursive_bump(pp_index, static_cast<CustomObject*>(objects[pp_index])->get_max_y() - old_height);
    }
-	
+
 	else
 	{
 		mouse_pos.round();

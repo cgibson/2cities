@@ -19,7 +19,7 @@ namespace BuildStateGlobals
 	extern Face pp_face;
 	extern int pp_index;
 	extern Point firstPoint, last, mouse_click;
-	
+
 	extern bool renderPlane;
 	extern Vector planeNormal;
 	extern Vector planeLocation;
@@ -66,10 +66,13 @@ class BuildState : public InGameState
 		bool isInsideRect(CustomObject co, int excluded);
 
        virtual enum E_STATE stateType() { return BUILD_STATE; }
-       
+
        static const int MUSIC_DELAY;
-       
+
        int music_delay;
+
+private:
+	bool cameraSetupComplete;
 };
 
 #endif

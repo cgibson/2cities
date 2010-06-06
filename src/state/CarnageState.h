@@ -50,6 +50,9 @@ class CarnageState: public InGameState
         //Opponents' camera position and view vectors.
         Vector oppPos;
         Vector oppView;
+
+	private:
+		bool cameraSetupComplete;
 };
 
 #endif

@@ -4,6 +4,7 @@
 const float MenuUI::SPRING = 10.0;
 const float MenuUI::FRICTION = 0.5;
 const int MenuUI::INTRO_DURATION_MS = 3000;
+const int MenuUI::CXN_FAILED_DURATION = 5000;
 
 MenuUI::MenuUI()
 	: GameUI()
@@ -15,6 +16,7 @@ MenuUI::MenuUI()
 	_exitGame = NULL;
 	_ipLabel = NULL;
 	_ipInput = NULL;
+	_cxnFailed = NULL;
 	_currentChoice = 0; // host game
 	_velocity = 0.0;
 	_offset = 0.0;
@@ -23,6 +25,7 @@ MenuUI::MenuUI()
 	_introStart = -1;
 	_introPos = 0;
 	_firedShockwave = false;
+	_cxnFailedStart = -CXN_FAILED_DURATION - 1;
 }
 
 MenuUI::~MenuUI()
@@ -34,6 +37,7 @@ MenuUI::~MenuUI()
 	if (_exitGame != NULL) delete _exitGame;
 	if (_ipLabel != NULL) delete _ipLabel;
 	if (_ipInput != NULL) delete _ipInput;
+	if (_cxnFailed != NULL) delete _cxnFailed;
 }
 
 void MenuUI::init()
@@ -84,6 +88,12 @@ void MenuUI::init()
 	_ipInput->fgclr(1.0, 1.0, 1.0, 1.0);
 	_ipInput->text("_");
 	_ipInput->parent(_window);
+
+	_cxnFailed = new UILabel();
+	_cxnFailed->init("resources/fonts/sui_generis_free.ttf", 24, UILabel::CENTER);
+	_cxnFailed->fgclr(1.0, 1.0, 0.0, 0.0);
+	_cxnFailed->text("Connection failed!");
+	_cxnFailed->parent(_window);
 }
 
 void MenuUI::update(int ms)
@@ -91,6 +101,7 @@ void MenuUI::update(int ms)
 	// keep the labels aligned correctly
 	_ipLabel->pos(global::width / 2 - 8, global::height / 2 - 250);
 	_ipInput->pos(global::width / 2 + 8, global::height / 2 - 250);
+	_cxnFailed->pos(global::width / 2, global::height / 2 - 290);
 
 	if (_intro)
 	{
@@ -164,6 +175,14 @@ void MenuUI::update(int ms)
 	_ipAlpha += delta;
 	_ipLabel->fgclr(_ipLabel->fgr(), _ipLabel->fgg(), _ipLabel->fgb(), _ipAlpha);
 	_ipInput->fgclr(_ipInput->fgr(), _ipInput->fgg(), _ipInput->fgb(), _ipAlpha);
+
+	// fade out the "connection failed" info over time
+	int now = global::elapsed_ms();
+	if (_cxnFailedStart + CXN_FAILED_DURATION >= now)
+	{
+		float a = 1.0 - ((now - _cxnFailedStart) / (float)CXN_FAILED_DURATION);
+		_cxnFailed->fgclr(_cxnFailed->fgr(), _cxnFailed->fgg(), _cxnFailed->fgb(), a);
+	}
 
 	GameUI::update(ms);
 }
@@ -306,7 +325,10 @@ void MenuUI::startJoining()
 	ip[len - 1] = '\0';
 
 	// connect! (hopefully...)
-	global::networkManager->network->serverConnect(ip, 5060);
+	if (!global::networkManager->network->serverConnect(ip, 5060))
+	{
+		_cxnFailedStart = global::elapsed_ms();
+	}
 
 	free(ip);
 }

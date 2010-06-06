@@ -39,6 +39,7 @@ private:
 	UILabel *_exitGame;
 	UILabel *_ipLabel;
 	UILabel *_ipInput;
+	UILabel *_cxnFailed;
 	int _currentChoice;
 	float _velocity;
 	float _offset;
@@ -49,6 +50,7 @@ private:
 	int _introStart;
 	float _introPos;
 	bool _firedShockwave;
+	int _cxnFailedStart;
 
 	void prevChoice();
 	void nextChoice();
@@ -64,6 +66,7 @@ private:
 	static const float SPRING;
 	static const float FRICTION;
 	static const int INTRO_DURATION_MS;
+	static const int CXN_FAILED_DURATION;
 };
 
 #endif

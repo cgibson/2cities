@@ -94,7 +94,7 @@ void CarnageState::initialize() {
 
     ammoCount = ammoIndex;
     ammoIndex = 0;
-    
+
     oppPos = Vector(0,0,0);
     oppView = Vector(0,0,0);
 
@@ -102,20 +102,20 @@ void CarnageState::initialize() {
    if (global::camera != NULL) delete global::camera;
    global::camera = new OrbitalCamera();
    global::camera->init(Vector(30.0, 30.0, 30.0), Vector(0.0, 5.0, 0.0));
-   
+
    // initialize opponent vehicle
    opponent = global::factory->makeObject(RECOGNIZER);
 	 opponent->setPosition(Vector(0, 0, 0));
 	 opponent->setVelocity(Vector(0, 0, 0));
-	 
+
    //opponentCannon = new ComplexObject(SMOOTH_CANNON);
    //playerCannon = new ComplexObject(SMOOTH_CANNON);
    playerCannon = global::factory->makeObject(SMOOTH);
 	 playerCannon->setPosition(Vector(0, 0, 0));
 	 playerCannon->setVelocity(Vector(0, 0, 0));
-	 
+
 	 int id = global::networkManager->network->getMyPlayerID();
-	 
+
 	 if(id == 1)
 	 {
 		 playerMat = gfx::materials + RED_PLAYER;
@@ -124,7 +124,7 @@ void CarnageState::initialize() {
 		 playerMat = gfx::materials + BLUE_PLAYER;
 		 opponentMat = gfx::materials + RED_PLAYER;
 	 }
-	 
+
 #endif
 
    realStateType = enumeration::CARNAGE_STATE;
@@ -163,7 +163,7 @@ void CarnageState::update(long milli_time) {
 		}
 		cameraSetupComplete = true;
 	}
-	
+
 	// update opponent and its cannon
 	opponent->setPosition(oppPos);
 	Vector dir = oppView;
@@ -230,22 +230,25 @@ void CarnageState::updateInput(long milli_time) {
    }
 
    // FIRE CONTROLS
-   if((io::keys[' '] || io::mouse_buttons[MOUSE_LEFT] == GLUT_DOWN) &&
-		   ammoTimers[ammoIndex] <= 0 &&
-		   (ammoCounts[ammoIndex] > 0 || ammoCounts[ammoIndex] == -1))
+   if (global::stateManager->currentState->stateType() == CARNAGE_STATE) // only fire in the real carnage state
    {
-	  global::soundManager->playCarnageSfx(0);
-	  WorldObject *newObjPtr = global::factory->makeObject(ammoTypes[ammoIndex]);
-	  newObjPtr->setPosition(camera->position() - Vector( 0.0f, 1.0f, 0.0f));
-	  newObjPtr->setVelocity((camera->viewVec() + Vector(0.0f, 0.15f, 0.0f)) * 50); // offset the view vector a bit to more closely match the targeting reticle
-	  networkManager->network->addObject(newObjPtr);
-	  ammoTimers[ammoIndex] = ammoDelayTimers[ammoIndex];
-	  if(ammoCounts[ammoIndex] != -1)
-		  --ammoCounts[ammoIndex];
-   }
-   else {
-	   //printf("Ammo Request: index(%i) count(%i) timer(%i)\n", ammoIndex, ammoCounts[ammoIndex], ammoTimers[ammoIndex]);
-   }
+	   if((io::keys[' '] || io::mouse_buttons[MOUSE_LEFT] == GLUT_DOWN) &&
+			   ammoTimers[ammoIndex] <= 0 &&
+			   (ammoCounts[ammoIndex] > 0 || ammoCounts[ammoIndex] == -1))
+	   {
+		  global::soundManager->playCarnageSfx(0);
+		  WorldObject *newObjPtr = global::factory->makeObject(ammoTypes[ammoIndex]);
+		  newObjPtr->setPosition(camera->position() - Vector( 0.0f, 1.0f, 0.0f));
+		  newObjPtr->setVelocity((camera->viewVec() + Vector(0.0f, 0.15f, 0.0f)) * 50); // offset the view vector a bit to more closely match the targeting reticle
+		  networkManager->network->addObject(newObjPtr);
+		  ammoTimers[ammoIndex] = ammoDelayTimers[ammoIndex];
+		  if(ammoCounts[ammoIndex] != -1)
+			  --ammoCounts[ammoIndex];
+	   }
+	   else {
+		   //printf("Ammo Request: index(%i) count(%i) timer(%i)\n", ammoIndex, ammoCounts[ammoIndex], ammoTimers[ammoIndex]);
+	   }
+	}
 #endif
 }
 

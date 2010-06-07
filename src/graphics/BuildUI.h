@@ -46,9 +46,8 @@ private:
 	UIProgress *_redFullProgress;
 	UIProgress *_blueFullProgress;
 	UIWheelChooser *_typeSelect;
-	UILabel *_bricksMult;
-	UILabel *_lincolnMult;
-	UILabel *_bubbleMult;
+	UILabel *_weakMult;
+	UILabel *_strongMult;
 	UIButton *_readyButton;
 	UILabel *_otherPlayerReady;
 	bool _parentedOtherPlayerReady;

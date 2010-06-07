@@ -12,9 +12,8 @@ BuildUI::BuildUI()
     _redFullProgress = NULL;
     _blueFullProgress = NULL;
     _typeSelect = NULL;
-    _bricksMult = NULL;
-	_lincolnMult = NULL;
-	_bubbleMult = NULL;
+    _weakMult = NULL;
+	_strongMult = NULL;
 	_readyButton = NULL;
 	_otherPlayerReady = NULL;
 	_parentedOtherPlayerReady = false;
@@ -29,9 +28,8 @@ BuildUI::~BuildUI()
 	if (_redFullProgress != NULL) delete _redFullProgress;
 	if (_blueFullProgress != NULL) delete _blueFullProgress;
 	if (_typeSelect != NULL) delete _typeSelect;
-	if (_bricksMult != NULL) delete _bricksMult;
-	if (_lincolnMult != NULL) delete _lincolnMult;
-	if (_bubbleMult != NULL) delete _bubbleMult;
+	if (_weakMult != NULL) delete _weakMult;
+	if (_strongMult != NULL) delete _strongMult;
 	if (_readyButton != NULL) delete _readyButton;
 	if (_otherPlayerReady != NULL) delete _otherPlayerReady;
 }
@@ -41,41 +39,30 @@ void BuildUI::init()
 	GameUI::init(0.0, 0.0, 0.0, 0.0);
 
 	_typeSelect = new UIWheelChooser();
-	_typeSelect->init(3, 64);
+	_typeSelect->init(2, 64);
 	_typeSelect->pos(global::width / 2, global::height - 115);
 
 	_typeSelect->icon(0)->init("resources/textures/bullets_icon.bmp", NULL);
 	_typeSelect->icon(0)->parent(_typeSelect);
 	_typeSelect->name(0)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
-	_typeSelect->name(0)->text("BRICK BUILDING");
+	_typeSelect->name(0)->text("WEAK BUILDING");
 	_typeSelect->name(0)->parent(_typeSelect->icon(0));
 
-	_bricksMult = new UILabel();
-	_bricksMult->init("resources/fonts/sui_generis_free.ttf", 10, UILabel::CENTER);
-	_bricksMult->text("x1");
-	_bricksMult->parent(_typeSelect->icon(0));
+	_weakMult = new UILabel();
+	_weakMult->init("resources/fonts/sui_generis_free.ttf", 10, UILabel::CENTER);
+	_weakMult->text("1x $");
+	_weakMult->parent(_typeSelect->icon(0));
 
 	_typeSelect->icon(1)->init("resources/textures/shotgun_icon.bmp", NULL);
 	_typeSelect->icon(1)->parent(_typeSelect);
 	_typeSelect->name(1)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
-	_typeSelect->name(1)->text("LINCOLN LOGS");
+	_typeSelect->name(1)->text("STRONG BUILDING");
 	_typeSelect->name(1)->parent(_typeSelect->icon(1));
 
-	_lincolnMult = new UILabel();
-	_lincolnMult->init("resources/fonts/sui_generis_free.ttf", 10, UILabel::CENTER);
-	_lincolnMult->text("x2");
-	_lincolnMult->parent(_typeSelect->icon(1));
-
-	_typeSelect->icon(2)->init("resources/textures/ballhemoth_icon.bmp", NULL);
-	_typeSelect->icon(2)->parent(_typeSelect);
-	_typeSelect->name(2)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
-	_typeSelect->name(2)->text("BUBBLE");
-	_typeSelect->name(2)->parent(_typeSelect->icon(2));
-
-	_bubbleMult = new UILabel();
-	_bubbleMult->init("resources/fonts/sui_generis_free.ttf", 10, UILabel::CENTER);
-	_bubbleMult->text("x3");
-	_bubbleMult->parent(_typeSelect->icon(2));
+	_strongMult = new UILabel();
+	_strongMult->init("resources/fonts/sui_generis_free.ttf", 10, UILabel::CENTER);
+	_strongMult->text("2x $");
+	_strongMult->parent(_typeSelect->icon(1));
 
 	_typeSelect->parent(_window);
 
@@ -161,7 +148,24 @@ void BuildUI::update(int ms)
 	float alpha = (sinf(timeaccum / 100.0) + 1.0) / 4.0 + 0.5;
 	_otherPlayerReady->fgclr(_otherPlayerReady->fgr(), _otherPlayerReady->fgg(), _otherPlayerReady->fgb(), alpha);
 
-	// TODO: actually get resource percentage from game state here
+	// push down the currently selected tesselation type to the game state
+	if (global::stateManager->currentState->stateType() == BUILD_STATE)
+	{
+		BuildState *bs = static_cast<BuildState *>(global::stateManager->currentState);
+		switch (_typeSelect->currentItem())
+		{
+			case 0: // weak building
+				bs->currBuildingType = TESS_STONEHENGE;
+				break;
+
+			case 1: // strong building
+				bs->currBuildingType = TESS_SIMPLE;
+				break;
+
+			default:
+				break;
+		}
+	}
 
 	// fetch percent damage from the network api and update the UI elements accordingly
 	int redPercent = global::networkManager->network->getPlayerDamage(1); // 1 = red
@@ -209,9 +213,8 @@ void BuildUI::update(int ms)
 	GameUI::update(ms);
 
 	// keep the ammo clips matched to their icons
-	_bricksMult->pos(_typeSelect->icon(0)->width() / 2, -13);
-	_lincolnMult->pos(_typeSelect->icon(1)->width() / 2, -13);
-	_bubbleMult->pos(_typeSelect->icon(2)->width() / 2, -13);
+	_weakMult->pos(_typeSelect->icon(0)->width() / 2, -13);
+	_strongMult->pos(_typeSelect->icon(1)->width() / 2, -13);
 }
 
 void BuildUI::draw()
@@ -252,10 +255,6 @@ void BuildUI::keyDown(int key, bool special)
 
 			case '2':
 				_typeSelect->selectItem(1);
-				break;
-
-			case '3':
-				_typeSelect->selectItem(2);
 				break;
 
 			default:

@@ -298,13 +298,17 @@ void NetworkClient::loadLevel(vector<WorldObject *> newObjs) {
 			ting::IPAddress sourceIP;
 			NetworkPacket tmpPkt;
 			while(!pktConfirm) {
-				if(!waitSet->WaitWithTimeout(200))
+				if(!waitSet->WaitWithTimeout(200)) {
 					SendPacket(pkt, &socket, serverIP);
+					printf("Re-sending Level_Batch!\n");
+				}
 				else {
 					RecvPacket(&tmpPkt, &socket, &sourceIP);
 					if(tmpPkt.header.type == LEVEL_BATCHOBJ) {
 						pktConfirm = true;
 					}
+					else
+						printf("Recv'd Something Else!\n");
 				}
 			}
 			objSetStart += SetPos;

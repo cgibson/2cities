@@ -265,22 +265,20 @@ void NetworkSystem::decodeObjectSend(NetworkPacket &pkt, long interpValue) {
 		ObjectType woType;
 		unsigned int woPktLoc = 0;
 
-		while(woPktLoc < pkt.dataSize) {
-			woType = *(ObjectType*)(pkt.data + woPktLoc);
-
-			switch (woType) {
-			default:
-				tmpObjPtr = global::factory->makeObject(woType);
-				woPktLoc += tmpObjPtr->fromBinStream(pkt.data + woPktLoc);
+		while(woPktLoc + 100 < pkt.dataSize) {
+			if(woPktLoc + 100 >= pkt.dataSize) {
+				printf("Likely Packet Error: Remaining Size < WorldObject Size");
+				return;
 			}
 
-			//tmpObjPtr->print();
+			woType = *(ObjectType*)(pkt.data + woPktLoc);
+
+			tmpObjPtr = global::factory->makeObject(woType);
+			woPktLoc += tmpObjPtr->fromBinStream(pkt.data + woPktLoc);
+
 			tmpObjPtr->interpolate(interpValue);
 			addObjectPhys(tmpObjPtr);
-			//if(interpValue != 0)
-				//tmpObjPtr->print();
-			//if(tmpObjPtr->getPhysics() == STATIC)
-				//printf("Obj %i = STATIC\n", tmpObjPtr->getID());
+			//tmpObjPtr->print();
 		}
 	}
 }

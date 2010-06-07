@@ -73,7 +73,7 @@ public:
 			if(initPosDelta > net::OBJECT_KILL_DELTA) {
 				damaged = true;
 				objPtr->setPhysics(STATIC);
-				priority += 2;
+				priority += 1;
 			}
 		}
 	}
@@ -116,8 +116,8 @@ public:
 
 		// ObjID found, erase entry
 		if (i < objVec->size()) {
-			//(*objVec)[i].kill(); // TODO
-			objVec->erase(objVec->begin()+i);
+			(*objVec)[i].kill(); // TODO
+			//objVec->erase(objVec->begin()+i);
 			//printf("Killed Object\n");
 		}
 	}

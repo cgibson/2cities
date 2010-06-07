@@ -334,30 +334,30 @@ void NetworkServer::networkOutgoing(long &elapsed) {
 				WorldObject *objPtrGroup[net::OBJECT_BATCHSEND_SIZE];
 
 				unsigned int SetPos = 0;
-				while((SetPos < objSetSize)) { //  && (objSetStart + SetPos < vecSize)
-					if(_serverObjs[objSetStart + SetPos].objPtr == NULL) {
-						++objSetStart; // Easy way to move to next item without changing count.
+				unsigned int SetItem = 0;
+				while((SetItem < objSetSize)) { //  && (objSetStart + SetPos < vecSize)
+					if(_serverObjs[objSetStart + SetItem].objPtr != NULL) {
+						objPtrGroup[SetPos] = _serverObjs[objSetStart + SetItem].objPtr;
+						_serverObjs[objSetStart + SetItem].sent(currTime);
+						++SetPos;
 					}
-					else {
-						objPtrGroup[SetPos] = _serverObjs[objSetStart + SetPos].objPtr;
-						_serverObjs[objSetStart + SetPos].sent(currTime);
-						SetPos++;
+					++SetItem;
+				}
 
+				if(SetPos > 0) {
+					NetworkPacket pkt;
+					buildBatchPacket(&pkt, objPtrGroup, SetPos);
+
+					// Send to each _players
+					for(unsigned int p=0; p<clients.size(); p++) {
+						if(!clients[p]->isLocal)
+							SendPacket(pkt, &(clients[p]->socket), clients[p]->ip);
+						else
+							decodeObjectSend(pkt, 0);
 					}
 				}
 
-				NetworkPacket pkt;
-				buildBatchPacket(&pkt, objPtrGroup, SetPos);
-
-				// Send to each _players
-				for(unsigned int p=0; p<clients.size(); p++) {
-					if(!clients[p]->isLocal)
-						SendPacket(pkt, &(clients[p]->socket), clients[p]->ip);
-					else
-						decodeObjectSend(pkt, 0);
-				}
-
-				objSetStart += SetPos;
+				objSetStart += SetItem;
 			}
 		}
 	} catch(ting::Socket::Exc &e){

@@ -149,11 +149,11 @@ void BuildUI::update(int ms)
 	if (_showReady)
 	{
 		float alpha = (sinf(timeaccum / 100.0) + 1.0) / 4.0 + 0.5;
-		_otherPlayerReady->fgclr(_gauntletLabel->fgr(), _gauntletLabel->fgg(), _gauntletLabel->fgb(), alpha);
+		_otherPlayerReady->fgclr(_otherPlayerReady->fgr(), _otherPlayerReady->fgg(), _otherPlayerReady->fgb(), alpha);
 	}
 	else
 	{
-		_otherPlayerReady->fgclr(_gauntletLabel->fgr(), _gauntletLabel->fgg(), _gauntletLabel->fgb(), 0.0);
+		_otherPlayerReady->fgclr(_otherPlayerReady->fgr(), _otherPlayerReady->fgg(), _otherPlayerReady->fgb(), 0.0);
 	}
 
 	// push down the currently selected tesselation type to the game state
@@ -210,11 +210,10 @@ void BuildUI::update(int ms)
 	if (clients.size() >= 2)
 	{
 		int myPlayerID = global::networkManager->network->getMyPlayerID();
-		if ((myPlayerID == 1 && global::networkManager->network->getPlayerReady(2) && !_parentedOtherPlayerReady) ||
-			 (myPlayerID == 2 && global::networkManager->network->getPlayerReady(1) && !_parentedOtherPlayerReady))
+		if ((myPlayerID == 1 && global::networkManager->network->getPlayerReady(2) && !_showReady) ||
+			 (myPlayerID == 2 && global::networkManager->network->getPlayerReady(1) && !_showReady))
 		{
-			_otherPlayerReady->parent(_window);
-			_parentedOtherPlayerReady = true;
+			_showReady = true;
 		}
 	}
 

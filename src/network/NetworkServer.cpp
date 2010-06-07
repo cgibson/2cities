@@ -497,8 +497,10 @@ void NetworkServer::checkStateChange() {
 			if(playerCount != readyCount && playerCount > 0) {
 				// send disconnect command to clients (kick 'em out)
 				for(unsigned int i=0; i < clients.size(); ++i) {
-					printf("Kicking Client: ");
-					playerDisconnect(i);
+					NetworkPacket tmpPkt(DISCONNECT, (unsigned char *)&i, sizeof(int));
+					SendPacket(tmpPkt, &(clients[i]->socket), clients[i]->ip);
+					clients[i]->playerType = Client::TODIE;
+					clients[i]->playerID   = 0;
 				}
 			}
 

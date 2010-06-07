@@ -20,8 +20,8 @@ namespace net{
 	const int TIME_IN_CARNAGE_STATE = 600; // in sec
 	const int TIME_IN_RESULTS_STATE = 30; // in sec
 
-	const float OBJECT_KILL_DELTA = 5.0f;
-	const int DAMAGE_PERCENT_WIN_CONDITION = 90;
+	const float OBJECT_KILL_DELTA = 7.0f;
+	const int DAMAGE_PERCENT_WIN_CONDITION = 95;
 
 	NetworkPacket::NetworkPacket() {
 			dataSize = 0;

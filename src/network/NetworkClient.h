@@ -31,6 +31,7 @@ protected:
 	bool isConnected;
 	unsigned int serverDelay;
 	int  serverClockDelta;
+	int  lastTimePktRecv;
 
 	virtual void closeSockets();
 

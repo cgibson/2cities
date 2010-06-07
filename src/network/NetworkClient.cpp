@@ -14,9 +14,6 @@ NetworkClient::NetworkClient() : NetworkSystem() {
 	waitSet = new ting::WaitSet(1);
 	waitSet->Add(&socket, ting::Waitable::READ);
 
-	timeToStateChange = 0;
-	timeToStateChangeSet = false;
-
 	isConnected = false;
 	myClientID = 1;
 	nextNewObjID = myClientID * 10000;
@@ -38,6 +35,7 @@ void NetworkClient::update(long milli_time) {
 	static int delayedUpdateLag = 1000;
 	if(isConnected) {
 		if(delayedUpdateLag < 0) {
+			//printf("Sending Lag Check... RespRecv = %i\n",lagCalc_RecvResp);
 			sendServerLagReq(&socket, serverIP);
 			delayedUpdateLag = 1000;
 		}
@@ -71,9 +69,14 @@ void NetworkClient::networkIncoming(long &elapsed) {
 	unsigned int pktsRecv = 0;
 	NetworkPacket tmpPkt;
 
+	if((global::elapsed_ms() - lastTimePktRecv) > 1000) {
+		serverDisconnect();
+		return;
+	}
+
 	while(isConnected && waitSet->WaitWithTimeout(0) && pktsRecv < SERVER_RECV_MAX_PACKETS_PER_CYCLE) {
 		RecvPacket(&pkt, &socket, &sourceIP);
-		int pktRecvTime = global::elapsed_ms();
+		lastTimePktRecv = global::elapsed_ms();
 
 		switch(pkt.header.type) {
 		case OBJECT_BATCHSEND :
@@ -85,7 +88,9 @@ void NetworkClient::networkIncoming(long &elapsed) {
 			removeObjectLocal(*(unsigned int*)(pkt.data));
 			break;
 		case LAG_REPLY :
-			serverDelay = (pktRecvTime - lagCalc_StartTime)/2;
+			lagCalc_RecvResp = true;
+			//printf("RecvResp\n");
+			serverDelay = (lastTimePktRecv - lagCalc_StartTime)/2;
 			tmpPkt = NetworkPacket(LAG_RESULT, (unsigned char *)&serverDelay, sizeof(int));
 			SendPacket(tmpPkt, &socket, serverIP);
 			break;
@@ -94,6 +99,8 @@ void NetworkClient::networkIncoming(long &elapsed) {
 			break;
 		case STATUS_UPDATE :
 			recvStatusUpdate(pkt);
+			if(clients[myClientID]->playerType == Client::TODIE)
+				serverDisconnect();
 			break;
 		case TEXT_MSG :
 			recvMsg(pkt);
@@ -187,6 +194,7 @@ bool NetworkClient::serverConnect(const char * ip, unsigned int port) {
 			SendPacket(tmpPkt, &socket, serverIP);
 
 			isConnected = true;
+			lastTimePktRecv = global::elapsed_ms();
 		}
 		else {
 			printf("Connection Issue!\n");
@@ -208,6 +216,7 @@ void NetworkClient::serverDisconnect() {
 		SendPacket(pkt, &socket, serverIP);
 
 		isConnected = false;
+		global::stateManager->changeCurrentState(MENU_STATE);
 	}
 }
 

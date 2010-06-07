@@ -49,7 +49,8 @@ protected:
     // Server Function
 	virtual void closeSockets() {};
 
-	int lagCalc_StartTime;
+	int  lagCalc_StartTime;
+	bool lagCalc_RecvResp;
 	void sendServerLagReq(ting::UDPSocket *socketPtr, ting::IPAddress destIP);
 
 	// Communication
@@ -94,7 +95,7 @@ public:
 
 	// Connection Based Functions
 	virtual bool serverConnect(const char * ip, unsigned int port) { return false; };
-	virtual void serverDisconnect() {};
+	virtual void serverDisconnect() { global::stateManager->changeCurrentState(MENU_STATE); };
 	virtual bool serverConnected() { return 0; };
 	virtual int  getServerDelay() { return 0; };
 	        int  getTimeToStateChange() { return global::elapsed_ms() - timeToStateChange; };

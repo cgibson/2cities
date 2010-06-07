@@ -3,7 +3,7 @@
 class Client {
 	public:
 		typedef enum E_PlayerType {
-			PLAYER, SPECTATOR
+			PLAYER, SPECTATOR, TODIE
 		} PlayerType;
 
 		int playerID;
@@ -35,9 +35,9 @@ class Client {
 				strcpy(playerName, newName);
 
 			playerType  = SPECTATOR;
-			isLocal = localPlayer;
+			isLocal     = localPlayer;
 			lastPktRecv = 0;
-			playerDelay    = 0;
+			playerDelay = 0;
 		}
 
 		void print() {

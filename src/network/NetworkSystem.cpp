@@ -12,6 +12,10 @@ NetworkSystem::NetworkSystem() {
 	_pktCountRecv = _pktCountSent = _pktPeriod = 0;
 
 	myClientID = 0;
+	lagCalc_RecvResp = true;
+
+	timeToStateChange = 0;
+	timeToStateChangeSet = false;
 }
 
 NetworkSystem::~NetworkSystem() {
@@ -75,7 +79,14 @@ void NetworkSystem::setMyPlayerDamage(int newDamage) {
  * Server/Connect Send/Recv
  *******************************************/
 void NetworkSystem::sendServerLagReq(ting::UDPSocket *socketPtr, ting::IPAddress destIP) {
+/*
+	if(lagCalc_RecvResp == false) {
+		serverDisconnect();
+		return;
+	}
+*/
 	lagCalc_StartTime = global::elapsed_ms();
+	lagCalc_RecvResp = false;
 	NetworkPacket tmpPkt(LAG_REQ, (unsigned char *)&lagCalc_StartTime, sizeof(int));
 	SendPacket(tmpPkt, socketPtr, destIP);
 }

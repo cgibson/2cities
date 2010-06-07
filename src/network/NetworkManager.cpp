@@ -162,10 +162,12 @@ void NetworkManager::consoleNetworkRates(int argc, char *argv[]) {
 		net::CLIENT_RECV_MAX_PACKETS_PER_CYCLE = atoi(argv[2]);
 		printf("CLIENT RECV MAX = %i\n", net::CLIENT_RECV_MAX_PACKETS_PER_CYCLE);
 	}
+/*
 	else if(!strcmp(argv[1],"server_recv")) {
 		net::SERVER_SEND_MAX_PACKETS_PER_MS = atoi(argv[2]);
 		printf("SERVER SEND MAX = %i\n", net::SERVER_SEND_MAX_PACKETS_PER_MS);
 	}
+*/
 	return;
 #endif
 }

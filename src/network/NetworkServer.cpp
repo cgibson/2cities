@@ -323,11 +323,14 @@ void NetworkServer::networkOutgoing(long &elapsed) {
 
 		// Send up to MAX_PACKETS_PER_CYCLE Packets
 		const int vecSize = _serverObjs.size();
-		const int sendSize = min(vecSize, (int)(SERVER_SEND_MAX_PACKETS_PER_MS * elapsed * OBJECT_BATCHSEND_SIZE));
+		//const int sendSize = min(vecSize, (int)(SERVER_SEND_MAX_PACKETS_PER_MS * elapsed * OBJECT_BATCHSEND_SIZE));
+		const int MaxObjsCycle = (int)(OBJECT_BATCHSEND_SIZE * SERVER_SEND_MAX_PACKETS_PER_CYCLE);
+		const int MaxObjsTime  = (int)(OBJECT_BATCHSEND_SIZE * SERVER_SEND_MAX_PACKETS_PER_MS * elapsed);
+		const int sendSize = min(vecSize, min(MaxObjsCycle, MaxObjsTime));
 		if (sendSize > 0 && ((clients.size() > 1 || (_dedicatedServer == true && clients.size() > 0)))) {
 			int objSetStart = 0;
 			int currTime = global::elapsed_ms();
-			while(objSetStart < vecSize) {
+			while(objSetStart < sendSize) {
 				int objSetSize = min(vecSize - objSetStart, (int)OBJECT_BATCHSEND_SIZE);
 
 				// Build Batch Packet
@@ -350,7 +353,7 @@ void NetworkServer::networkOutgoing(long &elapsed) {
 
 					// Send to each _players
 					for(unsigned int p=0; p<clients.size(); p++) {
-						if(!clients[p]->isLocal)
+						if(!clients[p]->isLocal && clients[p]->playerReady >= 0)
 							SendPacket(pkt, &(clients[p]->socket), clients[p]->ip);
 						else
 							decodeObjectSend(pkt, 0);
@@ -486,8 +489,12 @@ void NetworkServer::checkStateChange() {
 		switch (currState) {
 		case MENU_STATE :
 			global::stateManager->changeCurrentState(BUILD_STATE);
+			emptyWorld();
 			break;
 		case BUILD_STATE :
+			for(unsigned int i=0; i<clients.size(); ++i)
+				clients[i]->playerReady = -1;
+
 			global::stateManager->changeCurrentState(CARNAGE_STATE);
 			break;
 		case CARNAGE_STATE :
@@ -504,8 +511,8 @@ void NetworkServer::checkStateChange() {
 				}
 			}
 
-			emptyWorld();
 			global::stateManager->changeCurrentState(BUILD_STATE);
+			emptyWorld();
 			break;
 		default :
 			printf("What State am I In?");
@@ -608,8 +615,9 @@ void NetworkServer::addObjectPhys(WorldObject *objPtr) {
 	objPtr->setTimeStamp(global::elapsed_ms());
 	
 	// Add ObjectState to Tracker
-	WorldObjectState newObjState(objPtr, 10);
-	_serverObjs.push_back(newObjState);
+	WorldObjectState::updateVector(&_serverObjs, objPtr, 10);
+	//WorldObjectState newObjState(objPtr, 10);
+	//_serverObjs.push_back(newObjState);
 	
 	physicsEngine.addWorldObject(objPtr);
 }

@@ -69,7 +69,8 @@ void NetworkClient::networkIncoming(long &elapsed) {
 	unsigned int pktsRecv = 0;
 	NetworkPacket tmpPkt;
 
-	if((global::elapsed_ms() - lastTimePktRecv) > 1000) {
+	if(isConnected && (global::elapsed_ms() - lastTimePktRecv) > 1000) {
+		printf("Connection Timed Out! ");
 		serverDisconnect();
 		return;
 	}
@@ -304,6 +305,7 @@ void NetworkClient::loadLevel(vector<WorldObject *> newObjs) {
 				}
 				else {
 					RecvPacket(&tmpPkt, &socket, &sourceIP);
+					lastTimePktRecv = global::elapsed_ms();
 					if(tmpPkt.header.type == LEVEL_BATCHOBJ) {
 						pktConfirm = true;
 					}
@@ -313,6 +315,10 @@ void NetworkClient::loadLevel(vector<WorldObject *> newObjs) {
 			}
 			objSetStart += SetPos;
 		}
+
+		int readyFlag = 0;
+		NetworkPacket tmpPkt(PLAYER_READY, (unsigned char *)&readyFlag, sizeof(int));
+		SendPacket(tmpPkt, &socket, serverIP);
 	}
 }
 

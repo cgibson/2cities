@@ -10,6 +10,7 @@ namespace net{
 	unsigned int CLIENT_RECV_MAX_PACKETS_PER_CYCLE = 200;
 
 	unsigned int SERVER_SEND_MAX_PACKETS_PER_MS = 1;
+	unsigned int SERVER_SEND_MAX_PACKETS_PER_CYCLE = 15;
 	unsigned int SERVER_RECV_MAX_PACKETS_PER_CYCLE = 15;
 
 	unsigned int SERVER_PHYSICS_UPDATE_RATE = 1;

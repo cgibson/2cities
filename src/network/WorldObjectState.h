@@ -89,7 +89,7 @@ public:
 		lastSent = currTime;
 	}
 
-	static void updateVector(std::vector<WorldObjectState> *objVec, WorldObject *objPtr) {
+	static void updateVector(std::vector<WorldObjectState> *objVec, WorldObject *objPtr, int newPriority = 2) {
 		unsigned int i = 0;
 
 		// *** Linear Search Code ***
@@ -98,12 +98,13 @@ public:
 		// *** Add, Insert, Update Code ***
 		// ObjID Not Found (and at end)... Push_back
 		if (i == objVec->size()) {
-			objVec->push_back(WorldObjectState(objPtr));
+			objVec->push_back(WorldObjectState(objPtr, newPriority));
 			//printf("Added Object\n");
 		}
 		// ObjID Found, Replace Data
 		else {
 			(*objVec)[i].update();
+			(*objVec)[i].priority = newPriority;
 			//printf("Updated Object\n");
 		}
 	}

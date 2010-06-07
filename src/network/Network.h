@@ -36,6 +36,7 @@ namespace net{
 	extern unsigned int CLIENT_RECV_MAX_PACKETS_PER_CYCLE;
 
 	extern unsigned int SERVER_SEND_MAX_PACKETS_PER_MS;
+	extern unsigned int SERVER_SEND_MAX_PACKETS_PER_CYCLE;
 	extern unsigned int SERVER_RECV_MAX_PACKETS_PER_CYCLE;
 
 	extern unsigned int SERVER_PHYSICS_UPDATE_RATE;

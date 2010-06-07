@@ -70,7 +70,7 @@ public:
 			lastPosDelta = (objPtr->getPosition() - lastPos).mag();
 			lastPos      = objPtr->getPosition();
 
-			if(initPosDelta > net::OBJECT_KILL_DELTA) {
+			if(!damaged && initPosDelta > net::OBJECT_KILL_DELTA) {
 				damaged = true;
 				objPtr->setPhysics(STATIC);
 				priority += 1;
@@ -85,7 +85,8 @@ public:
 	}
 
 	void sent(int currTime) {
-		priority = std::max(0, priority - 1);
+		if(priority > 0)
+			--priority;
 		lastSent = currTime;
 	}
 

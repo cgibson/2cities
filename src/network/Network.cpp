@@ -4,13 +4,13 @@
 using namespace global;
 
 namespace net{
-	const unsigned int OBJECT_BATCHSEND_SIZE = 10;
+	const unsigned int OBJECT_BATCHSEND_SIZE = 10;	// must ensure size * objsBinStream < 1400
 
 	unsigned int CLIENT_SEND_MAX_PACKETS_PER_CYCLE = 10;
 	unsigned int CLIENT_RECV_MAX_PACKETS_PER_CYCLE = 200;
 
 	unsigned int SERVER_SEND_MAX_PACKETS_PER_MS = 1;
-	unsigned int SERVER_SEND_MAX_PACKETS_PER_CYCLE = 15;
+	unsigned int SERVER_SEND_MAX_PACKETS_PER_CYCLE = 40;
 	unsigned int SERVER_RECV_MAX_PACKETS_PER_CYCLE = 15;
 
 	unsigned int SERVER_PHYSICS_UPDATE_RATE = 1;

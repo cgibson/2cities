@@ -10,6 +10,7 @@
 #include "../system/global.h"
 #include "../system/enum.h"
 #include "../scene/Tesselator.h"
+#include "../graphics/cinematiccamera.h"
 
 using namespace enumeration;
 
@@ -94,7 +95,15 @@ void StateManager::changeCurrentState(enum E_STATE newState)
     case RESULTS_STATE:
 		currentState->setRealStateType(enumeration::RESULTS_STATE);
 #ifdef CLIENT
+		// swap to results UI
 		gfx::hud.swapUI(Hud::RESULTS);
+
+		// replace orbital camera with cinematic camera
+		if (global::camera != NULL) delete global::camera;
+		global::camera = new CinematicCamera();
+		global::camera->init(Vector(30.0, 15.0, 30.0), Vector(0.0, 10.0, 0.0));
+
+		// swap soundtrack
 		global::soundManager->stopPlayingMusic();
 		global::soundManager->playResultWinSong();
 #endif

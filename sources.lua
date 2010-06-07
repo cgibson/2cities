@@ -36,6 +36,7 @@ client_srcs = {
     "graphics/BuildUI.cpp",
     "graphics/WaitingUI.cpp",
     "graphics/MenuUI.cpp",
+    "graphics/ResultsUI.cpp",
     "graphics/camera.cpp",
     "graphics/freelookcamera.cpp",
     "graphics/orbitalcamera.cpp",

@@ -169,7 +169,8 @@ void Renderer::draw_diffusePass()
   glPushMatrix();
 
 	if (global::stateManager->currentState->stateType() == CARNAGE_STATE ||
-		global::stateManager->currentState->stateType() == MENU_STATE)
+		global::stateManager->currentState->stateType() == MENU_STATE ||
+		global::stateManager->currentState->stateType() == RESULTS_STATE)
 	{
 		skybox.draw(light.position[0], light.position[1], light.position[2]);
 	}
@@ -316,7 +317,7 @@ void Renderer::draw_diffusePass()
   glUseProgram(0);
 
 	CarnageState *cs;
-  
+
   switch(curstate->stateType())
   {
     case BUILD_STATE:
@@ -333,9 +334,9 @@ void Renderer::draw_diffusePass()
       cs = (CarnageState*)curstate;
       gfx::simpleShader.enable();
 			cs->opponentMat->applyMaterial(gfx::simpleShader, "");
-			
+
 			cs->opponent->draw();
-			
+
 			// render current cannon
 			glPushMatrix();
 				glClear(GL_DEPTH_BUFFER_BIT);
@@ -343,8 +344,8 @@ void Renderer::draw_diffusePass()
 				glLoadIdentity();
 				glMatrixMode(GL_PROJECTION);
 				glLoadIdentity();
-				gluPerspective(45.0, 
-											(float)global::width / global::height, 
+				gluPerspective(45.0,
+											(float)global::width / global::height,
 											1.0, 500.0);
 				gluLookAt(0, 0, 2,
 									0, 0, 5,
@@ -359,15 +360,15 @@ void Renderer::draw_diffusePass()
 				cs->playerMat->applyMaterial(gfx::simpleShader, "");
 				cs->playerCannon->draw();
 			glPopMatrix();
-			
+
     break;
     default: break;
   }
-  
+
   shader::reset();
 
   glPopMatrix();
-  
+
 
 
 }

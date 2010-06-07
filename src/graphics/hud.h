@@ -19,6 +19,7 @@
 #include "BuildUI.h"
 #include "WaitingUI.h"
 #include "MenuUI.h"
+#include "ResultsUI.h"
 
 class Hud {
 public:
@@ -63,6 +64,7 @@ private:
     BuildUI *_buildUI;
     WaitingUI *_waitingUI;
     MenuUI *_menuUI;
+    ResultsUI *_resultsUI;
 };
 
 #endif

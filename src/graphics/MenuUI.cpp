@@ -154,8 +154,8 @@ void MenuUI::update(int ms)
 	_offset += delta;
 
 	// position each choice
-	_hostGame->pos(global::width / 2, global::height / 2 - (0 * 56) + _offset - 100);
-	_joinGame->pos(global::width / 2, global::height / 2 - (1 * 56) + _offset - 100);
+	_joinGame->pos(global::width / 2, global::height / 2 - (0 * 56) + _offset - 100);
+	_hostGame->pos(global::width / 2, global::height / 2 - (1 * 56) + _offset - 100);
 	_exitGame->pos(global::width / 2, global::height / 2 - (2 * 56) + _offset - 100);
 
 	// set the alpha of each choice
@@ -205,11 +205,11 @@ void MenuUI::keyDown(int key, bool special)
 			case '\r':
 				if (!_choiceMade)
 				{
-					if (_currentChoice == 0) // host
+					if (_currentChoice == 1) // host
 					{
 						startHosting();
 					}
-					else if (_currentChoice == 1) // join
+					else if (_currentChoice == 0) // join
 					{
 						_choiceMade = true;
 					}
@@ -261,11 +261,11 @@ void MenuUI::mouseDown(int button)
 	{
 		switch (_currentChoice)
 		{
-			case 0: // host
+			case 1: // host
 				startHosting();
 				break;
 
-			case 1: // join
+			case 0: // join
 				_choiceMade = true;
 				break;
 

@@ -76,7 +76,9 @@ void NetworkServer::update(long elapsed) {
 	updateRxTxData(elapsed);
 	checkStateChange();
 	checkClientTimeout();
-	updatePlayerDetails();
+
+	if(global::stateManager->currentState->stateType() == CARNAGE_STATE)
+		updatePlayerDetails();
 
 	// Update Physics Engine
 	static int physicsDelay = 0;
@@ -317,10 +319,11 @@ void NetworkServer::networkOutgoing(long &elapsed) {
 			unsigned int currObj = _sendObjNext;
 			int currTime = global::elapsed_ms();
 			while(currObj < _sendObjNext + sendSize) {
+#ifdef CLIENT
 				// Update Locally
 				for(int o=0; o<10; o++)
 					updateObjectLocal(new WorldObject(*_serverObjs[(currObj+o)%objsSize].objPtr));
-
+#endif
 				// Build Batch Packet
 				WorldObject *objPtrGroup[OBJECT_BATCHSEND_SIZE];
 				for(unsigned int o=0; o<OBJECT_BATCHSEND_SIZE; o++) {
@@ -504,10 +507,60 @@ int NetworkServer::checkWinCondition() {
 }
 
 void NetworkServer::updatePlayerDetails() {
-	// TODO DAMAGE: check each object to see if its moved from original location
+	// NOTE This function will only check blocks with ID < 10000 since those
+	// are building blocks instead of ammo.
 
-	// TODO SCORE: check each object to see if its moved from its original location &
-	//             add it to a score multiplier queue of when this occured
+	// TODO DAMAGE:
+	// check each object to see if its moved from original location
+
+	// TODO SCORE:
+	// check each object to see if its moved from its original location &
+	// add it to a score multiplier queue of when this occured
+
+	int blocksP1 = 0;
+	int blocksP2 = 0;
+
+	int damagedP1 = 0;
+	int damagedP2 = 0;
+
+	for(unsigned int i=0; i < _serverObjs.size(); ++i) {
+		if(_serverObjs[i].objID < 10000) {
+			// Count All Objects
+			switch (_serverObjs[i].playerID) {
+			case 1 :
+				++blocksP1;
+				break;
+			case 2 :
+				++blocksP2;
+				break;
+			}
+
+			// Count Damaged Objs
+			if(_serverObjs[i].damaged) {
+				switch (_serverObjs[i].playerID) {
+				case 1 :
+					++damagedP1;
+					break;
+				case 2 :
+					++damagedP2;
+					break;
+				}
+			}
+		}
+	}
+
+	if(blocksP1 == 0) { blocksP1 = 1; }
+	if(blocksP2 == 0) { blocksP2 = 1; }
+	for(unsigned int i=0; i < clients.size(); ++i) {
+		if(clients[i]->playerID == 1) {
+			clients[i]->playerDamage = (int)(damagedP1*100/blocksP1);
+			clients[i]->playerScore  = damagedP1;
+		}
+		else if(clients[i]->playerID == 2) {
+			clients[i]->playerDamage = (int)(damagedP2*100/blocksP2);
+			clients[i]->playerScore  = damagedP2;
+		}
+	}
 }
 
 /*******************************************

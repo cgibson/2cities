@@ -36,13 +36,16 @@ namespace net{
 
 	extern unsigned int SERVER_SEND_MAX_PACKETS_PER_MS;
 	extern unsigned int SERVER_RECV_MAX_PACKETS_PER_CYCLE;
-	extern const unsigned int SERVER_PORT_DEFAULT;
 
 	extern unsigned int SERVER_PHYSICS_UPDATE_RATE;
 
-	extern int TIME_IN_BUILD_STATE;
-	extern int TIME_IN_CARNAGE_STATE;
-	extern int TIME_IN_RESULTS_STATE;
+	extern const unsigned int SERVER_PORT_DEFAULT;
+
+	extern const int TIME_IN_BUILD_STATE;
+	extern const int TIME_IN_CARNAGE_STATE;
+	extern const int TIME_IN_RESULTS_STATE;
+
+	extern const float OBJECT_KILL_DELTA;
 
 	// A separate class to make the header distinct
 	struct NetworkPacketHeader {

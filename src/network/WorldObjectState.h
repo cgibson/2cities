@@ -5,11 +5,16 @@
 #include <vector>
 #include <algorithm>
 
+#include "Network.h"
+
 class WorldObjectState {
 public:
 	WorldObject *objPtr;
 
 	int objID;
+	int playerID;
+	int bldgID;
+
 	float  velMag;
 
 	// Initial Details
@@ -25,9 +30,16 @@ public:
 	int    priority;
 	int    lastSent;
 
+	// Lifecycle items
+	bool   damaged;
+
 	WorldObjectState(WorldObject * newObj, int initPriority = 2) {
 		objPtr       = newObj;
+
 		objID        = newObj->getID();
+		playerID     = newObj->getPlayerID();
+		bldgID       = newObj->getBldgID();
+
 		velMag       = newObj->getForce().x();
 
 		initPos      = newObj->getPosition();
@@ -39,6 +51,8 @@ public:
 		lastUpdate   = newObj->getTimeStamp();
 		lastSent     = newObj->getTimeStamp();
 		priority     = initPriority;
+
+		damaged      = false;
 	}
 
 	void update(WorldObject * newObj) {
@@ -55,6 +69,11 @@ public:
 			initPosDelta = (objPtr->getPosition() - initPos).mag();
 			lastPosDelta = (objPtr->getPosition() - lastPos).mag();
 			lastPos      = objPtr->getPosition();
+
+			if(initPosDelta > net::OBJECT_KILL_DELTA) {
+				damaged = true;
+				objPtr->setPhysics(STATIC);
+			}
 		}
 	}
 
@@ -102,10 +121,7 @@ public:
 	}
 
 	static void sortVector(std::vector<WorldObjectState> *objVec) {
-		//printf("Sorting Server Vector\n");
 		std::sort((*objVec).begin(),(*objVec).end(), WorldObjectState::NetworkPrioritySort);
-//		if((*objVec).size() > 0 && (*objVec)[0].priority > 0)
-//			printf("Obj 0 priority\n", (*objVec)[0].priority);
 	}
 
 	static bool NetworkPrioritySort(WorldObjectState objSt1, WorldObjectState objSt2) {

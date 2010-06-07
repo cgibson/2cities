@@ -12,20 +12,25 @@ using namespace enumeration;
 WorldObject::WorldObject() {
 	id = 0;
 	playerid = 0;
+	bldgid = 0;
 	type = DUMMY_BLOCK;
+	physics = DYNAMIC;
 	timestamp = 0;
 }
 
 WorldObject::WorldObject(unsigned int newid, unsigned int newplayerid, ObjectType newtype) {
 	id = newid;
 	playerid = newplayerid;
+	bldgid = 0;
 	type = newtype;
+	physics = DYNAMIC;
 	timestamp = 0;
 }
 
 WorldObject::WorldObject(const WorldObject& newObj) {
 	this->id = newObj.id;
 	this->playerid = newObj.playerid;
+	this->bldgid = newObj.bldgid;
 	this->position = newObj.position;
 	this->velocity = newObj.velocity;
 	this->force = newObj.force;
@@ -42,6 +47,7 @@ WorldObject::WorldObject(unsigned char *bufPtr) {
 void WorldObject::import(const WorldObject& newObj) {
 	this->id = newObj.id;
 	this->playerid = newObj.playerid;
+	this->bldgid = newObj.bldgid;
 	this->position = newObj.position;
 	this->velocity = newObj.velocity;
 	this->force = newObj.force;

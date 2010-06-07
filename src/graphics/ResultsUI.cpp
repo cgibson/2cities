@@ -157,6 +157,11 @@ void ResultsUI::menu()
 	global::networkManager->network->serverDisconnect();
 }
 
+void ResultsUI::reset()
+{
+	_showGauntlet = false;
+}
+
 void ResultsUI::rematchClick()
 {
 	ResultsUI *ui = static_cast<ResultsUI *>(gfx::hud.currentUI());

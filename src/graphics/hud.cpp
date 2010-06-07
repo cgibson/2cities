@@ -124,6 +124,7 @@ void Hud::swapUI(UiType which)
 			break;
 
 		case RESULTS:
+			_resultsUI->reset();
 			_currentUI = _resultsUI;
 			break;
 

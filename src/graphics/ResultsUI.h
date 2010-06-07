@@ -31,6 +31,7 @@ public:
 
 	void rematch();
 	void menu();
+	void reset();
 
 	static void rematchClick();
 	static void menuClick();

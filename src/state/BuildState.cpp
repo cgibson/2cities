@@ -26,7 +26,7 @@ namespace BuildStateGlobals
 	bool MOUSE_DOWN;
 	bool VALID_CLICK;
 	int LAST_BUTTON;
-	int INITIAL_RESOURCES = 10000000;
+	int INITIAL_RESOURCES = 75000;
 	int blocksize, pp_index, counter;
 	Face pp_face;
 	Point firstPoint, secondPoint;
@@ -96,6 +96,7 @@ void BuildState::initialize() {
 	pp_index = -1;
 	pp_face = NOTHING;
 	firstPoint = Point();
+	updateResources();
 
 #ifdef CLIENT
 	// create the camera
@@ -214,6 +215,7 @@ void BuildState::mouseDownToggle(int button)
 	firstPoint.set(Point(io::mouse_x, io::mouse_y));
 	firstPoint.round();
 	secondPoint = firstPoint;
+	//renderPlane = false;
 }
 
 // called only on the first mouse up
@@ -306,7 +308,9 @@ void BuildState::mouseDownHandler()
 				// 2. update object (send fp and secondPoint)
 				CustomObject co = CustomObject(0, 0, CUSTOM_BLOCK, Point(), Point());
 				co.orientRect(firstPoint, secondPoint);
-				if(!isInsideRect(co, objects.size() - 1))
+				co.set_max_y(blocksize);
+				co.setBuildingType(static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->getBuildingType());
+				if(!isInsideRect(co, objects.size() - 1) && !isOutOfResources(co, objects.size() - 1))
 					static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->orientRect(firstPoint, secondPoint);
 			}
 		}
@@ -357,13 +361,15 @@ void BuildState::mouseDownHandler()
 void BuildState::updateResources()
 {
 	InGameState *currState = global::stateManager->currentState;
-	
+	//printf("BLA!!!!!\n");
 	int costOfBuildings = 0;
 	for(unsigned int i = 0; i < objects.size(); i++)
 	{
 		costOfBuildings += static_cast<CustomObject*>(currState->objects[i])->getCost();
 	}
 	currResources = INITIAL_RESOURCES - costOfBuildings;
+	global::networkManager->network->setMyPlayerScore(currResources);
+	global::networkManager->network->setMyPlayerDamage(100 * ((INITIAL_RESOURCES - currResources) / (float)INITIAL_RESOURCES));
 }
 
 // 
@@ -371,7 +377,7 @@ bool BuildState::isOutOfResources(CustomObject modifiedObject, int index)
 {
 	InGameState *currState = global::stateManager->currentState;	
 	
-	modifiedObject.updateCost();
+	int cost = modifiedObject.updateCost();
 
 	// calculate increase in resources by change in CustomObject
 	int difference = modifiedObject.getCost() - static_cast<CustomObject*>(currState->objects[index])->getCost();
@@ -590,7 +596,7 @@ bool BuildState::adjust_face(int index, Face f, Point click)
 																									static_cast<CustomObject*>(objects[index])->get_min());
 				if(isPastBounds(co))
 				{
-					printf("DEAD\n");
+					//printf("DEAD\n");
 					objects.erase( objects.begin() + index);
 
 					pp_index = -1;
@@ -633,7 +639,7 @@ bool BuildState::adjust_face(int index, Face f, Point click)
 																									static_cast<CustomObject*>(objects[index])->get_min());
 				if(isPastBounds(co))
 				{
-					printf("DEAD\n");
+					//printf("DEAD\n");
 					objects.erase( objects.begin() + index);		
 					
 					pp_index = -1;
@@ -676,7 +682,7 @@ bool BuildState::adjust_face(int index, Face f, Point click)
 																							static_cast<CustomObject*>(objects[index])->get_min_z()));
 				if(isPastBounds(co))
 				{
-					printf("DEAD\n");
+					//printf("DEAD\n");
 					objects.erase( objects.begin() + index);		
 					
 					pp_index = -1;
@@ -719,7 +725,7 @@ bool BuildState::adjust_face(int index, Face f, Point click)
 																							static_cast<CustomObject*>(objects[index])->get_min_z() + blocksize));
 				if(isPastBounds(co))
 				{
-					printf("DEAD\n");
+					//printf("DEAD\n");
 					objects.erase( objects.begin() + index);		
 					
 					pp_index = -1;
@@ -742,6 +748,6 @@ void BuildState::new_push_pull(Point mouse_pos)
 	if(adjust_face(pp_index, pp_face, mouse_pos))
 	{
 		updateResources();	
-		printf("currResources: %d\n", currResources);
+		//printf("currResources: %d\n", currResources);
 	}
 }

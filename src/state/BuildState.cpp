@@ -560,7 +560,7 @@ bool BuildState::adjust_face(int index, Face f, Point click)
 				static_cast<CustomObject*>(objects[index])->set_max_y(static_cast<CustomObject*>(objects[index])->get_max_y() - blocksize);
 			}
 			return true;
-		}
+		}printf("top\n");
    }
 	else if(f == FACE1)
 	{
@@ -608,7 +608,7 @@ bool BuildState::adjust_face(int index, Face f, Point click)
 				}
 			}
 			return true;
-		}
+		}printf("face1\n");
 	}
 	else if(f == FACE2)
 	{
@@ -651,7 +651,7 @@ bool BuildState::adjust_face(int index, Face f, Point click)
 				}
 			}
 			return true;
-		}
+		}printf("face2\n");
 	}
 	else if(f == FACE3)
 	{
@@ -694,7 +694,7 @@ bool BuildState::adjust_face(int index, Face f, Point click)
 				}				
 			}
 			return true;
-		}
+		}printf("face3\n");
 	}
 	else if(f == FACE4)
 	{
@@ -712,7 +712,7 @@ bool BuildState::adjust_face(int index, Face f, Point click)
 					co.setBuildingType(static_cast<CustomObject*>(objects[index])->getBuildingType());
 					if(!isInsideRect(co, index) && !isOutOfResources(co, index))
 					{				
-						static_cast<CustomObject*>(objects[index])->set_max_z(static_cast<CustomObject*>(objects[index])->get_min_z() - blocksize);
+						static_cast<CustomObject*>(objects[index])->set_min_z(static_cast<CustomObject*>(objects[index])->get_min_z() - blocksize);
 					}
 				}
 			}
@@ -737,7 +737,7 @@ bool BuildState::adjust_face(int index, Face f, Point click)
 				}				
 			}
 			return true;
-		}
+		}printf("face4\n");
 	}
 	return false;
 }

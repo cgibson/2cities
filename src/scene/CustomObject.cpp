@@ -35,11 +35,11 @@ int CustomObject::updateCost()
 {
 	if(buildingType == TESS_STONEHENGE)
 	{
-		buildingCost = compute_volume() * 10;
+		buildingCost = compute_volume() * 5;
 	}
 	else if(buildingType == TESS_SIMPLE)
 	{
-		buildingCost = compute_volume() * 5;
+		buildingCost = compute_volume() * 10;
 	}
 	else if(buildingType == TESS_SOLID)
 	{

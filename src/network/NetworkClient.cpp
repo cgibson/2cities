@@ -98,6 +98,10 @@ void NetworkClient::networkIncoming(long &elapsed) {
 		case TEXT_MSG :
 			recvMsg(pkt);
 			break;
+		case DISCONNECT :
+			serverDisconnect();
+			global::stateManager->changeCurrentState(MENU_STATE);
+			break;
 		default :
 			printf("Received an unknown packet type!\n");
 		}

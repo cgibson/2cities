@@ -372,6 +372,9 @@ void NetworkServer::closeSockets() {
 }
 
 void NetworkServer::playerDisconnect(int clientID) {
+	NetworkPacket tmpPkt(DISCONNECT, (unsigned char *)&clientID, sizeof(int));
+	SendPacket(tmpPkt, &(clients[clientID]->socket), clients[clientID]->ip);
+
 	printf("%s (C#%i P#%i) is Disconnecting!\n",
 			clients[clientID]->playerName,
 			clientID,
@@ -485,7 +488,11 @@ void NetworkServer::checkStateChange() {
 			break;
 		case RESULTS_STATE :
 			if(playerCount != readyCount && playerCount > 0) {
-				// TODO send disconnect command to clients (kick 'em out)
+				// send disconnect command to clients (kick 'em out)
+				for(unsigned int i=0; i < clients.size(); ++i) {
+					printf("Kicking Client: ");
+					playerDisconnect(i);
+				}
 			}
 
 			emptyWorld();

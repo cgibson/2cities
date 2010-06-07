@@ -330,9 +330,8 @@ void NetworkSystem::emptyWorld() {
 }
 
 void NetworkSystem::loadLevel(vector<WorldObject *> newObjs) {
-	printf("I called loadLevel with %i items\n",newObjs.size());
 	if(serverConnected() && clients[myClientID]->playerType == Client::PLAYER) {
-		int blockStart = (clients[myClientID]->playerID - 1) * 5000;
+		int blockStart = (clients[myClientID]->playerID - 1) * 5000 + 1;
 		for(unsigned int o = 0; o < newObjs.size(); ++o) {
 			// building blocks have a 0-10000 value due to player value 1 or 2
 			addObject(newObjs[o], blockStart + o);

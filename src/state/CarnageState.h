@@ -24,6 +24,8 @@ using namespace std;
 #define NUM_BUNITS 30
 #define NUM_AMMO 10
 
+#define AMMO_COUNT 7
+
 class CarnageState: public InGameState
 {
     public:
@@ -37,7 +39,10 @@ class CarnageState: public InGameState
         void setOppView(const Vector& newOppView) {oppView = newOppView;}
         Vector getOppPos() {return oppPos;}
         Vector getOppView() {return oppView;}
-        int getRechargeTimeLeft() const { return ammo_recharge; }
+        int getRechargePercent(int ammoIndex) const {
+        	return (ammoDelayTimers[ammoIndex] - ammoTimers[ammoIndex]) * 100 / ammoDelayTimers[ammoIndex];
+        }
+        int getAmmoCount(int ammoIndex) const { return ammoCounts[ammoIndex]; }
 
         virtual enum E_STATE stateType() {return realStateType;}
 
@@ -55,10 +60,18 @@ class CarnageState: public InGameState
         Material *opponentMat;
         Material *playerMat;
 
-		ObjectType ammo_type;
+        int ammoIndex;
 
     protected:
-        int ammo_recharge;
+		ObjectType ammoTypes[AMMO_COUNT];
+		int ammoNextAward[AMMO_COUNT];
+		int ammoTimers[AMMO_COUNT];
+		int ammoCounts[AMMO_COUNT];
+
+        int ammoDelayTimers[AMMO_COUNT];
+        int ammoDelayNextAward[AMMO_COUNT];
+
+        int ammoCount;
 
 	private:
 		bool cameraSetupComplete;

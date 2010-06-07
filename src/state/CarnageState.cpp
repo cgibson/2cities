@@ -34,9 +34,67 @@ void CarnageState::initialize() {
     // anymore, it's done globally at app launch
     // we just capture the mouse
     io::capture_mouse();
-    ammo_recharge = 0;
     music_delay = 0;
-    ammo_type = FRACTAL_BOMB;
+
+    ammoIndex = 0;
+    ammoTypes         [ammoIndex] = DUMMY_SPHERE;  //BULLETS
+    ammoCounts        [ammoIndex] = -1;
+    ammoDelayNextAward[ammoIndex] = -1;
+    ammoNextAward     [ammoIndex] = ammoDelayNextAward[ammoIndex];
+    ammoDelayTimers   [ammoIndex] = 1000;
+    ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];
+    ammoIndex++;
+
+    ammoTypes         [ammoIndex] = SHOTGUN;       //SHOTGUN
+    ammoCounts        [ammoIndex] = -1;
+    ammoDelayNextAward[ammoIndex] = -1;
+    ammoNextAward     [ammoIndex] = ammoDelayNextAward[ammoIndex];
+    ammoDelayTimers   [ammoIndex] = 1500;
+    ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];
+    ammoIndex++;
+
+    ammoTypes         [ammoIndex] = BALLHEMOTH;    //BALLHEMOTH
+    ammoCounts        [ammoIndex] = -1;
+    ammoDelayNextAward[ammoIndex] = -1;
+    ammoNextAward     [ammoIndex] = ammoDelayNextAward[ammoIndex];
+    ammoDelayTimers   [ammoIndex] = 2000;
+    ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];
+    ammoIndex++;
+
+    ammoTypes         [ammoIndex] = BLACK_HOLE;    //BLACKHOLE
+    ammoCounts        [ammoIndex] = 0;
+    ammoDelayNextAward[ammoIndex] = 50;
+    ammoNextAward     [ammoIndex] = ammoDelayNextAward[ammoIndex];
+    ammoDelayTimers   [ammoIndex] = 1000;
+    ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];
+    ammoIndex++;
+
+    ammoTypes         [ammoIndex] = AIR_STRIKE;    //AIRSTRIKE
+    ammoCounts        [ammoIndex] = 0;
+    ammoDelayNextAward[ammoIndex] = 50;
+    ammoNextAward     [ammoIndex] = ammoDelayNextAward[ammoIndex];
+    ammoDelayTimers   [ammoIndex] = 1000;
+    ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];
+    ammoIndex++;
+
+    ammoTypes         [ammoIndex] = SHAPE_SHIFTER; //SHAPESHIFTER
+    ammoCounts        [ammoIndex] = 0;
+    ammoDelayNextAward[ammoIndex] = 50;
+    ammoNextAward     [ammoIndex] = ammoDelayNextAward[ammoIndex];
+    ammoDelayTimers   [ammoIndex] = 1000;
+    ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];
+    ammoIndex++;
+
+    ammoTypes         [ammoIndex] = CLUSTER_BOMB;  //CLUSTERBOMB
+    ammoCounts        [ammoIndex] = 0;
+    ammoDelayNextAward[ammoIndex] = 50;
+    ammoNextAward     [ammoIndex] = ammoDelayNextAward[ammoIndex];
+    ammoDelayTimers   [ammoIndex] = 1000;
+    ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];
+    ammoIndex++;
+
+    ammoCount = ammoIndex;
+    ammoIndex = 0;
     
     oppPos = Vector(0,0,0);
     oppView = Vector(0,0,0);
@@ -75,13 +133,21 @@ void CarnageState::initialize() {
 
 void CarnageState::update(long milli_time) {
 #ifdef CLIENT
-	ammo_recharge -= milli_time;
-	ammo_recharge = (ammo_recharge < 0) ? 0 : ammo_recharge; // clamp to 0
 	music_delay -= milli_time;
 	music_delay = (music_delay < 0) ? 0 : music_delay; // clamp to 0
 
+	for(int i=0; i<ammoCount; i++) {
+		if(ammoCounts[i] != -1) {
+			int myPlayerID = global::networkManager->network->getMyPlayerID();
+			if(global::networkManager->network->getPlayerScore(myPlayerID) >= ammoNextAward[i]) {
+				++ammoCounts[i];
+				ammoNextAward[i] += ammoDelayNextAward[i];
+			}
+		}
+		ammoTimers[i] = max(0, (int)(ammoTimers[i] - milli_time));
+	}
+
 	// keep the camera centered on the proper half of the playing field
-#ifdef CLIENT
 	int playerID = global::networkManager->network->getMyPlayerID();
 	if (!cameraSetupComplete && (playerID == 1 || playerID == 2))
 	{
@@ -105,7 +171,6 @@ void CarnageState::update(long milli_time) {
 	dir.norm();
 	Quaternion quat = Quaternion::GenerateRotationFromDirectionVector(dir);
 	opponent->setOrientation(quat);
-#endif
 
    updateInput(milli_time);
 #endif
@@ -166,14 +231,21 @@ void CarnageState::updateInput(long milli_time) {
    }
 
    // FIRE CONTROLS
-   if((io::keys[' '] || io::mouse_buttons[MOUSE_LEFT] == GLUT_DOWN) && ammo_recharge <= 0)
+   if((io::keys[' '] || io::mouse_buttons[MOUSE_LEFT] == GLUT_DOWN) &&
+		   ammoTimers[ammoIndex] <= 0 &&
+		   (ammoCounts[ammoIndex] > 0 || ammoCounts[ammoIndex] == -1))
    {
 	  global::soundManager->playCarnageSfx(0);
-	  WorldObject *newObjPtr = global::factory->makeObject(SHOTGUN);//ammo_type);
+	  WorldObject *newObjPtr = global::factory->makeObject(ammoTypes[ammoIndex]);
 	  newObjPtr->setPosition(camera->position() - Vector( 0.0f, 1.0f, 0.0f));
 	  newObjPtr->setVelocity((camera->viewVec() + Vector(0.0f, 0.15f, 0.0f)) * 50); // offset the view vector a bit to more closely match the targeting reticle
 	  networkManager->network->addObject(newObjPtr);
-	  ammo_recharge = RECHARGE_TIME;
+	  ammoTimers[ammoIndex] = ammoDelayTimers[ammoIndex];
+	  if(ammoCounts[ammoIndex] != -1)
+		  --ammoCounts[ammoIndex];
+   }
+   else {
+	   //printf("Ammo Request: index(%i) count(%i) timer(%i)\n", ammoIndex, ammoCounts[ammoIndex], ammoTimers[ammoIndex]);
    }
 #endif
 }

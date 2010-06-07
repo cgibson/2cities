@@ -17,8 +17,8 @@ namespace net{
 
 	const unsigned int SERVER_PORT_DEFAULT = 5060;
 
-	const int TIME_IN_BUILD_STATE   = 300; // in sec
-	const int TIME_IN_CARNAGE_STATE = 600; // in sec
+	const int TIME_IN_BUILD_STATE   = 9999; // in sec
+	const int TIME_IN_CARNAGE_STATE = 300; // in sec
 	const int TIME_IN_RESULTS_STATE = 30; // in sec
 
 	const float OBJECT_KILL_DELTA = 7.0f;

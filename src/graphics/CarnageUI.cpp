@@ -276,6 +276,8 @@ void CarnageUI::update(int ms)
 	if (global::stateManager->currentState->stateType() == CARNAGE_STATE)
 	{
 		CarnageState *cs = static_cast<CarnageState *>(global::stateManager->currentState);
+		cs->ammoIndex = _ammoSelect->currentItem();
+		/*
 		switch (_ammoSelect->currentItem())
 		{
 			case 0: // bullets
@@ -309,6 +311,7 @@ void CarnageUI::update(int ms)
 			default:
 				break;
 		}
+		*/
 	}
 
 	GameUI::update(ms);
@@ -329,16 +332,30 @@ void CarnageUI::update(int ms)
 
 	// read recharge progress from carnage state (TODO: read different recharge times for different weapons)
 	CarnageState *state = static_cast<CarnageState *>(global::stateManager->currentState);
-	float percent = (CarnageState::RECHARGE_TIME - state->getRechargeTimeLeft()) / (float)CarnageState::RECHARGE_TIME * 100.0;
+	//float percent = (CarnageState::RECHARGE_TIME - state->getRechargeTimeLeft()) / (float)CarnageState::RECHARGE_TIME * 100.0;
+	float percent;
+	percent = state->getRechargePercent(0);
 	_bulletsRecharge->percent((int)percent);
 	_bulletsRecharge->fgclr(1.0 - (percent / 100.0), (percent / 100.0),
 		_bulletsRecharge->fgb(), 1.0);
+	percent = state->getRechargePercent(1);
 	_shotgunRecharge->percent((int)percent);
 	_shotgunRecharge->fgclr(1.0 - (percent / 100.0), (percent / 100.0),
 		_shotgunRecharge->fgb(), 1.0);
+	percent = state->getRechargePercent(2);
 	_ballhemothRecharge->percent((int)percent);
 	_ballhemothRecharge->fgclr(1.0 - (percent / 100.0), (percent / 100.0),
 		_ballhemothRecharge->fgb(), 1.0);
+
+	char buf[4];
+	sprintf(buf, "%i", state->getAmmoCount(3));
+	_blackholeClip->text(buf);
+	sprintf(buf, "%i", state->getAmmoCount(4));
+	_airstrikeClip->text(buf);
+	sprintf(buf, "%i", state->getAmmoCount(5));
+	_shapeshifterClip->text(buf);
+	sprintf(buf, "%i", state->getAmmoCount(6));
+	_clusterbombClip->text(buf);
 
 	// update the time remaining display
 	_countdown->seconds(global::networkManager->network->getTimeToStateChange() / 1000 * -1);

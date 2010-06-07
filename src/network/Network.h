@@ -46,6 +46,7 @@ namespace net{
 	extern const int TIME_IN_RESULTS_STATE;
 
 	extern const float OBJECT_KILL_DELTA;
+	extern const int DAMAGE_PERCENT_WIN_CONDITION;
 
 	// A separate class to make the header distinct
 	struct NetworkPacketHeader {

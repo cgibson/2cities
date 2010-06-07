@@ -68,14 +68,14 @@ void StateManager::changeCurrentState(enum E_STATE newState)
 			CustomObject *currObject;
 			int bldgNumOffset = (global::networkManager->network->getMyPlayerID() - 1) * 1000;
 			// TODO iterator through all objects
-			for(int i = 0; i < oldState->objects.size(); i++)
+			for(unsigned int i = 0; i < oldState->objects.size(); i++)
 			{
 				currObject = (CustomObject *)oldState->objects[i];
 				// TODO push on big vector
 				temp = Tesselator::placeBuilding(currObject->get_min_vector(),
 					currObject->get_max_vector(),
 					currObject->getBuildingType());
-    			for(int j = 0; j < temp.size(); j++)
+    			for(unsigned int j = 0; j < temp.size(); j++)
     			{
     				temp[j]->setBldgID(bldgNumOffset + i);
 					bfv.push_back(temp[j]);

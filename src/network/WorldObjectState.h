@@ -11,9 +11,9 @@ class WorldObjectState {
 public:
 	WorldObject *objPtr;
 
-	int objID;
-	int playerID;
-	int bldgID;
+	unsigned int objID;
+	unsigned int playerID;
+	unsigned int bldgID;
 
 	float  velMag;
 

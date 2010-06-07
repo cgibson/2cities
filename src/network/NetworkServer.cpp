@@ -316,9 +316,9 @@ void NetworkServer::networkOutgoing(long &elapsed) {
 		const int objsSize = _serverObjs.size();
 		const int sendSize = min(objsSize, (int)(SERVER_SEND_MAX_PACKETS_PER_MS * elapsed * OBJECT_BATCHSEND_SIZE));
 		if (sendSize > 0 && ((clients.size() > 1 || (_dedicatedServer == true && clients.size() > 0)))) {
-			unsigned int currObj = _sendObjNext;
+			int currObj = 0;
 			int currTime = global::elapsed_ms();
-			while(currObj < _sendObjNext + sendSize) {
+			while(currObj < sendSize) {
 #ifdef CLIENT
 				// Update Locally
 				for(int o=0; o<10; o++)
@@ -497,7 +497,7 @@ void NetworkServer::checkStateChange() {
 int NetworkServer::checkWinCondition() {
 	for(unsigned int i=0; i<clients.size(); ++i) {
 		if(clients[i]->playerType == Client::PLAYER) {
-			if(clients[i]->playerDamage >= 95) {
+			if(clients[i]->playerDamage >= DAMAGE_PERCENT_WIN_CONDITION) {
 				return clients[i]->playerID;
 			}
 		}

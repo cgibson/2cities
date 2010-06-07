@@ -10,6 +10,7 @@ ResultsUI::ResultsUI()
 	_rematchButton = NULL;
 	_menuButton = NULL;
 	_gauntletLabel = NULL;
+	_countdown = NULL;
 	_showGauntlet = false;
 }
 
@@ -21,6 +22,7 @@ ResultsUI::~ResultsUI()
 	if (_rematchButton != NULL) delete _rematchButton;
 	if (_menuButton != NULL) delete _menuButton;
 	if (_gauntletLabel != NULL) delete _gauntletLabel;
+	if (_countdown != NULL) delete _countdown;
 }
 
 void ResultsUI::init()
@@ -78,6 +80,13 @@ void ResultsUI::init()
 	_gauntletLabel->fgclr(1.0, 1.0, 1.0, 1.0);
 	_gauntletLabel->text("Your opponent has thrown down the gauntlet!");
 	_gauntletLabel->parent(_window);
+
+	_countdown = new UICountdown();
+	_countdown->init();
+	_countdown->pos(0, 0);
+	_countdown->size(240, 75);
+	_countdown->bgclr(1.0, 1.0, 1.0, 0.5);
+	_countdown->parent(_window);
 }
 
 void ResultsUI::update(int ms)
@@ -137,6 +146,9 @@ void ResultsUI::update(int ms)
 	{
 		_gauntletLabel->fgclr(_gauntletLabel->fgr(), _gauntletLabel->fgg(), _gauntletLabel->fgb(), 0.0);
 	}
+
+	// update the time remaining display
+	_countdown->seconds(global::networkManager->network->getTimeToStateChange() / 1000 * -1);
 
 	GameUI::update(ms);
 }

@@ -19,6 +19,7 @@
 #include "UILabel.h"
 #include "UIIcon.h"
 #include "UIButton.h"
+#include "UICountdown.h"
 
 class ResultsUI : public GameUI {
 public:
@@ -43,6 +44,7 @@ private:
 	UIButton *_rematchButton;
 	UIButton *_menuButton;
 	UILabel *_gauntletLabel;
+	UICountdown *_countdown;
 	bool _showGauntlet;
 	char _redBuf[10];
 	char _blueBuf[10];

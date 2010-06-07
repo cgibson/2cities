@@ -276,20 +276,25 @@ void NetworkServer::networkIncomingPlayers(int p, long &elapsed) {
 			printf("LEVEL_LOAD: %s\n", (char *)pkt.data);
 			loadLevel((char *)pkt.data);
 			break;
+		case SCORE_MINE :
+			clients[p]->playerScore = *(int*)(pkt.data);
+			break;
+		case DAMAGE_MINE :
+			clients[p]->playerDamage = *(int*)(pkt.data);
+			break;
 		case PLAYER_READY :
 			clients[p]->playerReady = *(int*)(pkt.data);
-			printf("PLAYER_READY: %i\n", clients[p]->playerReady);
+			printf("PLAYER_READY: P#%i C#%i Ready=%i\n", clients[p]->playerID, p, clients[p]->playerReady);
 			break;
 		case PLAYER_NAME :
 			strncpy(clients[p]->playerName, (char *)(pkt.data), 16);
-			printf("PLAYER_NAME: %s\n", clients[p]->playerName);
+			printf("PLAYER_NAME: P#%i C#%i %s\n", clients[p]->playerID, p, clients[p]->playerName);
 			break;
 		case CAMLOC_MYLOC :
 			recvPlayerCamera(clients[p]->camPos, clients[p]->camView, pkt.data);
 #ifdef CLIENT
 			updOPlayerCamera();
 #endif
-			//printf("Player #%i CamPos%s CamView%s\n",_players[p]->ID,_players[p]->camPos.str(),_players[p]->camView.str());
 			break;
 		case TEXT_MSG :
 			recvMsg(pkt);

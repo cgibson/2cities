@@ -63,6 +63,14 @@ void NetworkSystem::setMyPlayerName(char *newName) {
 	clients[myClientID]->playerName[15] = '\0';
 }
 
+void NetworkSystem::setMyPlayerScore(int newScore) {
+	clients[myClientID]->playerScore = newScore;
+}
+
+void NetworkSystem::setMyPlayerDamage(int newDamage) {
+	clients[myClientID]->playerDamage = newDamage;
+}
+
 /*******************************************
  * Server/Connect Send/Recv
  *******************************************/

@@ -190,6 +190,12 @@ void NetworkManager::consoleMe(int argc, char *argv[]) {
 	if(argc == 3 && !strcmp(argv[1],"name")) {
 		global::networkManager->network->setMyPlayerName(argv[2]);
 	}
+	if(argc == 3 && !strcmp(argv[1],"score")) {
+		global::networkManager->network->setMyPlayerScore(atoi(argv[2]));
+	}
+	if(argc == 3 && !strcmp(argv[1],"damage")) {
+		global::networkManager->network->setMyPlayerDamage(atoi(argv[2]));
+	}
 #endif
 }
 

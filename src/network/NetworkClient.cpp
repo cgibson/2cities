@@ -235,7 +235,6 @@ void NetworkClient::addObject(WorldObject *ObjPtr, int newID) {
 		NetworkPacket pkt(OBJECT_SEND, buf, woSize);
 		SendPacket(pkt, &socket, serverIP);
 	}
-	ObjPtr->print();
 
 	// Add to local system for interpolation
 	updateObjectLocal(ObjPtr);
@@ -279,6 +278,20 @@ void NetworkClient::setMyPlayerName(char *newName) {
 	SendPacket(tmpPkt, &socket, serverIP);
 }
 
+void NetworkClient::setMyPlayerScore(int newScore) {
+	if(isConnected) {
+		NetworkPacket tmpPkt(SCORE_MINE, (unsigned char *)&newScore, sizeof(int));
+		SendPacket(tmpPkt, &socket, serverIP);
+	}
+}
+
+void NetworkClient::setMyPlayerDamage(int newDamage) {
+	if(isConnected) {
+		NetworkPacket tmpPkt(DAMAGE_MINE, (unsigned char *)&newDamage, sizeof(int));
+		SendPacket(tmpPkt, &socket, serverIP);
+	}
+}
+
 void NetworkClient::sendMsg(char *msgStr) {
 	if(isConnected) {
 		NetworkPacket tmpPkt(TEXT_MSG, (unsigned char *)(msgStr) , 0);
@@ -287,6 +300,5 @@ void NetworkClient::sendMsg(char *msgStr) {
 		tmpPkt.dataSize++;
 
 		SendPacket(tmpPkt, &socket, serverIP);
-		printf("Sent TextMsg.\n");
 	}
 }

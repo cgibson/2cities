@@ -44,10 +44,27 @@ void ResultsUI::init()
 	_blueScore->fgclr(0.0, 0.0, 1.0, 1.0);
 	_blueScore->text("000000");
 	_blueScore->parent(_window);
+
+	/*_rematchButton = new UIButton();
+	_rematchButton->init(ResultsUI::rematchClick);
+	_rematchButton->text()->init("resources/fonts/sui_generis_free.ttf", 18, UILabel::LEFT);
+	_rematchButton->text()->text("Rematch!");
+	_rematchButton->icon()->init("resources/textures/checkmark.bmp", "resources/textures/checkmark_alpha.bmp");
+	_rematchButton->bgclr(0.5, 0.5, 0.5, 0.5);
+	_rematchButton->mouseOverClr(0.5, 0.5, 0.5, 0.75);
+	_rematchButton->mouseDownClr(0.5, 1.0, 0.5, 0.75);
+	_rematchButton->pos(global::width / 2 - 95, 20);
+	_rematchButton->size(190, 50);
+	_rematchButton->parent(_window);*/
 }
 
 void ResultsUI::update(int ms)
 {
+	// keep everything aligned
+	_winLabel->pos(global::width / 2, global::height / 2 + 50);
+	_redScore->pos(global::width / 2 - 50, global::height / 2 - 25);
+	_blueScore->pos(global::width / 2 + 50, global::height / 2 - 25);
+
 	GameUI::update(ms);
 }
 

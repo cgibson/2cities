@@ -37,6 +37,10 @@ public:
 	void update(int ms);
 	void draw();
 
+	// property accessors
+	int score() const { return _score; }
+	void score(int score) { _score = score; printScoreToBuffer(); _scoreLabel->text(_scoreBuf); }
+
 private:
 	ScoreDisplay _player;
 	ScoreType _type;

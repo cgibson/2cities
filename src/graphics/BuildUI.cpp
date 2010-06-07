@@ -143,7 +143,6 @@ void BuildUI::update(int ms)
 {
 	static int timeaccum = 0;
 	timeaccum += ms;
-	int amount = timeaccum % 4000;
 
 	// keep the progress bars sized and aligned correctly
 	_redFullProgress->pos(330, global::height - 21);
@@ -164,15 +163,35 @@ void BuildUI::update(int ms)
 
 	// TODO: actually get resource percentage from game state here
 
-	_redFullProgress->percent((int)(amount / 4000.0 * 100));
-	snprintf(_redFullBuf, 10, "%d%%", _redFullProgress->percent());
-	_redFullLabel->text(_redFullBuf);
-	_redFullLabel->pos(_redFullProgress->percentX() - 5, 4);
+	// fetch percent damage from the network api and update the UI elements accordingly
+	int redPercent = global::networkManager->network->getPlayerDamage(1); // 1 = red
+	int bluePercent = global::networkManager->network->getPlayerDamage(2); // 2 = blue
+	if (redPercent != _redFullProgress->percent())
+	{
+		_redFullProgress->percent(redPercent);
+		snprintf(_redFullBuf, 10, "%d%%", _redFullProgress->percent());
+		_redFullLabel->text(_redFullBuf);
+		_redFullLabel->pos(_redFullProgress->percentX() - 5, 4);
+	}
+	if (bluePercent != _blueFullProgress->percent())
+	{
+		_blueFullProgress->percent(bluePercent);
+		snprintf(_blueFullBuf, 10, "%d%%", _blueFullProgress->percent());
+		_blueFullLabel->text(_blueFullBuf);
+		_blueFullLabel->pos(_blueFullProgress->percentX() + 5, 4);
+	}
 
-	_blueFullProgress->percent((int)(amount / 4000.0 * 100));
-	snprintf(_blueFullBuf, 10, "%d%%", _blueFullProgress->percent());
-	_blueFullLabel->text(_blueFullBuf);
-	_blueFullLabel->pos(_blueFullProgress->percentX() + 5, 4);
+	// fetch player scores from the network api and update the UI elements accordingly
+	int redScore = global::networkManager->network->getPlayerScore(1); // 1 = red
+	int blueScore = global::networkManager->network->getPlayerScore(2); // 1 = red
+	if (redScore != _redResources->score())
+	{
+		_redResources->score(redScore);
+	}
+	if (blueScore != _blueResources->score())
+	{
+		_blueResources->score(blueScore);
+	}
 
 	// check if the other player is ready and display flasher if they are
 	std::vector<Client *> clients = global::networkManager->network->getPlayers();

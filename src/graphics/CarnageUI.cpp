@@ -198,10 +198,6 @@ void CarnageUI::init()
 
 void CarnageUI::update(int ms)
 {
-	static int timeaccum = 0;
-	timeaccum += ms;
-	int amount = timeaccum % 4000;
-
 	// keep the reticle centered
 	_reticle->pos(global::width / 2 - _reticle->width() / 2, global::height  / 2 - _reticle->height() / 2);
 	if (!_reticleTintSet && global::networkManager->network->getMyPlayerID() == 1)
@@ -246,17 +242,35 @@ void CarnageUI::update(int ms)
 		_identifyLabel->parent(_window);
 	}
 
-	// TODO: actually get destruction percentage from game state here
+	// fetch percent damage from the network api and update the UI elements accordingly
+	int redPercent = global::networkManager->network->getPlayerDamage(1); // 1 = red
+	int bluePercent = global::networkManager->network->getPlayerDamage(2); // 2 = blue
+	if (redPercent != _redDestructProgress->percent())
+	{
+		_redDestructProgress->percent(redPercent);
+		snprintf(_redDestructBuf, 10, "%d%%", _redDestructProgress->percent());
+		_redDestructLabel->text(_redDestructBuf);
+		_redDestructLabel->pos(_redDestructProgress->percentX() - 5, 4);
+	}
+	if (bluePercent != _blueDestructProgress->percent())
+	{
+		_blueDestructProgress->percent(bluePercent);
+		snprintf(_blueDestructBuf, 10, "%d%%", _blueDestructProgress->percent());
+		_blueDestructLabel->text(_blueDestructBuf);
+		_blueDestructLabel->pos(_blueDestructProgress->percentX() + 5, 4);
+	}
 
-	_redDestructProgress->percent((int)(amount / 4000.0 * 100));
-	snprintf(_redDestructBuf, 10, "%d%%", _redDestructProgress->percent());
-	_redDestructLabel->text(_redDestructBuf);
-	_redDestructLabel->pos(_redDestructProgress->percentX() - 5, 4);
-
-	_blueDestructProgress->percent((int)(amount / 4000.0 * 100));
-	snprintf(_blueDestructBuf, 10, "%d%%", _blueDestructProgress->percent());
-	_blueDestructLabel->text(_blueDestructBuf);
-	_blueDestructLabel->pos(_blueDestructProgress->percentX() + 5, 4);
+	// fetch player scores from the network api and update the UI elements accordingly
+	int redScore = global::networkManager->network->getPlayerScore(1); // 1 = red
+	int blueScore = global::networkManager->network->getPlayerScore(2); // 1 = red
+	if (redScore != _redScore->score())
+	{
+		_redScore->score(redScore);
+	}
+	if (blueScore != _blueScore->score())
+	{
+		_blueScore->score(blueScore);
+	}
 
 	GameUI::update(ms);
 

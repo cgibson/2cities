@@ -79,12 +79,6 @@ void UIScoreDisplay::update(int ms)
 		_x = global::width - _w;
 	}
 
-	// TODO: eventually fetch the actual score from the game state here
-	_score += ms;
-	_score %= 1000000;
-	printScoreToBuffer();
-	_scoreLabel->text(_scoreBuf);
-
 	// update our children
 	updateChildren(ms);
 }

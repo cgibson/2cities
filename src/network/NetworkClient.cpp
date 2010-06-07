@@ -222,9 +222,12 @@ int NetworkClient::getServerDelay() {
 /*******************************************
  * OBJECT/LEVEL/WORLD FUNCTIONS
  *******************************************/
-void NetworkClient::addObject(WorldObject *ObjPtr) {
+void NetworkClient::addObject(WorldObject *ObjPtr, int newID) {
 	if(isConnected && clients[myClientID]->playerType == Client::PLAYER) {
-		ObjPtr->setID(nextNewObjID++);
+		if(newID == -1)
+			ObjPtr->setID(nextNewObjID++);
+		else
+			ObjPtr->setID(newID);
 		ObjPtr->setPlayerID(clients[myClientID]->playerID);
 
 		unsigned char buf[150];
@@ -232,6 +235,7 @@ void NetworkClient::addObject(WorldObject *ObjPtr) {
 		NetworkPacket pkt(OBJECT_SEND, buf, woSize);
 		SendPacket(pkt, &socket, serverIP);
 	}
+	ObjPtr->print();
 
 	// Add to local system for interpolation
 	updateObjectLocal(ObjPtr);

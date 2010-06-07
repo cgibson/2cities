@@ -57,8 +57,12 @@ void NetworkPrivate::update(long milli_time) {
 /*******************************************
  * OBJECT/LEVEL/WORLD FUNCTIONS
  *******************************************/
-void NetworkPrivate::addObject(WorldObject *newObj) {
-	newObj->setID(nextNewObjID++);
+void NetworkPrivate::addObject(WorldObject *newObj, int newID) {
+	if(newID == -1)
+		newObj->setID(nextNewObjID++);
+	else
+		newObj->setID(newID);
+
 	addObjectPhys(newObj);
 }
 

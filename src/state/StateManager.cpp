@@ -66,6 +66,7 @@ void StateManager::changeCurrentState(enum E_STATE newState)
 			vector<WorldObject *> bfv;
 			vector<WorldObject *> temp;
 			CustomObject *currObject;
+			int bldgNumOffset = (global::networkManager->network->getMyPlayerID() - 1) * 1000;
 			// TODO iterator through all objects
 			for(int i = 0; i < oldState->objects.size(); i++)
 			{
@@ -76,6 +77,7 @@ void StateManager::changeCurrentState(enum E_STATE newState)
 					currObject->getBuildingType());
     			for(int j = 0; j < temp.size(); j++)
     			{
+    				temp[j]->setBldgID(bldgNumOffset + i);
 					bfv.push_back(temp[j]);
 				}
 			}

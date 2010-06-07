@@ -76,6 +76,7 @@ void NetworkServer::update(long elapsed) {
 	updateRxTxData(elapsed);
 	checkStateChange();
 	checkClientTimeout();
+	updatePlayerDetails();
 
 	// Update Physics Engine
 	static int physicsDelay = 0;
@@ -253,7 +254,7 @@ void NetworkServer::networkIncomingPlayers(int p, long &elapsed) {
 
 		switch (pkt.header.type) {
 		case OBJECT_SEND :
-			decodeObjectSend(pkt, clients[p]->playerDelay);
+			decodeObjectSend(pkt, 0); // TODO clients[p]->playerDelay);
 			break;
 		case LAG_REQ :
 			gameClock = global::elapsed_ms();
@@ -455,7 +456,7 @@ void NetworkServer::checkStateChange() {
 	stateChange |= (playerCount == readyCount && playerCount > 0);
 	stateChange |= (timeToStateChangeSet && (timeToStateChange - global::elapsed_ms()) <= 0 && !timeToStateChangePause);
 	stateChange |= (currState == CARNAGE_STATE && checkWinCondition());
-	stateChange |= (currState == RESULTS_STATE && playerCount == 0);
+	stateChange |= (currState != BUILD_STATE && playerCount == 0);
 	stateChange |= (currState == MENU_STATE);  // Should only happen in CLIENT build
 
 	if(stateChange) {
@@ -502,11 +503,22 @@ int NetworkServer::checkWinCondition() {
 	return false;
 }
 
+void NetworkServer::updatePlayerDetails() {
+	// TODO DAMAGE: check each object to see if its moved from original location
+
+	// TODO SCORE: check each object to see if its moved from its original location &
+	//             add it to a score multiplier queue of when this occured
+}
+
 /*******************************************
  * OBJECT/LEVEL/WORLD FUNCTIONS
  *******************************************/
-void NetworkServer::addObject(WorldObject *objPtr) {
-	objPtr->setID(nextNewObjID++);
+void NetworkServer::addObject(WorldObject *objPtr, int newID) {
+	if(newID == -1)
+		objPtr->setID(nextNewObjID++);
+	else
+		objPtr->setID(newID);
+
 	if(myClientID == -1)
 		objPtr->setPlayerID(0);
 	else

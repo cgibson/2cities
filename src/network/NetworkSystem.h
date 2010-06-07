@@ -117,7 +117,7 @@ public:
 	virtual void sendMsg(char *msgStr) {};
 
 	// Add new object to scene
-	virtual void addObject(WorldObject *objPtr) {};
+	virtual void addObject(WorldObject *ObjPtr, int newID = -1) {};
 
 	// Load a stored lvl
 	virtual void emptyWorld();

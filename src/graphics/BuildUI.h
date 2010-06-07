@@ -32,6 +32,7 @@ public:
 	void draw();
 
 	void ready();
+	void reset();
 
 	void keyDown(int key, bool special);
 	void mouseWheel(int direction);
@@ -50,7 +51,7 @@ private:
 	UILabel *_strongMult;
 	UIButton *_readyButton;
 	UILabel *_otherPlayerReady;
-	bool _parentedOtherPlayerReady;
+	bool _showReady;
 	char _redFullBuf[10];
 	char _blueFullBuf[10];
 };

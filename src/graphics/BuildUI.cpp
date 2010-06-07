@@ -16,7 +16,7 @@ BuildUI::BuildUI()
 	_strongMult = NULL;
 	_readyButton = NULL;
 	_otherPlayerReady = NULL;
-	_parentedOtherPlayerReady = false;
+	_showReady = false;
 }
 
 BuildUI::~BuildUI()
@@ -124,6 +124,7 @@ void BuildUI::init()
 	_otherPlayerReady->init("resources/fonts/sui_generis_free.ttf", 18, UILabel::LEFT);
 	_otherPlayerReady->text("Other player is ready!");
 	_otherPlayerReady->pos(20, 34);
+	_otherPlayerReady->parent(_window);
 }
 
 void BuildUI::update(int ms)
@@ -145,8 +146,15 @@ void BuildUI::update(int ms)
 	_readyButton->pos(global::width / 2 - 95, 20);
 
 	// animate the the intensity of the other player ready indicator
-	float alpha = (sinf(timeaccum / 100.0) + 1.0) / 4.0 + 0.5;
-	_otherPlayerReady->fgclr(_otherPlayerReady->fgr(), _otherPlayerReady->fgg(), _otherPlayerReady->fgb(), alpha);
+	if (_showReady)
+	{
+		float alpha = (sinf(timeaccum / 100.0) + 1.0) / 4.0 + 0.5;
+		_otherPlayerReady->fgclr(_gauntletLabel->fgr(), _gauntletLabel->fgg(), _gauntletLabel->fgb(), alpha);
+	}
+	else
+	{
+		_otherPlayerReady->fgclr(_gauntletLabel->fgr(), _gauntletLabel->fgg(), _gauntletLabel->fgb(), 0.0);
+	}
 
 	// push down the currently selected tesselation type to the game state
 	if (global::stateManager->currentState->stateType() == BUILD_STATE)
@@ -241,6 +249,11 @@ void BuildUI::ready()
 	global::networkManager->network->setPlayerReady(1);
 	io::unregister_mouse_down(BuildState::mouseDownToggle);
 	io::unregister_mouse_up(BuildState::mouseUpToggle);
+}
+
+void BuildUI::reset()
+{
+	_showReady = false;
 }
 
 void BuildUI::keyDown(int key, bool special)

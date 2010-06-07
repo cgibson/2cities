@@ -112,6 +112,7 @@ void Hud::swapUI(UiType which)
 			break;
 
 		case BUILD:
+			_buildUI->reset();
 			_currentUI = _buildUI;
 			break;
 

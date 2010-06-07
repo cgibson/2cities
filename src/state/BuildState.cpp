@@ -96,7 +96,6 @@ void BuildState::initialize() {
 	pp_index = -1;
 	pp_face = NOTHING;
 	firstPoint = Point();
-	updateResources();
 
 #ifdef CLIENT
 	// create the camera
@@ -112,6 +111,7 @@ void BuildState::initialize() {
 	io::register_mouse_down(BuildState::mouseDownToggle);
 	io::register_mouse_up(BuildState::mouseUpToggle);
 	//io::register_key_down(BuildState::keyDownHandler);
+	updateResources();
 #endif
 }
 

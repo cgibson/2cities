@@ -1,8 +1,6 @@
 #include "graphics.h"
 #include <stdio.h>
 
-#define MAX_MATERIAL_COUNT 10
-
 namespace gfx{
 
   bool WorldObjectPtr_Sort_Type(WorldObject * objPtr1, WorldObject * objPtr2) {
@@ -63,7 +61,7 @@ namespace gfx{
 
   void initMaterials()
   {
-    materials = (Material*)malloc(sizeof(Material) * MAX_MATERIAL_COUNT);
+    materials = (Material*)malloc(sizeof(Material) * MAT_TYPE_MAX);
 
     GLfloat ambient[4];
     GLfloat diffuse[4];
@@ -83,12 +81,6 @@ namespace gfx{
     materials[YELLOW_MAT] = Material(ambient, diffuse, specular, shininess);
 
     ambient[0] = 0.1; ambient[1] = 0.1; ambient[2] = 0.1; ambient[3] = 1.0;
-    diffuse[0] = 0.1; diffuse[1] = 0.1; diffuse[2] = 0.9; diffuse[3] = 1.0;
-    specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
-    shininess[0] = 100.0;
-    materials[BLUE_MAT] = Material(ambient, diffuse, specular, shininess);
-
-    ambient[0] = 0.1; ambient[1] = 0.1; ambient[2] = 0.1; ambient[3] = 1.0;
     diffuse[0] = 0.1; diffuse[1] = 0.9; diffuse[2] = 0.1; diffuse[3] = 1.0;
     specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
     shininess[0] = 100.0;
@@ -106,17 +98,37 @@ namespace gfx{
     shininess[0] = 100.0;
     materials[GRID_DIFFUSE] = Material(ambient, diffuse, specular, shininess);
 
+// team-specific block materials
     ambient[0] = 0.0; ambient[1] = 0.0; ambient[2] = 0.9; ambient[3] = 1.0;
-    diffuse[0] = 0.9; diffuse[1] = 0.0; diffuse[2] = 0.0; diffuse[3] = 1.0;
+    diffuse[0] = 1.0; diffuse[1] = 1.0; diffuse[2] = 0.0; diffuse[3] = 1.0;
+    specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
+    shininess[0] = 100.0;
+    materials[BLUE_BLOCK] = Material(ambient, diffuse, specular, shininess);
+
+    ambient[0] = 0.7; ambient[1] = 0.0; ambient[2] = 0.0; ambient[3] = 1.0;
+    diffuse[0] = 1.0; diffuse[1] = 1.0; diffuse[2] = 0.0; diffuse[3] = 1.0;
+    specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
+    shininess[0] = 100.0;
+    materials[RED_BLOCK] = Material(ambient, diffuse, specular, shininess);
+
+    ambient[0] = 0.5; ambient[1] = 0.5; ambient[2] = 0.5; ambient[3] = 1.0;
+    diffuse[0] = 1.0; diffuse[1] = 1.0; diffuse[2] = 0.0; diffuse[3] = 1.0;
+    specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
+    shininess[0] = 100.0;
+    materials[DEAD_BLOCK] = Material(ambient, diffuse, specular, shininess);
+
+// team-specific player materials
+    ambient[0] = 0.1; ambient[1] = 0.1; ambient[2] = 0.1; ambient[3] = 1.0;
+    diffuse[0] = 0.1; diffuse[1] = 0.1; diffuse[2] = 0.9; diffuse[3] = 1.0;
     specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
     shininess[0] = 100.0;
     materials[BLUE_PLAYER] = Material(ambient, diffuse, specular, shininess);
-
-    ambient[0] = 0.0; ambient[1] = 0.7; ambient[2] = 0.0; ambient[3] = 1.0;
-    diffuse[0] = 1.0; diffuse[1] = 0.0; diffuse[2] = 0.0; diffuse[3] = 1.0;
+    
+    ambient[0] = 0.1; ambient[1] = 0.1; ambient[2] = 0.1; ambient[3] = 1.0;
+    diffuse[0] = 0.9; diffuse[1] = 0.1; diffuse[2] = 0.0; diffuse[3] = 1.0;
     specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
     shininess[0] = 100.0;
-    materials[GREEN_PLAYER] = Material(ambient, diffuse, specular, shininess);
+    materials[RED_PLAYER] = Material(ambient, diffuse, specular, shininess);
   }
 
   void init()

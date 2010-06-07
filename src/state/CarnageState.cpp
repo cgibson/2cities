@@ -61,11 +61,11 @@ void CarnageState::initialize() {
 	 
 	 if(id == 1)
 	 {
-		 playerMat = gfx::materials + BLUE_MAT;
-		 opponentMat = gfx::materials + GREEN_MAT;
+		 playerMat = gfx::materials + RED_PLAYER;
+		 opponentMat = gfx::materials + BLUE_PLAYER;
 	 }else{
-		 playerMat = gfx::materials + GREEN_MAT;
-		 opponentMat = gfx::materials + BLUE_MAT;
+		 playerMat = gfx::materials + BLUE_PLAYER;
+		 opponentMat = gfx::materials + RED_PLAYER;
 	 }
 	 
 #endif

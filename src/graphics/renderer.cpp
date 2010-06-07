@@ -266,11 +266,14 @@ void Renderer::draw_diffusePass()
         {
           case DUMMY_BLOCK: case BLOCK_1_2_1: case BLOCK_2_4_2: case BLOCK_5_1_5:
             gfx::forceBlockShader.enable();
-            if((*objIt)->getPlayerID() == 1)
+            if((*objIt)->getPhysics() == STATIC)
             {
-              curMat = gfx::materials[BLUE_PLAYER];
+							curMat = gfx::materials[DEAD_BLOCK];
+						}else if((*objIt)->getPlayerID() == 1)
+            {
+              curMat = gfx::materials[RED_BLOCK];
 						}else{
-							curMat = gfx::materials[GREEN_PLAYER];
+							curMat = gfx::materials[BLUE_BLOCK];
 						}
             curMat.applyMaterial(gfx::forceBlockShader, "");
             break;

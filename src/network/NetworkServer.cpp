@@ -255,7 +255,11 @@ void NetworkServer::networkIncomingPlayers(int p, long &elapsed) {
 		clients[p]->lastPktRecv = global::elapsed_ms();
 
 		switch (pkt.header.type) {
+		case LEVEL_BATCHOBJ :
+			// Send Packet back as confirmation
+			SendPacket(pkt, &(clients[p]->socket), clients[p]->ip);
 		case OBJECT_SEND :
+		case OBJECT_BATCHSEND :
 			decodeObjectSend(pkt, 0); // TODO clients[p]->playerDelay);
 			break;
 		case LAG_REQ :
@@ -597,7 +601,6 @@ void NetworkServer::addObject(WorldObject *objPtr, int newID) {
 
 void NetworkServer::addObjectPhys(WorldObject *objPtr) {
 	objPtr->setTimeStamp(global::elapsed_ms());
-	//objPtr->print();
 	
 	// Add ObjectState to Tracker
 	WorldObjectState newObjState(objPtr, 10);

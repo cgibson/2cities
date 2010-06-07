@@ -35,7 +35,6 @@ protected:
 	virtual void closeSockets();
 
 	virtual void addObjectPhys(WorldObject *objPtr) { updateObjectLocal(objPtr); };
-	//virtual void reqUpdateObj(unsigned int objID) {};
 
 	void recvStatusUpdate(NetworkPacket &pkt);
 	void networkIncoming(long &elapsed);
@@ -72,6 +71,7 @@ public:
 	// Load a stored lvl
 	virtual void emptyWorld();
 	virtual void loadLevel(const char * file);
+	virtual void loadLevel(vector<WorldObject *> newObjs);
 };
 
 #endif

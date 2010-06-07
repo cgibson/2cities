@@ -249,7 +249,7 @@ void NetworkSystem::buildBatchPacket(NetworkPacket *pkt, WorldObject *objs[], un
 }
 
 void NetworkSystem::decodeObjectSend(NetworkPacket &pkt, long interpValue) {
-	if(pkt.header.type == OBJECT_BATCHSEND || pkt.header.type == OBJECT_SEND) {
+	if(pkt.header.type == OBJECT_BATCHSEND || pkt.header.type == OBJECT_SEND || pkt.header.type == LEVEL_BATCHOBJ) {
 		WorldObject *tmpObjPtr;
 		ObjectType woType;
 		unsigned int woPktLoc = 0;

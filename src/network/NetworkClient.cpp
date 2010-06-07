@@ -267,6 +267,47 @@ void NetworkClient::loadLevel(const char * file) {
 	}
 }
 
+void NetworkClient::loadLevel(vector<WorldObject *> newObjs) {
+	if(serverConnected() && clients[myClientID]->playerType == Client::PLAYER) {
+		int blockStart = (clients[myClientID]->playerID - 1) * 5000 + 1;
+
+		unsigned int objSetStart = 0;
+		while(objSetStart < newObjs.size()) {
+			// Build Batch Packet
+			WorldObject *objPtrGroup[net::OBJECT_BATCHSEND_SIZE];
+
+			unsigned int SetPos = 0;
+			while((SetPos < net::OBJECT_BATCHSEND_SIZE) && (objSetStart + SetPos) < newObjs.size()) {
+				objPtrGroup[SetPos] = newObjs[objSetStart + SetPos];
+				objPtrGroup[SetPos]->setPlayerID(clients[myClientID]->playerID);
+				objPtrGroup[SetPos]->setID(blockStart++);
+				SetPos++;
+			}
+
+			NetworkPacket pkt;
+			buildBatchPacket(&pkt, objPtrGroup, SetPos);
+			pkt.header.type = LEVEL_BATCHOBJ;
+			SendPacket(pkt, &socket, serverIP);
+
+			// If no response, resend until response.
+			bool pktConfirm = false;
+			ting::IPAddress sourceIP;
+			NetworkPacket tmpPkt;
+			while(!pktConfirm) {
+				if(!waitSet->WaitWithTimeout(200))
+					SendPacket(pkt, &socket, serverIP);
+				else {
+					RecvPacket(&tmpPkt, &socket, &sourceIP);
+					if(tmpPkt.header.type == LEVEL_BATCHOBJ) {
+						pktConfirm = true;
+					}
+				}
+			}
+			objSetStart += SetPos;
+		}
+	}
+}
+
 /*******************************************
  * PLAYER INTERACTION FUNCTIONS
  *******************************************/

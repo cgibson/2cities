@@ -35,6 +35,8 @@ private:
 	UILabel *_blueScore;
 	UIButton *_rematchButton;
 	UIButton *_menuButton;
+	char _redBuf[10];
+	char _blueBuf[10];
 };
 
 #endif

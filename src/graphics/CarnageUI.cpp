@@ -262,7 +262,7 @@ void CarnageUI::update(int ms)
 
 	// fetch player scores from the network api and update the UI elements accordingly
 	int redScore = global::networkManager->network->getPlayerScore(1); // 1 = red
-	int blueScore = global::networkManager->network->getPlayerScore(2); // 1 = red
+	int blueScore = global::networkManager->network->getPlayerScore(2); // 2 = blue
 	if (redScore != _redScore->score())
 	{
 		_redScore->score(redScore);

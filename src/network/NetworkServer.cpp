@@ -322,40 +322,43 @@ void NetworkServer::networkOutgoing(long &elapsed) {
 		sendStatusUpdates();
 
 		// Send up to MAX_PACKETS_PER_CYCLE Packets
-		const int objsSize = _serverObjs.size();
-		const int sendSize = min(objsSize, (int)(SERVER_SEND_MAX_PACKETS_PER_MS * elapsed * OBJECT_BATCHSEND_SIZE));
+		const int vecSize = _serverObjs.size();
+		const int sendSize = min(vecSize, (int)(SERVER_SEND_MAX_PACKETS_PER_MS * elapsed * OBJECT_BATCHSEND_SIZE));
 		if (sendSize > 0 && ((clients.size() > 1 || (_dedicatedServer == true && clients.size() > 0)))) {
-			int currObj = 0;
+			int objSetStart = 0;
 			int currTime = global::elapsed_ms();
-			while(currObj < sendSize) {
-#ifdef CLIENT
-				// Update Locally
-				for(int o=0; o<10; o++)
-					updateObjectLocal(new WorldObject(*_serverObjs[(currObj+o)%objsSize].objPtr));
-#endif
+			while(objSetStart < vecSize) {
+				int objSetSize = min(vecSize - objSetStart, (int)OBJECT_BATCHSEND_SIZE);
+
 				// Build Batch Packet
-				WorldObject *objPtrGroup[OBJECT_BATCHSEND_SIZE];
-				for(unsigned int o=0; o<OBJECT_BATCHSEND_SIZE; o++) {
-					objPtrGroup[o] = _serverObjs[(currObj+o)%objsSize].objPtr;
-					_serverObjs[(currObj+o)%objsSize].sent(currTime);
+				WorldObject *objPtrGroup[net::OBJECT_BATCHSEND_SIZE];
+
+				unsigned int SetPos = 0;
+				while((SetPos < objSetSize)) { //  && (objSetStart + SetPos < vecSize)
+					if(_serverObjs[objSetStart + SetPos].objPtr == NULL) {
+						++objSetStart; // Easy way to move to next item without changing count.
+					}
+					else {
+						objPtrGroup[SetPos] = _serverObjs[objSetStart + SetPos].objPtr;
+						_serverObjs[objSetStart + SetPos].sent(currTime);
+						SetPos++;
+
+					}
 				}
+
 				NetworkPacket pkt;
-				buildBatchPacket(&pkt, objPtrGroup, OBJECT_BATCHSEND_SIZE);
+				buildBatchPacket(&pkt, objPtrGroup, SetPos);
 
 				// Send to each _players
 				for(unsigned int p=0; p<clients.size(); p++) {
 					if(!clients[p]->isLocal)
 						SendPacket(pkt, &(clients[p]->socket), clients[p]->ip);
+					else
+						decodeObjectSend(pkt, 0);
 				}
-				currObj += OBJECT_BATCHSEND_SIZE;
+
+				objSetStart += SetPos;
 			}
-/*
-			if(objsSize == 0)
-				_sendObjNext = 0;
-			else
-				_sendObjNext = (_sendObjNext + sendSize)%objsSize;
-*/
-			_sendObjNext = 0;
 		}
 	} catch(ting::Socket::Exc &e){
 		std::cout << "Network error: " << e.What() << std::endl;
@@ -568,11 +571,11 @@ void NetworkServer::updatePlayerDetails() {
 	if(blocksP1 == 0) { blocksP1 = 1; }
 	if(blocksP2 == 0) { blocksP2 = 1; }
 	for(unsigned int i=0; i < clients.size(); ++i) {
-		if(clients[i]->playerID == 1) {
+		if(clients[i]->playerID == 2) {
 			clients[i]->playerDamage = (int)(damagedP1*100/blocksP1);
 			clients[i]->playerScore  = damagedP1;
 		}
-		else if(clients[i]->playerID == 2) {
+		else if(clients[i]->playerID == 1) {
 			clients[i]->playerDamage = (int)(damagedP2*100/blocksP2);
 			clients[i]->playerScore  = damagedP2;
 		}

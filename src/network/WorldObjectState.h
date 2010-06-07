@@ -73,12 +73,14 @@ public:
 			if(initPosDelta > net::OBJECT_KILL_DELTA) {
 				damaged = true;
 				objPtr->setPhysics(STATIC);
+				priority += 2;
 			}
 		}
 	}
 
 	void kill() {
 		objPtr = NULL;
+		damaged = true;
 		priority = -1;
 	}
 

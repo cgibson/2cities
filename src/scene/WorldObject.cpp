@@ -184,6 +184,9 @@ int WorldObject::makeBinStream(unsigned char *bufPtr) {
 	memcpy(bufPtr + currPos, (void *)&playerid , currISize); currPos += currISize;
 	memcpy(bufPtr + currPos, (void *)&bldgid   , currISize); currPos += currISize;
 
+	currISize = sizeof(PhysicsState);
+	memcpy(bufPtr + currPos, (void *)&physics  , currISize); currPos += currISize;
+
 	currISize = sizeof(uint64_t);
 	memcpy(bufPtr + currPos, (void *)&timestamp, currISize); currPos += currISize;
 
@@ -224,6 +227,9 @@ int WorldObject::fromBinStream(unsigned char *bufPtr) {
 	memcpy((void *)&id       , bufPtr + currPos, currISize); currPos += currISize;
 	memcpy((void *)&playerid , bufPtr + currPos, currISize); currPos += currISize;
 	memcpy((void *)&bldgid   , bufPtr + currPos, currISize); currPos += currISize;
+
+	currISize = sizeof(PhysicsState);
+	memcpy((void *)&physics  , bufPtr + currPos, currISize); currPos += currISize;
 
 	currISize = sizeof(uint64_t);
 	memcpy((void *)&timestamp, bufPtr + currPos, currISize); currPos += currISize;

@@ -121,11 +121,6 @@ void NetworkClient::recvStatusUpdate(NetworkPacket &pkt) {
 
 	if(global::stateManager->currentState->stateType() != serverState)
 		global::stateManager->changeCurrentState(serverState);
-/*
-	printf("Received Status Update!\n");
-	for(unsigned int i=0; i<clients.size(); i++)
-		clients[i]->print();
-*/
 }
 
 /*******************************************
@@ -269,7 +264,7 @@ void NetworkClient::loadLevel(const char * file) {
 
 void NetworkClient::loadLevel(vector<WorldObject *> newObjs) {
 	if(serverConnected() && clients[myClientID]->playerType == Client::PLAYER) {
-		int blockStart = (clients[myClientID]->playerID - 1) * 5000 + 1;
+		int blockStart = (clients[myClientID]->playerID - 1) * 1000 + 1;
 
 		unsigned int objSetStart = 0;
 		while(objSetStart < newObjs.size()) {

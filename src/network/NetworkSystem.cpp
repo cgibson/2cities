@@ -268,6 +268,8 @@ void NetworkSystem::decodeObjectSend(NetworkPacket &pkt, long interpValue) {
 			addObjectPhys(tmpObjPtr);
 			//if(interpValue != 0)
 				//tmpObjPtr->print();
+			//if(tmpObjPtr->getPhysics() == STATIC)
+				//printf("Obj %i = STATIC\n", tmpObjPtr->getID());
 		}
 	}
 }

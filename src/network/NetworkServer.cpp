@@ -479,7 +479,7 @@ void NetworkServer::checkStateChange() {
 	}
 
 	bool stateChange = false;
-	stateChange |= (playerCount == readyCount && playerCount > 0);
+	stateChange |= (playerCount == readyCount && playerCount == 2);
 	stateChange |= (timeToStateChangeSet && (timeToStateChange - global::elapsed_ms()) <= 0 && !timeToStateChangePause);
 	stateChange |= (currState == CARNAGE_STATE && checkWinCondition());
 	stateChange |= (currState != BUILD_STATE && playerCount == 0);
@@ -528,15 +528,17 @@ void NetworkServer::checkStateChange() {
 }
 
 int NetworkServer::checkWinCondition() {
+	int playerCount = 0;
 	for(unsigned int i=0; i<clients.size(); ++i) {
 		if(clients[i]->playerType == Client::PLAYER) {
+			++playerCount;
 			if(clients[i]->playerDamage >= DAMAGE_PERCENT_WIN_CONDITION) {
 				return clients[i]->playerID;
 			}
 		}
 	}
 
-	return false;
+	return (playerCount != 2);
 }
 
 void NetworkServer::updatePlayerDetails() {

@@ -301,7 +301,9 @@ void NetworkClient::loadLevel(vector<WorldObject *> newObjs) {
 			int sendAttempt = 0;
 
 			while(!pktConfirm) {
-				if(!waitSet->WaitWithTimeout(20)) {
+				if(++sendAttempt > 10)
+					serverDisconnect();
+				else if(!waitSet->WaitWithTimeout(20)) {
 					SendPacket(pkt, &socket, serverIP);
 #ifdef DEBUG
 					printf("Re-sending Level_Batch. Attempt %i!\n", sendAttempt);

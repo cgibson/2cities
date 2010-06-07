@@ -9,6 +9,7 @@ ResultsUI::ResultsUI()
 	_blueScore = NULL;
 	_rematchButton = NULL;
 	_menuButton = NULL;
+	_gauntletLabel = NULL;
 }
 
 ResultsUI::~ResultsUI()
@@ -18,6 +19,7 @@ ResultsUI::~ResultsUI()
 	if (_blueScore != NULL) delete _blueScore;
 	if (_rematchButton != NULL) delete _rematchButton;
 	if (_menuButton != NULL) delete _menuButton;
+	if (_gauntletLabel != NULL) delete _gauntletLabel;
 }
 
 void ResultsUI::init()
@@ -45,7 +47,7 @@ void ResultsUI::init()
 	_blueScore->text("");
 	_blueScore->parent(_window);
 
-	/*_rematchButton = new UIButton();
+	_rematchButton = new UIButton();
 	_rematchButton->init(ResultsUI::rematchClick);
 	_rematchButton->text()->init("resources/fonts/sui_generis_free.ttf", 18, UILabel::LEFT);
 	_rematchButton->text()->text("Rematch!");
@@ -53,17 +55,42 @@ void ResultsUI::init()
 	_rematchButton->bgclr(0.5, 0.5, 0.5, 0.5);
 	_rematchButton->mouseOverClr(0.5, 0.5, 0.5, 0.75);
 	_rematchButton->mouseDownClr(0.5, 1.0, 0.5, 0.75);
-	_rematchButton->pos(global::width / 2 - 95, 20);
-	_rematchButton->size(190, 50);
-	_rematchButton->parent(_window);*/
+	_rematchButton->pos(global::width / 2 - 240, 20);
+	_rematchButton->size(220, 50);
+	_rematchButton->parent(_window);
+	
+	_menuButton = new UIButton();
+	_menuButton->init(ResultsUI::menuClick);
+	_menuButton->text()->init("resources/fonts/sui_generis_free.ttf", 18, UILabel::LEFT);
+	_menuButton->text()->text("Main Menu");
+	_menuButton->icon()->init("resources/textures/checkmark.bmp", "resources/textures/checkmark_alpha.bmp");
+	_menuButton->bgclr(0.5, 0.5, 0.5, 0.5);
+	_menuButton->mouseOverClr(0.5, 0.5, 0.5, 0.75);
+	_menuButton->mouseDownClr(0.5, 1.0, 0.5, 0.75);
+	_menuButton->pos(global::width / 2 + 20, 20);
+	_menuButton->size(220, 50);
+	_menuButton->parent(_window);
+	
+	_gauntletLabel = new UILabel();
+	_gauntletLabel->init("resources/fonts/sui_generis_free.ttf", 32, UILabel::CENTER);
+	_gauntletLabel->pos(global::width / 2, global::height / 2 - 150);
+	_gauntletLabel->fgclr(1.0, 1.0, 1.0, 1.0);
+	_gauntletLabel->text("The other player has thrown down the gauntlet!");
+	_gauntletLabel->parent(_window);
+	printf("PENIS\n");
 }
 
 void ResultsUI::update(int ms)
 {
+	static int timeaccum = 0;
+	timeaccum += ms;
+
 	// keep everything aligned
 	_winLabel->pos(global::width / 2, global::height / 2 + 50);
 	_redScore->pos(global::width / 2 - 50, global::height / 2 - 25);
 	_blueScore->pos(global::width / 2 + 50, global::height / 2 - 25);
+	_rematchButton->pos(global::width / 2 - 240, 20);
+	_menuButton->pos(global::width / 2 + 20, 20);
 
 	// fetch player scores from the network api and update the UI elements accordingly
 	int redScore = global::networkManager->network->getPlayerScore(1); // 1 = red
@@ -95,3 +122,25 @@ void ResultsUI::draw()
 	GameUI::draw();
 }
 
+void ResultsUI::rematch()
+{
+	gfx::hud.swapUI(Hud::WAITING);
+	global::networkManager->network->setPlayerReady(1);
+}
+
+void ResultsUI::menu()
+{
+	global::networkManager->network->serverDisconnect();
+}
+
+void ResultsUI::rematchClick()
+{
+	ResultsUI *ui = static_cast<ResultsUI *>(gfx::hud.currentUI());
+	ui->rematch();
+}
+
+void ResultsUI::menuClick()
+{
+	ResultsUI *ui = static_cast<ResultsUI *>(gfx::hud.currentUI());
+	ui->menu();
+}

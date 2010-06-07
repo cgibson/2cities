@@ -97,6 +97,9 @@ void StateManager::changeCurrentState(enum E_STATE newState)
 #ifdef CLIENT
 		// swap to results UI
 		gfx::hud.swapUI(Hud::RESULTS);
+		
+		// release the mouse
+		io::release_mouse();
 
 		// replace orbital camera with cinematic camera
 		if (global::camera != NULL) delete global::camera;

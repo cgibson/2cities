@@ -28,6 +28,12 @@ public:
 	void init();
 	void update(int ms);
 	void draw();
+	
+	void rematch();
+	void menu();
+
+	static void rematchClick();
+	static void menuClick();
 
 private:
 	UILabel *_winLabel;
@@ -35,6 +41,7 @@ private:
 	UILabel *_blueScore;
 	UIButton *_rematchButton;
 	UIButton *_menuButton;
+	UILabel *_gauntletLabel;
 	char _redBuf[10];
 	char _blueBuf[10];
 };

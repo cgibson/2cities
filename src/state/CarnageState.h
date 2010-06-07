@@ -51,13 +51,14 @@ class CarnageState: public InGameState
         WorldObject *opponent;
         WorldObject *opponentCannon;
         WorldObject *playerCannon;
-        
+
         Material *opponentMat;
         Material *playerMat;
 
+		ObjectType ammo_type;
+
     protected:
         int ammo_recharge;
-        ObjectType ammo_type;
 
 	private:
 		bool cameraSetupComplete;

@@ -272,6 +272,45 @@ void CarnageUI::update(int ms)
 		_blueScore->score(blueScore);
 	}
 
+	// push down the currently selected ammo type to the game state
+	if (global::stateManager->currentState->stateType() == CARNAGE_STATE)
+	{
+		CarnageState *cs = static_cast<CarnageState *>(global::stateManager->currentState);
+		switch (_ammoSelect->currentItem())
+		{
+			case 0: // bullets
+				cs->ammo_type = DUMMY_SPHERE;
+				break;
+
+			case 1: // shotgun
+				cs->ammo_type = SHOTGUN;
+				break;
+
+			case 2: // ballhemoth
+				cs->ammo_type = BALLHEMOTH;
+				break;
+
+			case 3: // black hole
+				cs->ammo_type = BLACK_HOLE;
+				break;
+
+			case 4: // air strike
+				cs->ammo_type = AIR_STRIKE;
+				break;
+
+			case 5: // shape shifter
+				cs->ammo_type = SHAPE_SHIFTER;
+				break;
+
+			case 6: // cluster bomb
+				cs->ammo_type = CLUSTER_BOMB;
+				break;
+
+			default:
+				break;
+		}
+	}
+
 	GameUI::update(ms);
 
 	// keep the ammo progress bars matched to their icons

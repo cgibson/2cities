@@ -28,7 +28,7 @@ public:
 	void init();
 	void update(int ms);
 	void draw();
-	
+
 	void rematch();
 	void menu();
 
@@ -42,6 +42,7 @@ private:
 	UIButton *_rematchButton;
 	UIButton *_menuButton;
 	UILabel *_gauntletLabel;
+	bool _showGauntlet;
 	char _redBuf[10];
 	char _blueBuf[10];
 };

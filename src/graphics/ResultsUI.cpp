@@ -10,6 +10,7 @@ ResultsUI::ResultsUI()
 	_rematchButton = NULL;
 	_menuButton = NULL;
 	_gauntletLabel = NULL;
+	_showGauntlet = false;
 }
 
 ResultsUI::~ResultsUI()
@@ -28,21 +29,21 @@ void ResultsUI::init()
 
 	_winLabel = new UILabel();
 	_winLabel->init("resources/fonts/sui_generis_free.ttf", 64, UILabel::CENTER);
-	_winLabel->pos(global::width / 2, global::height / 2 + 50);
+	_winLabel->pos(global::width / 2, global::height / 2 + 150);
 	_winLabel->fgclr(1.0, 1.0, 1.0, 1.0);
 	_winLabel->text("<who> Wins!");
 	_winLabel->parent(_window);
 
 	_redScore = new UILabel();
 	_redScore->init("resources/fonts/sui_generis_free.ttf", 48, UILabel::RIGHT);
-	_redScore->pos(global::width / 2 - 50, global::height / 2 - 25);
+	_redScore->pos(global::width / 2 - 50, global::height / 2 + 50);
 	_redScore->fgclr(1.0, 0.0, 0.0, 1.0);
 	_redScore->text("");
 	_redScore->parent(_window);
 
 	_blueScore = new UILabel();
 	_blueScore->init("resources/fonts/sui_generis_free.ttf", 48, UILabel::LEFT);
-	_blueScore->pos(global::width / 2 + 50, global::height / 2 - 25);
+	_blueScore->pos(global::width / 2 + 50, global::height / 2 + 50);
 	_blueScore->fgclr(0.0, 0.0, 1.0, 1.0);
 	_blueScore->text("");
 	_blueScore->parent(_window);
@@ -55,10 +56,10 @@ void ResultsUI::init()
 	_rematchButton->bgclr(0.5, 0.5, 0.5, 0.5);
 	_rematchButton->mouseOverClr(0.5, 0.5, 0.5, 0.75);
 	_rematchButton->mouseDownClr(0.5, 1.0, 0.5, 0.75);
-	_rematchButton->pos(global::width / 2 - 240, 20);
+	_rematchButton->pos(global::width / 2 - 240, global::height / 2 - 200);
 	_rematchButton->size(220, 50);
 	_rematchButton->parent(_window);
-	
+
 	_menuButton = new UIButton();
 	_menuButton->init(ResultsUI::menuClick);
 	_menuButton->text()->init("resources/fonts/sui_generis_free.ttf", 18, UILabel::LEFT);
@@ -67,17 +68,16 @@ void ResultsUI::init()
 	_menuButton->bgclr(0.5, 0.5, 0.5, 0.5);
 	_menuButton->mouseOverClr(0.5, 0.5, 0.5, 0.75);
 	_menuButton->mouseDownClr(0.5, 1.0, 0.5, 0.75);
-	_menuButton->pos(global::width / 2 + 20, 20);
+	_menuButton->pos(global::width / 2 + 20, global::height / 2 - 200);
 	_menuButton->size(220, 50);
 	_menuButton->parent(_window);
-	
+
 	_gauntletLabel = new UILabel();
-	_gauntletLabel->init("resources/fonts/sui_generis_free.ttf", 32, UILabel::CENTER);
-	_gauntletLabel->pos(global::width / 2, global::height / 2 - 150);
+	_gauntletLabel->init("resources/fonts/sui_generis_free.ttf", 24, UILabel::CENTER);
+	_gauntletLabel->pos(global::width / 2, global::height / 2 - 50);
 	_gauntletLabel->fgclr(1.0, 1.0, 1.0, 1.0);
-	_gauntletLabel->text("The other player has thrown down the gauntlet!");
+	_gauntletLabel->text("Your opponent has thrown down the gauntlet!");
 	_gauntletLabel->parent(_window);
-	printf("PENIS\n");
 }
 
 void ResultsUI::update(int ms)
@@ -86,11 +86,12 @@ void ResultsUI::update(int ms)
 	timeaccum += ms;
 
 	// keep everything aligned
-	_winLabel->pos(global::width / 2, global::height / 2 + 50);
-	_redScore->pos(global::width / 2 - 50, global::height / 2 - 25);
-	_blueScore->pos(global::width / 2 + 50, global::height / 2 - 25);
-	_rematchButton->pos(global::width / 2 - 240, 20);
-	_menuButton->pos(global::width / 2 + 20, 20);
+	_winLabel->pos(global::width / 2, global::height / 2 + 150);
+	_redScore->pos(global::width / 2 - 50, global::height / 2 + 50);
+	_blueScore->pos(global::width / 2 + 50, global::height / 2 + 50);
+	_rematchButton->pos(global::width / 2 - 240, global::height / 2 - 200);
+	_menuButton->pos(global::width / 2 + 20, global::height / 2 - 200);
+	_gauntletLabel->pos(global::width / 2, global::height / 2 - 50);
 
 	// fetch player scores from the network api and update the UI elements accordingly
 	int redScore = global::networkManager->network->getPlayerScore(1); // 1 = red
@@ -112,6 +113,29 @@ void ResultsUI::update(int ms)
 	else
 	{
 		_winLabel->text("Tie!");
+	}
+
+	// check if the other player is ready and display flasher if they are
+	std::vector<Client *> clients = global::networkManager->network->getPlayers();
+	if (clients.size() >= 2)
+	{
+		int myPlayerID = global::networkManager->network->getMyPlayerID();
+		if ((myPlayerID == 1 && global::networkManager->network->getPlayerReady(2) && !_showGauntlet) ||
+			 (myPlayerID == 2 && global::networkManager->network->getPlayerReady(1) && !_showGauntlet))
+		{
+			_showGauntlet = true;
+		}
+	}
+
+	// animate the the intensity of the other player ready indicator
+	if (_showGauntlet)
+	{
+		float alpha = (sinf(timeaccum / 100.0) + 1.0) / 4.0 + 0.5;
+		_gauntletLabel->fgclr(_gauntletLabel->fgr(), _gauntletLabel->fgg(), _gauntletLabel->fgb(), alpha);
+	}
+	else
+	{
+		_gauntletLabel->fgclr(_gauntletLabel->fgr(), _gauntletLabel->fgg(), _gauntletLabel->fgb(), 0.0);
 	}
 
 	GameUI::update(ms);

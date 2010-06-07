@@ -40,7 +40,7 @@ void CarnageState::initialize() {
     ammoCounts        [ammoIndex] = -1;
     ammoDelayNextAward[ammoIndex] = -1;
     ammoNextAward     [ammoIndex] = ammoDelayNextAward[ammoIndex];
-    ammoDelayTimers   [ammoIndex] = 1000;
+    ammoDelayTimers   [ammoIndex] = 500;
     ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];
     ammoIndex++;
 
@@ -230,7 +230,7 @@ void CarnageState::updateInput(long milli_time) {
    }
 
    // FIRE CONTROLS
-   if (global::stateManager->currentState->stateType() == CARNAGE_STATE) // only fire in the real carnage state
+   if (stateType() == CARNAGE_STATE) // only fire in the real carnage state
    {
 	   if((io::keys[' '] || io::mouse_buttons[MOUSE_LEFT] == GLUT_DOWN) &&
 			   ammoTimers[ammoIndex] <= 0 &&
@@ -244,9 +244,6 @@ void CarnageState::updateInput(long milli_time) {
 		  ammoTimers[ammoIndex] = ammoDelayTimers[ammoIndex];
 		  if(ammoCounts[ammoIndex] != -1)
 			  --ammoCounts[ammoIndex];
-	   }
-	   else {
-		   //printf("Ammo Request: index(%i) count(%i) timer(%i)\n", ammoIndex, ammoCounts[ammoIndex], ammoTimers[ammoIndex]);
 	   }
 	}
 #endif

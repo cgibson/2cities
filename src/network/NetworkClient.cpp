@@ -69,7 +69,7 @@ void NetworkClient::networkIncoming(long &elapsed) {
 	unsigned int pktsRecv = 0;
 	NetworkPacket tmpPkt;
 
-	if(isConnected && (global::elapsed_ms() - lastTimePktRecv) > 1000) {
+	if(isConnected && (global::elapsed_ms() - lastTimePktRecv) > 1500) {
 		printf("Connection Timed Out! ");
 		serverDisconnect();
 		return;
@@ -298,19 +298,34 @@ void NetworkClient::loadLevel(vector<WorldObject *> newObjs) {
 			bool pktConfirm = false;
 			ting::IPAddress sourceIP;
 			NetworkPacket tmpPkt;
+			int sendAttempt = 0;
+
 			while(!pktConfirm) {
-				if(!waitSet->WaitWithTimeout(200)) {
+				if(!waitSet->WaitWithTimeout(20)) {
 					SendPacket(pkt, &socket, serverIP);
-					printf("Re-sending Level_Batch!\n");
+#ifdef DEBUG
+					printf("Re-sending Level_Batch. Attempt %i!\n", sendAttempt);
+#endif
 				}
 				else {
-					RecvPacket(&tmpPkt, &socket, &sourceIP);
-					lastTimePktRecv = global::elapsed_ms();
-					if(tmpPkt.header.type == LEVEL_BATCHOBJ) {
-						pktConfirm = true;
+					while(waitSet->WaitWithTimeout(0)) {
+						RecvPacket(&tmpPkt, &socket, &sourceIP);
+						lastTimePktRecv = global::elapsed_ms();
+						if(tmpPkt.header.type == LEVEL_BATCHOBJ) {
+							if(tmpPkt.dataSize == pkt.dataSize && !memcmp(tmpPkt.data, pkt.data, pkt.dataSize))
+								pktConfirm = true;
+#ifdef DEBUG
+							else
+								printf("Packet Didn't Match!\n");
+						}
+						else if(tmpPkt.header.type == STATUS_UPDATE)
+							printf("Status Packet... Ignoring!\n");
+						else
+							printf("Other Packet... Ignoring!\n");
+#else
+						}
+#endif
 					}
-					else
-						printf("Recv'd Something Else!\n");
 				}
 			}
 			objSetStart += SetPos;

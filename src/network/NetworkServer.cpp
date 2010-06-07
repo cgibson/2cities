@@ -178,8 +178,10 @@ void NetworkServer::networkIncoming(long &elapsed) {
 
 			// Check each player socket for data (allows up to 10 packets to be accepted)
 			for(unsigned int p=0; p<clients.size(); p++) {
-				int pktsRecv = 0;
-				while (!clients[p]->isLocal && clients[p]->socket.CanRead() && pktsRecv++ < 10) {
+				unsigned int pktsRecv = 0;
+				while (!clients[p]->isLocal && clients[p]->socket.CanRead() &&
+						pktsRecv++ < net::SERVER_RECV_MAX_PACKETS_PER_CYCLE)
+				{
 					networkIncomingPlayers(p, elapsed);
 				}
 			}
@@ -331,7 +333,7 @@ void NetworkServer::networkOutgoing(long &elapsed) {
 			int objSetStart = 0;
 			int currTime = global::elapsed_ms();
 			while(objSetStart < sendSize) {
-				int objSetSize = min(vecSize - objSetStart, (int)OBJECT_BATCHSEND_SIZE);
+				unsigned int objSetSize = min(vecSize - objSetStart, (int)OBJECT_BATCHSEND_SIZE);
 
 				// Build Batch Packet
 				WorldObject *objPtrGroup[net::OBJECT_BATCHSEND_SIZE];
@@ -353,8 +355,11 @@ void NetworkServer::networkOutgoing(long &elapsed) {
 
 					// Send to each _players
 					for(unsigned int p=0; p<clients.size(); p++) {
-						if(!clients[p]->isLocal && clients[p]->playerReady >= 0)
-							SendPacket(pkt, &(clients[p]->socket), clients[p]->ip);
+						if(!clients[p]->isLocal) {
+							// Avoid Flooding Clients Sending Level Vectors
+							if(clients[p]->playerReady >= 0)
+								SendPacket(pkt, &(clients[p]->socket), clients[p]->ip);
+						}
 						else
 							decodeObjectSend(pkt, 0);
 					}
@@ -420,7 +425,7 @@ void NetworkServer::sendStatusUpdates() {
 		memcpy(pkt.data+8, (unsigned char *)&timeToStateChange, sizeof(int));
 		pkt.header.type = STATUS_UPDATE;
 		for(unsigned int p=0; p<clients.size(); p++) {
-			if(!clients[p]->isLocal) {
+			if(!clients[p]->isLocal) { // && clients[p]->playerReady >= 0) {
 				memcpy(pkt.data, (unsigned char *)&p, sizeof(unsigned int));
 				SendPacket(pkt, &(clients[p]->socket), clients[p]->ip);
 			}
@@ -501,7 +506,7 @@ void NetworkServer::checkStateChange() {
 			global::stateManager->changeCurrentState(RESULTS_STATE);
 			break;
 		case RESULTS_STATE :
-			if(playerCount != readyCount && playerCount > 0) {
+			if(playerCount != readyCount || playerCount != 2) {
 				// send disconnect command to clients (kick 'em out)
 				for(unsigned int i=0; i < clients.size(); ++i) {
 					NetworkPacket tmpPkt(DISCONNECT, (unsigned char *)&i, sizeof(int));

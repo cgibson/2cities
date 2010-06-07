@@ -46,7 +46,6 @@ class CarnageState: public InGameState
 
         virtual enum E_STATE stateType() {return realStateType;}
 
-		static const int RECHARGE_TIME;
 		static const int MUSIC_DELAY;
 
         //Opponents' camera position and view vectors.

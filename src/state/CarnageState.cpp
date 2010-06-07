@@ -19,7 +19,6 @@
 using namespace global;
 using namespace enumeration;
 
-const int CarnageState::RECHARGE_TIME = 1000; // in milliseconds
 const int CarnageState::MUSIC_DELAY = 1000;
 
 CarnageState::CarnageState() {
@@ -63,7 +62,7 @@ void CarnageState::initialize() {
 
     ammoTypes         [ammoIndex] = BLACK_HOLE;    //BLACKHOLE
     ammoCounts        [ammoIndex] = 0;
-    ammoDelayNextAward[ammoIndex] = 50;
+    ammoDelayNextAward[ammoIndex] = 45;
     ammoNextAward     [ammoIndex] = ammoDelayNextAward[ammoIndex];
     ammoDelayTimers   [ammoIndex] = 1000;
     ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];
@@ -71,7 +70,7 @@ void CarnageState::initialize() {
 
     ammoTypes         [ammoIndex] = AIR_STRIKE;    //AIRSTRIKE
     ammoCounts        [ammoIndex] = 0;
-    ammoDelayNextAward[ammoIndex] = 50;
+    ammoDelayNextAward[ammoIndex] = 55;
     ammoNextAward     [ammoIndex] = ammoDelayNextAward[ammoIndex];
     ammoDelayTimers   [ammoIndex] = 1000;
     ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];
@@ -79,7 +78,7 @@ void CarnageState::initialize() {
 
     ammoTypes         [ammoIndex] = SHAPE_SHIFTER; //SHAPESHIFTER
     ammoCounts        [ammoIndex] = 0;
-    ammoDelayNextAward[ammoIndex] = 50;
+    ammoDelayNextAward[ammoIndex] = 65;
     ammoNextAward     [ammoIndex] = ammoDelayNextAward[ammoIndex];
     ammoDelayTimers   [ammoIndex] = 1000;
     ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];
@@ -87,7 +86,7 @@ void CarnageState::initialize() {
 
     ammoTypes         [ammoIndex] = CLUSTER_BOMB;  //CLUSTERBOMB
     ammoCounts        [ammoIndex] = 0;
-    ammoDelayNextAward[ammoIndex] = 50;
+    ammoDelayNextAward[ammoIndex] = 75;
     ammoNextAward     [ammoIndex] = ammoDelayNextAward[ammoIndex];
     ammoDelayTimers   [ammoIndex] = 1000;
     ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];

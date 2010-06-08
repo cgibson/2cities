@@ -15,7 +15,8 @@ SoundManager::SoundManager()
 	memset(uikeysfx, 0, sizeof(Mix_Chunk *) * NUM_UI_KEY_SFX);
 	curruichannel = 0;
 	currbuildmusic = 0;
-	currcarnagemusic = drand48() * (NUM_CARNAGE_SONGS - 1);
+	currcarnagemusic = rand() % NUM_CARNAGE_SONGS;
+	printf("Carnage music song choice: %d\n", currcarnagemusic);
 	currbuildsfx = 0;
 	currcarnagesfx = 0;
 }
@@ -225,6 +226,7 @@ void SoundManager::playBuildSong()
 		cerr << Mix_GetError() << endl;
 		exit(EXIT_FAILURE);
 	}
+	Mix_VolumeMusic(MUSIC_VOLUME);
 }
 
 void SoundManager::playCarnageSong()
@@ -235,6 +237,7 @@ void SoundManager::playCarnageSong()
 		cerr << Mix_GetError() << endl;
 		exit(EXIT_FAILURE);
 	}
+	Mix_VolumeMusic(MUSIC_VOLUME);
 }
 
 void SoundManager::playMenuSong()
@@ -245,6 +248,7 @@ void SoundManager::playMenuSong()
 		cerr << Mix_GetError() << endl;
 		exit(EXIT_FAILURE);
 	}
+	Mix_VolumeMusic(MUSIC_VOLUME);
 }
 void SoundManager::playResultWinSong()
 {
@@ -254,6 +258,7 @@ void SoundManager::playResultWinSong()
 		cerr << Mix_GetError() << endl;
 		exit(EXIT_FAILURE);
 	}
+	Mix_VolumeMusic(MUSIC_VOLUME);
 }
 void SoundManager::playResultLoseSong()
 {
@@ -263,6 +268,7 @@ void SoundManager::playResultLoseSong()
 		cerr << Mix_GetError() << endl;
 		exit(EXIT_FAILURE);
 	}
+	Mix_VolumeMusic(MUSIC_VOLUME);
 }
 
 void SoundManager::playNextBuildSong()

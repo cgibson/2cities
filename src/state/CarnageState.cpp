@@ -101,7 +101,7 @@ void CarnageState::initialize() {
    // initialize our camera (orbital)
    if (global::camera != NULL) delete global::camera;
    global::camera = new OrbitalCamera();
-   global::camera->init(Vector(30.0, 30.0, 30.0), Vector(0.0, 5.0, 0.0));
+   global::camera->init(Vector(0.0, 30.0, 30.0), Vector(0.0, 5.0, 0.0));
 
    // initialize opponent vehicle
    opponent = global::factory->makeObject(RECOGNIZER);

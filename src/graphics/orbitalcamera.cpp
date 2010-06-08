@@ -5,7 +5,7 @@
 #define RAD2DEG(x) ((x) * 180.0 / M_PI)
 
 const float OrbitalCamera::MAX_PITCH_DISP = 30.0;
-const float OrbitalCamera::MAX_YAW_DISP = 30.0;
+const float OrbitalCamera::MAX_YAW_DISP = 50.0;
 const float OrbitalCamera::ORBIT_RADIUS = 75.0;
 const float OrbitalCamera::MAX_CAM_PITCH = -5.0;
 const float OrbitalCamera::MIN_CAM_PITCH = -55.0; // this + MAX_PITCH_DISP must NOT be greater than 90 degrees!

@@ -5,8 +5,8 @@
 #define DEG2RAD(x) ((x) * M_PI / 180.0)
 #define RAD2DEG(x) ((x) * 180.0 / M_PI)
 
-const float Skybox::CITY_MIN_RADIUS = 80.0;
-const float Skybox::CITY_MAX_RADIUS = 125.0;
+const float Skybox::CITY_MIN_RADIUS = 110.0;
+const float Skybox::CITY_MAX_RADIUS = 150.0;
 const int Skybox::NUM_BUILDINGS = 150;
 const int Skybox::BLDG_MIN_WIDTH = 4;
 const int Skybox::BLDG_MAX_WIDTH = 12;
@@ -14,7 +14,7 @@ const int Skybox::BLDG_MIN_HEIGHT = 10;
 const int Skybox::BLDG_MAX_HEIGHT = 20;
 const float Skybox::SKY_SIZE = 1000.0;
 const float Skybox::SKY_HEIGHT = 75.0;
-const float Skybox::SKY_WALL_OFFSET = 700.0;
+const float Skybox::SKY_WALL_OFFSET = 600.0;
 
 Skybox::Skybox()
 {

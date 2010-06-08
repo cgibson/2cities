@@ -101,7 +101,7 @@ void BuildState::initialize() {
 	// create the camera
 	if (global::camera != NULL) delete global::camera;
 	global::camera = new OrbitalCamera();
-	global::camera->init(Vector(30.0, 30.0, 30.0), Vector(0.0, 5.0, 0.0));
+	global::camera->init(Vector(0.0, 30.0, 30.0), Vector(0.0, 5.0, 0.0));
 	OrbitalCamera *cam = static_cast<OrbitalCamera *>(global::camera);
 	cam->shiftCaptureMode(true);
 
@@ -272,9 +272,9 @@ void BuildState::mouseDownHandler()
 			int objID = currState->objects.size();
 			currState->objects.push_back(new CustomObject(objID, 0, CUSTOM_BLOCK, firstPoint, secondPoint ) );
 			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->setBuildingType(currBuildingType);
-			// set y = 0			
+			// set y = 0
 			static_cast<CustomObject*>(objects[currState->objects.size() - 1])->set_min_y(0);
-			static_cast<CustomObject*>(objects[currState->objects.size() - 1])->set_max_y(0);			
+			static_cast<CustomObject*>(objects[currState->objects.size() - 1])->set_max_y(0);
 			static_cast<CustomObject*>(currState->objects[currState->objects.size() - 1])->orientRect(firstPoint, secondPoint);
 		}
 		// IF not first click
@@ -290,7 +290,7 @@ void BuildState::mouseDownHandler()
 				// IF the new location of the mouse and the old location of the second point have a greater x distance between them than blocksize
 				if( fabs(click.getx() - secondPoint.getx()) > blocksize )
 				{
-					// IF the click is greater than the old location of the second point				
+					// IF the click is greater than the old location of the second point
 					if(click.getx() > secondPoint.getx())
 						secondPoint.setx(secondPoint.getx() + blocksize);
 					else
@@ -372,11 +372,11 @@ void BuildState::updateResources()
 	global::networkManager->network->setMyPlayerDamage(100 * ((INITIAL_RESOURCES - currResources) / (float)INITIAL_RESOURCES));
 }
 
-// 
+//
 bool BuildState::isOutOfResources(CustomObject modifiedObject, int index)
 {
-	InGameState *currState = global::stateManager->currentState;	
-	
+	InGameState *currState = global::stateManager->currentState;
+
 	int cost = modifiedObject.updateCost();
 
 	// calculate increase in resources by change in CustomObject
@@ -392,7 +392,7 @@ bool BuildState::isOutOfResources(CustomObject modifiedObject, int index)
 // TRUE if min > max or max < min, set difference
 bool BuildState::isPastBounds(CustomObject modifiedObject)
 {
-	// IF max < min	
+	// IF max < min
 	if(modifiedObject.get_max_x() <= modifiedObject.get_min_x())
 		return true;
 	if(modifiedObject.get_max_z() <= modifiedObject.get_min_z())
@@ -442,11 +442,11 @@ bool BuildState::isOutsideMap(Point p)
 	{
 		if(p.getx() > (global::map_width / 2.0) || p.getx() < 5)
 		{//printf("%s is outside map!\n", p.str());
-		
+
 			return true;
 		}
 		if(p.getz() > (global::map_height / 2.0) || p.getz() < -(global::map_height / 2))
-		{//printf("%s is outside map!\n", p.str());		
+		{//printf("%s is outside map!\n", p.str());
 			return true;
 		}
 	}
@@ -454,7 +454,7 @@ bool BuildState::isOutsideMap(Point p)
 	else if(global::networkManager->network->getMyPlayerID() == 1)
 	{
 		if(p.getx() < -(global::map_width / 2.0) || p.getx() > -5)
-		{//printf("%s is outside map!\n", p.str());		
+		{//printf("%s is outside map!\n", p.str());
 			return true;
 		}
 		if(p.getz() > (global::map_height / 2.0) || p.getz() < -(global::map_height / 2))
@@ -540,13 +540,13 @@ bool BuildState::adjust_face(int index, Face f, Point click)
    {
 		if( fabs(click.gety() - static_cast<CustomObject*>(objects[index])->get_max_y()) > blocksize )
 		{
-			// PULL			
+			// PULL
 			if(click.gety() > static_cast<CustomObject*>(objects[index])->get_max_y())
 			{
 				// IF new point is not inside another rect
-				CustomObject co = CustomObject(0, 0, CUSTOM_BLOCK, Point(static_cast<CustomObject*>(objects[index])->get_max_x(), 
-																							static_cast<CustomObject*>(objects[index])->get_max_y() + blocksize, 
-																							static_cast<CustomObject*>(objects[index])->get_max_z()), 
+				CustomObject co = CustomObject(0, 0, CUSTOM_BLOCK, Point(static_cast<CustomObject*>(objects[index])->get_max_x(),
+																							static_cast<CustomObject*>(objects[index])->get_max_y() + blocksize,
+																							static_cast<CustomObject*>(objects[index])->get_max_z()),
 																								static_cast<CustomObject*>(objects[index])->get_min());
 				co.setBuildingType(static_cast<CustomObject*>(objects[index])->getBuildingType());
 				if(!isOutOfResources(co, index))
@@ -569,30 +569,30 @@ bool BuildState::adjust_face(int index, Face f, Point click)
 		if( fabs(click.getx() - static_cast<CustomObject*>(objects[index])->get_max_x()) > blocksize )
 		{
 			// IF the click is greater than the old location of the second point
-			// PULL				
+			// PULL
 			if(click.getx() > static_cast<CustomObject*>(objects[index])->get_max_x())
 			{
 				// IF new point is not outside map
 				if(!isOutsideMap(Point(static_cast<CustomObject*>(objects[index])->get_max_x() + blocksize, static_cast<CustomObject*>(objects[index])->get_max_y(), static_cast<CustomObject*>(objects[index])->get_max_z())))
 				{
 					// IF new point is not inside another rect
-					CustomObject co = CustomObject(0, 0, CUSTOM_BLOCK, Point(static_cast<CustomObject*>(objects[index])->get_max_x() + blocksize, 
-																								static_cast<CustomObject*>(objects[index])->get_max_y(), 
-																								static_cast<CustomObject*>(objects[index])->get_max_z()), 
+					CustomObject co = CustomObject(0, 0, CUSTOM_BLOCK, Point(static_cast<CustomObject*>(objects[index])->get_max_x() + blocksize,
+																								static_cast<CustomObject*>(objects[index])->get_max_y(),
+																								static_cast<CustomObject*>(objects[index])->get_max_z()),
 																									static_cast<CustomObject*>(objects[index])->get_min());
 					co.setBuildingType(static_cast<CustomObject*>(objects[index])->getBuildingType());
 					if(!isInsideRect(co, index) && !isOutOfResources(co, index))
 					{
 						static_cast<CustomObject*>(objects[index])->set_max_x(static_cast<CustomObject*>(objects[index])->get_max_x() + blocksize);
-					}				
+					}
 				}
 			}
 			// PUSH
 			else
 			{
-				CustomObject co = CustomObject(0, 0, CUSTOM_BLOCK, Point(static_cast<CustomObject*>(objects[index])->get_max_x() - blocksize, 
-																							static_cast<CustomObject*>(objects[index])->get_max_y(), 
-																							static_cast<CustomObject*>(objects[index])->get_max_z()), 
+				CustomObject co = CustomObject(0, 0, CUSTOM_BLOCK, Point(static_cast<CustomObject*>(objects[index])->get_max_x() - blocksize,
+																							static_cast<CustomObject*>(objects[index])->get_max_y(),
+																							static_cast<CustomObject*>(objects[index])->get_max_z()),
 																									static_cast<CustomObject*>(objects[index])->get_min());
 				if(isPastBounds(co))
 				{
@@ -601,7 +601,7 @@ bool BuildState::adjust_face(int index, Face f, Point click)
 
 					pp_index = -1;
 		      	pp_face = NOTHING;
-				}	
+				}
 				else
 				{
 					static_cast<CustomObject*>(objects[index])->set_max_x(static_cast<CustomObject*>(objects[index])->get_max_x() - blocksize);
@@ -619,32 +619,32 @@ bool BuildState::adjust_face(int index, Face f, Point click)
 			{
 				if(!isOutsideMap(Point(static_cast<CustomObject*>(objects[index])->get_max_x(), static_cast<CustomObject*>(objects[index])->get_max_y(), static_cast<CustomObject*>(objects[index])->get_max_z() + blocksize)))
 				{
-					CustomObject co = CustomObject(0, 0, CUSTOM_BLOCK, Point(static_cast<CustomObject*>(objects[index])->get_max_x(), 
-																								static_cast<CustomObject*>(objects[index])->get_max_y(), 
-																								static_cast<CustomObject*>(objects[index])->get_max_z() + blocksize), 
+					CustomObject co = CustomObject(0, 0, CUSTOM_BLOCK, Point(static_cast<CustomObject*>(objects[index])->get_max_x(),
+																								static_cast<CustomObject*>(objects[index])->get_max_y(),
+																								static_cast<CustomObject*>(objects[index])->get_max_z() + blocksize),
 																									static_cast<CustomObject*>(objects[index])->get_min());
 					co.setBuildingType(static_cast<CustomObject*>(objects[index])->getBuildingType());
 					if(!isInsideRect(co, index) && !isOutOfResources(co, index))
-					{				
+					{
 						static_cast<CustomObject*>(objects[index])->set_max_z(static_cast<CustomObject*>(objects[index])->get_max_z() + blocksize);
 					}
-				}				
+				}
 			}
 			// PUSH
 			else
 			{
-				CustomObject co = CustomObject(0, 0, CUSTOM_BLOCK, Point(static_cast<CustomObject*>(objects[index])->get_max_x(), 
-																							static_cast<CustomObject*>(objects[index])->get_max_y(), 
-																							static_cast<CustomObject*>(objects[index])->get_max_z() - blocksize), 
+				CustomObject co = CustomObject(0, 0, CUSTOM_BLOCK, Point(static_cast<CustomObject*>(objects[index])->get_max_x(),
+																							static_cast<CustomObject*>(objects[index])->get_max_y(),
+																							static_cast<CustomObject*>(objects[index])->get_max_z() - blocksize),
 																									static_cast<CustomObject*>(objects[index])->get_min());
 				if(isPastBounds(co))
 				{
 					//printf("DEAD\n");
-					objects.erase( objects.begin() + index);		
-					
+					objects.erase( objects.begin() + index);
+
 					pp_index = -1;
 		      	pp_face = NOTHING;
-				}	
+				}
 				else
 				{
 					static_cast<CustomObject*>(objects[index])->set_max_z(static_cast<CustomObject*>(objects[index])->get_max_z() - blocksize);
@@ -661,37 +661,37 @@ bool BuildState::adjust_face(int index, Face f, Point click)
 			if(click.getx() < static_cast<CustomObject*>(objects[index])->get_min_x())
 			{
 				if(!isOutsideMap(Point(static_cast<CustomObject*>(objects[index])->get_min_x() - blocksize, static_cast<CustomObject*>(objects[index])->get_min_y(), static_cast<CustomObject*>(objects[index])->get_min_z())))
-				{					
+				{
 					CustomObject co = CustomObject(0, 0, CUSTOM_BLOCK, static_cast<CustomObject*>(objects[index])->get_max(),
-																						Point(static_cast<CustomObject*>(objects[index])->get_min_x() - blocksize, 
-																								static_cast<CustomObject*>(objects[index])->get_min_y(), 
+																						Point(static_cast<CustomObject*>(objects[index])->get_min_x() - blocksize,
+																								static_cast<CustomObject*>(objects[index])->get_min_y(),
 																								static_cast<CustomObject*>(objects[index])->get_min_z()));
 					co.setBuildingType(static_cast<CustomObject*>(objects[index])->getBuildingType());
 					if(!isInsideRect(co, index) && !isOutOfResources(co, index))
-					{				
+					{
 						static_cast<CustomObject*>(objects[index])->set_min_x(static_cast<CustomObject*>(objects[index])->get_min_x() - blocksize);
 					}
 				}
 			}
-			// PUSH			
+			// PUSH
 			else
 			{
 				CustomObject co = CustomObject(0, 0, CUSTOM_BLOCK, static_cast<CustomObject*>(objects[index])->get_max(),
-																					Point(static_cast<CustomObject*>(objects[index])->get_min_x() + blocksize, 
-																							static_cast<CustomObject*>(objects[index])->get_min_y(), 
+																					Point(static_cast<CustomObject*>(objects[index])->get_min_x() + blocksize,
+																							static_cast<CustomObject*>(objects[index])->get_min_y(),
 																							static_cast<CustomObject*>(objects[index])->get_min_z()));
 				if(isPastBounds(co))
 				{
 					//printf("DEAD\n");
-					objects.erase( objects.begin() + index);		
-					
+					objects.erase( objects.begin() + index);
+
 					pp_index = -1;
 		      	pp_face = NOTHING;
-				}	
+				}
 				else
 				{
 					static_cast<CustomObject*>(objects[index])->set_min_x(static_cast<CustomObject*>(objects[index])->get_min_x() + blocksize);
-				}				
+				}
 			}
 			return true;
 		}//printf("face3\n");
@@ -704,37 +704,37 @@ bool BuildState::adjust_face(int index, Face f, Point click)
 			if(click.getz() < static_cast<CustomObject*>(objects[index])->get_min_z())
 			{
 				if(!isOutsideMap(Point(static_cast<CustomObject*>(objects[index])->get_min_x(), static_cast<CustomObject*>(objects[index])->get_min_y(), static_cast<CustomObject*>(objects[index])->get_min_z() - blocksize)))
-				{					
+				{
 					CustomObject co = CustomObject(0, 0, CUSTOM_BLOCK, static_cast<CustomObject*>(objects[index])->get_max(),
-																						Point(static_cast<CustomObject*>(objects[index])->get_min_x(), 
-																								static_cast<CustomObject*>(objects[index])->get_min_y(), 
+																						Point(static_cast<CustomObject*>(objects[index])->get_min_x(),
+																								static_cast<CustomObject*>(objects[index])->get_min_y(),
 																								static_cast<CustomObject*>(objects[index])->get_min_z() - blocksize));
 					co.setBuildingType(static_cast<CustomObject*>(objects[index])->getBuildingType());
 					if(!isInsideRect(co, index) && !isOutOfResources(co, index))
-					{				
+					{
 						static_cast<CustomObject*>(objects[index])->set_min_z(static_cast<CustomObject*>(objects[index])->get_min_z() - blocksize);
 					}
 				}
 			}
-			// PUSH			
+			// PUSH
 			else
 			{
 				CustomObject co = CustomObject(0, 0, CUSTOM_BLOCK, static_cast<CustomObject*>(objects[index])->get_max(),
-																					Point(static_cast<CustomObject*>(objects[index])->get_min_x(), 
-																							static_cast<CustomObject*>(objects[index])->get_min_y(), 
+																					Point(static_cast<CustomObject*>(objects[index])->get_min_x(),
+																							static_cast<CustomObject*>(objects[index])->get_min_y(),
 																							static_cast<CustomObject*>(objects[index])->get_min_z() + blocksize));
 				if(isPastBounds(co))
 				{
 					//printf("DEAD\n");
-					objects.erase( objects.begin() + index);		
-					
+					objects.erase( objects.begin() + index);
+
 					pp_index = -1;
 		      	pp_face = NOTHING;
-				}	
+				}
 				else
 				{
 					static_cast<CustomObject*>(objects[index])->set_min_z(static_cast<CustomObject*>(objects[index])->get_min_z() + blocksize);
-				}				
+				}
 			}
 			return true;
 		}//printf("face4\n");
@@ -747,7 +747,7 @@ void BuildState::new_push_pull(Point mouse_pos)
 	mouse_pos.round();
 	if(adjust_face(pp_index, pp_face, mouse_pos))
 	{
-		updateResources();	
+		updateResources();
 		//printf("currResources: %d\n", currResources);
 	}
 }

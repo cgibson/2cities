@@ -23,9 +23,11 @@ namespace sound
 	//const char *buildsfxnames[];
 	
 	const char *carnagesfxnames[] = {
-		"resources/sound/28911__junggle__btn101.wav",
-		"resources/sound/39457__THE_bizniss__laser_3.wav",
-		"resources/sound/73537__Snipperbes__ClassicLaser.wav"};
+		"resources/sound/28911__junggle__btn101.wav", //Regular Shot
+		"resources/sound/39457__THE_bizniss__laser_3.wav", //Air Strike
+		"resources/sound/73537__Snipperbes__ClassicLaser.wav", //Cluster Bomb
+		"resources/sound/30935__aust_paul__possiblelazer.wav", //Shotgun
+		"resources/sound/51465__smcameron__flak_gun_sound.wav"}; //Ballhemoth, Black Hole
 		
 	const char *uikeysfxnames[] = {
 		"resources/sound/ibm1_.wav",

@@ -1,5 +1,6 @@
 #include "SoundManager.h"
 #include "sound.h"
+#include <time.h>
 
 using namespace std;
 using namespace sound;
@@ -15,8 +16,8 @@ SoundManager::SoundManager()
 	memset(uikeysfx, 0, sizeof(Mix_Chunk *) * NUM_UI_KEY_SFX);
 	curruichannel = 0;
 	currbuildmusic = 0;
+	srand(time(NULL));
 	currcarnagemusic = rand() % NUM_CARNAGE_SONGS;
-	printf("Carnage music song choice: %d\n", currcarnagemusic);
 	currbuildsfx = 0;
 	currcarnagesfx = 0;
 }
@@ -180,6 +181,7 @@ void SoundManager::loadSfx()
 	//Attempt to read in carnage SFX
 	for(int i = 0; i < NUM_CARNAGE_SFX; i++)
 	{
+		printf("carnage sfx #%d: %s\n", i, carnagesfxnames[i]);
 		if(hasEnding(carnagesfxnames[i], ".wav"))
 		{
 			carnagesfx[i] = Mix_LoadWAV(carnagesfxnames[i]);

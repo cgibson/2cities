@@ -14,7 +14,7 @@
 #define NUM_RESULTS_SONGS 2
 
 #define NUM_BUILD_SFX 0
-#define NUM_CARNAGE_SFX 3
+#define NUM_CARNAGE_SFX 5
 #define NUM_MENU_SFX 0
 #define NUM_RESULTS_SFX 0
 #define NUM_UI_KEY_SFX 8

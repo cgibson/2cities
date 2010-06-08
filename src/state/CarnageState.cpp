@@ -237,7 +237,35 @@ void CarnageState::updateInput(long milli_time) {
 			   ammoTimers[ammoIndex] <= 0 &&
 			   (ammoCounts[ammoIndex] > 0 || ammoCounts[ammoIndex] == -1))
 	   {
-		  global::soundManager->playCarnageSfx(0);
+			switch(ammoIndex)
+			{
+				case 0:
+					global::soundManager->playCarnageSfx(0);
+					break;
+					
+				case 1:
+					global::soundManager->playCarnageSfx(4);
+					break;
+				
+				case 2:
+					global::soundManager->playCarnageSfx(3);
+					break;
+					
+				case 3:
+					global::soundManager->playCarnageSfx(1);
+					break;
+					
+				case 4:
+					global::soundManager->playCarnageSfx(2);
+					break;
+					
+				case 5:
+					global::soundManager->playCarnageSfx(4);
+					break;
+					
+				default:
+					break;
+			}
 		  WorldObject *newObjPtr = global::factory->makeObject(ammoTypes[ammoIndex]);
 		  newObjPtr->setPosition(camera->position() - Vector( 0.0f, 1.0f, 0.0f));
 		  newObjPtr->setVelocity((camera->viewVec() + Vector(0.0f, 0.15f, 0.0f)) * 50); // offset the view vector a bit to more closely match the targeting reticle

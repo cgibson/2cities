@@ -105,6 +105,13 @@ Point::Point()
   p_z = 0;
 }
 
+bool Point::equals(Point p)
+{
+	if(p_x == p.getx() && p_y == p.gety() && p_z == p.getz())
+		return true;
+	return false;
+}
+
 double Point::roundDouble(double p)
 {
 	if(p > 0)

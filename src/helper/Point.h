@@ -38,7 +38,7 @@ public:
   double roundDouble(double p);
 	
 	char *str();
-  
+  	bool equals(Point p);
 	void adjustPointForBlocksize(int blocksize);
 
 	Point operator=( const Point& );

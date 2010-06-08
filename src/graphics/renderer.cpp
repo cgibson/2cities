@@ -20,63 +20,63 @@ void Renderer::init()
 {
   init_lights();
   skybox.init();
-  
+
   // use for adaptive bloom
   test_count = 3;
 	fpsQueue = new LimitedQueue(50);
-	
-	    
+
+
 	gfx::simpleScreenFillShader.enable();
-	
+
 	int loc = glGetUniformLocation(gfx::simpleScreenFillShader.getProgram(), "test_count");
 	glUniform1i(loc, test_count);
-	
+
 	printf("TEST LOC: %d\n", loc);
-	
+
 	shader::reset();
-    
+
 }
 
 void Renderer::updateBloom(int elapsed)
 {
-	
+
 	fpsQueue->add(elapsed);
-	
+
 	float average = 0;
 	for(int i = 0; i < fpsQueue->size(); i++)
 	{
 		average += (float)fpsQueue->get(i);
 	}
-	
+
 	average /= fpsQueue->size();
-	
+
 	average = 1000.0 / average;
-	
+
 	if((average < 25.0) && (test_count > min_test) && (fpsQueue->size() > 1))
 	{
 		test_count--;
 		printf("frame average: %.1f, so lowered tests to %d\n", average, test_count);
-		
+
 		gfx::simpleScreenFillShader.enable();
-		
+
 		int loc = glGetUniformLocation(gfx::simpleScreenFillShader.getProgram(), "test_count");
     glUniform1i(loc, test_count);
-    
+
     printf("LOCATION: %d\n", loc);
-		
+
 		shader::reset();
-		
+
 	}else if((average > 60.0) && (test_count < max_test) && (fpsQueue->size() > 1))
 	{
 		test_count++;
 		printf("frame average: %.1f, so raised tests to %d\n", average, test_count);
-		
+
 		gfx::simpleScreenFillShader.enable();
-		
+
 		int loc = glGetUniformLocation(gfx::simpleScreenFillShader.getProgram(), "test_count");
     glUniform1i(loc, test_count);
     printf("LOCATION: %d\n", loc);
-		
+
 		shader::reset();
 	}
 }
@@ -84,7 +84,7 @@ void Renderer::updateBloom(int elapsed)
 void Renderer::update(int elapsed)
 {
 	skybox.update(elapsed);
-	
+
 	if(global::stateManager->currentState->stateType() == CARNAGE_STATE)
 		updateBloom(elapsed);
 }
@@ -172,7 +172,7 @@ void Renderer::draw_diffusePass()
 		global::stateManager->currentState->stateType() == MENU_STATE ||
 		global::stateManager->currentState->stateType() == RESULTS_STATE)
 	{
-		skybox.draw(light.position[0], light.position[1], light.position[2]);
+		skybox.draw(light.position[0], light.position[1], light.position[2], false);
 	}
 
   shader::reset();
@@ -359,7 +359,7 @@ void Renderer::draw_diffusePass()
 				glLoadIdentity();
 
 				glTranslatef(0,-1,0);
-				
+
 				cs->playerMat->applyMaterial(gfx::simpleShader, "");
 				cs->playerCannon->draw();
 			glPopMatrix();

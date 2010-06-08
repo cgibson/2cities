@@ -10,6 +10,7 @@ Hud::Hud()
     _waitingUI = NULL;
     _menuUI = NULL;
     _resultsUI = NULL;
+    _showVFC = false;
 }
 
 Hud::~Hud()
@@ -49,6 +50,7 @@ void Hud::init()
 	console.registerCmd("quit", Hud::exitApp);
     console.registerCmd("clear", Hud::clearConsole);
     console.registerCmd("swapui", Hud::swapUIcmd);
+    console.registerCmd("vfc", Hud::showVFCcmd);
 }
 
 void Hud::exitApp(int argc, char *argv[])
@@ -97,6 +99,11 @@ void Hud::swapUIcmd(int argc, char *argv[])
 	{
 		gfx::hud.console.error("Unknown UI.");
 	}
+}
+
+void Hud::showVFCcmd(int argc, char *argv[])
+{
+	gfx::hud.showVFC(!gfx::hud.showVFC());
 }
 
 void Hud::swapUI(UiType which)
@@ -163,6 +170,30 @@ void Hud::update(int ms)
 
 void Hud::draw()
 {
+	// debugging mode only
+	if (_showVFC)
+	{
+		// switch to a top-down camera projection
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		gluPerspective(45.0, (float)global::width / global::height, 1.0, 1024.0);
+		gluLookAt(0.0, 500.0, 0.0,
+				  0.0, 0.0, 0.0,
+				  0.0, 0.0, -1.0);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+
+		// turn off depth testing
+		glDisable(GL_DEPTH_TEST);
+
+		// redraw the skybox top down
+		gfx::renderer.skybox.draw(gfx::renderer.light.position[0], gfx::renderer.light.position[1], gfx::renderer.light.position[2], true);
+		glUseProgram(0);
+
+		// turn depth testing back on
+		glEnable(GL_DEPTH_TEST);
+	}
+
     // switch to a 2D projection in pixel space
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();

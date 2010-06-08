@@ -38,6 +38,9 @@ public:
   void reshape(int w, int h);
   void getMatrices(GLdouble **mvMatrix, GLdouble **pMatrix, GLint **vMatrix);
 
+  Skybox skybox;
+  Lighting light;
+
 private:
   void update_view();
   void init_lights();
@@ -45,14 +48,10 @@ private:
   void updateBloom(int elapsed);
   Vector eye, lookAt;
 
-  Lighting light;
-
-  Skybox skybox;
-  
   bool use_fbo;
-  
+
   LimitedQueue *fpsQueue;
-  
+
   static const int min_test;
   static const int max_test;
   int test_count;

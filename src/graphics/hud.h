@@ -48,11 +48,14 @@ public:
     // shows or hides the console
     bool showConsole() const { return _showConsole; }
     void showConsole(bool show) { _showConsole = show; }
+    bool showVFC() const { return _showVFC; }
+    void showVFC(bool showVFC) { _showVFC = showVFC; }
 
     // console commands
     static void exitApp(int argc, char *argv[]);
     static void clearConsole(int argc, char *argv[]);
     static void swapUIcmd(int argc, char *argv[]);
+    static void showVFCcmd(int argc, char *argv[]);
 
     // accessors
     GameUI *currentUI() const { return _currentUI; } // may be null!
@@ -65,6 +68,7 @@ private:
     WaitingUI *_waitingUI;
     MenuUI *_menuUI;
     ResultsUI *_resultsUI;
+    bool _showVFC;
 };
 
 #endif

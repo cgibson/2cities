@@ -26,17 +26,25 @@ public:
 
     void init();
     void update(int ms);
-    void draw(float light_x, float light_y, float light_z); // pretty hacky
+    void draw(float light_x, float light_y, float light_z, bool skyscrapers_only); // pretty hacky
 
 private:
+	typedef struct plane_struct {
+		Vector normal;
+		float dist;
+	} plane_t;
+
 	std::vector<Skyscraper *> _buildings;
 	GLuint _circuit_tex;
 	GLuint _sweeper_tex;
 	GLuint _cloud_tex;
 	GLuint _skyline_alpha;
 	float _time;
+	plane_t frustum[6];
 
 	bool aabbCollides(Vector box1min, Vector box1max, Vector box2min, Vector box2max);
+	void computeFrustum();
+	bool shouldCull(Skyscraper *skyscraper);
 
 	static const float CITY_MIN_RADIUS;
 	static const float CITY_MAX_RADIUS;

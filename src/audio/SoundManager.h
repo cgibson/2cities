@@ -42,11 +42,11 @@ class SoundManager
 		Mix_Chunk *buildsfx[NUM_BUILD_SFX];
 		Mix_Chunk *carnagesfx[NUM_CARNAGE_SFX];
 		Mix_Chunk *uikeysfx[NUM_UI_KEY_SFX];
-		
+
 	public:
 		SoundManager();
 		~SoundManager();
-		
+
 		bool hasEnding(std::string const &musicFile, std::string const &extension);
 		void initialize();
 		void tearDownSound();
@@ -69,7 +69,7 @@ class SoundManager
 		void setCurrBuildMusic(int newcurrbuildmusic);
 		void setCurrCarnageMusic(int newcurrcarnagemusic);
 		void playUIKey();
-		
+
 		//Useful for setting sfx when shooting particular ammunition.
 		void setCurrBuildSfx(int newcurrbuildsfx);
 		void setCurrCarnageSfx(int newcurrcarnagesfx);

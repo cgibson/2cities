@@ -262,10 +262,12 @@ void BuildUI::keyDown(int key, bool special)
 		{
 			case '1':
 				_typeSelect->selectItem(0);
+				global::soundManager->playUIKey();
 				break;
 
 			case '2':
 				_typeSelect->selectItem(1);
+				global::soundManager->playUIKey();
 				break;
 
 			default:

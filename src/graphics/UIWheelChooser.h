@@ -28,8 +28,8 @@ public:
 	void draw();
 
 	// movement controls
-	void nextItem() { _currentItem = (++_currentItem >= _numItems) ? _numItems - 1 : _currentItem; }
-	void prevItem() { _currentItem = (--_currentItem < 0) ? 0 : _currentItem; }
+	void nextItem() { _currentItem++; if (_currentItem >= _numItems) { _currentItem = _numItems - 1; } else { global::soundManager->playUIKey(); } }
+	void prevItem() { _currentItem--; if(_currentItem < 0) { _currentItem = 0; } else { global::soundManager->playUIKey(); } }
 	void selectItem(int item) { checkBounds(item); _currentItem = item; }
 
 	// property accessors

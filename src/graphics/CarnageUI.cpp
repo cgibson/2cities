@@ -54,7 +54,7 @@ void CarnageUI::init()
 	_reticle->pos(global::width / 2 - _reticle->width() / 2, global::height / 2 - _reticle->height() / 2);
 
 	_ammoSelect = new UIWheelChooser();
-	_ammoSelect->init(7, 64);
+	_ammoSelect->init(6, 64);
 	_ammoSelect->pos(global::width / 2, global::height - 115);
 
 	_ammoSelect->icon(0)->init("resources/textures/bullets_icon.bmp", NULL);
@@ -70,55 +70,55 @@ void CarnageUI::init()
 	_bulletsRecharge->percent(100);
 	_bulletsRecharge->parent(_ammoSelect->icon(0));
 
-	_ammoSelect->icon(1)->init("resources/textures/shotgun_icon.bmp", NULL);
-	_ammoSelect->icon(1)->parent(_ammoSelect);
-	_ammoSelect->name(1)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
-	_ammoSelect->name(1)->text("SHOTGUN");
-	_ammoSelect->name(1)->parent(_ammoSelect->icon(1));
+	_ammoSelect->icon(2)->init("resources/textures/shotgun_icon.bmp", NULL);
+	_ammoSelect->icon(2)->parent(_ammoSelect);
+	_ammoSelect->name(2)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
+	_ammoSelect->name(2)->text("SHOTGUN");
+	_ammoSelect->name(2)->parent(_ammoSelect->icon(2));
 
 	_shotgunRecharge = new UIProgress();
 	_shotgunRecharge->init(UIProgress::RIGHT);
 	_shotgunRecharge->bgclr(0.0, 0.0, 0.0, 0.0);
 	_shotgunRecharge->fgclr(0.0, 1.0, 0.0, 1.0);
 	_shotgunRecharge->percent(100);
-	_shotgunRecharge->parent(_ammoSelect->icon(1));
+	_shotgunRecharge->parent(_ammoSelect->icon(2));
 
-	_ammoSelect->icon(2)->init("resources/textures/ballhemoth_icon.bmp", NULL);
-	_ammoSelect->icon(2)->parent(_ammoSelect);
-	_ammoSelect->name(2)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
-	_ammoSelect->name(2)->text("BALLHEMOTH");
-	_ammoSelect->name(2)->parent(_ammoSelect->icon(2));
+	_ammoSelect->icon(1)->init("resources/textures/ballhemoth_icon.bmp", NULL);
+	_ammoSelect->icon(1)->parent(_ammoSelect);
+	_ammoSelect->name(1)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
+	_ammoSelect->name(1)->text("BALLHEMOTH");
+	_ammoSelect->name(1)->parent(_ammoSelect->icon(1));
 
 	_ballhemothRecharge = new UIProgress();
 	_ballhemothRecharge->init(UIProgress::RIGHT);
 	_ballhemothRecharge->bgclr(0.0, 0.0, 0.0, 0.0);
 	_ballhemothRecharge->fgclr(0.0, 1.0, 0.0, 1.0);
 	_ballhemothRecharge->percent(100);
-	_ballhemothRecharge->parent(_ammoSelect->icon(2));
+	_ballhemothRecharge->parent(_ammoSelect->icon(1));
 
-	_ammoSelect->icon(3)->init("resources/textures/blackhole_icon.bmp", NULL);
-	_ammoSelect->icon(3)->parent(_ammoSelect);
-	_ammoSelect->name(3)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
-	_ammoSelect->name(3)->text("BLACK HOLE");
-	_ammoSelect->name(3)->parent(_ammoSelect->icon(3));
+	_ammoSelect->icon(5)->init("resources/textures/blackhole_icon.bmp", NULL);
+	_ammoSelect->icon(5)->parent(_ammoSelect);
+	_ammoSelect->name(5)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
+	_ammoSelect->name(5)->text("BLACK HOLE");
+	_ammoSelect->name(5)->parent(_ammoSelect->icon(5));
 
 	_blackholeClip = new UILabel();
 	_blackholeClip->init("resources/fonts/sui_generis_free.ttf", 10, UILabel::CENTER);
 	_blackholeClip->text("0");
-	_blackholeClip->parent(_ammoSelect->icon(3));
+	_blackholeClip->parent(_ammoSelect->icon(5));
 
-	_ammoSelect->icon(4)->init("resources/textures/airstrike_icon.bmp", NULL);
-	_ammoSelect->icon(4)->parent(_ammoSelect);
-	_ammoSelect->name(4)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
-	_ammoSelect->name(4)->text("AIR STRIKE");
-	_ammoSelect->name(4)->parent(_ammoSelect->icon(4));
+	_ammoSelect->icon(3)->init("resources/textures/airstrike_icon.bmp", NULL);
+	_ammoSelect->icon(3)->parent(_ammoSelect);
+	_ammoSelect->name(3)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
+	_ammoSelect->name(3)->text("AIR STRIKE");
+	_ammoSelect->name(3)->parent(_ammoSelect->icon(3));
 
 	_airstrikeClip = new UILabel();
 	_airstrikeClip->init("resources/fonts/sui_generis_free.ttf", 10, UILabel::CENTER);
 	_airstrikeClip->text("0");
-	_airstrikeClip->parent(_ammoSelect->icon(4));
+	_airstrikeClip->parent(_ammoSelect->icon(3));
 
-	_ammoSelect->icon(5)->init("resources/textures/shapeshifter_icon.bmp", NULL);
+	/*_ammoSelect->icon(5)->init("resources/textures/shapeshifter_icon.bmp", NULL);
 	_ammoSelect->icon(5)->parent(_ammoSelect);
 	_ammoSelect->name(5)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
 	_ammoSelect->name(5)->text("SHAPE SHIFTER");
@@ -127,18 +127,18 @@ void CarnageUI::init()
 	_shapeshifterClip = new UILabel();
 	_shapeshifterClip->init("resources/fonts/sui_generis_free.ttf", 10, UILabel::CENTER);
 	_shapeshifterClip->text("0");
-	_shapeshifterClip->parent(_ammoSelect->icon(5));
+	_shapeshifterClip->parent(_ammoSelect->icon(5));*/
 
-	_ammoSelect->icon(6)->init("resources/textures/clusterbomb_icon.bmp", NULL);
-	_ammoSelect->icon(6)->parent(_ammoSelect);
-	_ammoSelect->name(6)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
-	_ammoSelect->name(6)->text("CLUSTER BOMB");
-	_ammoSelect->name(6)->parent(_ammoSelect->icon(6));
+	_ammoSelect->icon(4)->init("resources/textures/clusterbomb_icon.bmp", NULL);
+	_ammoSelect->icon(4)->parent(_ammoSelect);
+	_ammoSelect->name(4)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
+	_ammoSelect->name(4)->text("CLUSTER BOMB");
+	_ammoSelect->name(4)->parent(_ammoSelect->icon(4));
 
 	_clusterbombClip = new UILabel();
 	_clusterbombClip->init("resources/fonts/sui_generis_free.ttf", 10, UILabel::CENTER);
 	_clusterbombClip->text("0");
-	_clusterbombClip->parent(_ammoSelect->icon(6));
+	_clusterbombClip->parent(_ammoSelect->icon(4));
 
 	_ammoSelect->parent(_window);
 
@@ -278,15 +278,15 @@ void CarnageUI::update(int ms)
 	_bulletsRecharge->pos(0, -10);
 	_bulletsRecharge->size(_ammoSelect->icon(0)->width(), 5);
 	_shotgunRecharge->pos(0, -10);
-	_shotgunRecharge->size(_ammoSelect->icon(1)->width(), 5);
+	_shotgunRecharge->size(_ammoSelect->icon(2)->width(), 5);
 	_ballhemothRecharge->pos(0, -10);
-	_ballhemothRecharge->size(_ammoSelect->icon(2)->width(), 5);
+	_ballhemothRecharge->size(_ammoSelect->icon(1)->width(), 5);
 
 	// keep the ammo clips matched to their icons
-	_blackholeClip->pos(_ammoSelect->icon(3)->width() / 2, -13);
-	_airstrikeClip->pos(_ammoSelect->icon(4)->width() / 2, -13);
-	_shapeshifterClip->pos(_ammoSelect->icon(5)->width() / 2, -13);
-	_clusterbombClip->pos(_ammoSelect->icon(6)->width() / 2, -13);
+	_blackholeClip->pos(_ammoSelect->icon(5)->width() / 2, -13);
+	_airstrikeClip->pos(_ammoSelect->icon(3)->width() / 2, -13);
+	//_shapeshifterClip->pos(_ammoSelect->icon(5)->width() / 2, -13);
+	_clusterbombClip->pos(_ammoSelect->icon(4)->width() / 2, -13);
 
 	// read recharge progress from carnage state (TODO: read different recharge times for different weapons)
 	CarnageState *state = static_cast<CarnageState *>(global::stateManager->currentState);
@@ -306,13 +306,13 @@ void CarnageUI::update(int ms)
 		_ballhemothRecharge->fgb(), 1.0);
 
 	char buf[4];
-	sprintf(buf, "%i", state->getAmmoCount(3));
-	_blackholeClip->text(buf);
-	sprintf(buf, "%i", state->getAmmoCount(4));
-	_airstrikeClip->text(buf);
 	sprintf(buf, "%i", state->getAmmoCount(5));
-	_shapeshifterClip->text(buf);
-	sprintf(buf, "%i", state->getAmmoCount(6));
+	_blackholeClip->text(buf);
+	sprintf(buf, "%i", state->getAmmoCount(3));
+	_airstrikeClip->text(buf);
+	//sprintf(buf, "%i", state->getAmmoCount(5));
+	//_shapeshifterClip->text(buf);
+	sprintf(buf, "%i", state->getAmmoCount(4));
 	_clusterbombClip->text(buf);
 
 	// update the time remaining display
@@ -351,31 +351,38 @@ void CarnageUI::keyDown(int key, bool special)
 		{
 			case '1':
 				_ammoSelect->selectItem(0);
+				global::soundManager->playUIKey();
 				break;
 
 			case '2':
 				_ammoSelect->selectItem(1);
+				global::soundManager->playUIKey();
 				break;
 
 			case '3':
 				_ammoSelect->selectItem(2);
+				global::soundManager->playUIKey();
 				break;
 
 			case '4':
 				_ammoSelect->selectItem(3);
+				global::soundManager->playUIKey();
 				break;
 
 			case '5':
 				_ammoSelect->selectItem(4);
+				global::soundManager->playUIKey();
 				break;
 
 			case '6':
 				_ammoSelect->selectItem(5);
+				global::soundManager->playUIKey();
 				break;
 
-			case '7':
+			/*case '7':
 				_ammoSelect->selectItem(6);
-				break;
+				global::soundManager->playUIKey();
+				break;*/
 
 			default:
 				break;

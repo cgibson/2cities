@@ -200,6 +200,7 @@ void MenuUI::keyDown(int key, bool special)
 		{
 			case 27: // escape
 				_choiceMade = false;
+				global::soundManager->playUIKey();
 				break;
 
 			case '\r':
@@ -212,6 +213,7 @@ void MenuUI::keyDown(int key, bool special)
 					else if (_currentChoice == 0) // join
 					{
 						_choiceMade = true;
+						global::soundManager->playUIKey();
 					}
 					else // exit
 					{
@@ -267,6 +269,7 @@ void MenuUI::mouseDown(int button)
 
 			case 0: // join
 				_choiceMade = true;
+				global::soundManager->playUIKey();
 				break;
 
 			case 2: // exit
@@ -280,6 +283,7 @@ void MenuUI::mouseDown(int button)
 	else if (button == MOUSE_RIGHT)
 	{
 		_choiceMade = false;
+		global::soundManager->playUIKey();
 	}
 }
 
@@ -298,13 +302,27 @@ void MenuUI::mouseWheel(int direction)
 void MenuUI::prevChoice()
 {
 	_currentChoice--;
-	_currentChoice = (_currentChoice < 0) ? 0 : _currentChoice;
+	if (_currentChoice < 0)
+	{
+		_currentChoice = 0;
+	}
+	else
+	{
+		global::soundManager->playUIKey();
+	}
 }
 
 void MenuUI::nextChoice()
 {
 	_currentChoice++;
-	_currentChoice = (_currentChoice > 2) ? 2 : _currentChoice;
+	if (_currentChoice > 2)
+	{
+		_currentChoice = 2;
+	}
+	else
+	{
+		global::soundManager->playUIKey();
+	}
 }
 
 void MenuUI::startHosting()
@@ -343,6 +361,7 @@ void MenuUI::addIPchar(char c)
 	ip[len + 1] = '\0';
 	_ipInput->text(ip);
 	free(ip);
+	global::soundManager->playUIKey();
 }
 
 void MenuUI::removeIPchar()
@@ -355,6 +374,7 @@ void MenuUI::removeIPchar()
 	ip[len - 1] = '\0';
 	_ipInput->text(ip);
 	free(ip);
+	global::soundManager->playUIKey();
 }
 
 float MenuUI::introBounce(float t)

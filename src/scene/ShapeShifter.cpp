@@ -56,7 +56,7 @@ void ShapeShifter::think(int elapsedTime)
   }
   // update ghost location.
 	btTransform trans = ghost->getWorldTransform();
-	trans.setOrigin(PhysicsBody::VtobtV3(position));
+	trans.setOrigin(PhysicsBody::VtobtV3(getPosition()));
 	ghost->setWorldTransform(trans);
   // after at least one thing has been shifted, remove the ammo.
   if (numberShifted > 0)
@@ -64,7 +64,8 @@ void ShapeShifter::think(int elapsedTime)
     pb = physics->getPBfromID(id);
     physics->removeGhost(ghost);
     ghost = NULL;
-    pb->setToCull();
+    if (pb != NULL)
+      pb->setToCull();
   }
 }
 

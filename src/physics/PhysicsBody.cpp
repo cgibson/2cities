@@ -8,14 +8,18 @@ btScalar PhysicsBody::getMass(ObjectType type)
 
 void PhysicsBody::setPosition(Vector in)
 {
-	btTransform trans = body->getCenterOfMassTransform();
-	trans.setOrigin(VtobtV3(in));
-	body->setCenterOfMassTransform(trans);
+  if (body != NULL)
+  {
+	  btTransform trans = body->getCenterOfMassTransform();
+	  trans.setOrigin(VtobtV3(in));
+	  body->setCenterOfMassTransform(trans);
+	}
 }
 
 void PhysicsBody::setVelocity(Vector in)
 {
-	body->setLinearVelocity(VtobtV3(in));
+  if (body != NULL)
+  	body->setLinearVelocity(VtobtV3(in));
 }
 
 PhysicsBody::PhysicsBody(WorldObject *worldObject):

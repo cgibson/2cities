@@ -95,6 +95,7 @@ void BlackHole::think(int elapsedTime)
     pb = physics->getPBfromID(id);
     physics->removeGhost(ghost);
     ghost = NULL;
-    pb->setToCull();
+    if (pb != NULL)
+      pb->setToCull();
   }
 }

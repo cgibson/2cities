@@ -55,7 +55,7 @@ void Camera::project()
 {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(45.0, (float)global::width / global::height, 1.0, 500.0);
+	gluPerspective(75.0, (float)global::width / global::height, 1.0, 500.0);
 	gluLookAt(_eyePos.x(), _eyePos.y(), _eyePos.z(),
 			  _lookPos.x(), _lookPos.y(), _lookPos.z(),
 			  _upVec.x(), _upVec.y(), _upVec.z());

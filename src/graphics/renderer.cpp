@@ -300,32 +300,32 @@ void Renderer::draw_diffusePass()
             curMat.applyMaterial(gfx::simpleShader, "");
             break;
           case DUMMY_SPHERE: 
-            gfx::materials[YELLOW_MAT].applyMaterial(gfx::ammoShader, "");
             gfx::ammoShader.enable();
+            gfx::materials[YELLOW_MAT].applyMaterial(gfx::ammoShader, "");
             break;
           case BALLHEMOTH: 
-            gfx::materials[YELLOW_MAT].applyMaterial(gfx::ammoShader, "");
             gfx::ammoShader.enable();
+            gfx::materials[YELLOW_MAT].applyMaterial(gfx::ammoShader, "");
             break;
           case BLACK_HOLE: 
-            gfx::materials[YELLOW_MAT].applyMaterial(gfx::ammoShader, "");
             gfx::ammoShader.enable();
+            gfx::materials[YELLOW_MAT].applyMaterial(gfx::ammoShader, "");
             break;
           case AIR_STRIKE:
-            gfx::materials[YELLOW_MAT].applyMaterial(gfx::ammoShader, "");
             gfx::ammoShader.enable();
+            gfx::materials[YELLOW_MAT].applyMaterial(gfx::ammoShader, "");
             break;
           case SHOTGUN:
-            gfx::materials[YELLOW_MAT].applyMaterial(gfx::ammoShader, "");
             gfx::ammoShader.enable();
+            gfx::materials[YELLOW_MAT].applyMaterial(gfx::ammoShader, "");
             break;
           case SHAPE_SHIFTER:
-            gfx::materials[YELLOW_MAT].applyMaterial(gfx::ammoShader, "");
             gfx::ammoShader.enable();
+            gfx::materials[YELLOW_MAT].applyMaterial(gfx::ammoShader, "");
             break;
           case CLUSTER_BOMB:
-            gfx::materials[YELLOW_MAT].applyMaterial(gfx::ammoShader, "");
             gfx::ammoShader.enable();
+            gfx::materials[YELLOW_MAT].applyMaterial(gfx::ammoShader, "");
             break;
           default:
             //gfx::useShader(gfx::shForceBlock);

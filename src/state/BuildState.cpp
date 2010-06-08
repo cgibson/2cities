@@ -223,7 +223,7 @@ void BuildState::mouseUpToggle(int button)
 {
 	if(button == GLUT_RIGHT_BUTTON && VALID_CLICK == true)
 	{
-		if(firstPoint.equals(secondPoint))
+		if(static_cast<CustomObject*>(global::stateManager->currentState->objects[global::stateManager->currentState->objects.size() - 1])->compute_area() == 0)
 			global::stateManager->currentState->objects.erase( global::stateManager->currentState->objects.begin() + 
 				global::stateManager->currentState->objects.size() - 1);
 	}

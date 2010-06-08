@@ -144,7 +144,6 @@ void NetworkServer::getPhysicsUpdate() {
 	// UPDATE LOCAL DATA (and remove items fallen off world)
 	std::vector<WorldObject *> PhysEngObjs = physicsEngine.getWorldObjects();
 	for(unsigned int i=0; i < PhysEngObjs.size(); i++) {
-/*
 		if(PhysEngObjs[i]->getPosition().y() < -50.0f) {
 			unsigned int removeID = PhysEngObjs[i]->getID();
 			// Local Removal
@@ -162,10 +161,10 @@ void NetworkServer::getPhysicsUpdate() {
 			}
 		}
 		else {
-*/
+
 			// Needed to add new items
 			WorldObjectState::updateVector(&_serverObjs,PhysEngObjs[i]);
-//		}
+		}
 	}
 }
 

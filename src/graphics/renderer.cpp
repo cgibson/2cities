@@ -328,7 +328,6 @@ void Renderer::draw_diffusePass()
             gfx::ammoShader.enable();
             break;
           default:
-            printf("what the HELL are ya doin' hear?\n");
             //gfx::useShader(gfx::shForceBlock);
             //printf("BEFORE: %d\n", shader::current_shader);
             gfx::forceBlockShader.enable();

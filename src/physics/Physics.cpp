@@ -2,6 +2,7 @@
 #include "../system/global.h"
 #include "../scene/Tesselator.h"
 #include "ActionHandler.h"
+#define NEXT_ID_PHYSICS_START 30000
 
 using namespace std;
 //void Physics::emptyWorld()
@@ -39,6 +40,8 @@ void Physics::initPhysics()
 //  btCollisionShape * ground = new btStaticPlaneShape(btVector3(0,1,0), 50);
   btAlignedObjectArray<btCollisionShape *> collisionShapes;
   collisionShapes.push_back(ground);
+  nextBlockNumber = NEXT_ID_PHYSICS_START;
+  broadphase->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
 
   btTransform groundTrans;
   groundTrans.setIdentity();
@@ -49,7 +52,6 @@ void Physics::initPhysics()
   groundBody = new btRigidBody(grbInfo);
   world->addRigidBody(groundBody);
   groundBody->setActivationState(ISLAND_SLEEPING);
-  nextBlockNumber = 0;
   ActionHandler * action = new ActionHandler(this);
   world->addAction(action);
 //  world->setInternalTickCallback(&tickCallback);
@@ -60,12 +62,13 @@ void Physics::update(int timeChange)
 //  printf("Updating by: %d milliseconds.\n", timeChange);
   vector<WorldObject> changed;
   if (timeChange)
-    world->stepSimulation(btScalar(timeChange / 1000.0), 1, btScalar(1 / 60.0));
+    world->stepSimulation(btScalar(timeChange / 1000.0), 1, btScalar(1 / 30.0));
   unsigned int i;
   int result;
   for (i = 0; i < physicsBodies.size(); i++)
   {
     result = physicsBodies[i]->update();
+    physicsBodies[i]->getRigidBody()->setGravity(btVector3(0, -10, 0));
     if (result == 1)
     {
       changed.push_back(*(physicsBodies[i]->getWorldObject()));
@@ -119,7 +122,9 @@ void Physics::addWorldObject(WorldObject *worldObject)
   }
   else
   {
-    // TODO provide a reaction to a non-unique ID value.
+#ifdef DEBUG
+    printf("Duplicate value found: %d\n", worldObject->getID());
+#endif
   }
 }
 
@@ -137,7 +142,8 @@ void Physics::emptyWorld()
   {
     world->removeRigidBody(temp[i]);
   }
-  nextBlockNumber = 0;
+  ghosts.clear();
+  nextBlockNumber = NEXT_ID_PHYSICS_START;
 }
 
 bool Physics::removeWorldObject(int id)
@@ -191,4 +197,69 @@ int Physics::loadFromFile(const char * fileName)
   Physics::emptyWorld();
   vector<Vector> toPlace = Physics::fileToBlockLocations(fileName);
   return 1;
+}
+
+
+int Physics::isNotWorldObject(btCollisionObject * toTest)
+{
+  int result = (toTest == groundBody);
+  for (unsigned int i = 0; !result && i < ghosts.size(); i++)
+  {
+    result = (toTest == ghosts[i]);
+  }
+  return result;
+}
+
+void Physics::addGhost(btGhostObject * ghost)
+{
+  ghost->setCollisionFlags(ghost->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
+  world->addCollisionObject(ghost, btBroadphaseProxy::SensorTrigger, btBroadphaseProxy::AllFilter & ~btBroadphaseProxy::SensorTrigger);
+  
+  ghosts.push_back(ghost);
+}
+
+int Physics::removeGhost(btGhostObject * ghost)
+{
+  for (unsigned int i = 0; i < ghosts.size(); i++)
+  {
+    if (ghosts[i] == ghost)
+    {
+      ghosts.erase(ghosts.begin() + i);
+      return 1;
+    }
+  }
+  return 0;
+}
+
+btDiscreteDynamicsWorld * Physics::getWorld()
+{
+  return world;
+}
+
+PhysicsBody * Physics::getPBfromCO(btCollisionObject * in)
+{
+  for (unsigned int i = 0; i < physicsBodies.size(); i++)
+    if (physicsBodies[i]->getRigidBody() == in)
+      return physicsBodies[i];
+  return NULL;
+}
+
+PhysicsBody * Physics::getPBfromID(int in)
+{
+  for (unsigned int i = 0; i < physicsBodies.size(); i++)
+    if (physicsBodies[i]->getWorldObject()->getID() == (unsigned int)in)
+      return physicsBodies[i];
+  return NULL;
+}
+
+int Physics::insertWorldObject(WorldObject * worldObject)
+{
+  worldObject->setID(nextBlockNumber);
+  networkManager->network->addObject(worldObject, worldObject->getID());
+//  addWorldObject(worldObject);
+  // TODO place the actual insertion code here.
+#ifdef DEBUG
+//  printf("Physics is now inserting Object #%d.\n", nextBlockNumber);
+#endif
+  return nextBlockNumber++;
 }

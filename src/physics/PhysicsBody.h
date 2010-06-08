@@ -20,10 +20,11 @@ class PhysicsBody : public btRigidBody
     float forceScale;
     float boundForce(float);
     // Location to be drawn to, strength, far depth, event horizon depth
-    bool drawnByBlackHoleAt(Vector, float, float, float);
     void setPosition(Vector newPos);
     void setVelocity(Vector newVel);
   public:
+    bool drawnByBlackHoleAt(Vector, float, float, float);
+    void setToCull();
     static btScalar getMass(ObjectType type);
     static Vector btV3toV(btVector3 in) 
     {

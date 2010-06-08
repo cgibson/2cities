@@ -37,35 +37,14 @@ btRigidBody(getCI(*worldObject))
   setLinearVelocity(VtobtV3(vel));
   body = (btRigidBody *)(this);
 }
-/*
-PhysicsBody::PhysicsBody(WorldObject worldObject):
-btRigidBody(getCI(worldObject))
-{
-  wo = new WorldObject(worldObject);
-  btTransform trans;
-  Vector pos = wo->getPosition();
-  Vector vel = wo->getVelocity();
-  Quaternion ori = wo->getOrientation();
-  
-  // set position
-  trans.setIdentity();
-  trans.setOrigin(VtobtV3(pos));
-  btQuaternion quat = trans.getRotation();
-  if (ori.getAngle() < -0.001 || ori.getAngle() > 0.001)
-    quat.setRotation(VtobtV3(ori.getAxis()), btScalar(ori.getAngle()));
-  trans.setRotation(quat);
-  setCenterOfMassTransform(trans);
-  // set velocity
-  setLinearVelocity(VtobtV3(vel));
-  body = (btRigidBody *)(this);
-}*/
 
 btRigidBody::btRigidBodyConstructionInfo PhysicsBody::getCI(WorldObject worldObject)
 {
-  btScalar mass = PhysicsBody::getMass(worldObject.getType());
+  ObjectType type = worldObject.getType();
+  btScalar mass = PhysicsBody::getMass(type);
   btVector3 inertia(0,0,0);
   btCollisionShape * thisShape = NULL;
-  thisShape = global::factory->getShape(worldObject.getType());
+  thisShape = global::factory->getShape(type);
 
   btDefaultMotionState * ms = new btDefaultMotionState();
   
@@ -75,11 +54,14 @@ btRigidBody::btRigidBodyConstructionInfo PhysicsBody::getCI(WorldObject worldObj
   }
   btRigidBody::btRigidBodyConstructionInfo ci(mass, ms, thisShape, inertia);
   ci.m_friction = .75;
-  ci.m_restitution = 0;
+  ci.m_restitution = 0.01;
   ci.m_linearDamping = btScalar(.1);
   ci.m_angularDamping = btScalar(.1);
-//  ci.m_linearSleepingThreshold = btScalar(10.0);
-//  ci.m_angularSleepingThreshold = btScalar(1.0);
+  if (type == CLUSTER_BOMB || type == BLACK_HOLE || type == AIR_STRIKE)
+  {
+    ci.m_friction = 9.99999;
+    ci.m_linearDamping = btScalar(.25);
+  }
   return ci;
 }
 
@@ -105,6 +87,12 @@ Vector PhysicsBody::getForce()
   return Vector(linear, angular, force);
 }
 
+void PhysicsBody::setToCull()
+{
+  setPosition(Vector(0,-1000, 0));
+  setVelocity(Vector(0, -1000, 0));
+}
+
 bool PhysicsBody::drawnByBlackHoleAt(Vector loc, float strength,
                                      float far,float eh)
 {
@@ -113,18 +101,23 @@ bool PhysicsBody::drawnByBlackHoleAt(Vector loc, float strength,
   {
 		if (line.mag() < eh)
 		{
+      setToCull();
 			return false;
-			setPosition(loc);
-			setVelocity(Vector(0,0,0));
-			//body->setActivationState(ISLAND_SLEEPING);
 		}
 		else
 		{
-			float force = (far - (line.mag() - eh)) / (far - eh) * strength;
+			float force = (far - (line.mag() - eh)) / (far - eh) * strength * getMass((enumeration::ObjectType)getType());
 			line.norm();
-			btVector3 forceApp = btVector3(line.x() * force, line.y() * force,
+			btVector3 forceApp = btVector3(line.x() * force,
+			                               line.y() * force,
 			                               line.z() * force);
-			body->applyCentralForce(forceApp);
+			                               #ifdef DEBUG
+                                     //printf("Force of %f applied to object by BlackHole at %s, type: %d\n", force, wo->getPosition().str(), (int)getType());
+                                     #endif
+//      body->setGravity(forceApp);
+//			applyCentralForce(forceApp);
+        activate(true);
+        applyCentralImpulse(forceApp);
 		}
   }
   return true;

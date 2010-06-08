@@ -50,6 +50,11 @@ class WorldObject
         WorldObject(const WorldObject& newObj);
         WorldObject(unsigned char *bufPtr);
         
+        // drops the object below the scene far enough to escape display and trigger culling, effectively removes it from the scene.
+        //***DOESN'T WORK WITHOUT PHYSICS *** (won't crash, just won't do anything else)
+        void setToCull();
+        
+        
         void import(const WorldObject *objPtr);
         void import(unsigned char *bufPtr);
 

@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <vector>
 #include "btBulletDynamicsCommon.h"
+#include "BulletCollision/CollisionDispatch/btGhostObject.h"
 #include "../helper/Vector.h"
 #include "../scene/WorldObject.h"
 #include "PhysicsBody.h"
@@ -30,11 +31,20 @@ class Physics
     std::vector<WorldObject> recentChanges;
     std::vector<Vector> fileToBlockLocations(const char * fileName);
     int isUniqueID(int id);
+    int isNotWorldObject(btCollisionObject * toTest);
+    std::vector<btGhostObject *>ghosts;
   public:
+    int getNextBlockNumber() {return nextBlockNumber;}
+    int insertWorldObject(WorldObject * worldObject); // supplies a unique ID
+    PhysicsBody * getPBfromCO(btCollisionObject * in);
+    PhysicsBody * getPBfromID(int in);
+    btDiscreteDynamicsWorld * getWorld();
+    void addGhost(btGhostObject * ghost);
+    int removeGhost(btGhostObject * ghost);
     std::vector<PhysicsBody *> physicsBodies;
 //    static void tickCallback(btDynamicsWorld *dWorld,
 //      btScalar timeChange);
-    void addWorldObject(WorldObject *newObject);
+    void addWorldObject(WorldObject *newObject); // does not supply a unique ID
     std::vector<WorldObject *> getWorldObjects();
     
     void exitPhysics();

@@ -33,18 +33,21 @@ void ObjectFactory::makeBlock(int key, bool special)
   {
     printf("Making block(s)");
     int floorSize = 5;
-    int blockNumberBase = 20000;
+    int blockNumberBase = 40000;
     int i, j;
     static int blockSetHeight;
     for (i = 0; i < floorSize; i++)
     {
       for (j = 0; j < floorSize; j++)
       {
-      WorldObject *anObject = new WorldObject(blockNumberBase +
-//        BlackHole *anObject = new BlackHole(blockNumberBase +
+//      WorldObject *anObject = new WorldObject(
+//        BlackHole *anObject = new BlackHole(
+        Shotgun *anObject = 
+                            new Shotgun(
+                                         blockNumberBase +
                                          blockSetHeight * floorSize * floorSize +
                                          i * floorSize + j,
-                                       0, enumeration::BALLHEMOTH);
+                                       0, enumeration::SHOTGUN);
         anObject->setPosition(Vector(i - floorSize / 2.0, blockSetHeight + .5, j - floorSize / 2.0));
         networkManager->network->addObject(anObject);
       }
@@ -102,12 +105,14 @@ void ObjectFactory::loadConfig(char* filename)
   setBlueprint(BLOCK_1_2_1, 2.0f, GREEN_MAT, BLOCK_1_2_1_SHAPE, Vector(1.0f, 2.0f, 1.0f));
   setBlueprint(BLOCK_2_4_2, 16.0f, YELLOW_MAT, BLOCK_2_4_2_SHAPE, Vector(1.0f, 4.0f, 1.0f));
   setBlueprint(BLOCK_5_1_5, 25.0f, YELLOW_MAT, BLOCK_5_1_5_SHAPE, Vector(5.0f, 1.0f, 5.0f));
-  setBlueprint(BALLHEMOTH, 100.0f, GREEN_MAT, LARGE_SPHERE, Vector(2.2f, 2.2f, 2.2f));
-  setBlueprint(SHOTGUN, 50.0f, YELLOW_MAT, SMALL_SPHERE, Vector(0.3f, 0.3f, 0.3f));
-  setBlueprint(AIR_STRIKE, 10.0f, BLUE_MAT, SMALL_CUBE, Vector(1.0f, 1.0f, 1.0f));
-  setBlueprint(CLUSTER_BOMB, 100.0f, BLUE_MAT, SMALL_SPHERE, Vector(0.3f, 0.3f, 0.3f));
-  setBlueprint(SHAPE_SHIFTER, 1.0f, BLUE_MAT, SMALL_CUBE, Vector(1.0f, 1.0f, 1.0f));
+  setBlueprint(BALLHEMOTH, 30.0f, GREEN_MAT, LARGE_SPHERE, Vector(2.2f, 2.2f, 2.2f));
+  setBlueprint(SHOTGUN, 3.0f, YELLOW_MAT, SMALL_SPHERE, Vector(0.3f, 0.3f, 0.3f));
+  setBlueprint(AIR_STRIKE, 3.0f, BLUE_MAT, SMALL_CUBE, Vector(1.0f, 1.0f, 1.0f));
+  setBlueprint(CLUSTER_BOMB, 3.0f, BLUE_MAT, SMALL_SPHERE, Vector(0.3f, 0.3f, 0.3f));
+  setBlueprint(SHAPE_SHIFTER, 3.0f, BLUE_MAT, SMALL_SPHERE, Vector(0.3f, 0.3f, 0.3f));
   setBlueprint(BLACK_HOLE, 1000.0f, YELLOW_MAT, SMALL_SPHERE, Vector(0.5f, 0.0f, 0.f));
+  setBlueprint(SHAPE_SHIFTER_GHOST, 0.1f, BLUE_MAT, SHAPE_SHIFTER_GHOST_SHAPE, Vector(3.0f, 3.0f, 3.0f));
+  setBlueprint(BLACK_HOLE_GHOST, 0.1f, BLUE_MAT, BLACK_HOLE_GHOST_SHAPE, Vector(10.0f, 10.0f, 10.0f));
 }
 
 

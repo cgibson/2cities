@@ -37,7 +37,7 @@ void SoundManager::initialize()
 		exit(EXIT_FAILURE);
 	}
 	//Initialize SDL_mixer
-	if (Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 1024) != 0)
+	if (Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 512) != 0)
 	{
 		cerr << Mix_GetError() << endl;
 		exit(EXIT_FAILURE);

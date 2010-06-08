@@ -2,6 +2,8 @@
 #include "../system/global.h"
 #include "stdio.h"
 #include "../system/enum.h"
+#include "../physics/Physics.h"
+#include "../physics/PhysicsBody.h"
 
 using namespace enumeration;
 
@@ -66,7 +68,7 @@ void WorldObject::draw() {
 //	Vector pos = getPosition();
 //	Quaternion ori = getOrientation();
 	
-	Blueprint blueprint = global::factory->getBlueprint(type);
+	Blueprint blueprint = global::factory->getBlueprint(getType());
 	Vector size = blueprint.getSize();
 	glPushMatrix();
     glTranslatef(position.x(), position.y(), position.z());
@@ -259,4 +261,18 @@ int WorldObject::fromBinStream(unsigned char *bufPtr) {
 	// Extra Items can be added here
 
 	return currPos;
+}
+
+void WorldObject::setToCull()
+{
+  Physics * physics = networkManager->network->getPhysicsPtr();
+  PhysicsBody * pb = NULL;
+  if (physics == NULL)
+  {
+    pb = physics->getPBfromID(getID());
+    if (pb != NULL)
+    {
+      pb->setToCull();
+    }
+  }
 }

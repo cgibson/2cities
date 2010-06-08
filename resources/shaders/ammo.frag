@@ -61,6 +61,6 @@ void main (void)
     finalColor += phong;// + Ispec);
     
     gl_FragData[0] = finalColor;
-    gl_FragData[1] = finalColor;
+    gl_FragData[1] += material_diffuse;
     gl_FragData[1] *= clamp(linearize( length(v)), 0.0, 1.0) * 0.5 + 1;
   }

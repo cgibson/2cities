@@ -18,6 +18,7 @@ public:
 	void draw();
 
 	void addEffect(Effect *effect);
+	void reset();
 
 	DefaultShader *shader(EffectShader shader) { return _shaders[shader]; }
 	GLuint texture(EffectTexture texture) { return _textures[texture]; }

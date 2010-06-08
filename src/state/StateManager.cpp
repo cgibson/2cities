@@ -51,6 +51,7 @@ void StateManager::changeCurrentState(enum E_STATE newState)
         currentState->initialize();
 #ifdef CLIENT
         gfx::hud.swapUI(Hud::BUILD);
+        gfx::fxManager.reset();
         global::soundManager->stopPlayingMusic();
         global::soundManager->playBuildSong();
 #endif

@@ -62,3 +62,8 @@ void EffectManager::addEffect(Effect *effect)
 {
 	_effects.push_back(effect);
 }
+
+void EffectManager::reset()
+{
+	_effects.clear();
+}

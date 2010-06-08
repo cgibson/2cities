@@ -54,7 +54,7 @@ void ResultsUI::init()
 	_rematchButton->init(ResultsUI::rematchClick);
 	_rematchButton->text()->init("resources/fonts/sui_generis_free.ttf", 18, UILabel::LEFT);
 	_rematchButton->text()->text("Rematch!");
-	_rematchButton->icon()->init("resources/textures/checkmark.bmp", "resources/textures/checkmark_alpha.bmp");
+	_rematchButton->icon()->init("resources/textures/rematch.bmp", "resources/textures/rematch_alpha.bmp");
 	_rematchButton->bgclr(0.5, 0.5, 0.5, 0.5);
 	_rematchButton->mouseOverClr(0.5, 0.5, 0.5, 0.75);
 	_rematchButton->mouseDownClr(0.5, 1.0, 0.5, 0.75);
@@ -66,7 +66,7 @@ void ResultsUI::init()
 	_menuButton->init(ResultsUI::menuClick);
 	_menuButton->text()->init("resources/fonts/sui_generis_free.ttf", 18, UILabel::LEFT);
 	_menuButton->text()->text("Main Menu");
-	_menuButton->icon()->init("resources/textures/checkmark.bmp", "resources/textures/checkmark_alpha.bmp");
+	_menuButton->icon()->init("resources/textures/menu.bmp", "resources/textures/menu_alpha.bmp");
 	_menuButton->bgclr(0.5, 0.5, 0.5, 0.5);
 	_menuButton->mouseOverClr(0.5, 0.5, 0.5, 0.75);
 	_menuButton->mouseDownClr(0.5, 1.0, 0.5, 0.75);

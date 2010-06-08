@@ -32,8 +32,6 @@ void Renderer::init()
 	int loc = glGetUniformLocation(gfx::simpleScreenFillShader.getProgram(), "test_count");
 	glUniform1i(loc, test_count);
 
-	printf("TEST LOC: %d\n", loc);
-
 	shader::reset();
 
 }
@@ -56,28 +54,31 @@ void Renderer::updateBloom(int elapsed)
 	if((average < 25.0) && (test_count > min_test) && (fpsQueue->size() > 1))
 	{
 		test_count--;
+    
+#ifdef DEBUG
 		printf("frame average: %.1f, so lowered tests to %d\n", average, test_count);
+#endif
 
 		gfx::simpleScreenFillShader.enable();
 
 		int loc = glGetUniformLocation(gfx::simpleScreenFillShader.getProgram(), "test_count");
     glUniform1i(loc, test_count);
-
-    printf("LOCATION: %d\n", loc);
 
 		shader::reset();
 
 	}else if((average > 60.0) && (test_count < max_test) && (fpsQueue->size() > 1))
 	{
 		test_count++;
+
+#ifdef DEBUG
 		printf("frame average: %.1f, so raised tests to %d\n", average, test_count);
+#endif
 
 		gfx::simpleScreenFillShader.enable();
 
 		int loc = glGetUniformLocation(gfx::simpleScreenFillShader.getProgram(), "test_count");
     glUniform1i(loc, test_count);
-    printf("LOCATION: %d\n", loc);
-
+    
 		shader::reset();
 	}
 }
@@ -169,6 +170,7 @@ void Renderer::draw_diffusePass()
   do_lights(gfx::simpleShader);
   do_lights(gfx::gridShader);
   do_lights(gfx::forceBlockShader);
+  do_lights(gfx::ammoShader);
 
   glPushMatrix();
 
@@ -280,14 +282,53 @@ void Renderer::draw_diffusePass()
 							curMat = gfx::materials[BLUE_BLOCK];
 						}
             curMat.applyMaterial(gfx::forceBlockShader, "");
+            
+            loc = glGetUniformLocation(gfx::forceBlockShader.getProgram(), "force");
+
+            force = (*objIt)->getForce();
+            forceResult = force.x();
+            strength = force.y() * 4.0;
+            glUniform1f(loc, forceResult);
+            loc = glGetUniformLocation(gfx::forceBlockShader.getProgram(), "shock");
+            glUniform1f(loc, strength);
+            
             break;
-          case DUMMY_SPHERE: case CUSTOM_BLOCK:
+          case CUSTOM_BLOCK:
             gfx::simpleShader.enable();
             blueprint = global::factory->getBlueprint(curType);
             curMat = gfx::materials[blueprint.getMaterial()];
             curMat.applyMaterial(gfx::simpleShader, "");
             break;
+          case DUMMY_SPHERE: 
+            gfx::materials[YELLOW_MAT].applyMaterial(gfx::ammoShader, "");
+            gfx::ammoShader.enable();
+            break;
+          case BALLHEMOTH: 
+            gfx::materials[YELLOW_MAT].applyMaterial(gfx::ammoShader, "");
+            gfx::ammoShader.enable();
+            break;
+          case BLACK_HOLE: 
+            gfx::materials[YELLOW_MAT].applyMaterial(gfx::ammoShader, "");
+            gfx::ammoShader.enable();
+            break;
+          case AIR_STRIKE:
+            gfx::materials[YELLOW_MAT].applyMaterial(gfx::ammoShader, "");
+            gfx::ammoShader.enable();
+            break;
+          case SHOTGUN:
+            gfx::materials[YELLOW_MAT].applyMaterial(gfx::ammoShader, "");
+            gfx::ammoShader.enable();
+            break;
+          case SHAPE_SHIFTER:
+            gfx::materials[YELLOW_MAT].applyMaterial(gfx::ammoShader, "");
+            gfx::ammoShader.enable();
+            break;
+          case CLUSTER_BOMB:
+            gfx::materials[YELLOW_MAT].applyMaterial(gfx::ammoShader, "");
+            gfx::ammoShader.enable();
+            break;
           default:
+            printf("what the HELL are ya doin' hear?\n");
             //gfx::useShader(gfx::shForceBlock);
             //printf("BEFORE: %d\n", shader::current_shader);
             gfx::forceBlockShader.enable();
@@ -300,12 +341,12 @@ void Renderer::draw_diffusePass()
         }
       }
 
-      if(curType != DUMMY_SPHERE)
-      {
+      /*if(curType == DUMMY_SPHERE)
+      {*/
         /*blueprint = global::factory->getBlueprint(curType);
         curMat = gfx::materials[blueprint.getMaterial()];
         curMat.applyMaterial(gfx::forceBlockShader, "");*/
-
+/*
         loc = glGetUniformLocation(gfx::forceBlockShader.getProgram(), "force");
 
         force = (*objIt)->getForce();
@@ -314,7 +355,7 @@ void Renderer::draw_diffusePass()
         glUniform1f(loc, forceResult);
         loc = glGetUniformLocation(gfx::forceBlockShader.getProgram(), "shock");
         glUniform1f(loc, strength);
-      }
+      }*/
 
       (*objIt)->draw();
 	  }

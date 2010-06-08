@@ -27,6 +27,7 @@ namespace gfx{
   DefaultShader skyShader;
   DefaultShader distantShader;
   DefaultShader uiIconShader;
+  DefaultShader ammoShader;
   
   PassShader simpleScreenFillShader;
   
@@ -74,7 +75,7 @@ namespace gfx{
     shininess[0] = 100.0;
     materials[WHITE_MAT] = Material(ambient, diffuse, specular, shininess);
 
-    ambient[0] = 0.1; ambient[1] = 0.1; ambient[2] = 0.1; ambient[3] = 1.0;
+    ambient[0] = 0.4; ambient[1] = 0.4; ambient[2] = 0.1; ambient[3] = 1.0;
     diffuse[0] = 0.9; diffuse[1] = 0.9; diffuse[2] = 0.1; diffuse[3] = 1.0;
     specular[0] = 0.1; specular[1] = 0.1; specular[2] = 0.1; specular[3] = 1.0;
     shininess[0] = 100.0;
@@ -182,6 +183,7 @@ namespace gfx{
     distantShader.load("resources/shaders/distant");
     uiIconShader.load("resources/shaders/uiicon");
     simpleScreenFillShader.load("resources/shaders/simpleFill");
+    ammoShader.load("resources/shaders/ammo");
 
     if(!success)
     {

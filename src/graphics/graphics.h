@@ -40,6 +40,7 @@ namespace gfx{
   extern DefaultShader skyShader;
   extern DefaultShader distantShader;
   extern DefaultShader uiIconShader;
+  extern DefaultShader ammoShader;
   
   extern PassShader simpleScreenFillShader;
   

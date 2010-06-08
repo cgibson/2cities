@@ -21,6 +21,10 @@ void EffectManager::init()
 	shader = new DefaultShader();
 	shader->load("resources/shaders/shockwave");
 	_shaders.push_back(shader);
+	shader = new DefaultShader();
+	shader->load("resources/shaders/blackhole");
+	_shaders.push_back(shader);
+
 
 	// LOAD TEXTURES IN THE ORDER OF THE ENUM!
 	texture = texldr::loadBMP("resources/textures/shockwave.bmp", NULL, NULL);

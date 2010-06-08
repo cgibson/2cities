@@ -17,6 +17,7 @@
 #ifdef CLIENT
 	#include "../graphics/orbitalcamera.h"
 	#include "../graphics/graphics.h"
+	#include "../graphics/BlackholeEffect.h"
 #endif
 
 

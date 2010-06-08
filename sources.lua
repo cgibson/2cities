@@ -46,6 +46,7 @@ client_srcs = {
     "graphics/EffectManager.cpp",
     "graphics/Effect.cpp",
     "graphics/ShockwaveEffect.cpp",
+    "graphics/BlackholeEffect.cpp",
     "helper/Vector.cpp",
 	"helper/Point.cpp",
     "helper/GLSL_helper.cpp",

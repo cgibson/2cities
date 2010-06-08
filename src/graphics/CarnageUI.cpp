@@ -297,13 +297,13 @@ void CarnageUI::update(int ms)
 	_bulletsRecharge->fgclr(1.0 - (percent / 100.0), (percent / 100.0),
 		_bulletsRecharge->fgb(), 1.0);
 	percent = state->getRechargePercent(1);
-	_shotgunRecharge->percent((int)percent);
-	_shotgunRecharge->fgclr(1.0 - (percent / 100.0), (percent / 100.0),
-		_shotgunRecharge->fgb(), 1.0);
-	percent = state->getRechargePercent(2);
 	_ballhemothRecharge->percent((int)percent);
 	_ballhemothRecharge->fgclr(1.0 - (percent / 100.0), (percent / 100.0),
 		_ballhemothRecharge->fgb(), 1.0);
+	percent = state->getRechargePercent(2);
+	_shotgunRecharge->percent((int)percent);
+	_shotgunRecharge->fgclr(1.0 - (percent / 100.0), (percent / 100.0),
+		_shotgunRecharge->fgb(), 1.0);
 
 	char buf[4];
 	sprintf(buf, "%i", state->getAmmoCount(5));

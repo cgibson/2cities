@@ -42,7 +42,7 @@ void BuildUI::init()
 	_typeSelect->init(2, 64);
 	_typeSelect->pos(global::width / 2, global::height - 115);
 
-	_typeSelect->icon(0)->init("resources/textures/bullets_icon.bmp", NULL);
+	_typeSelect->icon(0)->init("resources/textures/weak_icon.bmp", NULL);
 	_typeSelect->icon(0)->parent(_typeSelect);
 	_typeSelect->name(0)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
 	_typeSelect->name(0)->text("WEAK BUILDING");
@@ -50,10 +50,10 @@ void BuildUI::init()
 
 	_weakMult = new UILabel();
 	_weakMult->init("resources/fonts/sui_generis_free.ttf", 10, UILabel::CENTER);
-	_weakMult->text("1x $");
+	_weakMult->text("1x");
 	_weakMult->parent(_typeSelect->icon(0));
 
-	_typeSelect->icon(1)->init("resources/textures/shotgun_icon.bmp", NULL);
+	_typeSelect->icon(1)->init("resources/textures/strong_icon.bmp", NULL);
 	_typeSelect->icon(1)->parent(_typeSelect);
 	_typeSelect->name(1)->init("resources/fonts/sui_generis_free.ttf", 12, UILabel::CENTER);
 	_typeSelect->name(1)->text("STRONG BUILDING");
@@ -61,7 +61,7 @@ void BuildUI::init()
 
 	_strongMult = new UILabel();
 	_strongMult->init("resources/fonts/sui_generis_free.ttf", 10, UILabel::CENTER);
-	_strongMult->text("2x $");
+	_strongMult->text("2x");
 	_strongMult->parent(_typeSelect->icon(1));
 
 	_typeSelect->parent(_window);

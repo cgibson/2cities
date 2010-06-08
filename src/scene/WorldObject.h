@@ -54,7 +54,6 @@ class WorldObject
         //***DOESN'T WORK WITHOUT PHYSICS *** (won't crash, just won't do anything else)
         void setToCull();
         
-        
         void import(const WorldObject *objPtr);
         void import(unsigned char *bufPtr);
 

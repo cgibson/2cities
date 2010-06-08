@@ -78,6 +78,9 @@ public:
 			lastPosDelta = (objPtr->getPosition() - lastPos).mag();
 			lastPos      = objPtr->getPosition();
 
+			if(damaged)
+				objPtr->setPhysics(STATIC);
+
 			if(!damaged && initPosDelta > net::OBJECT_KILL_DELTA) {
 				damaged = true;
 				objPtr->setPhysics(STATIC);
@@ -126,8 +129,8 @@ public:
 
 		// ObjID found, erase entry
 		if (i < objVec->size()) {
-			(*objVec)[i].kill(); // TODO
-			//objVec->erase(objVec->begin()+i);
+			//(*objVec)[i].kill(); // TODO
+			objVec->erase(objVec->begin()+i);
 			//printf("Killed Object\n");
 		}
 	}

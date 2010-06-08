@@ -140,6 +140,8 @@ void StateManager::initialize()
 	gfx::hud.console.registerCmd("changestate", StateManager::stateConsoleCmds);
 	gfx::hud.console.registerCmd("ready", StateManager::stateConsoleCmds);
 
+	gfx::hud.console.registerCmd("godMode", StateManager::stateConsoleCmds);
+
 	//SHORTCUTS
 	gfx::hud.console.registerCmd("cs", StateManager::stateConsoleCmds);
 	gfx::hud.console.registerCmd("r", StateManager::stateConsoleCmds);
@@ -184,6 +186,14 @@ void StateManager::stateConsoleCmds(int argc, char *argv[])
 			//no legitimate command
 			gfx::hud.console.error("Usage: %s <state>", argv[0]);
 			return;
+		}
+		else if(!strcmp(argv[0], "godMode")) {
+			if(global::stateManager->currentState->stateType() == CARNAGE_STATE) {
+				printf("stateManager calling god\n");
+				((CarnageState *)(global::stateManager->currentState))->godMode();
+			}
+			else
+				printf("You're not in carn\n");
 		}
 		else
 		{

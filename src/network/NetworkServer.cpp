@@ -629,13 +629,10 @@ void NetworkServer::addObject(WorldObject *objPtr, int newID) {
 void NetworkServer::addObjectPhys(WorldObject *objPtr) {
 	objPtr->setTimeStamp(global::elapsed_ms());
 
-	WorldObject * tmpObjPtr = global::factory->makeObject(objPtr->getType());
-	tmpObjPtr->import(objPtr);
-	
 	// Add ObjectState to Tracker
-	WorldObjectState::updateVector(&_serverObjs, tmpObjPtr, 10);
+	WorldObjectState::updateVector(&_serverObjs, objPtr, 10);
 
-	physicsEngine.addWorldObject(tmpObjPtr);
+	physicsEngine.addWorldObject(objPtr);
 }
 
 void NetworkServer::emptyWorld() {

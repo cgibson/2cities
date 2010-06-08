@@ -44,6 +44,14 @@ void CarnageState::initialize() {
     ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];
     ammoIndex++;
 
+    ammoTypes         [ammoIndex] = BALLHEMOTH;    //BALLHEMOTH
+    ammoCounts        [ammoIndex] = -1;
+    ammoDelayNextAward[ammoIndex] = -1;
+    ammoNextAward     [ammoIndex] = ammoDelayNextAward[ammoIndex];
+    ammoDelayTimers   [ammoIndex] = 3000;
+    ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];
+    ammoIndex++;
+
     ammoTypes         [ammoIndex] = SHOTGUN;       //SHOTGUN
     ammoCounts        [ammoIndex] = -1;
     ammoDelayNextAward[ammoIndex] = -1;
@@ -52,33 +60,9 @@ void CarnageState::initialize() {
     ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];
     ammoIndex++;
 
-    ammoTypes         [ammoIndex] = BALLHEMOTH;    //BALLHEMOTH
-    ammoCounts        [ammoIndex] = -1;
-    ammoDelayNextAward[ammoIndex] = -1;
-    ammoNextAward     [ammoIndex] = ammoDelayNextAward[ammoIndex];
-    ammoDelayTimers   [ammoIndex] = 2000;
-    ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];
-    ammoIndex++;
-
-    ammoTypes         [ammoIndex] = BLACK_HOLE;    //BLACKHOLE
-    ammoCounts        [ammoIndex] = 0;
-    ammoDelayNextAward[ammoIndex] = 45;
-    ammoNextAward     [ammoIndex] = ammoDelayNextAward[ammoIndex];
-    ammoDelayTimers   [ammoIndex] = 1000;
-    ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];
-    ammoIndex++;
-
     ammoTypes         [ammoIndex] = AIR_STRIKE;    //AIRSTRIKE
     ammoCounts        [ammoIndex] = 0;
-    ammoDelayNextAward[ammoIndex] = 55;
-    ammoNextAward     [ammoIndex] = ammoDelayNextAward[ammoIndex];
-    ammoDelayTimers   [ammoIndex] = 1000;
-    ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];
-    ammoIndex++;
-
-    ammoTypes         [ammoIndex] = SHAPE_SHIFTER; //SHAPESHIFTER
-    ammoCounts        [ammoIndex] = 0;
-    ammoDelayNextAward[ammoIndex] = 65;
+    ammoDelayNextAward[ammoIndex] = 25000;
     ammoNextAward     [ammoIndex] = ammoDelayNextAward[ammoIndex];
     ammoDelayTimers   [ammoIndex] = 1000;
     ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];
@@ -86,7 +70,23 @@ void CarnageState::initialize() {
 
     ammoTypes         [ammoIndex] = CLUSTER_BOMB;  //CLUSTERBOMB
     ammoCounts        [ammoIndex] = 0;
-    ammoDelayNextAward[ammoIndex] = 75;
+    ammoDelayNextAward[ammoIndex] = 50000;
+    ammoNextAward     [ammoIndex] = ammoDelayNextAward[ammoIndex];
+    ammoDelayTimers   [ammoIndex] = 1000;
+    ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];
+    ammoIndex++;
+
+    ammoTypes         [ammoIndex] = BLACK_HOLE;    //BLACKHOLE
+    ammoCounts        [ammoIndex] = 0;
+    ammoDelayNextAward[ammoIndex] = 75000;
+    ammoNextAward     [ammoIndex] = ammoDelayNextAward[ammoIndex];
+    ammoDelayTimers   [ammoIndex] = 1000;
+    ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];
+    ammoIndex++;
+
+    ammoTypes         [ammoIndex] = SHAPE_SHIFTER; //SHAPESHIFTER
+    ammoCounts        [ammoIndex] = 0;
+    ammoDelayNextAward[ammoIndex] = 1000;
     ammoNextAward     [ammoIndex] = ammoDelayNextAward[ammoIndex];
     ammoDelayTimers   [ammoIndex] = 1000;
     ammoTimers        [ammoIndex] = ammoDelayTimers[ammoIndex];

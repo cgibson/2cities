@@ -43,6 +43,11 @@ class CarnageState: public InGameState
         	return (ammoDelayTimers[ammoIndex] - ammoTimers[ammoIndex]) * 100 / ammoDelayTimers[ammoIndex];
         }
         int getAmmoCount(int ammoIndex) const { return ammoCounts[ammoIndex]; }
+        void godMode() {
+        	printf("God Mode!!!\n");
+        	for(int i=0; i<ammoCount; i++)
+        		ammoCounts[i] = 9999;
+        }
 
         virtual enum E_STATE stateType() {return realStateType;}
 

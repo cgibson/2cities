@@ -185,7 +185,6 @@ bool BuildState::isValidClick(Point click, int button)
 {
 	// check if firstPoint intersects with any existing rectangles
 	evaluateClick(click);
-
 	// right mouse valid clicks are on the ground only
 	if(button == GLUT_RIGHT_BUTTON)
 	{
@@ -215,13 +214,19 @@ void BuildState::mouseDownToggle(int button)
 	MOUSE_DOWN = true;
 	firstPoint.set(Point(io::mouse_x, io::mouse_y));
 	firstPoint.round();
-	secondPoint = firstPoint;
+	//secondPoint = firstPoint;
 	//renderPlane = false;
 }
 
 // called only on the first mouse up
 void BuildState::mouseUpToggle(int button)
 {
+	if(button == GLUT_RIGHT_BUTTON && VALID_CLICK == true)
+	{
+		if(firstPoint.equals(secondPoint))
+			global::stateManager->currentState->objects.erase( global::stateManager->currentState->objects.begin() + 
+				global::stateManager->currentState->objects.size() - 1);
+	}
 	LAST_BUTTON = button;
 	MOUSE_DOWN = false;
 	counter = 0;

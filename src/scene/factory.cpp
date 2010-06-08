@@ -29,7 +29,7 @@ ObjectFactory::ObjectFactory()
 ///////////////////////////////////
 void ObjectFactory::makeBlock(int key, bool special)
 {
-  if ((key == 'b' || key == 'B') && !special)
+  if ((key == 'b' || key == 'B') && !special && false)
   {
     printf("Making block(s)");
     int floorSize = 5;

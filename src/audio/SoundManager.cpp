@@ -12,6 +12,8 @@ SoundManager::SoundManager()
 	memset(resultsmusic, 0, sizeof(Mix_Music *) * NUM_RESULTS_SONGS);
 	memset(buildsfx, 0, sizeof(Mix_Chunk *) * NUM_BUILD_SFX);
 	memset(carnagesfx, 0, sizeof(Mix_Chunk *) * NUM_CARNAGE_SFX);
+	memset(uikeysfx, 0, sizeof(Mix_Chunk *) * NUM_UI_KEY_SFX);
+	curruichannel = 0;
 	currbuildmusic = 0;
 	currcarnagemusic = 0;
 	currbuildsfx = 0;
@@ -50,19 +52,38 @@ void SoundManager::tearDownSound()
 {
 	for(int i = 0; i < NUM_BUILD_SONGS; i++)
     {
-		Mix_FreeMusic(buildmusic[i]);
+		if(buildmusic[i] != NULL)
+		{
+			Mix_FreeMusic(buildmusic[i]);
+		}
 	}
 	for(int i = 0; i < NUM_CARNAGE_SONGS; i++)
     {
-		Mix_FreeMusic(carnagemusic[i]);
+		if(carnagemusic[i] != NULL)
+		{
+			Mix_FreeMusic(carnagemusic[i]);
+		}
 	}
 	for(int i = 0; i < NUM_BUILD_SFX; i++)
     {
-		Mix_FreeChunk(buildsfx[i]);
+		if(buildsfx[i] != NULL)
+		{
+			Mix_FreeChunk(buildsfx[i]);
+		}
 	}
 	for(int i = 0; i < NUM_CARNAGE_SFX; i++)
     {
-		Mix_FreeChunk(carnagesfx[i]);
+		if(carnagesfx[i] != NULL)
+		{
+			Mix_FreeChunk(carnagesfx[i]);
+		}
+	}
+	for(int i = 0; i < NUM_UI_KEY_SFX; i++)
+    {
+		if(uikeysfx[i] != NULL)
+		{
+			Mix_FreeChunk(uikeysfx[i]);
+		}
 	}
     Mix_CloseAudio();
 }
@@ -78,7 +99,7 @@ void SoundManager::loadMusic()
 		}
 		else
 		{
-			cout << "music file" << sound::buildmusicnames[i] << "should be .wav format" << endl;
+			cerr << "FATAL ERROR: music file" << sound::buildmusicnames[i] << "should be .wav format" << endl;
 			exit(EXIT_FAILURE);
 		}
 		
@@ -151,26 +172,6 @@ void SoundManager::loadMusic()
 
 void SoundManager::loadSfx()
 {
-	//Attempt to read in build SFX (not used right now)
-/*	for(int i = 0; i < NUM_BUILD_SFX; i++)
-	{
-		if(hasEnding(sound::buildsfxnames[i], ".wav"))
-		{
-			buildsfx[i] = Mix_LoadWAV(sound::buildsfxnames[i]);
-		}
-		else
-		{
-			cout << "sound effect file should be .wav" << endl;
-			exit(EXIT_FAILURE);
-		}
-		
-		if(buildsfx[i] == NULL)
-		{
-			cerr << Mix_GetError() << endl;
-			exit(EXIT_FAILURE);
-		}
-	}
-*/
 	//Attempt to read in carnage SFX
 	for(int i = 0; i < NUM_CARNAGE_SFX; i++)
 	{
@@ -180,11 +181,31 @@ void SoundManager::loadSfx()
 		}
 		else
 		{
-			cout << "sound effect file should be .wav" << endl;
+			cerr << "sound effect file should be .wav" << endl;
 			exit(EXIT_FAILURE);
 		}
 		
 		if(carnagesfx[i] == NULL)
+		{
+			cerr << Mix_GetError() << endl;
+			exit(EXIT_FAILURE);
+		}
+	}
+	
+	//Attempt to read in ui key SFX
+	for(int i = 0; i < NUM_UI_KEY_SFX; i++)
+	{
+		if(hasEnding(uikeysfxnames[i], ".wav"))
+		{
+			uikeysfx[i] = Mix_LoadWAV(uikeysfxnames[i]);
+		}
+		else
+		{
+			cerr << "sound effect file should be .wav" << endl;
+			exit(EXIT_FAILURE);
+		}
+		
+		if(uikeysfx[i] == NULL)
 		{
 			cerr << Mix_GetError() << endl;
 			exit(EXIT_FAILURE);
@@ -279,6 +300,18 @@ void SoundManager::playCarnageSfx(int carnagesfxnum)
 		cerr << Mix_GetError() << endl;
 		exit(EXIT_FAILURE);
 	}
+}
+
+void SoundManager::playUIKey()
+{
+	int randkey = (drand48() * NUM_UI_KEY_SFX);
+	printf("Random key sound: %d Playing in channel: %d\n", randkey, curruichannel);
+	if(Mix_PlayChannel(curruichannel, uikeysfx[randkey], 0) == -1)
+	{
+		cerr << Mix_GetError() << endl;
+		exit(EXIT_FAILURE);
+	}
+	curruichannel = (curruichannel + 1) % MAX_KEY_CHANNEL;
 }
 
 int SoundManager::getCurrBuildMusic()

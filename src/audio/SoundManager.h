@@ -17,8 +17,11 @@
 #define NUM_CARNAGE_SFX 3
 #define NUM_MENU_SFX 0
 #define NUM_RESULTS_SFX 0
+#define NUM_UI_KEY_SFX 8
 
-#define SFX_CHANNEL 1
+#define MAX_KEY_CHANNEL 5
+#define SFX_CHANNEL 6
+
 #define FADE_OUT_MSECS 20
 #define SDL_DELAY_TIME 5
 
@@ -29,12 +32,14 @@ class SoundManager
 		int currcarnagemusic;
 		int currbuildsfx;
 		int currcarnagesfx;
+		int curruichannel;
 		Mix_Music *buildmusic[NUM_BUILD_SONGS];
 		Mix_Music *carnagemusic[NUM_CARNAGE_SONGS];
 		Mix_Music *menumusic[NUM_MENU_SONGS];
 		Mix_Music *resultsmusic[NUM_RESULTS_SONGS];
 		Mix_Chunk *buildsfx[NUM_BUILD_SFX];
 		Mix_Chunk *carnagesfx[NUM_CARNAGE_SFX];
+		Mix_Chunk *uikeysfx[NUM_UI_KEY_SFX];
 		
 	public:
 		SoundManager();
@@ -61,6 +66,7 @@ class SoundManager
 		int getCurrCarnageSfx();
 		void setCurrBuildMusic(int newcurrbuildmusic);
 		void setCurrCarnageMusic(int newcurrcarnagemusic);
+		void playUIKey();
 		
 		//Useful for setting sfx when shooting particular ammunition.
 		void setCurrBuildSfx(int newcurrbuildsfx);

@@ -40,15 +40,17 @@ void StateManager::changeCurrentState(enum E_STATE newState)
     case MENU_STATE:
 		currentState = new MenuState();
 		currentState->initialize();
+		currentState->setRealStateType(enumeration::MENU_STATE);
 #ifdef CLIENT
         gfx::hud.swapUI(Hud::MENU);
         global::soundManager->stopPlayingMusic();
         global::soundManager->playMenuSong();
 #endif
         break;
-    case BUILD_STATE:
+    case BUILD_STATE:		
         currentState = new BuildState();
         currentState->initialize();
+        currentState->setRealStateType(enumeration::BUILD_STATE);
 #ifdef CLIENT
         gfx::hud.swapUI(Hud::BUILD);
         gfx::fxManager.reset();
@@ -60,6 +62,7 @@ void StateManager::changeCurrentState(enum E_STATE newState)
     case CARNAGE_STATE:
 		currentState = new CarnageState();
 		currentState->initialize();
+		currentState->setRealStateType(enumeration::CARNAGE_STATE);
 #ifdef CLIENT
 
     	if(oldState->objects.size() > 0)

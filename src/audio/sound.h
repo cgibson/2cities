@@ -26,6 +26,16 @@ namespace sound
 		"resources/sound/28911__junggle__btn101.wav",
 		"resources/sound/39457__THE_bizniss__laser_3.wav",
 		"resources/sound/73537__Snipperbes__ClassicLaser.wav"};
+		
+	const char *uikeysfxnames[] = {
+		"resources/sound/ibm1_.wav",
+		"resources/sound/ibm2_.wav",
+		"resources/sound/ibm3_.wav",
+		"resources/sound/ibm4_.wav",
+		"resources/sound/ibm5_.wav",
+		"resources/sound/ibm6_.wav",
+		"resources/sound/ibm7_.wav",
+		"resources/sound/ibm8_.wav",};
 }
 
 #endif

@@ -132,13 +132,6 @@ void BuildUI::update(int ms)
 	static int timeaccum = 0;
 	timeaccum += ms;
 
-	// keep the progress bars sized and aligned correctly
-	_redFullProgress->pos(330, global::height - 21);
-	_redFullProgress->size(global::width / 2 - 330, 21);
-	_blueFullProgress->pos(global::width / 2, global::height - 21);
-	_blueFullProgress->size(global::width / 2 - 330, 21);
-	_blueFullLabel->pos(global::width / 2 - 330 - 5, 4);
-
 	// keep the type selector "centered" in the middle of the screen (horizontally)
 	_typeSelect->pos(global::width / 2, global::height - 115);
 
@@ -222,6 +215,12 @@ void BuildUI::update(int ms)
 	// keep the ammo clips matched to their icons
 	_weakMult->pos(_typeSelect->icon(0)->width() / 2, -13);
 	_strongMult->pos(_typeSelect->icon(1)->width() / 2, -13);
+
+	// keep the progress bars sized and aligned correctly
+	_redFullProgress->pos(330, global::height - 21);
+	_redFullProgress->size(global::width / 2 - 330, 21);
+	_blueFullProgress->pos(global::width / 2, global::height - 21);
+	_blueFullProgress->size(global::width / 2 - 330, 21);
 }
 
 void BuildUI::draw()

@@ -215,13 +215,6 @@ void CarnageUI::update(int ms)
 		_reticle->parent(_window);
 	}
 
-	// keep the progress bars sized and aligned correctly
-	_redDestructProgress->pos(330, global::height - 21);
-	_redDestructProgress->size(global::width / 2 - 330, 21);
-	_blueDestructProgress->pos(global::width / 2, global::height - 21);
-	_blueDestructProgress->size(global::width / 2 - 330, 21);
-	_blueDestructLabel->pos(global::width / 2 - 330 - 5, 4);
-
 	// keep the ammo selector "centered" in the middle of the screen (horizontally)
 	_ammoSelect->pos(global::width / 2, global::height - 115);
 
@@ -324,6 +317,12 @@ void CarnageUI::update(int ms)
 
 	// update the time remaining display
 	_countdown->seconds(global::networkManager->network->getTimeToStateChange() / 1000 * -1);
+
+	// keep the progress bars sized and aligned correctly
+	_redDestructProgress->pos(330, global::height - 21);
+	_redDestructProgress->size(global::width / 2 - 330, 21);
+	_blueDestructProgress->pos(global::width / 2, global::height - 21);
+	_blueDestructProgress->size(global::width / 2 - 330, 21);
 }
 
 void CarnageUI::draw()

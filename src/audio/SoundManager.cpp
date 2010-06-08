@@ -15,7 +15,7 @@ SoundManager::SoundManager()
 	memset(uikeysfx, 0, sizeof(Mix_Chunk *) * NUM_UI_KEY_SFX);
 	curruichannel = 0;
 	currbuildmusic = 0;
-	currcarnagemusic = 0;
+	currcarnagemusic = drand48() * (NUM_CARNAGE_SONGS - 1);
 	currbuildsfx = 0;
 	currcarnagesfx = 0;
 }
@@ -46,6 +46,10 @@ void SoundManager::initialize()
 	}
 	loadMusic();
 	loadSfx();
+	for(int i = 0; i < MAX_KEY_CHANNEL; i++)
+	{
+		Mix_Volume(i, UI_KEY_VOLUME);
+	}
 }
 
 void SoundManager::tearDownSound()
@@ -305,7 +309,6 @@ void SoundManager::playCarnageSfx(int carnagesfxnum)
 void SoundManager::playUIKey()
 {
 	int randkey = (drand48() * NUM_UI_KEY_SFX);
-	printf("Random key sound: %d Playing in channel: %d\n", randkey, curruichannel);
 	if(Mix_PlayChannel(curruichannel, uikeysfx[randkey], 0) == -1)
 	{
 		cerr << Mix_GetError() << endl;

@@ -24,6 +24,7 @@
 
 #define FADE_OUT_MSECS 20
 #define SDL_DELAY_TIME 5
+#define UI_KEY_VOLUME 100
 
 class SoundManager
 {

@@ -144,6 +144,7 @@ void NetworkServer::getPhysicsUpdate() {
 	// UPDATE LOCAL DATA (and remove items fallen off world)
 	std::vector<WorldObject *> PhysEngObjs = physicsEngine.getWorldObjects();
 	for(unsigned int i=0; i < PhysEngObjs.size(); i++) {
+/*
 		if(PhysEngObjs[i]->getPosition().y() < -50.0f) {
 			unsigned int removeID = PhysEngObjs[i]->getID();
 			// Local Removal
@@ -161,9 +162,10 @@ void NetworkServer::getPhysicsUpdate() {
 			}
 		}
 		else {
+*/
 			// Needed to add new items
 			WorldObjectState::updateVector(&_serverObjs,PhysEngObjs[i]);
-		}
+//		}
 	}
 }
 
@@ -503,7 +505,8 @@ void NetworkServer::checkStateChange() {
 			break;
 		case BUILD_STATE :
 			for(unsigned int i=0; i<clients.size(); ++i)
-				clients[i]->playerReady = -1;
+				if(!clients[i]->isLocal)
+					clients[i]->playerReady = -1;
 
 			global::stateManager->changeCurrentState(CARNAGE_STATE);
 			break;
@@ -594,11 +597,11 @@ void NetworkServer::updatePlayerDetails() {
 	for(unsigned int i=0; i < clients.size(); ++i) {
 		if(clients[i]->playerID == 2) {
 			clients[i]->playerDamage = (int)(damagedP1*100/blocksP1);
-			clients[i]->playerScore  = damagedP1;
+			clients[i]->playerScore  = damagedP1 * 1024;
 		}
 		else if(clients[i]->playerID == 1) {
 			clients[i]->playerDamage = (int)(damagedP2*100/blocksP2);
-			clients[i]->playerScore  = damagedP2;
+			clients[i]->playerScore  = damagedP2 * 1024;
 		}
 	}
 }

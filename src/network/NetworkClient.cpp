@@ -305,22 +305,30 @@ void NetworkClient::loadLevel(vector<WorldObject *> newObjs) {
 			int sendAttempt = 0;
 
 			while(!pktConfirm) {
-				if(++sendAttempt > 10) {
-					return;
-				}
-				else if(!waitSet->WaitWithTimeout(20)) {
-					SendPacket(pkt, &socket, serverIP);
+				if(!waitSet->WaitWithTimeout(20)) {
+					if(sendAttempt > 10) {
+						printf("Hit max attempts\n");
+						return;
+					}
+					else {
+						SendPacket(pkt, &socket, serverIP);
+						sendAttempt++;
 #ifdef DEBUG
-					printf("Re-sending Level_Batch. Attempt %i!\n", sendAttempt);
+						printf("Re-sending Level_Batch. Attempt %i!\n", sendAttempt);
 #endif
+					}
 				}
 				else {
 					while(waitSet->WaitWithTimeout(0)) {
 						RecvPacket(&tmpPkt, &socket, &sourceIP);
 						lastTimePktRecv = global::elapsed_ms();
 						if(tmpPkt.header.type == LEVEL_BATCHOBJ) {
-							if(tmpPkt.dataSize == pkt.dataSize && !memcmp(tmpPkt.data, pkt.data, pkt.dataSize))
+							if(tmpPkt.dataSize == pkt.dataSize && !memcmp(tmpPkt.data, pkt.data, pkt.dataSize)) {
+#ifdef DEBUG
+								printf("Level Packet Successful!\n");
+#endif
 								pktConfirm = true;
+							}
 #ifdef DEBUG
 							else
 								printf("Packet Didn't Match!\n");
@@ -341,6 +349,7 @@ void NetworkClient::loadLevel(vector<WorldObject *> newObjs) {
 		int readyFlag = 0;
 		NetworkPacket tmpPkt(PLAYER_READY, (unsigned char *)&readyFlag, sizeof(int));
 		SendPacket(tmpPkt, &socket, serverIP);
+		printf("Done Sending\n");
 	}
 }
 

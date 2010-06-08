@@ -50,9 +50,19 @@ void Physics::initPhysics()
     new btDefaultMotionState(groundTrans), ground, btVector3(0,8,0));
   // Put the ground into the world
   groundBody = new btRigidBody(grbInfo);
+  if (groundBody == NULL)
+  {
+	  printf("NULL groundBody found.\n");
+	  exit(1);
+  }
   world->addRigidBody(groundBody);
   groundBody->setActivationState(ISLAND_SLEEPING);
   ActionHandler * action = new ActionHandler(this);
+  if (action == NULL)
+  {
+	  printf("NULL Action.\n");
+	  exit(1);
+  }
   world->addAction(action);
 //  world->setInternalTickCallback(&tickCallback);
 }
@@ -60,26 +70,13 @@ void Physics::initPhysics()
 void Physics::update(int timeChange)
 {
 //  printf("Updating by: %d milliseconds.\n", timeChange);
-  vector<WorldObject> changed;
   if (timeChange)
     world->stepSimulation(btScalar(timeChange / 1000.0), 1, btScalar(1 / 30.0));
   unsigned int i;
-  int result;
   for (i = 0; i < physicsBodies.size(); i++)
   {
-    result = physicsBodies[i]->update();
-    physicsBodies[i]->getRigidBody()->setGravity(btVector3(0, -10, 0));
-    if (result == 1)
-    {
-      changed.push_back(*(physicsBodies[i]->getWorldObject()));
-    }
-    if (result == 0)
-    {
-      //removeWorldObject(temp[i]->getWorldObject().getID());
-    }
-    else
-    {
-    }
+    physicsBodies[i]->update();
+    physicsBodies[i]->setGravity(btVector3(0, -10, 0));
   }
 }
 
@@ -117,8 +114,16 @@ void Physics::addWorldObject(WorldObject *worldObject)
     {
       newBody->setActivationState(ISLAND_SLEEPING);
     }
-    world->addRigidBody(newBody->getRigidBody());
-    physicsBodies.push_back(newBody);
+    if (newBody->getRigidBody() != NULL)
+    {
+      world->addRigidBody(newBody->getRigidBody());
+      physicsBodies.push_back(newBody);
+    }
+    else
+    {
+    	printf("Attempt to add NULL rigidBody.\n");
+    	exit(1);
+    }
   }
   else
   {
@@ -212,6 +217,11 @@ int Physics::isNotWorldObject(btCollisionObject * toTest)
 
 void Physics::addGhost(btGhostObject * ghost)
 {
+  if (ghost == NULL)
+  {
+	printf("NULL ghostObject found.\n");
+	exit(1);
+  }
   ghost->setCollisionFlags(ghost->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
   world->addCollisionObject(ghost, btBroadphaseProxy::SensorTrigger, btBroadphaseProxy::AllFilter & ~btBroadphaseProxy::SensorTrigger);
   
@@ -259,7 +269,7 @@ int Physics::insertWorldObject(WorldObject * worldObject)
 //  addWorldObject(worldObject);
   // TODO place the actual insertion code here.
 #ifdef DEBUG
-//  printf("Physics is now inserting Object #%d.\n", nextBlockNumber);
+  printf("Physics is now inserting Object #%d.\n", nextBlockNumber);
 #endif
   return nextBlockNumber++;
 }

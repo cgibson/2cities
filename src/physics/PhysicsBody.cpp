@@ -40,6 +40,7 @@ btRigidBody(getCI(*worldObject))
   setCenterOfMassTransform(trans);
   setLinearVelocity(VtobtV3(vel));
   body = (btRigidBody *)(this);
+  forceScale = 0.0f;
 }
 
 btRigidBody::btRigidBodyConstructionInfo PhysicsBody::getCI(WorldObject worldObject)

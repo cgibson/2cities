@@ -69,9 +69,6 @@ void NetworkPrivate::addObject(WorldObject *newObj, int newID) {
 void NetworkPrivate::addObjectPhys(WorldObject *objPtr) {
 	objPtr->setTimeStamp(global::elapsed_ms());
 
-	// TODO Add ObjectState to Tracker
-	// NetworkObjectState newObjState(objPtr, 4);
-
 	physicsEngine.addWorldObject(objPtr);
 }
 

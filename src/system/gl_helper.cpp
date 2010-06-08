@@ -13,11 +13,12 @@ namespace gl
 		}
 		else
 		{
-			global::width = glutGet(GLUT_SCREEN_WIDTH);
-			global::height = glutGet(GLUT_SCREEN_HEIGHT);
-			char buffer[80];
-			snprintf(buffer, 80, "%dx%d", global::width, global::height);
-			glutGameModeString(buffer);
+			//global::width = glutGet(GLUT_SCREEN_WIDTH);
+			//global::height = glutGet(GLUT_SCREEN_HEIGHT);
+			//char buffer[80];
+			//snprintf(buffer, 80, "%dx%d", global::width, global::height);
+			//glutGameModeString(buffer);
+			glutGameModeString("1024x768"); // locked at 1024x768 for performance reasons
 			atexit(glutLeaveGameMode);
 			glutEnterGameMode();
 		}

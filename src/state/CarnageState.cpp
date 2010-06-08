@@ -110,7 +110,8 @@ void CarnageState::initialize() {
 
    //opponentCannon = new ComplexObject(SMOOTH_CANNON);
    //playerCannon = new ComplexObject(SMOOTH_CANNON);
-   playerCannon = global::factory->makeObject(SMOOTH);
+   //playerCannon = global::factory->makeObject(SMOOTH);
+   playerCannon = global::factory->makeObject(TWIST);
 	 playerCannon->setPosition(Vector(0, 0, 0));
 	 playerCannon->setVelocity(Vector(0, 0, 0));
 

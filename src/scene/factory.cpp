@@ -42,7 +42,7 @@ void ObjectFactory::makeBlock(int key, bool special)
       {
 //      WorldObject *anObject = new WorldObject(
 //        BlackHole *anObject = new BlackHole(
-        Shotgun *anObject = 
+        Shotgun *anObject =
                             new Shotgun(
                                          blockNumberBase +
                                          blockSetHeight * floorSize * floorSize +
@@ -66,41 +66,41 @@ void ObjectFactory::setBlueprint(ObjectType ot, float mass, MaterialType mt, Sha
 void ObjectFactory::loadConfig(char* filename)
 {
   Blueprint tmp;
-  
+
   // dummy block
   setBlueprint(DUMMY_BLOCK, 1.0f, YELLOW_MAT, SMALL_CUBE, Vector(1.0f, 1.0f, 1.0f));
-  
+
   // dummy sphere
   setBlueprint(DUMMY_SPHERE, 10.0f, BLUE_MAT, SMALL_SPHERE, Vector(0.3f, 0.3f, 0.3f));
   io::register_key_down(ObjectFactory::makeBlock);
-  
+
   // dummy block
   setBlueprint(CUSTOM_BLOCK, 1.0f, GREEN_MAT, SMALL_CUBE, Vector(1.0f, 1.0f, 1.0f));
-  
+
   // dummy cone
   setBlueprint(DUMMY_CONE, 1.0f, YELLOW_MAT, SMALL_CONE, Vector(1.0f, 1.0f, 1.0f));
-  
+
   // recognizer
   setBlueprint(RECOGNIZER, 1000.0f, YELLOW_MAT, RECOGNIZER_SHAPE, Vector(8.0f, 8.0f, 8.0f));
-  
+
   // smooth cannon
   setBlueprint(SMOOTH, 10.0f, YELLOW_MAT, SMOOTH_CANNON_SHAPE, Vector(5.0f, 5.0f, 5.0f));
-  
+
   // twist cannon
-  setBlueprint(TWIST, 10.0f, YELLOW_MAT, TWIST_CANNON_SHAPE, Vector(1.0f, 1.0f, 1.0f));
-  
+  setBlueprint(TWIST, 10.0f, YELLOW_MAT, TWIST_CANNON_SHAPE, Vector(4.0f, 4.0f, 4.0f));
+
   // buster cannon
-  setBlueprint(BUSTER, 10.0f, YELLOW_MAT, BUSTER_CANNON_SHAPE, Vector(1.0f, 1.0f, 1.0f));
-  
+  setBlueprint(BUSTER, 10.0f, YELLOW_MAT, BUSTER_CANNON_SHAPE, Vector(2.0f, 2.0f, 2.0f));
+
   // fractal bomb
   setBlueprint(FRACTAL_BOMB, 10.0f, YELLOW_MAT, FRACTAL_BOMB_SHAPE, Vector(0.5f, 0.5f, 0.5f));
-  
+
   // warped cube
   setBlueprint(WARPED_CUBE, 10.0f, YELLOW_MAT, WARPED_CUBE_SHAPE, Vector(1.0f, 1.0f, 1.0f));
-  
+
   // drill cone
   setBlueprint(DRILL_CONE, 10.0f, YELLOW_MAT, DRILL_CONE_SHAPE, Vector(1.0f, 1.0f, 1.0f));
-  
+
   setBlueprint(DUMMY_CYLINDER, 1.0f, YELLOW_MAT, SMALL_CYLINDER, Vector(1.0f, 1.0f, 1.0f));
   setBlueprint(BLOCK_1_2_1, 2.0f, GREEN_MAT, BLOCK_1_2_1_SHAPE, Vector(1.0f, 2.0f, 1.0f));
   setBlueprint(BLOCK_2_4_2, 16.0f, YELLOW_MAT, BLOCK_2_4_2_SHAPE, Vector(1.0f, 4.0f, 1.0f));

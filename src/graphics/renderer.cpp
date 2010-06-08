@@ -14,6 +14,7 @@ const int Renderer::max_test = 8;
 Renderer::Renderer()
 {
 	// no need to init camera here anymore, it knows how to initialize itself
+	hackyRotate = 0.0;
 }
 
 void Renderer::init()
@@ -87,6 +88,9 @@ void Renderer::update(int elapsed)
 
 	if(global::stateManager->currentState->stateType() == CARNAGE_STATE)
 		updateBloom(elapsed);
+
+	hackyRotate += 0.15;
+	while (hackyRotate > 360.0) { hackyRotate -= 360.0; }
 }
 
 void Renderer::do_lights(Shader sh)
@@ -358,7 +362,8 @@ void Renderer::draw_diffusePass()
 				glMatrixMode(GL_MODELVIEW);
 				glLoadIdentity();
 
-				glTranslatef(0,-1,0);
+				glTranslatef(0,-1.3,3.0);
+				glRotatef(hackyRotate, 0,0,1);
 
 				cs->playerMat->applyMaterial(gfx::simpleShader, "");
 				cs->playerCannon->draw();

@@ -47,6 +47,7 @@ private:
   void do_lights(Shader sh);
   void updateBloom(int elapsed);
   Vector eye, lookAt;
+  float hackyRotate;
 
   bool use_fbo;
 

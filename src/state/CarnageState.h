@@ -44,7 +44,6 @@ class CarnageState: public InGameState
         }
         int getAmmoCount(int ammoIndex) const { return ammoCounts[ammoIndex]; }
         void godMode() {
-        	printf("God Mode!!!\n");
         	for(int i=0; i<ammoCount; i++)
         		ammoCounts[i] = 9999;
         }

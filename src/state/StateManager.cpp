@@ -140,7 +140,7 @@ void StateManager::initialize()
 	gfx::hud.console.registerCmd("changestate", StateManager::stateConsoleCmds);
 	gfx::hud.console.registerCmd("ready", StateManager::stateConsoleCmds);
 
-	gfx::hud.console.registerCmd("godMode", StateManager::stateConsoleCmds);
+	gfx::hud.console.registerCmd("godmode", StateManager::stateConsoleCmds);
 
 	//SHORTCUTS
 	gfx::hud.console.registerCmd("cs", StateManager::stateConsoleCmds);
@@ -187,20 +187,22 @@ void StateManager::stateConsoleCmds(int argc, char *argv[])
 			gfx::hud.console.error("Usage: %s <state>", argv[0]);
 			return;
 		}
-		else if(!strcmp(argv[0], "godMode")) {
-			if(global::stateManager->currentState->stateType() == CARNAGE_STATE) {
-				printf("stateManager calling god\n");
-				((CarnageState *)(global::stateManager->currentState))->godMode();
-			}
-			else
-				printf("You're not in carn\n");
-		}
 		else
 		{
 			gfx::hud.console.error("Usage: %s <state>", argv[0]);
 			return;
 		}
 	}
+
+	if(!strcmp(argv[0], "godmode")) {
+		if(global::stateManager->currentState->stateType() == CARNAGE_STATE) {
+			gfx::hud.console.info("Unlimited Ammo!");
+			((CarnageState *)(global::stateManager->currentState))->godMode();
+		}
+		else
+			gfx::hud.console.error("You're not in Carnage Mode!");
+	}
+
 	if(!strcmp(argv[0], "ready") || !strcmp(argv[0], "r")) {
 		global::networkManager->network->setPlayerReady(1);
 		gfx::hud.console.info("I'm Ready!");

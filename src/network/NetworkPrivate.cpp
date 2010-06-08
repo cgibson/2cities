@@ -47,9 +47,9 @@ void NetworkPrivate::update(long milli_time) {
 			removeObjectLocal(removeID);
 		}
 		else {
-			// TODO currently works due to deletes/update timing. However,
-			// following command should be a new pointer of its own.
-			updateObjectLocal(PhysEngObjs[i]);
+			WorldObject * tmpObj = global::factory->makeObject(PhysEngObjs[i]->getType());
+			tmpObj->import(PhysEngObjs[i]);
+			updateObjectLocal(tmpObj);
 		}
 	}
 }
@@ -77,6 +77,7 @@ void NetworkPrivate::addObjectPhys(WorldObject *objPtr) {
 
 void NetworkPrivate::emptyWorld() {
 	// Clear GameState objects
+	// Note: clear okay since Physics will do actual WO deletes
 	global::stateManager->currentState->objects.clear();
 
 	// Clear Physics

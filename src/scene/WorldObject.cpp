@@ -44,17 +44,17 @@ WorldObject::WorldObject(unsigned char *bufPtr) {
 	fromBinStream(bufPtr);
 }
 
-void WorldObject::import(const WorldObject& newObj) {
-	this->id = newObj.id;
-	this->playerid = newObj.playerid;
-	this->bldgid = newObj.bldgid;
-	this->position = newObj.position;
-	this->velocity = newObj.velocity;
-	this->force = newObj.force;
-	this->orientation = newObj.orientation;
-	this->type = newObj.type;
-	this->physics = newObj.physics;
-	this->timestamp = newObj.timestamp;
+void WorldObject::import(const WorldObject *objPtr) {
+	this->id = objPtr->id;
+	this->playerid = objPtr->playerid;
+	this->bldgid = objPtr->bldgid;
+	this->position = objPtr->position;
+	this->velocity = objPtr->velocity;
+	this->force = objPtr->force;
+	this->orientation = objPtr->orientation;
+	this->type = objPtr->type;
+	this->physics = objPtr->physics;
+	this->timestamp = objPtr->timestamp;
 }
 
 void WorldObject::import(unsigned char *bufPtr) {

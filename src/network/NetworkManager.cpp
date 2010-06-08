@@ -48,6 +48,7 @@ void NetworkManager::initialize() {
 
 void NetworkManager::changeNetworkInterface(E_NetworkInterface networkType) {
 	NetworkSystem *oldNetwork = network;
+	network->emptyWorld();
 
 	switch (networkType) {
 #ifdef CLIENT
@@ -64,6 +65,7 @@ void NetworkManager::changeNetworkInterface(E_NetworkInterface networkType) {
 	default:
 		break;
 	}
+
 	delete oldNetwork;
 }
 

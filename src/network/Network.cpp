@@ -31,10 +31,11 @@ namespace net{
 	}
 
 	NetworkPacket::NetworkPacket(ting::Buffer<unsigned char> *buf, unsigned int recvSize) {
-		dataSize = recvSize - sizeof(NetworkPacketHeader);
+		int currISize = sizeof(net::N_PacketType);
+		dataSize = recvSize - currISize - sizeof(int);
 		//data = new unsigned char[dataSize];
-		memcpy(&header, buf->Buf(), sizeof(NetworkPacketHeader));
-		memcpy(data, buf->Buf() + sizeof(NetworkPacketHeader), dataSize);
+		memcpy(&header, buf->Buf()            , currISize);
+		memcpy( data  , buf->Buf() + currISize, dataSize);
 	}
 
 	NetworkPacket::NetworkPacket(N_PacketType newType, unsigned char *newData, unsigned int newDataSize) {

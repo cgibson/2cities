@@ -50,7 +50,7 @@ class WorldObject
         WorldObject(const WorldObject& newObj);
         WorldObject(unsigned char *bufPtr);
         
-        void import(const WorldObject& newObj);
+        void import(const WorldObject *objPtr);
         void import(unsigned char *bufPtr);
 
         virtual void draw();

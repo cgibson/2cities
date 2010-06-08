@@ -35,8 +35,6 @@ protected:
 
 	virtual void closeSockets();
 
-	virtual void addObjectPhys(WorldObject *objPtr) { updateObjectLocal(objPtr); };
-
 	void recvStatusUpdate(NetworkPacket &pkt);
 	void networkIncoming(long &elapsed);
 
@@ -67,7 +65,8 @@ public:
 	virtual void sendMsg(char *msgStr);
 
 	// Add new object to scene
-	virtual void addObject(WorldObject *ObjPtr, int newID = -1);
+	virtual void addObject(WorldObject *objPtr, int newID = -1);
+	virtual void addObjectPhys(WorldObject *objPtr) { updateObjectLocal(objPtr); };
 
 	// Load a stored lvl
 	virtual void emptyWorld();

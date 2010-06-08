@@ -123,11 +123,13 @@ int NetworkSystem::SendPacket(NetworkPacket &pkt, ting::UDPSocket *socket, ting:
 		return -1;
 	}
 
-	int bufSize = pkt.dataSize + sizeof(NetworkPacketHeader);
+	int headerSize = sizeof(net::N_PacketType);
+	int bufSize = headerSize + pkt.dataSize + sizeof(int);
 	ting::u8 strPtr[bufSize];
 	ting::Buffer<ting::u8> buf(strPtr, sizeof(strPtr));
-	memcpy(buf.Buf(), &(pkt.header), sizeof(NetworkPacketHeader));
-	memcpy(buf.Buf() + sizeof(NetworkPacketHeader), pkt.data, pkt.dataSize);
+	memcpy(buf.Buf()                             , &(pkt.header.type), headerSize);
+	memcpy(buf.Buf() + headerSize                , pkt.data          , pkt.dataSize);
+	memcpy(buf.Buf() + headerSize + pkt.dataSize , &bufSize          , sizeof(int));
 
 	int sentSize = socket->Send(buf, destIP_P);
 	_pktCountSent++;
@@ -149,13 +151,23 @@ int NetworkSystem::RecvPacket(NetworkPacket *pktPtr, ting::UDPSocket *socket, ti
 	unsigned int recvSize = socket->Recv(buf, *srcIP_P);
 	_pktCountRecv++;
 
-	// Check if packet can possibly be valid
-	if(recvSize <  sizeof(NetworkPacketHeader)) {
+
+	int headerSize = sizeof(net::N_PacketType);
+	int footerSize = sizeof(int);
+
+	// Sanity Checks
+	if((int)(recvSize) < (headerSize + footerSize)) {
 		printf("** ReadBuffer: Received Bad Packet! (too small)\n");
-		return -1;
+		exit(1);
+	}
+	if(*(unsigned int*)(buf.Buf() + recvSize - footerSize) != recvSize) {
+		printf("** ReadBuffer: Received Bad Packet! (size mismatch)\n");
+		exit(1);
 	}
 
-	*pktPtr = NetworkPacket(&buf, recvSize);
+	pktPtr->dataSize = recvSize - headerSize - footerSize;
+	memcpy(&(pktPtr->header.type), buf.Buf()             , headerSize);
+	memcpy(  pktPtr->data        , buf.Buf() + headerSize, pktPtr->dataSize);
 
 	return recvSize;
 }
@@ -203,7 +215,7 @@ void NetworkSystem::updateObjectVector(vector<WorldObject *> *objVec, WorldObjec
 	else if((*objVec)[i]->getID() == objPtr->getID()) {
 		// Is new item newer? If not, ignore
 		if (objPtr->getTimeStamp() > (*objVec)[i]->getTimeStamp()) {
-			(*objVec)[i]->import(*objPtr);
+			(*objVec)[i]->import(objPtr);
 			delete objPtr;
 		}
 	}
@@ -246,7 +258,7 @@ void NetworkSystem::removeObjectLocal(unsigned int worldObjectID) {
  * Object Sending/Recv
  *******************************************/
 void NetworkSystem::buildBatchPacket(NetworkPacket *pkt, WorldObject *objs[], unsigned int size) {
-	if (size * sizeof(WorldObject) > 1500) {
+	if (size * 116 > 1400) {
 		printf("buildBatchPacket trying to add too much!\n");
 		return;
 	}
@@ -257,6 +269,11 @@ void NetworkSystem::buildBatchPacket(NetworkPacket *pkt, WorldObject *objs[], un
 	}
 	pkt->header.type = OBJECT_BATCHSEND;
 	pkt->dataSize = currPos;
+
+	if(currPos > 1400) {
+		printf("Packet Too Large!");
+		exit(1);
+	}
 }
 
 void NetworkSystem::decodeObjectSend(NetworkPacket &pkt, long interpValue) {
@@ -265,10 +282,15 @@ void NetworkSystem::decodeObjectSend(NetworkPacket &pkt, long interpValue) {
 		ObjectType woType;
 		unsigned int woPktLoc = 0;
 
+		if(pkt.dataSize > 1400) {
+			printf("Packet Corrupt!");
+			exit(1);
+		}
+
 		while(woPktLoc + 100 < pkt.dataSize) {
 			if(woPktLoc + 100 >= pkt.dataSize) {
 				printf("Likely Packet Error: Remaining Size < WorldObject Size");
-				return;
+				exit(1);
 			}
 
 			woType = *(ObjectType*)(pkt.data + woPktLoc);
@@ -336,9 +358,6 @@ void NetworkSystem::updOPlayerCamera() {
 /*******************************************
  * OBJECT/LEVEL/WORLD FUNCTIONS
  *******************************************/
-void NetworkSystem::emptyWorld() {
-	global::stateManager->currentState->objects.clear();
-}
 
 void NetworkSystem::loadLevel(vector<WorldObject *> newObjs) {
 	if(serverConnected() && clients[myClientID]->playerType == Client::PLAYER) {

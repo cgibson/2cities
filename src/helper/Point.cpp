@@ -9,11 +9,11 @@ Point::Point(GLdouble x, GLdouble y, GLdouble z)
 
 Point::Point(GLdouble clicked_x, GLdouble clicked_y)
 {
+#ifdef CLIENT
 	GLint viewport[4];
 	GLdouble modelview_matrix[16];
 	GLdouble projection_matrix[16];
 
-#ifdef CLIENT
    GLdouble *mvMatrix = (GLdouble*)modelview_matrix;
    GLdouble *pMatrix = (GLdouble*)projection_matrix;
    GLint *vMatrix = (GLint*)viewport;

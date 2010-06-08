@@ -251,7 +251,11 @@ void NetworkClient::addObject(WorldObject *ObjPtr, int newID) {
 
 void NetworkClient::emptyWorld() {
 	// Clear GameState objects
-	global::stateManager->currentState->objects.clear();
+	InGameState * currState = global::stateManager->currentState;
+	for(int i=currState->objects.size() - 1; i >= 0 ; --i) {
+		delete currState->objects[i];  // call WorldObject destructor
+		currState->objects.pop_back(); // remove and call pointer destructor
+	}
 
 	if(isConnected && clients[myClientID]->playerType == Client::PLAYER) {
 		int tmpInt = 0;
@@ -301,8 +305,9 @@ void NetworkClient::loadLevel(vector<WorldObject *> newObjs) {
 			int sendAttempt = 0;
 
 			while(!pktConfirm) {
-				if(++sendAttempt > 10)
-					serverDisconnect();
+				if(++sendAttempt > 10) {
+					return;
+				}
 				else if(!waitSet->WaitWithTimeout(20)) {
 					SendPacket(pkt, &socket, serverIP);
 #ifdef DEBUG
@@ -319,13 +324,13 @@ void NetworkClient::loadLevel(vector<WorldObject *> newObjs) {
 #ifdef DEBUG
 							else
 								printf("Packet Didn't Match!\n");
+#endif
 						}
+#ifdef DEBUG
 						else if(tmpPkt.header.type == STATUS_UPDATE)
 							printf("Status Packet... Ignoring!\n");
 						else
 							printf("Other Packet... Ignoring!\n");
-#else
-						}
 #endif
 					}
 				}

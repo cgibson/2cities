@@ -62,15 +62,15 @@ void NetworkServer::update(long elapsed) {
 	long currClockTime;
 	while(1) {
 		if(_waitSet->WaitWithTimeout(1)) {
-#endif
-	networkIncoming(elapsed);
-#ifdef SERVER
+			networkIncoming(elapsed);	// SERVER
 		}
-		else {
-			currClockTime = global::elapsed_ms();
-			if(currClockTime != lastClockTime) {
-				elapsed = currClockTime - lastClockTime;
-				lastClockTime = currClockTime;
+
+		currClockTime = global::elapsed_ms();
+		if(currClockTime != lastClockTime) {
+			elapsed = currClockTime - lastClockTime;
+			lastClockTime = currClockTime;
+#else
+	networkIncoming(elapsed);	// CLIENT
 #endif
 
 	updateRxTxData(elapsed);
@@ -83,83 +83,88 @@ void NetworkServer::update(long elapsed) {
 	// Update Physics Engine
 	static int physicsDelay = 0;
 	if(physicsDelay <= 0) {
-		physicsEngine.update(net::SERVER_PHYSICS_UPDATE_RATE - physicsDelay);
-
+		int mainRunTime = (net::SERVER_PHYSICS_UPDATE_RATE - physicsDelay);
+		physicsEngine.update(mainRunTime);
 #ifdef SERVER
-		// Print Server Stats for Dedicated Server Only
-		switch (global::stateManager->currentState->stateType()) {
-		case MENU_STATE :
-			printf("\015   MENU ");
-			break;
-		case BUILD_STATE :
-			printf("\015  BUILD ");
-			break;
-		case CARNAGE_STATE :
-			printf("\015   CARN ");
-			break;
-		case RESULTS_STATE :
-			printf("\015 RESULT ");
-			break;
-		default :
-			printf("\015    N/A ");
-		}
-		printf("LCycle(%4i) Phys(%4li) tx(%5i) rx(%5i) objs(%4i) ttsc(%4i) | ",
-				(net::SERVER_PHYSICS_UPDATE_RATE - physicsDelay),
-				(global::elapsed_ms() - currClockTime),
-				global::pbs_sent,
-				global::pbs_recv,
-				_serverObjs.size(),
-				(timeToStateChange - global::elapsed_ms()) / 1000);
-		for(unsigned int p=0; p<clients.size(); p++) {
-			printf("P%i(%4i ms) ", clients[p]->playerID, clients[p]->playerDelay);
-		}
-		printf("   ");
-		fflush(stdout);
+		int physRunTime = (global::elapsed_ms() - currClockTime);
+		printServerStatus(mainRunTime, physRunTime);
 #endif
-
 		physicsDelay = net::SERVER_PHYSICS_UPDATE_RATE;
 
-		// UPDATE LOCAL DATA (and remove items fallen off world)
-		std::vector<WorldObject *> PhysEngObjs = physicsEngine.getWorldObjects();
-		for(unsigned int i=0; i < PhysEngObjs.size(); i++) {
-			if(PhysEngObjs[i]->getPosition().y() < -50.0f) {
-				unsigned int removeID = PhysEngObjs[i]->getID();
-				// Local Removal
-				physicsEngine.removeWorldObject(removeID);
-				WorldObjectState::removeVector(&_serverObjs,removeID);
-				removeObjectLocal(removeID);
-
-				// Send to Clients
-				NetworkPacket pkt(OBJECT_KILL, (unsigned char *)&removeID, sizeof(unsigned int));
-				for(unsigned int p=0; p<clients.size(); p++) {
-					if(!clients[p]->isLocal)
-						SendPacket(pkt, &(clients[p]->socket), clients[p]->ip);
-				}
-			}
-			else {
-				// Needed to add new items
-				WorldObjectState::updateVector(&_serverObjs,PhysEngObjs[i]);
-			}
-		}
+		getPhysicsUpdate();
 	}
 	else {
 		physicsDelay -= elapsed;
-/*
-		// WO* instead of _SO is already tied to PhysObj to just refresh sorting items
-		for(unsigned int i=0; i<_serverObjs.size(); ++i) {
-			_serverObjs[i].update();
-		}
-*/
 	}
-
 
 	WorldObjectState::sortVector(&_serverObjs);
 	networkOutgoing(elapsed);
+
 #ifdef SERVER
+		} // END IF TIME PASSED
+	} // END SERVER WHILE
+#endif
+}
+
+void NetworkServer::printServerStatus(int mainLoopTime, int phyLoopTime) {
+#ifdef SERVER
+	// Print Server Stats for Dedicated Server Only
+	switch (global::stateManager->currentState->stateType()) {
+	case MENU_STATE :
+		printf("\015   MENU ");
+		break;
+	case BUILD_STATE :
+		printf("\015  BUILD ");
+		break;
+	case CARNAGE_STATE :
+		printf("\015   CARN ");
+		break;
+	case RESULTS_STATE :
+		printf("\015 RESULT ");
+		break;
+	default :
+		printf("\015    N/A ");
+	}
+	printf("LCycle(%4i) Phys(%4i) tx(%5i) rx(%5i) objs(%4i) ttsc(%4i) | ",
+			mainLoopTime,
+			phyLoopTime,
+			global::pbs_sent,
+			global::pbs_recv,
+			_serverObjs.size(),
+			(timeToStateChange - global::elapsed_ms()) / 1000);
+	for(unsigned int p=0; p<clients.size(); p++) {
+		printf("P%i(%4i ms) ", clients[p]->playerID, clients[p]->playerDelay);
+	}
+	printf("   ");
+	fflush(stdout);
+#endif
+}
+
+void NetworkServer::getPhysicsUpdate() {
+	// UPDATE LOCAL DATA (and remove items fallen off world)
+	std::vector<WorldObject *> PhysEngObjs = physicsEngine.getWorldObjects();
+	for(unsigned int i=0; i < PhysEngObjs.size(); i++) {
+		if(PhysEngObjs[i]->getPosition().y() < -50.0f) {
+			unsigned int removeID = PhysEngObjs[i]->getID();
+			// Local Removal
+			physicsEngine.removeWorldObject(removeID);
+			WorldObjectState::removeVector(&_serverObjs,removeID);
+#ifdef CLIENT
+			removeObjectLocal(removeID);
+#endif
+
+			// Send to Clients
+			NetworkPacket pkt(OBJECT_KILL, (unsigned char *)&removeID, sizeof(unsigned int));
+			for(unsigned int p=0; p<clients.size(); p++) {
+				if(!clients[p]->isLocal)
+					SendPacket(pkt, &(clients[p]->socket), clients[p]->ip);
 			}
 		}
+		else {
+			// Needed to add new items
+			WorldObjectState::updateVector(&_serverObjs,PhysEngObjs[i]);
+		}
 	}
-#endif
 }
 
 /*******************************************
@@ -620,21 +625,23 @@ void NetworkServer::addObject(WorldObject *objPtr, int newID) {
 
 void NetworkServer::addObjectPhys(WorldObject *objPtr) {
 	objPtr->setTimeStamp(global::elapsed_ms());
+
+	WorldObject * tmpObjPtr = global::factory->makeObject(objPtr->getType());
+	tmpObjPtr->import(objPtr);
 	
 	// Add ObjectState to Tracker
-	WorldObjectState::updateVector(&_serverObjs, objPtr, 10);
-	//WorldObjectState newObjState(objPtr, 10);
-	//_serverObjs.push_back(newObjState);
-	
-	physicsEngine.addWorldObject(objPtr);
+	WorldObjectState::updateVector(&_serverObjs, tmpObjPtr, 10);
+
+	physicsEngine.addWorldObject(tmpObjPtr);
 }
 
 void NetworkServer::emptyWorld() {
 	// Clear GameState objects
+	// Note: clear okay since Physics will do actual WO deletes
 	global::stateManager->currentState->objects.clear();
 
 	// Clear Server objects
-	_serverObjs.clear();
+	_serverObjs.clear(); // Can call just clear since they are not pointers
 
 	// Clear Physics
 	physicsEngine.emptyWorld();

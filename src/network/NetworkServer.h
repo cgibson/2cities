@@ -39,13 +39,15 @@ protected:
 
 	virtual void recvMsg(NetworkPacket &pkt);
 
-	virtual void addObjectPhys(WorldObject *objPtr);
 	//virtual void reqUpdateObj(unsigned int objID) {};
 
 	void networkIncoming(long &elapsed);
 	void networkIncomingGeneral(long &elapsed);
 	void networkIncomingPlayers(int p, long &elapsed);
 	void networkOutgoing(long &elapsed);
+
+	void getPhysicsUpdate();
+	void printServerStatus(int mainLoopTime, int phyLoopTime);
 
 	void checkStateChange();
 	void checkClientTimeout();
@@ -83,6 +85,7 @@ public:
 
 	// Add new object to scene
 	virtual void addObject(WorldObject *ObjPtr, int newID = -1);
+	virtual void addObjectPhys(WorldObject *objPtr);
 
 	// Load a stored lvl
 	virtual void emptyWorld();

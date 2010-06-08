@@ -57,7 +57,6 @@ protected:
 	virtual void recvMsg(NetworkPacket &pkt);
 
 	// Object Control
-	virtual void addObjectPhys(WorldObject *objPtr) {};
 	virtual void reqUpdateObj(unsigned int objID) {};
 
 	// Helper functions for quick/sorted actions on std:vectors
@@ -119,9 +118,10 @@ public:
 
 	// Add new object to scene
 	virtual void addObject(WorldObject *ObjPtr, int newID = -1) {};
+	virtual void addObjectPhys(WorldObject *objPtr) {};
 
 	// Load a stored lvl
-	virtual void emptyWorld();
+	virtual void emptyWorld() {};
 	virtual void loadLevel(const char * file) {};
 	virtual void loadLevel(vector<WorldObject *> newObjs);
 };

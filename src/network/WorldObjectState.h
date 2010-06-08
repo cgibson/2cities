@@ -6,6 +6,7 @@
 #include <algorithm>
 
 #include "Network.h"
+#include "../system/global.h"
 
 class WorldObjectState {
 public:
@@ -34,7 +35,9 @@ public:
 	bool   damaged;
 
 	WorldObjectState(WorldObject * newObj, int initPriority = 2) {
-		objPtr       = newObj;
+//		objPtr       = newObj;
+		objPtr       = global::factory->makeObject(newObj->getType());
+		objPtr->import(newObj);
 
 		objID        = newObj->getID();
 		playerID     = newObj->getPlayerID();
@@ -55,9 +58,14 @@ public:
 		damaged      = false;
 	}
 
+	~WorldObjectState() {
+		// DO NOT DELETE WorldObject Pointer... Physics will do that!
+	}
+
 	void update(WorldObject * newObj) {
 		// Don't need to import data as its already itself
-		objPtr->import(*newObj);	// TODO breaks polymorphism
+		objPtr->import(newObj);
+
 		lastUpdate   = objPtr->getTimeStamp();
 			
 		update();
@@ -104,7 +112,7 @@ public:
 		}
 		// ObjID Found, Replace Data
 		else {
-			(*objVec)[i].update();
+			(*objVec)[i].update(objPtr);
 			(*objVec)[i].priority = newPriority;
 			//printf("Updated Object\n");
 		}

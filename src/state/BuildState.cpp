@@ -160,21 +160,18 @@ void BuildState::updateInput(long milli_time) {
 	//stop music
 	if(io::keys['['])
 	{
-		printf("Stopping the build state music.\n");
 		global::soundManager->stopPlayingMusic();
 	}
 
 	//play music for carnage state
 	if(io::keys[']'] && music_delay <= 0)
 	{
-		printf("Playing build state music\n");
 		global::soundManager->playBuildSong();
 		music_delay = MUSIC_DELAY;
 	}
 
 	if(io::keys['n'] && music_delay <= 0)
 	{
-		printf("Playing the next build state song\n");
 		global::soundManager->playNextBuildSong();
 		music_delay = MUSIC_DELAY;
 	}

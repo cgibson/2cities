@@ -32,6 +32,8 @@ class SoundManager
 	private:
 		int currbuildmusic;
 		int currcarnagemusic;
+		int currmenumusic;
+		int currresultsmusic;
 		int currbuildsfx;
 		int currcarnagesfx;
 		int curruichannel;
@@ -59,6 +61,8 @@ class SoundManager
 		void playResultLoseSong();
 		void playNextBuildSong();
 		void playNextCarnageSong();
+		void playNextMenuSong();
+		void playNextResultSong();
 		void stopPlayingMusic();
 		void playBuildSfx(int buildsfxnum);
 		void playCarnageSfx(int carnagesfxnum);

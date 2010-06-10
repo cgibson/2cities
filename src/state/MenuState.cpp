@@ -57,15 +57,19 @@ void MenuState::updateInput(long milli_time) {
 	//stop music
 	if(io::keys['['])
 	{
-		printf("Stopping the menu state music.\n");
 		global::soundManager->stopPlayingMusic();
 	}
 
 	//play music for menu state
 	if(io::keys[']'] && music_delay <= 0)
 	{
-		printf("Playing menu state music\n");
 		global::soundManager->playMenuSong();
+		music_delay = MUSIC_DELAY;
+	}
+	
+	if(io::keys['n'] && music_delay <= 0)
+	{
+		global::soundManager->playNextMenuSong();
 		music_delay = MUSIC_DELAY;
 	}
 

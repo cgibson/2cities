@@ -18,6 +18,8 @@ SoundManager::SoundManager()
 	currbuildmusic = 0;
 	srand(time(NULL));
 	currcarnagemusic = rand() % NUM_CARNAGE_SONGS;
+	currmenumusic = 0;
+	currresultsmusic = 0;
 	currbuildsfx = 0;
 	currcarnagesfx = 0;
 }
@@ -124,7 +126,7 @@ void SoundManager::loadMusic()
 		}
 		else
 		{
-			cout << "music file" << sound::carnagemusicnames[i] << "should be .wav format" << endl;
+			cerr << "music file" << sound::carnagemusicnames[i] << "should be .wav format" << endl;
 			exit(EXIT_FAILURE);
 		}
 		
@@ -144,7 +146,7 @@ void SoundManager::loadMusic()
 		}
 		else
 		{
-			cout << "music file" << sound::menumusicnames[i] << "should be .wav format" << endl;
+			cerr << "music file" << sound::menumusicnames[i] << "should be .wav format" << endl;
 			exit(EXIT_FAILURE);
 		}
 		
@@ -164,7 +166,7 @@ void SoundManager::loadMusic()
 		}
 		else
 		{
-			cout << "music file" << sound::resultsmusicnames[i] << "should be .wav format" << endl;
+			cerr << "music file" << sound::resultsmusicnames[i] << "should be .wav format" << endl;
 			exit(EXIT_FAILURE);
 		}
 		
@@ -181,7 +183,6 @@ void SoundManager::loadSfx()
 	//Attempt to read in carnage SFX
 	for(int i = 0; i < NUM_CARNAGE_SFX; i++)
 	{
-		printf("carnage sfx #%d: %s\n", i, carnagesfxnames[i]);
 		if(hasEnding(carnagesfxnames[i], ".wav"))
 		{
 			carnagesfx[i] = Mix_LoadWAV(carnagesfxnames[i]);
@@ -286,6 +287,19 @@ void SoundManager::playNextCarnageSong()
 	currcarnagemusic = (currcarnagemusic + 1) % NUM_CARNAGE_SONGS;
 	playCarnageSong();
 }
+
+void SoundManager::playNextMenuSong()
+{
+	stopPlayingMusic();
+	playMenuSong();
+}
+
+void SoundManager::playNextResultSong()
+{
+	stopPlayingMusic();
+	playResultWinSong();
+}
+	
 
 void SoundManager::stopPlayingMusic()
 {

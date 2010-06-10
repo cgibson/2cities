@@ -50,7 +50,6 @@ void ModelManager::initialize()
 	//read in each model
 	for(int i = 0; i < NUM_GAME_MODELS; i++)
 	{
-		cout << "Attempting to read model" << modelFiles[i] << endl;
 		loader::readFile(modelFiles[i]);
 		modelvertices[i] = mdl::vertexarray;
 		modelnormals[i] = mdl::normalarray;
@@ -75,8 +74,6 @@ void ModelManager::initialize()
 				glDisableClientState(GL_NORMAL_ARRAY);
 		}
 		glEndList();
-		if(modelDLs[i] <= 0)
-			printf("LAME!\n");
 		resetLoader();
 	}
 }

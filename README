@@ -1,8 +1,10 @@
 - TWO CITIES -
 
-Members: Bob Somers, Chris Gibson, Clovas Hansen, David Hakken, Kennedy Owen, Sean Forsberg
+Members: Bob Somers, Chris Gibson, Clovas Hansen, David Hakken,
+Kennedy Owen, Sean Forsberg
 CSC 476 - Spring 2010
 Final Project submission: June 10, 2010
+
 
 Compiling instructions
 ----------------------
@@ -11,6 +13,7 @@ To compile, enter:
 	make
 To clean up, enter:
 	make clean
+
 
 Execution instructions
 ----------------------
@@ -23,7 +26,7 @@ the periods are needed when connecting to a server (first option) on the
 main menu. Example: 127.0.0.1 is a valid IP if the server is on the same
 computer; 197.128.175.231 is also a valid IP address.
 
-To run, use three Terminals (preferrably on two computers).
+To run, use three Terminals (preferrably on two-three computers).
 In the first Terminal (Server), enter:
 	./2cities-server
 In the second Terminal (Player One), enter:
@@ -40,28 +43,52 @@ In the third Terminal (Player Two), enter the same as for the second Terminal.
 Game controls
 ----------------------
 Menu
-	Left click, Enter			confirm
-	Right click, Esc			backtrack
+	Left click, Enter					confirm
+	Right click, Esc					backtrack
 	Up & Down Arrow Keys, Scroll wheel	switch between options
+	'['									stop music
 
 Build
-	'aswd'					movement keys
-	Right click->drag on ground		draw building base
+	'aswd'								movement keys
+	Right click->drag on ground			draw building base
 	Right click->drag on building		move building
 	Left click->drag on building side	expand/collapse building
-	'1', '2', Scroll Wheel			select building type
-	Space Bar (hold)			panoramic view
-	'['					stop music
-	']'					play music
+	'1', '2', Scroll Wheel				select building type
+	Space Bar (hold)					panoramic view
+	'['									stop music
+	']'									play music
 
 Carnage
-	'aswd'					movement keys
-	Mouse					look around
-	Left click, Enter			shoot ammo
+	'aswd'								movement keys
+	Mouse								look around
+	Left click, Enter					shoot ammo
 	'1' through '6', Scroll wheel		Choose ammo type to shoot
-	'['                                     stop music
-        ']'                                     play music
-	'n'					play next music track
+	'['                                 stop music
+        ']'                             play music
+	'n'									play next music track
 
 Results
-	'['					stop music
+	'['									stop music
+
+
+AUDIO DISCLAIMER
+----------------------
+
+Two Cities contains music taken from the Newgrounds Audio Portal.
+This music is licensed under the Creative Commons license, meaning it
+can be used and remixed so long as proper credit is given to the artists
+and the music is not used in an application for profit. The following
+artists' music tracks were used in the Spring 2010 release of Two
+Cities: Aleks Hell, Ben Fischl, DJ Dreamz, DJ Sonik, NemesisTheory,
+SamsterProductions, Zeeber85.
+
+Two Cities contains sound effect clips taken from The Freesound Project.
+All sound effect clips are licensed under the Creative Commons license,
+as stated in the previous paragraph. The following artists' sound
+effects were used in the Spring 2010 release of Two Cities: junggle,
+aust_paul, THE_bizniss, smcameron, Snipperbes.
+
+Additionally, sound effects from the IBM Model M Keyboard Simulator were
+used in the Spring 2010 release of Two Cities. These sound effects are
+not being used for commercial profit, only serving to enhance Two Cities
+gameplay experience.

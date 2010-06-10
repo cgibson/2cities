@@ -203,22 +203,26 @@ void CarnageState::updateInput(long milli_time) {
 	//stop music
 	if(io::keys['['])
 	{
-		printf("Stopping the carnage state music.\n");
 		global::soundManager->stopPlayingMusic();
 	}
 
 	//play music for carnage state
 	if(io::keys[']'] && music_delay <= 0)
 	{
-		printf("Playing carnage state music\n");
 		global::soundManager->playCarnageSong();
 		music_delay = MUSIC_DELAY;
 	}
 
 	if(io::keys['n'] && music_delay <= 0)
 	{
-		printf("Playing the next carnage state song\n");
-		global::soundManager->playNextCarnageSong();
+		if(stateType() == RESULTS_STATE)
+		{
+			global::soundManager->playNextResultSong();
+		}
+		else
+		{
+			global::soundManager->playNextCarnageSong();
+		}
 		music_delay = MUSIC_DELAY;
 	}
 

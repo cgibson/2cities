@@ -129,8 +129,8 @@ public:
 
 		// ObjID found, erase entry
 		if (i < objVec->size()) {
-			//(*objVec)[i].kill(); // TODO
-			objVec->erase(objVec->begin()+i);
+			(*objVec)[i].kill(); // ObjectState Remains, just releases object.
+			//objVec->erase(objVec->begin()+i);
 			//printf("Killed Object\n");
 		}
 	}

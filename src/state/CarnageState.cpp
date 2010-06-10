@@ -209,7 +209,14 @@ void CarnageState::updateInput(long milli_time) {
 	//play music for carnage state
 	if(io::keys[']'] && music_delay <= 0)
 	{
-		global::soundManager->playCarnageSong();
+		if(stateType() == RESULTS_STATE)
+		{
+			global::soundManager->playResultWinSong();
+		}
+		else
+		{
+			global::soundManager->playCarnageSong();
+		}
 		music_delay = MUSIC_DELAY;
 	}
 

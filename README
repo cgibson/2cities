@@ -43,32 +43,32 @@ In the third Terminal (Player Two), enter the same as for the second Terminal.
 Game controls
 ----------------------
 Menu
-	Left click, Enter					confirm
-	Right click, Esc					backtrack
-	Up & Down Arrow Keys, Scroll wheel	switch between options
-	'['									stop music
+	Left click, Enter                     confirm
+	Right click, Esc                      backtrack
+	Up & Down Arrow Keys, Scroll wheel    switch between options
+	'['                                   stop music
 
 Build
-	'aswd'								movement keys
-	Right click->drag on ground			draw building base
-	Right click->drag on building		move building
-	Left click->drag on building side	expand/collapse building
-	'1', '2', Scroll Wheel				select building type
-	Space Bar (hold)					panoramic view
-	'['									stop music
-	']'									play music
+	'aswd'                                movement keys
+	Right click->drag on ground           draw building base
+	Right click->drag on building         move building
+	Left click->drag on building side     expand/collapse building
+	'1', '2', Scroll Wheel                select building type
+	Space Bar (hold)                      panoramic view
+	'['                                   stop music
+	']'                                   play music
 
 Carnage
-	'aswd'								movement keys
-	Mouse								look around
-	Left click, Enter					shoot ammo
-	'1' through '6', Scroll wheel		Choose ammo type to shoot
-	'['                                 stop music
-        ']'                             play music
-	'n'									play next music track
+	'aswd'                                movement keys
+	Mouse                                 look around
+	Left click, Enter                     shoot ammo
+	'1' through '6', Scroll wheel         Choose ammo type to shoot
+	'['                                   stop music
+        ']'                                   play music
+	'n'                                   play next music track
 
 Results
-	'['									stop music
+	'['                                   stop music
 
 
 AUDIO DISCLAIMER

@@ -10,9 +10,9 @@ Compiling instructions
 ----------------------
 
 To compile, enter:
-	make
+    make
 To clean up, enter:
-	make clean
+    make clean
 
 
 Execution instructions
@@ -28,14 +28,14 @@ computer; 197.128.175.231 is also a valid IP address.
 
 To run, use three Terminals (preferrably on two-three computers).
 In the first Terminal (Server), enter:
-	./2cities-server
+    ./2cities-server
 In the second Terminal (Player One), enter:
-	./2cities-client [-pretty | -fullscreen]
+    ./2cities-client [-pretty | -fullscreen]
 
-		-pretty: Enables extra bloom and shader effects; this
-		flag is built for higher-end machines.
+        -pretty: Enables extra bloom and shader effects; this
+                 flag is built for higher-end machines.
 
-		-fullscreen: Runs the game in full screen mode.
+        -fullscreen: Runs the game in full screen mode.
 
 In the third Terminal (Player Two), enter the same as for the second Terminal.
 
